@@ -1,0 +1,7 @@
+build/
+public/
+**/node_modules/
+*.config.js
+*.config.ts
+*.local
+.*
