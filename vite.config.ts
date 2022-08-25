@@ -9,7 +9,8 @@ export default defineConfig({
     open: true,
     proxy: {
       "/api/": {
-        target: "http://localhost:8460",
+        target:
+          process.env.NODE_ENV === "production" ? "https://api.hato.cf:11111" : "http://localhost:8460",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace("/api", ""),
@@ -25,11 +26,11 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: 'Hato',
-        short_name: 'Hato',
-        description: '屋代高校非公式情報板',
-        theme_color: '#ffffff',
-        display: 'standalone'
+        name: "Hato",
+        short_name: "Hato",
+        description: "屋代高校非公式情報板",
+        theme_color: "#ffffff",
+        display: "standalone",
       },
       devOptions: {
         enabled: true,
