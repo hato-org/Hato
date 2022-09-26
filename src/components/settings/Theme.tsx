@@ -1,13 +1,7 @@
-import { VStack } from "@chakra-ui/react";
+import { VStack } from '@chakra-ui/react';
 
-
-const Theme = () => {
-
-	return (
-		<VStack>
-			
-		</VStack>
-	)
+function Theme() {
+  return <VStack />;
 }
 
 export default Theme;

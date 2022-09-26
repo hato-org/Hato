@@ -1,7 +1,13 @@
-import { default as Timetable } from './Timetable';
-import { default as Error } from './Error';
+import Timetable from './Timetable';
+import Events from './Events';
+import Error from './Error';
+import Info from './Info';
+import Hatoboard from './Hatoboard';
 
-export const CardElement = {
-	Timetable,
-	Error,
-}
+export default {
+  Timetable,
+  Events,
+  Error,
+  Info,
+  Hatoboard,
+};

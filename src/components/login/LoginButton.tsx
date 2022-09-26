@@ -1,21 +1,22 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Helmet, HelmetTags } from 'react-helmet-async';
 
 // NOTE: This code is written by David Chen, in https://github.com/HolodexNet/Musicdex licensed under Apache 2.0 License.
+// NOTE: Modified by P_man2976
 
-const googleUrl = "https://accounts.google.com/gsi/client";
+const googleUrl = 'https://accounts.google.com/gsi/client';
 const CLIENT_ID =
-  "933844444976-d5n9lrv65rr50l2v5q42cqmkcmsl13ej.apps.googleusercontent.com";
+  '933844444976-d5n9lrv65rr50l2v5q42cqmkcmsl13ej.apps.googleusercontent.com';
 
 interface GoogleButtonParams extends BoxProps {
   onCredentialResponse: (response: GoogleCredentialResponse) => void;
 }
 
-const LoginButton = ({ onCredentialResponse, ...rest }: GoogleButtonParams) => {
+function LoginButton({ onCredentialResponse, ...rest }: GoogleButtonParams) {
   const [scriptLoaded, setScriptLoaded] = useState(
-    typeof window !== "undefined" &&
-      typeof (window as any).google !== "undefined"
+    typeof window !== 'undefined' &&
+      typeof (window as any).google !== 'undefined'
   );
   const divRef = React.createRef<HTMLDivElement>();
 
@@ -26,7 +27,7 @@ const LoginButton = ({ onCredentialResponse, ...rest }: GoogleButtonParams) => {
         ({ src }) => src === googleUrl
       );
       if (foundScript) {
-        foundScript.addEventListener("load", () => setScriptLoaded(true), {
+        foundScript.addEventListener('load', () => setScriptLoaded(true), {
           once: true,
         });
       }
@@ -40,8 +41,8 @@ const LoginButton = ({ onCredentialResponse, ...rest }: GoogleButtonParams) => {
         callback: onCredentialResponse,
       });
       (window as any).google.accounts.id.renderButton(divRef.current, {
-        theme: "outline",
-        size: "medium",
+        theme: 'outline',
+        size: 'large',
         width: divRef.current.clientWidth,
       });
       // (window as any).google.accounts.id.prompt();
@@ -53,16 +54,24 @@ const LoginButton = ({ onCredentialResponse, ...rest }: GoogleButtonParams) => {
       <Helmet onChangeClientState={handleChangeClientState}>
         <script src={googleUrl} async defer />
       </Helmet>
-      <Box
-        ref={divRef}
-        height={"32px"}
-        bgColor="white"
-        rounded="lg"
-        overflow="hidden"
-        {...rest}
-      />
+      {scriptLoaded ? (
+        <Box
+          ref={divRef}
+          // height={"32px"}
+          // bgColor="white"
+          // rounded="lg"
+          overflow="hidden"
+          {...rest}
+        />
+      ) : (
+        <Box>
+          <Text fontWeight="bold" fontSize="sm">
+            読み込んでいます…
+          </Text>
+        </Box>
+      )}
     </>
   );
-};
+}
 
 export default LoginButton;

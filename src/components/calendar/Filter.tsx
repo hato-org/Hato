@@ -1,7 +1,3 @@
-
-
-const Filter = () => {
-
-}
+const Filter = () => {};
 
 export default Filter;

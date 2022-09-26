@@ -1,31 +1,31 @@
 import {
-  Stack,
   HStack,
   VStack,
   Text,
   Tag,
   Icon,
   Spacer,
-  Divider,
   TagCloseButton,
   Wrap,
   IconButton,
   Collapse,
   useDisclosure,
   Box,
-} from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { format } from "date-fns";
-import { TbChevronRight, TbFilter, TbPlus } from "react-icons/tb";
-import { useClient } from "../../modules/client";
-import { CardElement } from "../cards";
-import Loading from "../common/Loading";
-import { useAllTagList } from "../../hooks/calendar/tag";
-import { useEffect, useState } from "react";
-import { Select } from "chakra-react-select";
-import { useAuth } from "../../modules/auth";
+  Center,
+  StackDivider,
+} from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { format, isSameDay } from 'date-fns';
+import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
+import { useEffect, useState } from 'react';
+import { Select } from 'chakra-react-select';
+import { useClient } from '../../modules/client';
+import Error from '../cards/Error';
+import Loading from '../common/Loading';
+import { useAllTagList } from '../../hooks/calendar/tag';
+import { useUser } from '../../hooks/user';
 
 interface UpcomingEventsProps {
   year: number;
@@ -33,10 +33,9 @@ interface UpcomingEventsProps {
   day: number;
 }
 
-const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
-  if (!year || !month || !day) return <></>;
+function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
   const { client } = useClient();
-  const { user } = useAuth();
+  const { data: user } = useUser();
   const queryClient = useQueryClient();
   const { data: allTag } = useAllTagList();
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -47,27 +46,23 @@ const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
     if (!allTag) return;
     setTagFilter((oldTags) => [
       ...oldTags,
-      ...allTag
-        .filter(
-          (tag) =>
-            tag.value === "all" || // 全校
+      ...allTag.filter(
+        (tag) =>
+          !oldTags.some((oldTag) => oldTag.value === tag.value) &&
+          (tag.value === 'all' || // 全校
             tag.value === `${user?.type}-all` || // 高校 / 中学
             tag.value === `${user?.type}-${user?.grade}` || // 学年
             tag.value === `${user?.grade}${user?.class}` || // クラス
-            tag.value === `${user?.type}-${user?.grade}-${user?.course}` // コース
-        )
-        .filter((tag) => {
-          // タグ重複追加防止
-          if (!oldTags.length) return true;
-        }),
+            tag.value === `${user?.type}-${user?.grade}-${user?.course}`) // コース
+      ),
     ]);
-  }, [allTag]);
+  }, [allTag, user]);
 
   const { data, isLoading, error } = useQuery<Event[], AxiosError>(
-    ["calendar", "events", { year, month, day }],
+    ['calendar', 'events', { year, month, day }],
     async () =>
       (
-        await client.get("/calendar/event", {
+        await client.get('/calendar/event', {
           params: {
             y: year,
             m: month,
@@ -76,24 +71,45 @@ const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
         })
       ).data,
     {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        for (const event of data) {
-          queryClient.setQueryData(
-            ["calendar", "event", event._id],
-            () => event
-          );
-        }
+      cacheTime: Infinity,
+      onSuccess: (events) => {
+        events.forEach((event) => {
+          queryClient.setQueryData(['calendar', 'event', event._id], event);
+        });
       },
     }
   );
 
+  const filteredEvents = data
+    ?.sort((first, second) => {
+      if (
+        new Date(first.startAt).getTime() <
+          new Date(second.startAt).getTime() ||
+        (first.isAllDay && !second.isAllDay)
+      ) {
+        return -1;
+      }
+      if (
+        new Date(first.startAt).getTime() >
+          new Date(second.startAt).getTime() ||
+        (!first.isAllDay && second.isAllDay)
+      ) {
+        return 1;
+      }
+      return 0;
+    })
+    .filter((event) => {
+      if (!tagFilter.length) return true;
+      return tagFilter.some((tag) =>
+        event.tags.some((eventTag) => tag.value === eventTag.value)
+      );
+    });
+
   if (isLoading) return <Loading />;
-  if (error) return <CardElement.Error error={error} />;
+  if (error) return <Error error={error} />;
 
   return (
-    <VStack w="100%" spacing={4}>
+    <VStack w="100%" spacing={2}>
       <HStack w="100%">
         <Icon as={TbFilter} w={6} h={6} />
         <Wrap align="center" w="100%">
@@ -132,8 +148,8 @@ const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
             chakraStyles={{
               container: (provided) => ({
                 ...provided,
-                w: "100%",
-                textStyle: "title",
+                w: '100%',
+                textStyle: 'title',
               }),
               // valueContainer: (provided) => ({
               //   ...provided,
@@ -141,54 +157,30 @@ const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
               // }),
               menu: (provided) => ({
                 ...provided,
-                shadow: "lg",
+                shadow: 'lg',
                 zIndex: 2,
               }),
             }}
           />
         </Collapse>
       </Box>
-      {data
-        .sort((first, second) => {
-          if (
-            new Date(first.startAt).getTime() <
-              new Date(second.startAt).getTime() ||
-            (first.isAllDay && !second.isAllDay)
-          ) {
-            return -1;
-          } else if (
-            new Date(first.startAt).getTime() >
-              new Date(second.startAt).getTime() ||
-            (!first.isAllDay && second.isAllDay)
-          ) {
-            return 1;
-          } else {
-            return 0;
-          }
-        })
-        .filter((event) => {
-          if (!tagFilter.length) return true;
-          for (const tag of tagFilter) {
-            for (const eventTag of event.tags) {
-              if (tag.value === eventTag.value) return true;
-            }
-          }
-        })
-        .map((event) => (
+      {filteredEvents?.length ? (
+        filteredEvents?.map((event) => (
           <HStack
             w="100%"
-            h={24}
             p={2}
             key={event._id}
             // border="1px solid var(--chakra-colors-gray-100)"
             rounded="xl"
             // shadow="lg"
             as={RouterLink}
-            to={`/calendar/events/${event._id}`}
+            to={`/events/${event._id}`}
+            layerStyle="button"
           >
             <VStack
-              h="full"
+              h="100%"
               minW={10}
+              justify="space-between"
               align="flex-end"
               textStyle="title"
               fontSize="xs"
@@ -197,16 +189,26 @@ const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
                 <Text>終日</Text>
               ) : (
                 <>
-                  <Text>{format(new Date(event.startAt), "HH:mm")}</Text>
-                  <Text>{format(new Date(event.endAt), "HH:mm")}</Text>
+                  <Text>
+                    {isSameDay(
+                      new Date(year, month - 1, day),
+                      new Date(event.startAt)
+                    )
+                      ? format(new Date(event.startAt), 'HH:mm')
+                      : '0:00'}
+                  </Text>
+                  <Text>
+                    {isSameDay(
+                      new Date(year, month - 1, day),
+                      new Date(event.endAt)
+                    )
+                      ? format(new Date(event.endAt), 'HH:mm')
+                      : '0:00'}
+                  </Text>
                 </>
               )}
             </VStack>
-            <Divider
-              borderColor="blue.500"
-              borderWidth={1}
-              orientation="vertical"
-            />
+            <StackDivider borderColor="blue.400" borderWidth={1} />
             <VStack align="flex-start" spacing={1} w="100%">
               <Text textStyle="title" noOfLines={1}>
                 {event.title}
@@ -225,9 +227,16 @@ const UpcomingEvents = ({ year, month, day }: UpcomingEventsProps) => {
             <Spacer />
             <Icon as={TbChevronRight} />
           </HStack>
-        ))}
+        ))
+      ) : (
+        <Center w="100%" flexGrow={1}>
+          <Text textStyle="description" fontWeight="bold">
+            予定されているイベントはありません
+          </Text>
+        </Center>
+      )}
     </VStack>
   );
-};
+}
 
 export default UpcomingEvents;

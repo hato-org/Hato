@@ -1,22 +1,28 @@
-import axios from "axios";
-import { useCallback } from "react";
-import { useSetRecoilState } from "recoil";
-import { useAuth } from "../auth";
+import axios from 'axios';
+import { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '../../store/auth';
 
+// eslint-disable-next-line import/prefer-default-export
 export const useClient = () => {
-	const { user } = useAuth();
+  const user = useRecoilValue(userAtom);
 
-  const client = useCallback(
-    axios.create({
-      baseURL: `${window.location.protocol}//${window.location.host}/api`,
-			headers: {
-				'X-APIKEY': user?.apiKey || ''
-			}
-    }),
-    [user]
+  const API_URL = import.meta.env.PROD
+    ? 'https://api.hato.cf:11117'
+    : `${window.location.protocol}//${window.location.host}/api`;
+
+  const client = useMemo(
+    () =>
+      axios.create({
+        baseURL: API_URL,
+        headers: {
+          'X-APIKEY': user?.apiKey || '',
+        },
+      }),
+    [user, API_URL]
   );
 
-	return {
-		client,
-	}
+  return {
+    client,
+  };
 };

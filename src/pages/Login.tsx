@@ -1,20 +1,20 @@
-import { Button, Center, Heading, Text, VStack } from "@chakra-ui/react";
-import { Helmet } from "react-helmet-async";
-import { TbArrowNarrowLeft } from "react-icons/tb";
-import { Link as RouterLink } from "react-router-dom";
-import LoginButton from "../components/login/LoginButton";
-import { useAuth } from "../modules/auth";
+import { Button, Center, Heading, Text, VStack } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet-async';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
+import { Link as RouterLink } from 'react-router-dom';
+import LoginButton from '../components/login/LoginButton';
+import { useAuth } from '../modules/auth';
 
-const Login = () => {
+function Login() {
   const { login } = useAuth();
 
   return (
     <>
       <Helmet>
-        <title>ログイン - Hato</title>
+        <title>ログイン - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
       {/* @ts-ignore */}
-      <Center h={[["100vh", "100dvh"]]} w="100vw" flexDir="column" p={8}>
+      <Center h={[['100vh', '100dvh']]} w="100vw" flexDir="column" p={8}>
         <VStack spacing={8} w="100%">
           <Heading color="blue.500" as="h1" size="2xl" fontWeight="black">
             ログイン
@@ -28,7 +28,7 @@ const Login = () => {
             <br />
             でログインしてください。
           </Text>
-          <LoginButton w="100%" h={20} onCredentialResponse={login} />
+          <LoginButton shadow="xl" onCredentialResponse={login} />
           <Button
             as={RouterLink}
             to="/"
@@ -43,6 +43,6 @@ const Login = () => {
       </Center>
     </>
   );
-};
+}
 
 export default Login;

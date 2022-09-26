@@ -1,7 +1,5 @@
 import {
   Avatar,
-  Box,
-  BoxProps,
   Collapse,
   Divider,
   Flex,
@@ -12,30 +10,36 @@ import {
   Text,
   useDisclosure,
   VStack,
-} from "@chakra-ui/react";
-import { AnimatePresence } from "framer-motion";
-import { useMemo } from "react";
-import { TbUser, TbChevronDown, TbSettings, TbLogout } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../modules/auth";
+} from '@chakra-ui/react';
+import { useMemo } from 'react';
+import { TbUser, TbChevronDown, TbSettings, TbLogout } from 'react-icons/tb';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../hooks/user';
+import { useAuth } from '../../modules/auth';
 
-export const Account = ({ ...rest }: FlexProps) => {
-  const { user, logout } = useAuth();
+function Account({ ...rest }: FlexProps) {
+  const { logout } = useAuth();
+  const { data: user } = useUser();
   const { isOpen, onToggle } = useDisclosure();
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const menu = useMemo(() => [
-		{
-			icon: TbSettings,
-			label: '設定',
-			onClick: () => { navigate('/settings') }
-		},
-		{
-			icon: TbLogout,
-			label: 'ログアウト',
-			onClick: logout
-		}
-	], [])
+  const menu = useMemo(
+    () => [
+      {
+        icon: TbSettings,
+        label: '設定',
+        onClick: () => {
+          navigate('/settings');
+        },
+      },
+      {
+        icon: TbLogout,
+        label: 'ログアウト',
+        onClick: logout,
+      },
+    ],
+    [logout, navigate]
+  );
 
   return (
     <Flex
@@ -60,15 +64,17 @@ export const Account = ({ ...rest }: FlexProps) => {
       </HStack>
       <Collapse in={isOpen} animateOpacity>
         <Divider py={2} />
-        <VStack divider={<Divider />} py={2} align='flex-start'>
-					{menu.map(({ icon, label, onClick }) => (
-						<HStack px={4} spacing={4} onClick={onClick} w='100%' key={label}>
-							<Icon as={icon} w={6} h={6} color='gray.500' />
-							<Text color='gray.500'>{label}</Text>
-						</HStack>
-					))}
-				</VStack>
+        <VStack divider={<Divider />} py={2} align="flex-start">
+          {menu.map(({ icon, label, onClick }) => (
+            <HStack px={4} spacing={4} onClick={onClick} w="100%" key={label}>
+              <Icon as={icon} w={6} h={6} color="gray.500" />
+              <Text color="gray.500">{label}</Text>
+            </HStack>
+          ))}
+        </VStack>
       </Collapse>
     </Flex>
   );
-};
+}
+
+export default Account;

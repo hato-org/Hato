@@ -1,11 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { useAuth } from "../../modules/auth";
-import { useClient } from "../../modules/client";
-import { useApi } from "../common/api";
+import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useClient } from '../../modules/client';
+import { useUser } from '../user';
 
 export const useCurrentTable = (queryKey?: string[]) => {
-  const { user } = useAuth();
+  const { data: user } = useUser();
   const { client } = useClient();
 
   const params = {
@@ -16,14 +15,8 @@ export const useCurrentTable = (queryKey?: string[]) => {
   };
 
   return useQuery<CurrentTimetable, AxiosError>(
-    [...(queryKey ?? []), "timetable", params],
-    async () => {
-      return (await client.get("/timetable/v1.1/now", { params })).data;
-    },
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
+    [...(queryKey ?? []), 'timetable', params],
+    async () => (await client.get('/timetable/now', { params })).data
   );
 
   // return useApi<CurrentTimetable, AxiosError, any, any>(
@@ -58,20 +51,19 @@ export const useTable = (
 ) => {
   const { client } = useClient();
 
-  return useQuery([...(queryKey ?? []), "timetable"], async () => {
-    return (
-      await client.get("/timetable/v1.1", {
-        params: {
-          grade,
-          class: schoolClass,
-          course,
-        },
-      })
-    ).data;
-  }, {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false
-  });
+  return useQuery(
+    [...(queryKey ?? []), 'timetable'],
+    async () =>
+      (
+        await client.get('/timetable', {
+          params: {
+            grade,
+            class: schoolClass,
+            course,
+          },
+        })
+      ).data
+  );
 
   // return useApi<any, AxiosError, any, any>([
   //   "/timetable/v1.1",
@@ -83,4 +75,3 @@ export const useTable = (
   //   ...(queryKey || []),
   // ]);
 };
-

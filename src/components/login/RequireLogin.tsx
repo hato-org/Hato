@@ -1,20 +1,12 @@
-import { Center } from "@chakra-ui/react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../../modules/auth";
-import LoginButton from "./LoginButton";
+import { Navigate, Outlet } from 'react-router-dom';
+import { useUser } from '../../hooks/user';
 
-interface RequireLoginProps {
-	children: JSX.Element
-}
+function RequireLogin() {
+  const user = useUser();
 
-const RequireLogin = ({ children }: RequireLoginProps) => {
+  if (user) return <Outlet />;
 
-	const { user } = useAuth();
-
-	if (user) return children;
-
-	return <Navigate to='/login' replace />
-
+  return <Navigate to="/login" replace />;
 }
 
 export default RequireLogin;

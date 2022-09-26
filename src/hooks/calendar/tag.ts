@@ -1,23 +1,15 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import React, { useCallback, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useAuth } from "../../modules/auth";
-import { useClient } from "../../modules/client";
+import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useClient } from '../../modules/client';
 
+// eslint-disable-next-line import/prefer-default-export
 export const useAllTagList = () => {
   const { client } = useClient();
 
   return useQuery<Tag[], AxiosError>(
-    ["calendar", "tag"],
-    async () => {
-      return (await client.post<Tag[]>("/calendar/tags/search", { q: "" }))
-        .data;
-    },
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
+    ['calendar', 'tag'],
+    async () =>
+      (await client.post<Tag[]>('/calendar/tags/search', { q: '' })).data
   );
 };
 

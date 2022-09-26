@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import ReactGA from "react-ga4";
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 
 // NOTE: Original code written by sphinxrave in HolodexNet/Musicdex
 
@@ -13,8 +13,8 @@ const usePageTracking = () => {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!window.location.href.includes("localhost")) {
-      ReactGA.initialize("G-P2RJN1ZFRF");
+    if (!window.location.href.includes('localhost')) {
+      ReactGA.initialize('G-P2RJN1ZFRF');
     }
     setInitialized(true);
   }, []);
@@ -23,7 +23,7 @@ const usePageTracking = () => {
     if (initialized) {
       // https://github.com/PriceRunner/react-ga4
       ReactGA.send({
-        hitType: "pageview",
+        hitType: 'pageview',
         page: location.pathname + location.search,
       });
     }

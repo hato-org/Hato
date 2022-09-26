@@ -1,8 +1,9 @@
-import { Suspense, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "./components/common/ErrorFallback";
-import usePageTracking from "./hooks/common/ga4";
-import { Router } from "./routes";
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from './components/common/ErrorFallback';
+import { GlobalLoading } from './components/common/Loading';
+import usePageTracking from './hooks/common/ga4';
+import Router from './routes';
 
 function App() {
   usePageTracking();
@@ -14,7 +15,7 @@ function App() {
         window.location.reload();
       }}
     >
-      <Suspense fallback="loading...">
+      <Suspense fallback={<GlobalLoading />}>
         <Router />
       </Suspense>
     </ErrorBoundary>

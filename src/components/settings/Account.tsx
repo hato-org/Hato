@@ -2,18 +2,13 @@ import {
   Button,
   VStack,
   Text,
-  Select,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   HStack,
   Icon,
-  useBoolean,
   Input,
-  InputGroup,
-  InputRightElement,
-  IconButton,
   Modal,
   useDisclosure,
   ModalOverlay,
@@ -21,173 +16,70 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-} from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-import { TbCheck, TbChevronDown, TbEdit } from "react-icons/tb";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../modules/auth";
-import { MotionCenter } from "../motion";
-import SettingButton, { SettingButtonProps } from "./Button";
+  Heading,
+  Skeleton,
+  Avatar,
+  StackDivider,
+  Spacer,
+} from '@chakra-ui/react';
+import { useMemo, useState } from 'react';
+import { TbAlertCircle, TbChevronDown, TbEdit } from 'react-icons/tb';
+import html2canvas from 'html2canvas';
+import { useAuth } from '../../modules/auth';
+import SettingButton, { SettingButtonProps } from './Button';
+import { MotionVStack } from '../motion';
+import { useClassList, useCourseList, useGradeList } from '../../hooks/info';
+import { useUser } from '../../hooks/user';
 
-interface GradeProps {
-  label: string;
-  type: Type;
-  grade: number;
-}
+function Account() {
+  const {
+    update: { mutate: update, isLoading },
+  } = useAuth();
+  const { data: user } = useUser();
 
-interface ClassProps {
-  label: string;
-  class: "A" | "B" | number;
-}
-
-interface CourseProps {
-  label: string;
-  course: Course;
-}
-
-const Account = () => {
-  const { user, update } = useAuth();
-
-  const grades = useMemo<GradeProps[]>(
-    () => [
-      {
-        label: "中学1年",
-        type: "jhs",
-        grade: 1,
-      },
-      {
-        label: "中学2年",
-        type: "jhs",
-        grade: 2,
-      },
-      {
-        label: "中学3年",
-        type: "jhs",
-        grade: 3,
-      },
-      {
-        label: "高校1年",
-        type: "hs",
-        grade: 1,
-      },
-      {
-        label: "高校2年",
-        type: "hs",
-        grade: 2,
-      },
-      {
-        label: "高校3年",
-        type: "hs",
-        grade: 3,
-      },
-    ],
-    []
-  );
-
-  const classes = useMemo<ClassProps[]>(() => {
-    if (user?.type === "jhs") {
-      return [
-        {
-          label: "A組",
-          class: "A",
-        },
-        {
-          label: "B組",
-          class: "B",
-        },
-      ];
-    } else if (user?.type === "hs") {
-      return [
-        {
-          label: "1組",
-          class: 1,
-        },
-        {
-          label: "2組",
-          class: 2,
-        },
-        {
-          label: "3組",
-          class: 3,
-        },
-        {
-          label: "4組",
-          class: 4,
-        },
-        {
-          label: "5組",
-          class: 5,
-        },
-        {
-          label: "6組",
-          class: 6,
-        },
-        {
-          label: "7組",
-          class: 7,
-        },
-      ];
-    } else {
-      return [];
-    }
-  }, [user]);
-
-  const courses = useMemo<CourseProps[]>(() => {
-    if (user?.type === "hs" && user.grade > 1) {
-      return [
-        {
-          label: "文系A",
-          course: "libA",
-        },
-        {
-          label: "文系B",
-          course: "libB",
-        },
-        {
-          label: "文系C",
-          course: "libC",
-        },
-        {
-          label: "文系Z",
-          course: "libZ",
-        },
-        {
-          label: "理系D",
-          course: "sciD",
-        },
-        {
-          label: "理系E",
-          course: "sciE",
-        },
-        {
-          label: "理系X",
-          course: "sciX",
-        },
-        {
-          label: "理系Y",
-          course: "sciY",
-        },
-      ];
-    } else {
-      return [];
-    }
-  }, [user]);
+  const {
+    data: gradeList,
+    error: gradeError,
+    isLoading: gradeIsLoading,
+  } = useGradeList();
+  const {
+    data: classList,
+    error: classError,
+    isLoading: classIsLoading,
+  } = useClassList({ type: user?.type, grade: user?.grade });
+  const {
+    data: courseList,
+    error: courseError,
+    isLoading: courseIsLoading,
+  } = useCourseList({ type: user?.type, grade: user?.grade });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [name, setName] = useState("");
-  const isFulfilled = name.length <= 20;
-  console.log(name);
+  const [username, setUsername] = useState(user.name);
+  const isFulfilled = username.length <= 20;
+
+  const downloadProfile = async () => {
+    const target = document.getElementById('profile-image');
+    const canvas = await html2canvas(target!);
+    canvas.toBlob((blob) => {
+      const blobURL = URL.createObjectURL(blob!);
+      window.open(blobURL);
+    }, 'img/png');
+    // const image = new Image();
+    // image.src = canvas.toDataURL();
+    // const imageWindow = window.open(canvas.toDataURL('image/png'), '_blank');
+    // imageWindow?.document.write(image.outerHTML)
+  };
 
   const list = useMemo<SettingButtonProps[]>(
     () => [
       {
-        label: "アカウント名",
-        description: "アカウント名を変更できます。",
+        label: 'アカウント名',
+        description: 'アカウント名を変更できます。',
         children: (
           <>
-            <HStack onClick={onOpen} py={2}>
-              <Text color="gray.500" fontWeight="bold" noOfLines={1}>
-                {user?.name}
+            <HStack rounded="md" onClick={onOpen} py={2}>
+              <Text textStyle="title" noOfLines={1}>
+                {username}
               </Text>
               <Icon as={TbEdit} />
             </HStack>
@@ -198,8 +90,8 @@ const Account = () => {
                 <ModalBody>
                   <VStack>
                     <Input
-                      rounded="xl"
-                      onChange={(e) => setName(e.target.value)}
+                      rounded="lg"
+                      onChange={(e) => setUsername(e.target.value)}
                       isInvalid={!isFulfilled}
                       placeholder="新しいアカウント名（20文字以内）"
                     />
@@ -211,7 +103,7 @@ const Account = () => {
                   </VStack>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="ghost" onClick={onClose} mr={2} rounded="xl">
+                  <Button variant="ghost" onClick={onClose} mr={2} rounded="lg">
                     キャンセル
                   </Button>
                   <Button
@@ -220,11 +112,12 @@ const Account = () => {
                       isFulfilled
                         ? () => {
                             onClose();
-                            update({ name });
+                            update({ name: username });
                           }
                         : () => {}
                     }
-                    rounded="xl"
+                    rounded="lg"
+                    isLoading={isLoading}
                   >
                     変更する
                   </Button>
@@ -235,8 +128,8 @@ const Account = () => {
         ),
       },
       {
-        label: "学年",
-        description: "学年を変更できます。",
+        label: '学年',
+        description: '学年を変更できます。',
         children: (
           // <Select variant="unstyled" textStyle="title" placeholder="選択してください">
           //   {grades.map(({ type, grade, label }) => (
@@ -244,26 +137,36 @@ const Account = () => {
           //   ))}
           // </Select>
           <Menu>
-            <MenuButton>
-              <HStack rounded="xl" py={2} pl={4}>
-                <Text textStyle="title">
-                  {grades.find(
-                    ({ type, grade }) =>
-                      type === user?.type && grade === user?.grade
-                  )?.label ?? "未設定"}
-                </Text>
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList>
-              {grades.map(({ label, type, grade }) => (
+            <Skeleton isLoaded={!gradeIsLoading} rounded="lg">
+              {gradeError ? (
+                <HStack py={2}>
+                  <Icon as={TbAlertCircle} color="red.500" />
+                  <Text textStyle="title">エラー</Text>
+                </HStack>
+              ) : (
+                <MenuButton rounded="lg">
+                  <HStack py={2} pl={4}>
+                    <Text textStyle="title">
+                      {gradeList?.find(
+                        ({ type, grade_num }) =>
+                          type === user?.type && grade_num === user?.grade
+                      )?.name ?? '未設定'}
+                    </Text>
+                    <Icon as={TbChevronDown} />
+                  </HStack>
+                </MenuButton>
+              )}
+            </Skeleton>
+            <MenuList shadow="lg" rounded="xl" py={2}>
+              {gradeList?.map(({ name, type, grade_num }) => (
                 <MenuItem
                   onClick={async () => {
-                    await update({ type, grade });
+                    await update({ type, grade: grade_num });
                   }}
-                  key={label}
+                  key={name}
+                  fontWeight="bold"
                 >
-                  {label}
+                  {name}
                 </MenuItem>
               ))}
             </MenuList>
@@ -271,8 +174,8 @@ const Account = () => {
         ),
       },
       {
-        label: "クラス",
-        description: "クラスを変更できます。",
+        label: 'クラス',
+        description: 'クラスを変更できます。',
         children: (
           // <Select variant="unstyled" textStyle="title">
           //   {classes.map(({ class: schoolClass, label }) => (
@@ -280,25 +183,35 @@ const Account = () => {
           //   ))}
           // </Select>
           <Menu>
-            <MenuButton>
-              <HStack rounded="xl" py={2} pl={4}>
-                <Text textStyle="title">
-                  {classes.find(
-                    ({ class: schoolClass }) => schoolClass === user?.class
-                  )?.label ?? "未設定"}
-                </Text>
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList>
-              {classes.map((schoolClass) => (
+            <Skeleton isLoaded={!classIsLoading} rounded="lg">
+              {classError ? (
+                <HStack py={2}>
+                  <Icon as={TbAlertCircle} color="red.500" />
+                  <Text textStyle="title">エラー</Text>
+                </HStack>
+              ) : (
+                <MenuButton rounded="lg">
+                  <HStack rounded="xl" py={2} pl={4}>
+                    <Text textStyle="title">
+                      {classList?.find(
+                        ({ class_num }) => class_num === user?.class
+                      )?.name ?? '未設定'}
+                    </Text>
+                    <Icon as={TbChevronDown} />
+                  </HStack>
+                </MenuButton>
+              )}
+            </Skeleton>
+            <MenuList shadow="lg" rounded="xl">
+              {classList?.map(({ class_num, name }) => (
                 <MenuItem
-                  onClick={async () => {
-                    await update({ class: schoolClass.class });
+                  onClick={() => {
+                    update({ class: class_num });
                   }}
-                  key={schoolClass.label}
+                  key={name}
+                  fontWeight="bold"
                 >
-                  {schoolClass.label}
+                  {name}
                 </MenuItem>
               ))}
             </MenuList>
@@ -306,28 +219,38 @@ const Account = () => {
         ),
       },
       {
-        label: "コース",
-        description: "コースを変更できます。",
+        label: 'コース',
+        description: 'コースを変更できます。',
         children: (
           <Menu>
-            <MenuButton>
-              <HStack rounded="xl" py={2} pl={4}>
-                <Text textStyle="title">
-                  {courses.find(({ course }) => course === user?.course)
-                    ?.label ?? "未設定"}
-                </Text>
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList>
-              {courses.map(({ label, course }) => (
+            <Skeleton isLoaded={!courseIsLoading} rounded="lg">
+              {courseError ? (
+                <HStack py={2}>
+                  <Icon as={TbAlertCircle} color="red.500" />
+                  <Text textStyle="title">エラー</Text>
+                </HStack>
+              ) : (
+                <MenuButton rounded="lg">
+                  <HStack rounded="xl" py={2} pl={4}>
+                    <Text textStyle="title">
+                      {courseList?.find(({ code }) => code === user?.course)
+                        ?.name ?? '未設定'}
+                    </Text>
+                    <Icon as={TbChevronDown} />
+                  </HStack>
+                </MenuButton>
+              )}
+            </Skeleton>
+            <MenuList shadow="lg" rounded="xl">
+              {courseList?.map(({ name, code }) => (
                 <MenuItem
                   onClick={async () => {
-                    await update({ course });
+                    await update({ course: code });
                   }}
-                  key={label}
+                  key={name}
+                  fontWeight="bold"
                 >
-                  {label}
+                  {name}
                 </MenuItem>
               ))}
             </MenuList>
@@ -335,16 +258,103 @@ const Account = () => {
         ),
       },
     ],
-    [user, grades, classes, courses, isOpen, onOpen, onClose, name]
+    [
+      user,
+      isLoading,
+      gradeList,
+      gradeIsLoading,
+      gradeError,
+      classList,
+      classIsLoading,
+      classError,
+      courseList,
+      courseIsLoading,
+      courseError,
+      isOpen,
+      onOpen,
+      onClose,
+      username,
+      update,
+      isFulfilled,
+    ]
   );
 
   return (
-    <VStack w="100%" minH="100vh" spacing={4}>
-      {list.map((elem) => (
-        <SettingButton {...elem} key={elem.label} />
-      ))}
-    </VStack>
+    <MotionVStack
+      w="100%"
+      spacing={4}
+      align="flex-start"
+      initial={{ x: '100vw', opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: '-100vw', opacity: 0 }}
+      transition={{
+        type: 'spring',
+        bounce: 0,
+        duration: 0.4,
+      }}
+      layout
+    >
+      {/* <VStack w='100%'>
+      <Avatar src={user?.avatar} />
+      <Text textStyle='title' fontSize='2xl'>{user?.name}</Text>
+      <Text textStyle='description'>{user?.email}</Text>
+      <Text fontSize='lg' fontWeight='bold' >{user?.contributionCount} pt</Text>
+      </VStack> */}
+
+      <Heading size="lg">プロフィール</Heading>
+
+      <HStack
+        w="100%"
+        justify="center"
+        spacing={4}
+        divider={<StackDivider borderColor="blue.300" borderWidth={1} />}
+        p={4}
+        rounded="xl"
+        id="profile-image"
+        onClick={async () => {
+          await downloadProfile();
+        }}
+        // border="1px solid"
+        // borderColor="gray.100"
+        // shadow="xl"
+      >
+        <Avatar src={user?.avatar} size="lg" />
+        <VStack align="flex-start" spacing={0}>
+          <HStack w="100%">
+            <Text textStyle="title" fontSize="xl">
+              {user?.name}
+            </Text>
+            <Spacer />
+            <Text fontSize="sm" color="gray.500" fontWeight="bold">
+              {user?.contributionCount} pt
+            </Text>
+          </HStack>
+          <Text color="gray.400" fontSize="xs">
+            {user?.email}
+          </Text>
+          <HStack w="100%" align="flex-end">
+            <Text fontWeight="bold">
+              {user?.grade}-{user?.class}{' '}
+            </Text>
+            <Text fontWeight="bold">
+              {courseList?.find((course) => user?.course === course.code)?.name}
+            </Text>
+            <Spacer />
+            {/* <Text fontSize="xs" color="gray.500" fontWeight="bold">
+              {user?.contributionCount} pt
+            </Text> */}
+          </HStack>
+        </VStack>
+      </HStack>
+
+      <Heading size="lg">アカウント</Heading>
+      <VStack w="100%" spacing={1}>
+        {list.map((elem) => (
+          <SettingButton {...elem} key={elem.label} />
+        ))}
+      </VStack>
+    </MotionVStack>
   );
-};
+}
 
 export default Account;

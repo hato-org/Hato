@@ -4,7 +4,7 @@ interface Event {
   description?: string;
   startAt: Date;
   endAt: Date;
-	isAllDay: boolean;
+  isAllDay: boolean;
   tags: Tag[];
   location?: string;
   url?: string;

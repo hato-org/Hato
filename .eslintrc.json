@@ -1,25 +1,45 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "plugin:react/recommended",
-        "standard",
-        "prettier"
+    "ecmaVersion": "latest",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint", "react-hooks"],
+  "rules": {
+    "react/require-default-props": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": [
+      "error",
+      {
+        "custom": "ignore"
+      }
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "@typescript-eslint"
+    "react/no-unstable-nested-components": [
+      "error",
+      {
+        "allowAsProps": true
+      }
     ],
-    "rules": {
-    }
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-underscore-dangle": "off",
+    "no-console": "off"
+  }
 }
