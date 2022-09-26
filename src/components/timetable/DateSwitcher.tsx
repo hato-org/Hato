@@ -1,20 +1,26 @@
 import { useRef } from 'react';
-import { HStack, IconButton, Input } from '@chakra-ui/react';
+import { HStack, IconButton, Input, StackProps } from '@chakra-ui/react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
 import { format } from 'date-fns/esm';
 
-interface DateSwitcherProps {
+interface DateSwitcherProps extends StackProps {
   date: Date;
   onPrev: () => void;
   onNext: () => void;
   onSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function DateSwitcher({ date, onPrev, onNext, onSelect }: DateSwitcherProps) {
+function DateSwitcher({
+  date,
+  onPrev,
+  onNext,
+  onSelect,
+  ...rest
+}: DateSwitcherProps) {
   const inputElement = useRef<HTMLInputElement>(null);
 
   return (
-    <HStack py={2} w="100%" rounded="xl" justify="space-between">
+    <HStack py={2} w="100%" rounded="xl" justify="space-between" {...rest}>
       <IconButton
         aria-label="previous day"
         icon={<TbChevronLeft />}

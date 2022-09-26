@@ -30,7 +30,7 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
       keepPreviousData: true,
       retry: 2,
-      cacheTime: 1000 * 60 * 30, // Cache time (30 mins)
+      cacheTime: Infinity, // Cache time (Infinity)
       staleTime: 1000 * 60 * 5, // Stale time (5 mins)
     },
   },

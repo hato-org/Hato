@@ -1,4 +1,12 @@
-import { Center, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import {
+  Center,
+  Heading,
+  HStack,
+  Spacer,
+  StackDivider,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useQueries } from '@tanstack/react-query';
 import { addDays, format, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
@@ -9,6 +17,7 @@ import BottomNavbar from '../components/nav/BottomNavbar';
 import Header from '../components/nav/Header';
 import DateSwitcher from '../components/timetable/DateSwitcher';
 import GradeClassPicker from '../components/timetable/GradeClassPicker';
+import Notes from '../components/timetable/Notes';
 import TimetableTable from '../components/timetable/Table';
 import { useCourseList } from '../hooks/info';
 import { useUser } from '../hooks/user';
@@ -23,6 +32,11 @@ function Timetable() {
   const [type, setType] = useState(user.type);
   const [grade, setGrade] = useState(user.grade);
   const [schoolClass, setClass] = useState(user.class);
+  const dateParams = {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  };
 
   const { data: courseList } = useCourseList({ type, grade });
 
@@ -30,11 +44,9 @@ function Timetable() {
     queries:
       courseList?.map(({ code }) => {
         const params = {
+          ...dateParams,
           type,
           grade,
-          year: date.getFullYear(),
-          month: date.getMonth() + 1,
-          day: date.getDate(),
           class: schoolClass,
           course: code,
         };
@@ -82,61 +94,79 @@ function Timetable() {
           </Heading>
         </HStack>
       </Header>
-      <Center w="100%" px={4} mb={16}>
-        <VStack w="100%" align="flex-start" spacing={8}>
-          <VStack w="100%" px={4} align="flex-start">
-            <DateSwitcher
-              onPrev={() => {
-                const prevDate = subDays(date, 1);
-                searchParams.set('y', String(prevDate.getFullYear()));
-                searchParams.set('m', String(prevDate.getMonth() + 1));
-                searchParams.set('d', String(prevDate.getDate()));
-                setSearchParams(searchParams, { replace: true });
-                setDate(prevDate);
-              }}
-              onNext={() => {
-                const nextDate = addDays(date, 1);
-                searchParams.set('y', String(nextDate.getFullYear()));
-                searchParams.set('m', String(nextDate.getMonth() + 1));
-                searchParams.set('d', String(nextDate.getDate()));
-                setSearchParams(searchParams, { replace: true });
-                setDate(nextDate);
-              }}
-              onSelect={(e) => {
-                const newDate = new Date(e.target.value);
-                searchParams.set('y', String(newDate.getFullYear()));
-                searchParams.set('m', String(newDate.getMonth() + 1));
-                searchParams.set('d', String(newDate.getDate()));
-                setSearchParams(searchParams, { replace: true });
-                setDate(newDate);
-              }}
-              date={date}
-            />
-            <GradeClassPicker
-              onGradeSelect={(gradeInfo) => {
-                setType(gradeInfo.type);
-                setGrade(gradeInfo.grade_num);
-              }}
-              onClassSelect={(classInfo) => {
-                setClass(classInfo.class_num);
-              }}
-            />
-            <Text pl={2} fontSize="lg" textStyle="title">
-              {timetableList?.[0]?.data?.week}週{' '}
-              {format(date, 'eeee', { locale: ja })}
-            </Text>
-            <TimetableTable
-              timetable={timetableList
-                .map((timetable) => timetable.data)
-                .filter(
-                  (timetable): timetable is CurrentTimetable => !!timetable
-                )}
-            />
-          </VStack>
-          <VStack px={4} w="100%">
+      <Center w="100%" mb={16}>
+        <VStack w="100%" px={4}>
+          <DateSwitcher
+            onPrev={() => {
+              const prevDate = subDays(date, 1);
+              searchParams.set('y', String(prevDate.getFullYear()));
+              searchParams.set('m', String(prevDate.getMonth() + 1));
+              searchParams.set('d', String(prevDate.getDate()));
+              setSearchParams(searchParams, { replace: true });
+              setDate(prevDate);
+            }}
+            onNext={() => {
+              const nextDate = addDays(date, 1);
+              searchParams.set('y', String(nextDate.getFullYear()));
+              searchParams.set('m', String(nextDate.getMonth() + 1));
+              searchParams.set('d', String(nextDate.getDate()));
+              setSearchParams(searchParams, { replace: true });
+              setDate(nextDate);
+            }}
+            onSelect={(e) => {
+              const newDate = new Date(e.target.value);
+              searchParams.set('y', String(newDate.getFullYear()));
+              searchParams.set('m', String(newDate.getMonth() + 1));
+              searchParams.set('d', String(newDate.getDate()));
+              setSearchParams(searchParams, { replace: true });
+              setDate(newDate);
+            }}
+            date={date}
+            px={2}
+          />
+          <GradeClassPicker
+            onGradeSelect={(gradeInfo) => {
+              setType(gradeInfo.type);
+              setGrade(gradeInfo.grade_num);
+            }}
+            onClassSelect={(classInfo) => {
+              setClass(classInfo.class_num);
+            }}
+            px={2}
+          />
+          <VStack
+            rounded="xl"
+            shadow="xl"
+            border="1px solid"
+            borderColor="gray.100"
+            w="100%"
+            align="flex-start"
+            p={6}
+            spacing={6}
+          >
+            <VStack w="100%" overflowX="auto" align="flex-start" spacing={4}>
+              <HStack w="100%">
+                <Heading size="md">日課</Heading>
+                <Spacer />
+                <Text textStyle="description" fontSize="lg" fontWeight="bold">
+                  {timetableList?.[0]?.data?.week}週{' '}
+                  {format(date, 'eeee', { locale: ja })}
+                </Text>
+              </HStack>
+              <StackDivider borderWidth="1px" borderColor="gray.100" />
+              <TimetableTable
+                timetable={timetableList
+                  .map((timetable) => timetable.data)
+                  .filter(
+                    (timetable): timetable is CurrentTimetable => !!timetable
+                  )}
+              />
+            </VStack>
+            {/* <StackDivider borderWidth="1px" /> */}
             <HStack w="100%">
               <Heading size="md">特記事項・備考</Heading>
             </HStack>
+            <Notes {...dateParams} />
           </VStack>
         </VStack>
       </Center>
