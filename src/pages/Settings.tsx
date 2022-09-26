@@ -31,7 +31,7 @@ function Settings() {
       </Header>
       <Center p={8} flexDir="column" overflow="hidden">
         <AnimatePresence
-          exitBeforeEnter
+          mode="wait"
           // initial
         >
           {/* <MotionCenter
