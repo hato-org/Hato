@@ -34,6 +34,7 @@ import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRef, useState, useMemo } from 'react';
 import { Select } from 'chakra-react-select';
+import { eachMonthOfInterval } from 'date-fns/esm';
 import BottomNavbar from '../components/nav/BottomNavbar';
 import Header from '../components/nav/Header';
 import { useClient } from '../modules/client';
@@ -147,6 +148,24 @@ function EventDetail() {
         status: 'success',
       });
       queryClient.removeQueries(['calendar', 'event', data?._id]);
+
+      const monthRange = eachMonthOfInterval({
+        start: new Date(data?.startAt ?? Date.now()),
+        end: new Date(data?.endAt ?? Date.now()),
+      });
+
+      monthRange.forEach((month) => {
+        queryClient.setQueryData<Event[]>(
+          [
+            'calendar',
+            'events',
+            { month: month.getMonth() + 1, year: month.getFullYear() },
+          ],
+          (oldEvents) =>
+            oldEvents?.filter((oldEvent) => oldEvent._id !== data?._id)
+        );
+      });
+
       deleteOnClose();
       navigate(-1);
     },

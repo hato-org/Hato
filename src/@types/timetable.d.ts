@@ -12,5 +12,8 @@ interface CurrentTimetable {
 
 interface Note {
   date: Date;
-  message: string;
+  lunch?: boolean;
+  cleaning?: boolean;
+  target?: ClassInfo[];
+  message?: string;
 }

@@ -2,19 +2,23 @@ import {
   Center,
   Heading,
   HStack,
+  IconButton,
   Spacer,
   StackDivider,
   Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { useQueries } from '@tanstack/react-query';
-import { addDays, format, subDays } from 'date-fns/esm';
+import { addDays, format, startOfDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { TbPlus } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
 import BottomNavbar from '../components/nav/BottomNavbar';
 import Header from '../components/nav/Header';
+import AddNoteDrawer from '../components/timetable/AddNoteDrawer';
 import DateSwitcher from '../components/timetable/DateSwitcher';
 import GradeClassPicker from '../components/timetable/GradeClassPicker';
 import Notes from '../components/timetable/Notes';
@@ -27,6 +31,7 @@ function Timetable() {
   const { data: user } = useUser();
   const { client } = useClient();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [date, setDate] = useState(new Date());
   const [type, setType] = useState(user.type);
@@ -165,6 +170,27 @@ function Timetable() {
             {/* <StackDivider borderWidth="1px" /> */}
             <HStack w="100%">
               <Heading size="md">特記事項・備考</Heading>
+              <Spacer />
+              <AddNoteDrawer
+                date={startOfDay(
+                  new Date(
+                    dateParams.year,
+                    dateParams.month - 1,
+                    dateParams.day
+                  )
+                )}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
+              <IconButton
+                colorScheme="blue"
+                color="blue.400"
+                aria-label="Add note"
+                icon={<TbPlus />}
+                variant="ghost"
+                isRound
+                onClick={onOpen}
+              />
             </HStack>
             <Notes {...dateParams} />
           </VStack>

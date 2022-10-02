@@ -1,4 +1,10 @@
-import { VStack, Text, StackProps } from '@chakra-ui/react';
+import {
+  VStack,
+  Text,
+  StackProps,
+  UnorderedList,
+  ListItem,
+} from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useClient } from '../../modules/client';
@@ -17,7 +23,7 @@ function Notes({ year, month, day, ...rest }: NotesProps) {
   const { data, isLoading, error } = useQuery<Note[], AxiosError>(
     ['timetable', 'note', { year, month, day }],
     async () =>
-      (await client.get('/timtable/note', { params: { year, month, day } }))
+      (await client.get('/timetable/note', { params: { year, month, day } }))
         .data
   );
 
@@ -29,7 +35,13 @@ function Notes({ year, month, day, ...rest }: NotesProps) {
     <VStack w="100%" {...rest}>
       {/* eslint-disable no-nested-ternary */}
       {data?.length ? (
-        data.map((note) => <Text>{note.message}</Text>)
+        <UnorderedList w="100%" px={4}>
+          {data.map((note) => (
+            <ListItem whiteSpace="pre-wrap">
+              <Text textStyle="title">{note.message}</Text>
+            </ListItem>
+          ))}
+        </UnorderedList>
       ) : (
         <Text textStyle="description" fontWeight="bold">
           特にありません
