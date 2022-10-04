@@ -2,7 +2,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  VStack,
   Text,
   Menu,
   MenuButton,
@@ -17,13 +16,6 @@ import {
   AlertDialogFooter,
   Button,
   useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Textarea,
-  ModalFooter,
   Center,
   Spacer,
 } from '@chakra-ui/react';
@@ -32,8 +24,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useRef, useState, useMemo } from 'react';
-import { Select } from 'chakra-react-select';
+import { useRef } from 'react';
 import { eachMonthOfInterval } from 'date-fns/esm';
 import BottomNavbar from '../components/nav/BottomNavbar';
 import Header from '../components/nav/Header';
@@ -42,6 +33,7 @@ import Error from '../components/cards/Error';
 import Event from '../components/calendar/Event';
 import BackButton from '../components/layout/BackButton';
 import { useUser } from '../hooks/user';
+import ReportModal from '../components/common/ReportModal';
 
 function EventDetail() {
   const { id } = useParams();
@@ -66,72 +58,6 @@ function EventDetail() {
   const { data: user } = useUser();
   const { client } = useClient();
   const queryClient = useQueryClient();
-
-  const [reportType, setReportType] = useState('');
-  const [reportComment, setReportComment] = useState('');
-
-  const reportOptions = useMemo(
-    () => [
-      {
-        label: '不正確な情報が含まれている',
-        value: 'inaccurate information',
-      },
-      {
-        label: '不適切なコンテンツである',
-        value: 'Inappropriate content',
-      },
-    ],
-    []
-  );
-
-  const { mutate: reportSubmit, isLoading: reportLoading } = useMutation(
-    () =>
-      client.post('/report', {
-        content: null,
-        embeds: [
-          {
-            title: 'Report',
-            url: `https://hato.cf/calendar/events/${id}`,
-            color: 5814783,
-            fields: [
-              {
-                name: 'Report reason',
-                value: reportType,
-              },
-              {
-                name: 'Comment',
-                value: reportComment || 'none',
-              },
-            ],
-            author: {
-              name: user?.name,
-              icon_url: user?.avatar,
-            },
-            footer: {
-              text: user?.email,
-              icon_url: user?.avatar,
-            },
-            timestamp: new Date().toISOString(),
-          },
-        ],
-        attachments: [],
-      }),
-    {
-      onSuccess: () => {
-        reportOnClose();
-        toast({
-          title: '報告しました。',
-          status: 'success',
-        });
-      },
-      onError: () => {
-        toast({
-          title: 'エラーが発生しました。',
-          status: 'error',
-        });
-      },
-    }
-  );
 
   const { data, error } = useQuery<Event, AxiosError>(
     ['calendar', 'event', id],
@@ -207,6 +133,18 @@ function EventDetail() {
             <MenuList shadow="lg">
               {data?.owner === user.email || user.role === 'admin' ? (
                 <>
+                  {user.role === 'admin' && (
+                    <>
+                      <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
+                        報告
+                      </MenuItem>
+                      <ReportModal
+                        isOpen={reportOpen}
+                        onClose={reportOnClose}
+                        event={data}
+                      />
+                    </>
+                  )}
                   <MenuItem icon={<TbEdit />} isDisabled>
                     編集
                   </MenuItem>
@@ -259,54 +197,11 @@ function EventDetail() {
                   <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
                     報告
                   </MenuItem>
-                  <Modal isOpen={reportOpen} onClose={reportOnClose} isCentered>
-                    <ModalOverlay />
-                    <ModalContent rounded="xl">
-                      <ModalHeader>イベントの報告</ModalHeader>
-                      <ModalBody>
-                        <VStack align="flex-start">
-                          <Text textStyle="title">タイプを選択</Text>
-                          <Select
-                            options={reportOptions}
-                            chakraStyles={{
-                              container: (provided) => ({
-                                ...provided,
-                                w: '100%',
-                              }),
-                            }}
-                            onChange={(value) =>
-                              setReportType(value?.label ?? '')
-                            }
-                          />
-                          <Text textStyle="title">コメント（任意）</Text>
-                          <Textarea
-                            rounded="lg"
-                            onChange={(e) => setReportComment(e.target.value)}
-                          />
-                        </VStack>
-                      </ModalBody>
-                      <ModalFooter>
-                        <HStack>
-                          <Button
-                            variant="ghost"
-                            rounded="lg"
-                            onClick={reportOnClose}
-                          >
-                            キャンセル
-                          </Button>
-                          <Button
-                            colorScheme="blue"
-                            rounded="lg"
-                            onClick={() => reportSubmit()}
-                            isLoading={reportLoading}
-                            isDisabled={!reportType}
-                          >
-                            送信
-                          </Button>
-                        </HStack>
-                      </ModalFooter>
-                    </ModalContent>
-                  </Modal>
+                  <ReportModal
+                    isOpen={reportOpen}
+                    onClose={reportOnClose}
+                    event={data}
+                  />
                 </>
               )}
             </MenuList>

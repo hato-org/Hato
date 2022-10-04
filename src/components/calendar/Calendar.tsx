@@ -1,6 +1,4 @@
 import {
-  Grid,
-  GridItem,
   VStack,
   HStack,
   Text,
@@ -115,97 +113,130 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
       />
       <MotionCenter
         w="100%"
+        h="80vh"
         p={1}
         // drag="x"
         // dragSnapToOrigin
         // onDragEnd={(event: any, info: any) => console.log(event, info)}
         rounded="xl"
         shadow="xl"
-        border="1px solid var(--chakra-colors-gray-100)"
+        border="1px solid"
+        borderColor="gray.100"
       >
-        <Grid w="100%">
-          <VStack w="100%" spacing={1} divider={<Divider />}>
-            <HStack w="100%" spacing={0}>
-              {dayOfWeek.map((day) => (
-                <Text
-                  key={day}
-                  w="100%"
-                  textAlign="center"
-                  textStyle="description"
-                  fontSize="xs"
+        <VStack w="100%" h="100%" spacing={1} divider={<Divider />}>
+          <HStack w="100%" spacing={0}>
+            {dayOfWeek.map((day) => (
+              <Text
+                key={day}
+                w="100%"
+                textAlign="center"
+                textStyle="description"
+                fontSize="xs"
+              >
+                {day}
+              </Text>
+            ))}
+          </HStack>
+          {days.map((week) => (
+            <HStack key={week.toString()} w="100%" h="100%" spacing={0}>
+              {week.map((day) => (
+                <VStack
+                  flex={1}
+                  minW={0}
+                  h="100%"
+                  bg={isToday(day) ? 'gray.50' : ''}
                 >
-                  {day}
-                </Text>
+                  <Text
+                    color={
+                      /* eslint-disable no-nested-ternary */
+                      isSameMonth(date, day)
+                        ? isSaturday(day)
+                          ? 'blue.400'
+                          : isSunday(day)
+                          ? 'red.400'
+                          : 'gray.600'
+                        : 'gray.400'
+                      /* eslint-enable no-nested-ternary */
+                    }
+                    textStyle="title"
+                    fontSize="xs"
+                  >
+                    {day.getDate()}
+                  </Text>
+                  <VStack spacing="2px" w="100%" px="1px" overflowY="auto">
+                    {events
+                      ?.filter(
+                        (event) =>
+                          isSameDay(new Date(event.startAt), day) ||
+                          isSameDay(new Date(event.endAt), day) ||
+                          (new Date(event.startAt) < day &&
+                            day < new Date(event.endAt))
+                      )
+                      .sort((prev, next) => {
+                        if (!prev.isAllDay && next.isAllDay) {
+                          return 1;
+                        }
+                        if (prev.isAllDay && !next.isAllDay) {
+                          return -1;
+                        }
+                        return 0;
+                      })
+                      .sort((prev, next) => {
+                        if (!prev.external && next.external) {
+                          return 1;
+                        }
+                        if (prev.external && !next.external) {
+                          return -1;
+                        }
+                        return 0;
+                      })
+                      .map((event) => (
+                        <Box
+                          key={event._id}
+                          w="100%"
+                          rounded="sm"
+                          bg={
+                            /* eslint-disable no-nested-ternary */
+                            event.external
+                              ? event.isAllDay
+                                ? 'green.400'
+                                : 'green.50'
+                              : event.isAllDay
+                              ? 'blue.400'
+                              : 'blue.50'
+                            /* eslint-enable no-nested-ternary */
+                          }
+                          color={
+                            /* eslint-disable no-nested-ternary */
+                            event.external
+                              ? event.isAllDay
+                                ? 'white'
+                                : 'green.400'
+                              : event.isAllDay
+                              ? 'white'
+                              : 'blue.400'
+
+                            /* eslint-enable no-nested-ternary */
+                          }
+                          as={RouterLink}
+                          to={`/events/${event._id}`}
+                        >
+                          <Text
+                            noOfLines={1}
+                            fontSize="xx-small"
+                            fontWeight="bold"
+                            textAlign="center"
+                          >
+                            {event.title}
+                          </Text>
+                        </Box>
+                      ))}
+                  </VStack>
+                </VStack>
               ))}
             </HStack>
-            {days.map((week) => (
-              <HStack key={week.toString()} w="100%" spacing={0}>
-                {week.map((day) => (
-                  <GridItem w="100%" key={day.toString()}>
-                    <VStack w="100%" h={24} bg={isToday(day) ? 'gray.50' : ''}>
-                      <Text
-                        color={
-                          /* eslint-disable no-nested-ternary */
-                          isSameMonth(date, day)
-                            ? isSaturday(day)
-                              ? 'blue.400'
-                              : isSunday(day)
-                              ? 'red.400'
-                              : 'gray.600'
-                            : 'gray.400'
-                          /* eslint-enable no-nested-ternary */
-                        }
-                        textStyle="title"
-                        fontSize="xs"
-                      >
-                        {day.getDate()}
-                      </Text>
-                      <VStack spacing="2px" w="100%" px="1px" overflowY="auto">
-                        {events
-                          ?.filter(
-                            (event) =>
-                              isSameDay(new Date(event.startAt), day) ||
-                              isSameDay(new Date(event.endAt), day) ||
-                              (new Date(event.startAt) < day &&
-                                day < new Date(event.endAt))
-                          )
-                          .sort((prev, next) => {
-                            if (!prev.isAllDay && next.isAllDay) {
-                              return 1;
-                            }
-                            if (prev.isAllDay && !next.isAllDay) {
-                              return -1;
-                            }
-                            return 0;
-                          })
-                          .map((event) => (
-                            <Box
-                              key={event._id}
-                              w="100%"
-                              rounded="sm"
-                              bg={event.isAllDay ? 'blue.400' : 'blue.50'}
-                              color={event.isAllDay ? 'white' : 'blue.400'}
-                              as={RouterLink}
-                              to={`/events/${event._id}`}
-                            >
-                              <Text
-                                noOfLines={1}
-                                fontSize="xx-small"
-                                fontWeight="bold"
-                                textAlign="center"
-                              >
-                                {event.title}
-                              </Text>
-                            </Box>
-                          ))}
-                      </VStack>
-                    </VStack>
-                  </GridItem>
-                ))}
-              </HStack>
-            ))}
-          </VStack>
-        </Grid>
+          ))}
+        </VStack>
       </MotionCenter>
     </VStack>
   );

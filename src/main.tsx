@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import theme from './theme';
+import './global.css';
 
 import { createIDBPersister } from './modules/common/querypersist';
 

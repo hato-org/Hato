@@ -208,7 +208,10 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
                 </>
               )}
             </VStack>
-            <StackDivider borderColor="blue.400" borderWidth={1} />
+            <StackDivider
+              borderColor={event.external ? 'green.400' : 'blue.400'}
+              borderWidth={1}
+            />
             <VStack align="flex-start" spacing={1} w="100%">
               <Text textStyle="title" noOfLines={1}>
                 {event.title}

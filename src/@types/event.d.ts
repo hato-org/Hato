@@ -8,10 +8,15 @@ interface Event {
   tags: Tag[];
   location?: string;
   url?: string;
-  grade: number[];
-  class: number[];
-  course?: Course[];
+  // grade: number[];
+  // class: number[];
+  // course?: Course[];
   owner: string;
+  external?: boolean;
+  source?: {
+    name: string;
+    url?: string;
+  };
 }
 
 interface Tag {
