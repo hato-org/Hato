@@ -7,19 +7,11 @@ import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RecoilRoot } from 'recoil';
-import { registerSW } from 'virtual:pwa-register';
 import App from './App';
 import theme from './theme';
+import './global.css';
 
 import { createIDBPersister } from './modules/common/querypersist';
-
-// PWA config
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const updateSW = registerSW({
-  onNeedRefresh() {
-    console.log('Update available');
-  },
-});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +22,7 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
       keepPreviousData: true,
       retry: 2,
-      cacheTime: 1000 * 60 * 30, // Cache time (30 mins)
+      cacheTime: Infinity, // Cache time (Infinity)
       staleTime: 1000 * 60 * 5, // Stale time (5 mins)
     },
   },

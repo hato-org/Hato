@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { TbChevronRight, TbMapPin, TbTag } from 'react-icons/tb';
+import { TbChevronRight, TbMapPin, TbTag, TbWorld } from 'react-icons/tb';
 import { useClient } from '../../modules/client';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
@@ -80,6 +80,12 @@ function Event({ id }: { id: string }) {
           ))}
         </Wrap>
       </HStack>
+      {data.external && (
+        <HStack w="100%">
+          <Icon as={TbWorld} w={6} h={6} />
+          <Text textStyle="title">{data.source?.name}</Text>
+        </HStack>
+      )}
       {/* <HStack w="100%">
         <Icon as={TbUser} w={6} h={6} />
         <Text textStyle="description">{data.owner}</Text>

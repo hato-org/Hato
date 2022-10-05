@@ -10,8 +10,10 @@ interface CurrentTimetable {
   course: CourseInfo;
 }
 
-interface CourseInfo {
-  name: string;
-  count: number;
-  category: string;
+interface Note {
+  date: Date;
+  lunch?: boolean;
+  cleaning?: boolean;
+  target?: ClassInfo[];
+  message?: string;
 }

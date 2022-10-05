@@ -7,13 +7,14 @@ import {
   MenuItem,
   MenuList,
   Spacer,
+  StackProps,
   Text,
 } from '@chakra-ui/react';
 import { TbChevronDown } from 'react-icons/tb';
 import { useClassList, useGradeList } from '../../hooks/info';
 import { useUser } from '../../hooks/user';
 
-interface GradeClassPickerProps {
+interface GradeClassPickerProps extends StackProps {
   onGradeSelect: (gradeInfo: GradeInfo) => void;
   onClassSelect: (classInfo: ClassInfo) => void;
 }
@@ -21,6 +22,7 @@ interface GradeClassPickerProps {
 function GradeClassPicker({
   onGradeSelect,
   onClassSelect,
+  ...rest
 }: GradeClassPickerProps) {
   const { data: user } = useUser();
 
@@ -56,10 +58,16 @@ function GradeClassPicker({
   }, [classList]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <HStack w="100%">
+    <HStack w="100%" {...rest}>
       <Menu>
-        <MenuButton w="100%" rounded="lg" layerStyle="button">
-          <HStack w="100%" p={4} textStyle="title">
+        <MenuButton
+          w="100%"
+          rounded="lg"
+          layerStyle="button"
+          // border="1px solid"
+          // borderColor="gray.100"
+        >
+          <HStack w="100%" px={4} py={2} textStyle="title">
             <Text>{grade?.name}</Text>
             <Spacer />
             <Icon as={TbChevronDown} />
@@ -85,8 +93,14 @@ function GradeClassPicker({
         </MenuList>
       </Menu>
       <Menu>
-        <MenuButton w="100%" rounded="lg" layerStyle="button">
-          <HStack w="100%" p={4} textStyle="title">
+        <MenuButton
+          w="100%"
+          rounded="lg"
+          layerStyle="button"
+          // border="1px solid"
+          // borderColor="gray.100"
+        >
+          <HStack w="100%" px={4} py={2} textStyle="title">
             <Text>{schoolClass?.name}</Text>
             <Spacer />
             <Icon as={TbChevronDown} />

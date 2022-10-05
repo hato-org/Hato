@@ -24,7 +24,7 @@ interface GradeInfo {
   name: string;
   short_name: string;
   type: Type;
-  grade_num: number;
+  grade_num: 1 | 2 | 3;
   student_count: number;
 }
 
@@ -33,7 +33,8 @@ type GradeList = GradeInfo[];
 interface ClassInfo {
   name: string;
   short_name: string;
-  type: string;
+  type: Type;
+  grade_num: 1 | 2 | 3;
   class_num: number;
   student_count: number;
 }

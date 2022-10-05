@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useClient } from '../../modules/client';
 
@@ -12,6 +12,24 @@ export const useGradeList = (
     async () => (await client.get('/info/grade')).data,
     options
   );
+};
+
+export const useAllClassList = () => {
+  const { client } = useClient();
+  const { data: gradeList } = useGradeList();
+
+  return useQueries({
+    queries:
+      gradeList?.map((gradeInfo) => ({
+        queryKey: ['info', 'class', gradeInfo.type, gradeInfo.grade_num],
+        queryFn: async () =>
+          (
+            await client.get<ClassList>('/info/class', {
+              params: { type: gradeInfo.type, grade: gradeInfo.grade_num },
+            })
+          ).data,
+      })) ?? [],
+  });
 };
 
 export const useClassList = (

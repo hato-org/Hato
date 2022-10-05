@@ -13,6 +13,8 @@ import {
   OrderedList,
   Badge,
   Divider,
+  ModalFooter,
+  Button,
 } from '@chakra-ui/react';
 
 interface TutorialEventsProps {
@@ -22,16 +24,17 @@ interface TutorialEventsProps {
 
 function Events({ isOpen, onClose }: TutorialEventsProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
       <ModalOverlay />
       <ModalContent rounded="xl">
         <ModalHeader>使い方</ModalHeader>
         <ModalCloseButton />
-        <ModalBody pb={8}>
+        <ModalBody>
           <VStack align="flex-start">
             {/* <Heading size='lg'>年間行事予定</Heading> */}
             <UnorderedList textStyle="title">
-              <ListItem>今後の行事等をカレンダーで確認できます</ListItem>
+              <ListItem>生徒による生徒のための年間行事予定表です</ListItem>
+              <ListItem>どんな規模のイベントでもOKです</ListItem>
               <ListItem>
                 誰でもイベントの追加・編集ができます
                 <Text textStyle="description">
@@ -39,7 +42,7 @@ function Events({ isOpen, onClose }: TutorialEventsProps) {
                 </Text>
               </ListItem>
               <ListItem>
-                皆さんの協力によって成り立っています
+                あなたの貢献が全校の生徒の役に立ちます
                 <Text textStyle="description">
                   積極的に貢献してくださると嬉しいです
                 </Text>
@@ -100,6 +103,11 @@ function Events({ isOpen, onClose }: TutorialEventsProps) {
             </OrderedList>
           </VStack>
         </ModalBody>
+        <ModalFooter>
+          <Button w="100%" colorScheme="blue" rounded="lg" onClick={onClose}>
+            OK
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
