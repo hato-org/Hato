@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
 
 function RequireLogin() {
-  const user = useUser();
+  const { data: user } = useUser();
 
   if (user) return <Outlet />;
 

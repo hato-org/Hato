@@ -99,7 +99,7 @@ function Timetable() {
           </Heading>
         </HStack>
       </Header>
-      <Center w="100%" mb={16}>
+      <Center w="100%" mb={32}>
         <VStack w="100%" px={4}>
           <DateSwitcher
             onPrev={() => {
@@ -192,7 +192,7 @@ function Timetable() {
                 onClick={onOpen}
               />
             </HStack>
-            <Notes {...dateParams} />
+            <Notes {...{ type, grade, schoolClass }} {...dateParams} />
           </VStack>
         </VStack>
       </Center>

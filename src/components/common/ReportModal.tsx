@@ -15,15 +15,17 @@ import {
   ModalProps,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
+import { format } from 'date-fns/esm';
 import { useMutation } from '@tanstack/react-query';
-import { useClient } from '../../modules/client';
-import { useUser } from '../../hooks/user';
+import { useClient } from '@/modules/client';
+import { useUser } from '@/hooks/user';
 
 interface ReportModalProps extends Omit<ModalProps, 'children'> {
   event?: Event;
+  note?: Note;
 }
 
-function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
+function ReportModal({ isOpen, onClose, event, note }: ReportModalProps) {
   const toast = useToast({
     position: 'top-right',
     variant: 'left-accent',
@@ -44,6 +46,10 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
         label: '不適切なコンテンツである',
         value: 'Inappropriate content',
       },
+      {
+        label: 'その他',
+        value: 'other',
+      },
     ],
     []
   );
@@ -53,7 +59,7 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
       client.post('/report', {
         content: null,
         embeds: [
-          {
+          event && {
             title: 'Report',
             url: `https://hato.cf/calendar/events/${event?._id}`,
             color: 5814783,
@@ -66,6 +72,14 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
                 name: 'Comment',
                 value: reportComment || 'none',
               },
+              {
+                name: 'Event title',
+                value: event.title,
+              },
+              {
+                name: 'Added by',
+                value: event.owner,
+              },
             ],
             author: {
               name: user?.name,
@@ -77,7 +91,47 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
             },
             timestamp: new Date().toISOString(),
           },
-        ],
+          note && {
+            title: 'Report',
+            url: `https://hato.cf/timetable/?y=${new Date(
+              note.date
+            ).getFullYear()}&m=${
+              new Date(note.date).getMonth() + 1
+            }&d=${new Date(note.date).getDate()}`,
+            color: 5814783,
+            fields: [
+              {
+                name: 'Report reason',
+                value: reportType,
+              },
+              {
+                name: 'Comment',
+                value: reportComment || 'none',
+              },
+              {
+                name: 'Note date',
+                value: format(new Date(note.date), 'yyyy-MM-dd'),
+              },
+              {
+                name: 'Note message',
+                value: note.message,
+              },
+              {
+                name: 'Added by',
+                value: note.owner,
+              },
+            ],
+            author: {
+              name: user?.name,
+              icon_url: user?.avatar,
+            },
+            footer: {
+              text: user?.email,
+              icon_url: user?.avatar,
+            },
+            timestamp: new Date().toISOString(),
+          },
+        ].filter(Boolean),
         attachments: [],
       }),
     {
@@ -112,6 +166,10 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
                   ...provided,
                   w: '100%',
                 }),
+                menu: (provided) => ({
+                  ...provided,
+                  shadow: 'lg',
+                }),
               }}
               onChange={(value) => setReportType(value?.label ?? '')}
             />
@@ -119,6 +177,7 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
             <Textarea
               rounded="lg"
               onChange={(e) => setReportComment(e.target.value)}
+              isInvalid={reportType === 'その他' && !reportComment}
             />
           </VStack>
         </ModalBody>
@@ -132,7 +191,9 @@ function ReportModal({ isOpen, onClose, event }: ReportModalProps) {
               rounded="lg"
               onClick={() => reportSubmit()}
               isLoading={reportLoading}
-              isDisabled={!reportType}
+              isDisabled={
+                !reportType || (reportType === 'その他' && !reportComment)
+              }
             >
               送信
             </Button>
