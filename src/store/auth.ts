@@ -1,4 +1,4 @@
-import { atom, errorSelector } from 'recoil';
+import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 interface AuthAtom {
@@ -17,8 +17,8 @@ export const authAtom = atom<AuthAtom>({
   effects: [persistAtom],
 });
 
-export const userAtom = atom<User>({
+export const userAtom = atom<User | null>({
   key: 'hato.user',
-  default: errorSelector('Not logged in'),
+  default: null,
   effects: [persistAtom],
 });

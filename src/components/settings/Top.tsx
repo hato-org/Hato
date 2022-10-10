@@ -25,6 +25,7 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { TbBrandGithub, TbChevronRight } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns/esm';
 import { useAuth } from '../../modules/auth';
 import { MotionVStack } from '../motion';
 import SettingButton, { SettingButtonProps } from './Button';
@@ -190,6 +191,12 @@ function Top() {
           </Button>
         </Link>
       </HStack>
+      <VStack>
+        <Text textStyle="description" color="gray.400">
+          Hato (Beta) build {__GIT_COMMIT_HASH__}/{' '}
+          {format(new Date(__GIT_COMMIT_TIMESTAMP__), 'yyyy-MM-dd HH:mm')}
+        </Text>
+      </VStack>
     </MotionVStack>
   );
 }

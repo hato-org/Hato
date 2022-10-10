@@ -29,7 +29,7 @@ function Settings() {
           </Heading>
         </HStack>
       </Header>
-      <Center p={8} flexDir="column" overflow="hidden">
+      <Center mb={16} p={8} flexDir="column" overflow="hidden">
         <AnimatePresence
           mode="wait"
           // initial
