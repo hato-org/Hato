@@ -43,10 +43,10 @@ export default defineConfig(({ mode }) => {
         },
       }),
       VitePWA({
-        registerType: 'autoUpdate',
+        registerType: 'prompt',
         manifest: {
-          name: 'Hato',
-          short_name: 'Hato',
+          name: process.env.VITE_APP_NAME,
+          short_name: process.env.VITE_APP_NAME,
           description: '屋代高校非公式情報板',
           theme_color: '#ffffff',
           background_color: '#ffffff',
