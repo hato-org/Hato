@@ -135,7 +135,11 @@ function EventDetail() {
                 <>
                   {user.role === 'admin' && (
                     <>
-                      <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
+                      <MenuItem
+                        textStyle="title"
+                        icon={<TbFlag />}
+                        onClick={reportOnOpen}
+                      >
                         報告
                       </MenuItem>
                       <ReportModal
@@ -145,10 +149,11 @@ function EventDetail() {
                       />
                     </>
                   )}
-                  <MenuItem icon={<TbEdit />} isDisabled>
+                  <MenuItem textStyle="title" icon={<TbEdit />} isDisabled>
                     編集
                   </MenuItem>
                   <MenuItem
+                    textStyle="title"
                     icon={<TbTrash />}
                     color="red"
                     onClick={deleteOnOpen}

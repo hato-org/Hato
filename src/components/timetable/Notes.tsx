@@ -260,7 +260,7 @@ function NoteCard({ note }: { note: Note }) {
             {note.message}
           </Text>
           {note.owner === user.email && (
-            <Wrap>
+            <Wrap pb={2}>
               {note.target?.map((targetClass) => (
                 <Tag
                   size="sm"

@@ -18,8 +18,8 @@ function Home() {
           <Heading
             size="4xl"
             color="blue.500"
-            fontWeight={800}
-            fontFamily="Josefin Sans"
+            fontWeight="bold"
+            fontFamily="Josefin Sans, -apple-system, sans-serif"
           >
             Hato
             <Text
