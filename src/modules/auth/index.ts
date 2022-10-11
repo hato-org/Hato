@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userAtom } from '@/store/auth';
 
-const API_URL = import.meta.env.PROD
-  ? 'https://api.hato.cf:11117'
-  : `${window.location.protocol}//${window.location.host}/api`;
+const API_URL = import.meta.env.DEV
+  ? `${window.location.protocol}//${window.location.host}/api`
+  : import.meta.env.VITE_API_URL;
 
 // eslint-disable-next-line import/prefer-default-export
 export const useAuth = () => {
