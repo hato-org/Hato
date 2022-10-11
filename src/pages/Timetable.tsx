@@ -16,16 +16,16 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { TbPlus } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Header from '../components/nav/Header';
-import AddNoteDrawer from '../components/timetable/AddNoteDrawer';
-import DateSwitcher from '../components/timetable/DateSwitcher';
-import GradeClassPicker from '../components/timetable/GradeClassPicker';
-import Notes from '../components/timetable/Notes';
-import TimetableTable from '../components/timetable/Table';
-import { useCourseList } from '../hooks/info';
-import { useUser } from '../hooks/user';
-import { useClient } from '../modules/client';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import AddNoteDrawer from '@/components/timetable/AddNoteDrawer';
+import DateSwitcher from '@/components/timetable/DateSwitcher';
+import GradeClassPicker from '@/components/timetable/GradeClassPicker';
+import Notes from '@/components/timetable/Notes';
+import TimetableTable from '@/components/timetable/Table';
+import { useCourseList } from '@/hooks/info';
+import { useUser } from '@/hooks/user';
+import { useClient } from '@/modules/client';
 
 function Timetable() {
   const { data: user } = useUser();

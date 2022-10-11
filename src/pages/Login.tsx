@@ -2,8 +2,8 @@ import { Button, Center, Heading, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router-dom';
-import LoginButton from '../components/login/LoginButton';
-import { useAuth } from '../modules/auth';
+import LoginButton from '@/components/login/LoginButton';
+import { useAuth } from '@/modules/auth';
 
 function Login() {
   const { login } = useAuth();

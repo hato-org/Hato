@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { TbChevronRight } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router-dom';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import Loading from '../common/Loading';
 import Card from '../posts/Card';
 import Error from './Error';

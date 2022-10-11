@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { userAtom } from '../../store/auth';
+import { userAtom } from '@/store/auth';
 
 const API_URL = import.meta.env.PROD
   ? 'https://api.hato.cf:11117'

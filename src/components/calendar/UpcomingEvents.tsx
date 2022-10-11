@@ -21,11 +21,11 @@ import { format, isSameDay } from 'date-fns';
 import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
 import { Select } from 'chakra-react-select';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
+import { useAllTagList } from '@/hooks/calendar/tag';
+import { useUser } from '@/hooks/user';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
-import { useAllTagList } from '../../hooks/calendar/tag';
-import { useUser } from '../../hooks/user';
 
 interface UpcomingEventsProps {
   year: number;

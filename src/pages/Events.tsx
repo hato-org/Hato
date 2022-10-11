@@ -15,15 +15,15 @@ import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
-import Loading from '../components/common/Loading';
-import Header from '../components/nav/Header';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Calendar from '../components/calendar/Calendar';
-import FloatButton from '../components/layout/FloatButton';
-import AddEventDrawer from '../components/calendar/AddEventDrawer';
-import ChakraPullToRefresh from '../components/layout/PullToRefresh';
-import Tutorial from '../components/tutorial';
-import { tutorialAtom } from '../store/tutorial';
+import Loading from '@/components/common/Loading';
+import Header from '@/components/nav/Header';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Calendar from '@/components/calendar/Calendar';
+import FloatButton from '@/components/layout/FloatButton';
+import AddEventDrawer from '@/components/calendar/AddEventDrawer';
+import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
+import Tutorial from '@/components/tutorial';
+import { tutorialAtom } from '@/store/tutorial';
 
 function Events() {
   const queryClient = useQueryClient();

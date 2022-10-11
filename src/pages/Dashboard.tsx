@@ -11,13 +11,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import { TbArrowNarrowDown, TbSettings } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import ChakraPullToRefresh from '../components/layout/PullToRefresh';
-import Card from '../components/layout/Card';
-import CardElement from '../components/cards';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Header from '../components/nav/Header';
-import Loading from '../components/common/Loading';
-import { useUser } from '../hooks/user';
+import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
+import Card from '@/components/layout/Card';
+import CardElement from '@/components/cards';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import Loading from '@/components/common/Loading';
+import { useUser } from '@/hooks/user';
 
 function Dashboard() {
   // const [date] = useSeconds();

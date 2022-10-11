@@ -9,8 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { TbExternalLink } from 'react-icons/tb';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/nav/Header';
-import BottomNavbar from '../components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import BottomNavbar from '@/components/nav/BottomNavbar';
 
 function Posts() {
   return (

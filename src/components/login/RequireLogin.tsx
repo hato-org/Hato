@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '../../hooks/user';
+import { useUser } from '@/hooks/user';
 
 function RequireLogin() {
   const { data: user } = useUser();

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useAllTagList = () => {

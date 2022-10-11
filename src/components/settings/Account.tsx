@@ -29,11 +29,11 @@ import {
   TbArrowNarrowDown,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '../../modules/auth';
+import { useAuth } from '@/modules/auth';
+import { useClassList, useCourseList, useGradeList } from '@/hooks/info';
+import { useUser } from '@/hooks/user';
 import SettingButton from './Button';
 import { MotionCenter } from '../motion';
-import { useClassList, useCourseList, useGradeList } from '../../hooks/info';
-import { useUser } from '../../hooks/user';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Loading from '../common/Loading';
 import Profile from '../account/Profile';

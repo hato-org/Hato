@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { format } from 'date-fns/esm';
 import { TbClock, TbFile, TbPaperclip, TbTag } from 'react-icons/tb';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import PDFViewer from './PDFViewer';

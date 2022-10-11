@@ -3,8 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Header from '../components/nav/Header';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
 
 function Settings() {
   const navigate = useNavigate();

@@ -9,8 +9,8 @@ import {
 import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Header from '../components/nav/Header';
-import BottomNavbar from '../components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import BottomNavbar from '@/components/nav/BottomNavbar';
 
 function NotFound() {
   const navigate = useNavigate();

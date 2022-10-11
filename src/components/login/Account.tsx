@@ -14,8 +14,8 @@ import {
 import { useMemo } from 'react';
 import { TbUser, TbChevronDown, TbSettings, TbLogout } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../hooks/user';
-import { useAuth } from '../../modules/auth';
+import { useUser } from '@/hooks/user';
+import { useAuth } from '@/modules/auth';
 
 function Account({ ...rest }: FlexProps) {
   const { logout } = useAuth();

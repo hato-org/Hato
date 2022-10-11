@@ -26,14 +26,14 @@ import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { eachMonthOfInterval } from 'date-fns/esm';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Header from '../components/nav/Header';
-import { useClient } from '../modules/client';
-import Error from '../components/cards/Error';
-import Event from '../components/calendar/Event';
-import BackButton from '../components/layout/BackButton';
-import { useUser } from '../hooks/user';
-import ReportModal from '../components/common/ReportModal';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import { useClient } from '@/modules/client';
+import Error from '@/components/cards/Error';
+import Event from '@/components/calendar/Event';
+import BackButton from '@/components/layout/BackButton';
+import { useUser } from '@/hooks/user';
+import ReportModal from '@/components/common/ReportModal';
 
 function EventDetail() {
   const { id } = useParams();

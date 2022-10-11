@@ -28,7 +28,7 @@ import {
 } from 'date-fns/esm';
 import { useState } from 'react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import { MotionCenter } from '../motion';
 
 interface CalendarProps extends StackProps {

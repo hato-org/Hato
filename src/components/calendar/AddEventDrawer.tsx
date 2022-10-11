@@ -34,9 +34,9 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { endOfDay, startOfDay } from 'date-fns';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
-import { useAllTagList } from '../../hooks/calendar/tag';
-import { useUser } from '../../hooks/user';
+import { useClient } from '@/modules/client';
+import { useAllTagList } from '@/hooks/calendar/tag';
+import { useUser } from '@/hooks/user';
 
 const AddEventDrawer = React.memo(
   ({ isOpen, onClose, ...rest }: Omit<DrawerProps, 'children'>) => {

@@ -31,10 +31,10 @@ import {
   TbTrash,
   TbX,
 } from 'react-icons/tb';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
+import { useUser } from '@/hooks/user';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
-import { useUser } from '../../hooks/user';
 import ReportModal from '../common/ReportModal';
 
 interface NotesProps extends StackProps {

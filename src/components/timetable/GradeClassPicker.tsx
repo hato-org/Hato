@@ -11,8 +11,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { TbChevronDown } from 'react-icons/tb';
-import { useClassList, useGradeList } from '../../hooks/info';
-import { useUser } from '../../hooks/user';
+import { useClassList, useGradeList } from '@/hooks/info';
+import { useUser } from '@/hooks/user';
 
 interface GradeClassPickerProps extends StackProps {
   onGradeSelect: (gradeInfo: GradeInfo) => void;

@@ -26,10 +26,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { TbBrandGithub, TbChevronRight } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
-import { useAuth } from '../../modules/auth';
+import { useAuth } from '@/modules/auth';
+import { useUser } from '@/hooks/user';
 import { MotionVStack } from '../motion';
 import SettingButton, { SettingButtonProps } from './Button';
-import { useUser } from '../../hooks/user';
 
 function Top() {
   const { logout } = useAuth();

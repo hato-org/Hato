@@ -27,9 +27,9 @@ import ResizeTextArea from 'react-textarea-autosize';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { format, startOfDay } from 'date-fns/esm';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
-import { useGradeList, useAllClassList } from '../../hooks/info';
-import { useUser } from '../../hooks/user';
+import { useClient } from '@/modules/client';
+import { useGradeList, useAllClassList } from '@/hooks/info';
+import { useUser } from '@/hooks/user';
 
 interface AddNoteDrawerProps {
   isOpen: boolean;

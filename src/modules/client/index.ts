@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { userAtom } from '../../store/auth';
+import { userAtom } from '@/store/auth';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useClient = () => {
