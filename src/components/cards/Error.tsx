@@ -53,6 +53,26 @@ function Error({ error = new AxiosError() }: ErrorProps) {
       );
       break;
 
+    case 404:
+      return (
+        <Center w="100%">
+          <VStack>
+            <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
+            <Text fontSize="sm" color="gray.400" align="center">
+              {error.message}
+              <br />
+              {error.response.statusText}
+            </Text>
+            <Text textStyle="title" align="center">
+              データの取得に失敗しました。
+              <br />
+              データが存在しません。
+            </Text>
+          </VStack>
+        </Center>
+      );
+      break;
+
     case 429:
       return (
         <Center w="100%">
