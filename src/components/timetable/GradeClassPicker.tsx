@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
+  Box,
   HStack,
   Icon,
   Menu,
@@ -59,71 +60,75 @@ function GradeClassPicker({
 
   return (
     <HStack w="100%" {...rest}>
-      <Menu>
-        <MenuButton
-          w="100%"
-          rounded="lg"
-          layerStyle="button"
-          // border="1px solid"
-          // borderColor="gray.100"
-        >
-          <HStack w="100%" px={4} py={2} textStyle="title">
-            <Text>{grade?.name}</Text>
-            <Spacer />
-            <Icon as={TbChevronDown} />
-          </HStack>
-          {/* <Button w='100%' variant='ghost' rightIcon={<TbChevronDown />}>
+      <Box w="100%">
+        <Menu>
+          <MenuButton
+            w="100%"
+            rounded="lg"
+            layerStyle="button"
+            // border="1px solid"
+            // borderColor="gray.100"
+          >
+            <HStack w="100%" px={4} py={2} textStyle="title">
+              <Text>{grade?.name}</Text>
+              <Spacer />
+              <Icon as={TbChevronDown} />
+            </HStack>
+            {/* <Button w='100%' variant='ghost' rightIcon={<TbChevronDown />}>
             <Text>{grade?.name}</Text>
           </Button> */}
-        </MenuButton>
-        <MenuList shadow="lg" rounded="xl">
-          {gradeList?.map((gradeInfo) => (
-            <MenuItem
-              key={gradeInfo.name}
-              fontWeight="bold"
-              onClick={() => {
-                setType(gradeInfo.type);
-                setGrade(gradeInfo);
-                onGradeSelect(gradeInfo);
-              }}
-            >
-              {gradeInfo.name}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Menu>
-      <Menu>
-        <MenuButton
-          w="100%"
-          rounded="lg"
-          layerStyle="button"
-          // border="1px solid"
-          // borderColor="gray.100"
-        >
-          <HStack w="100%" px={4} py={2} textStyle="title">
-            <Text>{schoolClass?.name}</Text>
-            <Spacer />
-            <Icon as={TbChevronDown} />
-          </HStack>
-          {/* <Button w="100%" variant="ghost" rightIcon={<TbChevronDown />}>
+          </MenuButton>
+          <MenuList shadow="lg" rounded="xl">
+            {gradeList?.map((gradeInfo) => (
+              <MenuItem
+                key={gradeInfo.name}
+                fontWeight="bold"
+                onClick={() => {
+                  setType(gradeInfo.type);
+                  setGrade(gradeInfo);
+                  onGradeSelect(gradeInfo);
+                }}
+              >
+                {gradeInfo.name}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+      </Box>
+      <Box w="100%">
+        <Menu>
+          <MenuButton
+            w="100%"
+            rounded="lg"
+            layerStyle="button"
+            // border="1px solid"
+            // borderColor="gray.100"
+          >
+            <HStack w="100%" px={4} py={2} textStyle="title">
+              <Text>{schoolClass?.name}</Text>
+              <Spacer />
+              <Icon as={TbChevronDown} />
+            </HStack>
+            {/* <Button w="100%" variant="ghost" rightIcon={<TbChevronDown />}>
             <Text>{schoolClass?.name}</Text>
           </Button> */}
-        </MenuButton>
-        <MenuList shadow="lg" rounded="xl">
-          {classList?.map((classInfo) => (
-            <MenuItem
-              key={classInfo.name}
-              fontWeight="bold"
-              onClick={() => {
-                setClass(classInfo);
-                onClassSelect(classInfo);
-              }}
-            >
-              {classInfo.name}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Menu>
+          </MenuButton>
+          <MenuList shadow="lg" rounded="xl">
+            {classList?.map((classInfo) => (
+              <MenuItem
+                key={classInfo.name}
+                fontWeight="bold"
+                onClick={() => {
+                  setClass(classInfo);
+                  onClassSelect(classInfo);
+                }}
+              >
+                {classInfo.name}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+      </Box>
     </HStack>
   );
 }

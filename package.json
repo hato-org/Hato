@@ -8,6 +8,7 @@
     "dev:local-api": "vite --mode local-api",
     "build": "vite build",
     "preview": "vite preview",
+    "test": "vitest run --passWithNoTests",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "yarn lint --fix",
     "lint:pre-commit": "npx lint-staged",
@@ -74,6 +75,7 @@
     "vite": "^3.1.3",
     "vite-plugin-fonts": "^0.6.0",
     "vite-plugin-pwa": "^0.13.1",
-    "vite-tsconfig-paths": "^3.5.1"
+    "vite-tsconfig-paths": "^3.5.1",
+    "vitest": "^0.24.3"
   }
 }

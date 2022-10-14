@@ -23,9 +23,18 @@ import { useUser } from '@/hooks/user';
 interface ReportModalProps extends Omit<ModalProps, 'children'> {
   event?: Event;
   note?: Note;
+  timetable?: boolean;
+  placeholder?: string;
 }
 
-function ReportModal({ isOpen, onClose, event, note }: ReportModalProps) {
+function ReportModal({
+  isOpen,
+  onClose,
+  event,
+  note,
+  timetable,
+  placeholder,
+}: ReportModalProps) {
   const toast = useToast({
     position: 'top-right',
     variant: 'left-accent',
@@ -60,7 +69,7 @@ function ReportModal({ isOpen, onClose, event, note }: ReportModalProps) {
         content: null,
         embeds: [
           event && {
-            title: 'Report',
+            title: 'Report (Event)',
             url: `https://hato.cf/calendar/events/${event?._id}`,
             color: 5814783,
             fields: [
@@ -92,7 +101,7 @@ function ReportModal({ isOpen, onClose, event, note }: ReportModalProps) {
             timestamp: new Date().toISOString(),
           },
           note && {
-            title: 'Report',
+            title: 'Report (Note)',
             url: `https://hato.cf/timetable/?y=${new Date(
               note.date
             ).getFullYear()}&m=${
@@ -119,6 +128,30 @@ function ReportModal({ isOpen, onClose, event, note }: ReportModalProps) {
               {
                 name: 'Added by',
                 value: note.owner,
+              },
+            ],
+            author: {
+              name: user?.name,
+              icon_url: user?.avatar,
+            },
+            footer: {
+              text: user?.email,
+              icon_url: user?.avatar,
+            },
+            timestamp: new Date().toISOString(),
+          },
+          timetable && {
+            title: 'Report (Timetable)',
+            url: `https://hato.cf/timetable/`,
+            color: 5814783,
+            fields: [
+              {
+                name: 'Report reason',
+                value: reportType,
+              },
+              {
+                name: 'Comment',
+                value: reportComment || 'none',
               },
             ],
             author: {
@@ -173,8 +206,9 @@ function ReportModal({ isOpen, onClose, event, note }: ReportModalProps) {
               }}
               onChange={(value) => setReportType(value?.label ?? '')}
             />
-            <Text textStyle="title">コメント（任意）</Text>
+            <Text textStyle="title">コメント</Text>
             <Textarea
+              placeholder={placeholder}
               rounded="lg"
               onChange={(e) => setReportComment(e.target.value)}
               isInvalid={reportType === 'その他' && !reportComment}

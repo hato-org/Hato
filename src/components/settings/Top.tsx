@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import {
   HStack,
   VStack,
@@ -23,13 +22,13 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { TbBrandGithub, TbChevronRight } from 'react-icons/tb';
+import { TbBrandGithub, TbChevronRight, TbExternalLink } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
 import { useAuth } from '@/modules/auth';
 import { useUser } from '@/hooks/user';
 import { MotionVStack } from '../motion';
-import SettingButton, { SettingButtonProps } from './Button';
+import SettingButton from './Button';
 
 function Top() {
   const { logout } = useAuth();
@@ -47,23 +46,6 @@ function Top() {
       cacheTime: 0,
       retry: false,
     }
-  );
-
-  const settingsMenu = useMemo(
-    () => ({
-      display: [
-        {
-          label: 'テーマ',
-          description: (
-            <span>
-              背景色を変更できま<s>す。</s>せん。ごめん。
-            </span>
-          ),
-          href: 'theme',
-        },
-      ],
-    }),
-    []
   );
 
   return (
@@ -106,12 +88,14 @@ function Top() {
           <Icon as={TbChevronRight} />
         </HStack>
       </SettingCategory>
-      <SettingCategory w="100%" title="画面表示">
-        {settingsMenu.display.map((elem: SettingButtonProps) => (
-          <SettingButton {...elem} key={elem.label} />
-        ))}
-      </SettingCategory>
       <SettingCategory w="100%" title="その他">
+        <SettingButton
+          label="時間割追加リクエスト"
+          description="時間割データの追加をリクエストできます。"
+          onClick={() => window.open('https://forms.gle/XcmNLT7PJry9iuxy5')}
+        >
+          <Icon as={TbExternalLink} />
+        </SettingButton>
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
             <Modal isCentered isOpen={isOpen} onClose={onClose}>

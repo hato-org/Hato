@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   HStack,
   IconButton,
@@ -35,14 +35,20 @@ function Events() {
   } = useDisclosure();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
+  const [date, setDate] = useState(new Date());
 
   const year = Number(searchParams.get('y'));
   const month = Number(searchParams.get('m'));
 
   useEffect(() => {
-    const date = new Date();
-
-    if (!searchParams.has('y') || !searchParams.has('m')) {
+    if (searchParams.has('y') && searchParams.has('m')) {
+      setDate(
+        new Date(
+          Number(searchParams.get('y')),
+          Number(searchParams.get('m')) - 1
+        )
+      );
+    } else {
       searchParams.set('y', String(date.getFullYear()));
       searchParams.set('m', String(date.getMonth() + 1));
       setSearchParams(searchParams, {
@@ -56,7 +62,7 @@ function Events() {
         events: true,
       }));
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
