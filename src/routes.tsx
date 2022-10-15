@@ -46,7 +46,6 @@ function Router() {
           </Route>
           <Route path="posts/:id" element={<PostDetail />} />
         </Route>
-        {/* <Route path='/calendar' element={<Calendar />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

@@ -15,7 +15,12 @@ function Home() {
         p={8}
       >
         <VStack>
-          <Heading size="4xl" color="blue.500">
+          <Heading
+            size="4xl"
+            color="blue.500"
+            fontWeight="bold"
+            fontFamily="Josefin Sans, -apple-system, sans-serif"
+          >
             Hato
             <Text
               ml={2}

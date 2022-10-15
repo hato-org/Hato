@@ -11,7 +11,7 @@ import {
 import { TbArrowNarrowDown } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import CardElement from '../cards';
 import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';

@@ -18,6 +18,7 @@ import {
   useToast,
   Center,
   Spacer,
+  Box,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -26,14 +27,14 @@ import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { eachMonthOfInterval } from 'date-fns/esm';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Header from '../components/nav/Header';
-import { useClient } from '../modules/client';
-import Error from '../components/cards/Error';
-import Event from '../components/calendar/Event';
-import BackButton from '../components/layout/BackButton';
-import { useUser } from '../hooks/user';
-import ReportModal from '../components/common/ReportModal';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import { useClient } from '@/modules/client';
+import Error from '@/components/cards/Error';
+import Event from '@/components/calendar/Event';
+import BackButton from '@/components/layout/BackButton';
+import { useUser } from '@/hooks/user';
+import ReportModal from '@/components/common/ReportModal';
 
 function EventDetail() {
   const { id } = useParams();
@@ -121,91 +122,98 @@ function EventDetail() {
             イベントの詳細
           </Heading>
           <Spacer />
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              variant="ghost"
-              size="lg"
-              aria-label="event menu"
-              icon={<TbDots />}
-              isRound
-            />
-            <MenuList shadow="lg">
-              {data?.owner === user.email || user.role === 'admin' ? (
-                <>
-                  {user.role === 'admin' && (
-                    <>
-                      <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
-                        報告
-                      </MenuItem>
-                      <ReportModal
-                        isOpen={reportOpen}
-                        onClose={reportOnClose}
-                        event={data}
-                      />
-                    </>
-                  )}
-                  <MenuItem icon={<TbEdit />} isDisabled>
-                    編集
-                  </MenuItem>
-                  <MenuItem
-                    icon={<TbTrash />}
-                    color="red"
-                    onClick={deleteOnOpen}
-                  >
-                    削除
-                  </MenuItem>
-                  <AlertDialog
-                    isOpen={deleteOpen}
-                    onClose={deleteOnClose}
-                    leastDestructiveRef={cancelRef}
-                    isCentered
-                  >
-                    <AlertDialogOverlay />
-                    <AlertDialogContent rounded="xl">
-                      <AlertDialogHeader>イベントの削除</AlertDialogHeader>
-                      <AlertDialogBody>
-                        <Center>
-                          <Text textStyle="title">
-                            本当にこのイベントを削除しますか？
-                          </Text>
-                        </Center>
-                      </AlertDialogBody>
-                      <AlertDialogFooter>
-                        <Button
-                          variant="ghost"
-                          rounded="lg"
-                          onClick={deleteOnClose}
+          <Box>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                variant="ghost"
+                size="lg"
+                aria-label="event menu"
+                icon={<TbDots />}
+                isRound
+              />
+              <MenuList shadow="lg">
+                {data?.owner === user.email || user.role === 'admin' ? (
+                  <>
+                    {user.role === 'admin' && (
+                      <>
+                        <MenuItem
+                          textStyle="title"
+                          icon={<TbFlag />}
+                          onClick={reportOnOpen}
                         >
-                          キャンセル
-                        </Button>
-                        <Button
-                          ml={4}
-                          colorScheme="red"
-                          rounded="lg"
-                          onClick={() => deleteSubmit()}
-                          isLoading={deleteLoading}
-                        >
-                          削除
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </>
-              ) : (
-                <>
-                  <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
-                    報告
-                  </MenuItem>
-                  <ReportModal
-                    isOpen={reportOpen}
-                    onClose={reportOnClose}
-                    event={data}
-                  />
-                </>
-              )}
-            </MenuList>
-          </Menu>
+                          報告
+                        </MenuItem>
+                        <ReportModal
+                          isOpen={reportOpen}
+                          onClose={reportOnClose}
+                          event={data}
+                        />
+                      </>
+                    )}
+                    <MenuItem textStyle="title" icon={<TbEdit />} isDisabled>
+                      編集
+                    </MenuItem>
+                    <MenuItem
+                      textStyle="title"
+                      icon={<TbTrash />}
+                      color="red"
+                      onClick={deleteOnOpen}
+                    >
+                      削除
+                    </MenuItem>
+                    <AlertDialog
+                      isOpen={deleteOpen}
+                      onClose={deleteOnClose}
+                      leastDestructiveRef={cancelRef}
+                      isCentered
+                    >
+                      <AlertDialogOverlay />
+                      <AlertDialogContent rounded="xl">
+                        <AlertDialogHeader>イベントの削除</AlertDialogHeader>
+                        <AlertDialogBody>
+                          <Center>
+                            <Text textStyle="title">
+                              本当にこのイベントを削除しますか？
+                            </Text>
+                          </Center>
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                          <Button
+                            variant="ghost"
+                            rounded="lg"
+                            onClick={deleteOnClose}
+                          >
+                            キャンセル
+                          </Button>
+                          <Button
+                            ml={4}
+                            colorScheme="red"
+                            rounded="lg"
+                            onClick={() => deleteSubmit()}
+                            isLoading={deleteLoading}
+                          >
+                            削除
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </>
+                ) : (
+                  <>
+                    <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
+                      報告
+                    </MenuItem>
+                    <ReportModal
+                      isOpen={reportOpen}
+                      onClose={reportOnClose}
+                      event={data}
+                    />
+                  </>
+                )}
+              </MenuList>
+            </Menu>
+          </Box>
         </HStack>
       </Header>
       <Event id={id!} />

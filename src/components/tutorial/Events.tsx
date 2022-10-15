@@ -24,7 +24,7 @@ interface TutorialEventsProps {
 
 function Events({ isOpen, onClose }: TutorialEventsProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
       <ModalOverlay />
       <ModalContent rounded="xl">
         <ModalHeader>使い方</ModalHeader>
@@ -45,6 +45,14 @@ function Events({ isOpen, onClose }: TutorialEventsProps) {
                 あなたの貢献が全校の生徒の役に立ちます
                 <Text textStyle="description">
                   積極的に貢献してくださると嬉しいです
+                </Text>
+              </ListItem>
+              <ListItem>
+                <Text color="red.500">
+                  予定を追加すると利用者全員に公開されます
+                </Text>
+                <Text textStyle="description">
+                  個人的な予定を追加しないようご注意ください
                 </Text>
               </ListItem>
             </UnorderedList>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   HStack,
   IconButton,
@@ -15,15 +15,15 @@ import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
-import Loading from '../components/common/Loading';
-import Header from '../components/nav/Header';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Calendar from '../components/calendar/Calendar';
-import FloatButton from '../components/layout/FloatButton';
-import AddEventDrawer from '../components/calendar/AddEventDrawer';
-import ChakraPullToRefresh from '../components/layout/PullToRefresh';
-import Tutorial from '../components/tutorial';
-import { tutorialAtom } from '../store/tutorial';
+import Loading from '@/components/common/Loading';
+import Header from '@/components/nav/Header';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Calendar from '@/components/calendar/Calendar';
+import FloatButton from '@/components/layout/FloatButton';
+import AddEventDrawer from '@/components/calendar/AddEventDrawer';
+import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
+import Tutorial from '@/components/tutorial';
+import { tutorialAtom } from '@/store/tutorial';
 
 function Events() {
   const queryClient = useQueryClient();
@@ -35,14 +35,20 @@ function Events() {
   } = useDisclosure();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
+  const [date, setDate] = useState(new Date());
 
   const year = Number(searchParams.get('y'));
   const month = Number(searchParams.get('m'));
 
   useEffect(() => {
-    const date = new Date();
-
-    if (!searchParams.has('y') || !searchParams.has('m')) {
+    if (searchParams.has('y') && searchParams.has('m')) {
+      setDate(
+        new Date(
+          Number(searchParams.get('y')),
+          Number(searchParams.get('m')) - 1
+        )
+      );
+    } else {
       searchParams.set('y', String(date.getFullYear()));
       searchParams.set('m', String(date.getMonth() + 1));
       setSearchParams(searchParams, {
@@ -56,7 +62,7 @@ function Events() {
         events: true,
       }));
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

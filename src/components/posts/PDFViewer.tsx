@@ -19,7 +19,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import React, { useState } from 'react';
 import { TbExternalLink, TbX } from 'react-icons/tb';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
 // import pdfworker from './pdf.worker.min.js?url';

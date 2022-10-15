@@ -8,30 +8,41 @@ import {
   Text,
   useDisclosure,
   VStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Box,
 } from '@chakra-ui/react';
 import { useQueries } from '@tanstack/react-query';
 import { addDays, format, startOfDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { TbPlus } from 'react-icons/tb';
+import { TbPlus, TbDots, TbFlag } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
-import BottomNavbar from '../components/nav/BottomNavbar';
-import Header from '../components/nav/Header';
-import AddNoteDrawer from '../components/timetable/AddNoteDrawer';
-import DateSwitcher from '../components/timetable/DateSwitcher';
-import GradeClassPicker from '../components/timetable/GradeClassPicker';
-import Notes from '../components/timetable/Notes';
-import TimetableTable from '../components/timetable/Table';
-import { useCourseList } from '../hooks/info';
-import { useUser } from '../hooks/user';
-import { useClient } from '../modules/client';
+import BottomNavbar from '@/components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import AddNoteDrawer from '@/components/timetable/AddNoteDrawer';
+import DateSwitcher from '@/components/timetable/DateSwitcher';
+import GradeClassPicker from '@/components/timetable/GradeClassPicker';
+import Notes from '@/components/timetable/Notes';
+import TimetableTable from '@/components/timetable/Table';
+import ReportModal from '@/components/common/ReportModal';
+import { useCourseList } from '@/hooks/info';
+import { useUser } from '@/hooks/user';
+import { useClient } from '@/modules/client';
 
 function Timetable() {
   const { data: user } = useUser();
   const { client } = useClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: reportOpen,
+    onOpen: reportOnOpen,
+    onClose: reportOnClose,
+  } = useDisclosure();
 
   const [date, setDate] = useState(new Date());
   const [type, setType] = useState(user.type);
@@ -85,7 +96,7 @@ function Timetable() {
         replace: true,
       });
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -97,9 +108,37 @@ function Timetable() {
           <Heading size="md" ml={4} py={4}>
             時間割
           </Heading>
+          <Spacer />
+          <Box>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                variant="ghost"
+                size="lg"
+                aria-label="event menu"
+                icon={<TbDots />}
+                isRound
+              />
+              <MenuList shadow="lg">
+                <MenuItem
+                  textStyle="title"
+                  icon={<TbFlag />}
+                  onClick={reportOnOpen}
+                >
+                  報告
+                </MenuItem>
+                <ReportModal
+                  isOpen={reportOpen}
+                  onClose={reportOnClose}
+                  timetable
+                  placeholder="例：〇年〇組〇〇コース〇週〇時間目が△△ではなく□□です"
+                />
+              </MenuList>
+            </Menu>
+          </Box>
         </HStack>
       </Header>
-      <Center w="100%" mb={16}>
+      <Center w="100%" mb={32}>
         <VStack w="100%" px={4}>
           <DateSwitcher
             onPrev={() => {
@@ -192,7 +231,7 @@ function Timetable() {
                 onClick={onOpen}
               />
             </HStack>
-            <Notes {...dateParams} />
+            <Notes {...{ type, grade, schoolClass }} {...dateParams} />
           </VStack>
         </VStack>
       </Center>

@@ -28,7 +28,7 @@ import {
 } from 'date-fns/esm';
 import { useState } from 'react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import { MotionCenter } from '../motion';
 
 interface CalendarProps extends StackProps {
@@ -141,6 +141,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
             <HStack key={week.toString()} w="100%" h="100%" spacing={0}>
               {week.map((day) => (
                 <VStack
+                  key={day.toString()}
                   flex={1}
                   minW={0}
                   h="100%"
@@ -215,7 +216,6 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                               : event.isAllDay
                               ? 'white'
                               : 'blue.400'
-
                             /* eslint-enable no-nested-ternary */
                           }
                           as={RouterLink}

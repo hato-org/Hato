@@ -1,11 +1,9 @@
-import { useMemo } from 'react';
 import {
   HStack,
   VStack,
   Avatar,
   Heading,
   Text,
-  Link,
   Icon,
   Spacer,
   Button,
@@ -21,14 +19,21 @@ import {
   ModalFooter,
   StackDivider,
   Box,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { TbBrandGithub, TbChevronRight } from 'react-icons/tb';
+import {
+  TbActivity,
+  TbBrandGithub,
+  TbChevronRight,
+  TbExternalLink,
+} from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '../../modules/auth';
+import { format } from 'date-fns/esm';
+import { useAuth } from '@/modules/auth';
+import { useUser } from '@/hooks/user';
 import { MotionVStack } from '../motion';
-import SettingButton, { SettingButtonProps } from './Button';
-import { useUser } from '../../hooks/user';
+import SettingButton from './Button';
 
 function Top() {
   const { logout } = useAuth();
@@ -46,23 +51,6 @@ function Top() {
       cacheTime: 0,
       retry: false,
     }
-  );
-
-  const settingsMenu = useMemo(
-    () => ({
-      display: [
-        {
-          label: 'テーマ',
-          description: (
-            <span>
-              背景色を変更できま<s>す。</s>せん。ごめん。
-            </span>
-          ),
-          href: 'theme',
-        },
-      ],
-    }),
-    []
   );
 
   return (
@@ -105,12 +93,14 @@ function Top() {
           <Icon as={TbChevronRight} />
         </HStack>
       </SettingCategory>
-      <SettingCategory w="100%" title="画面表示">
-        {settingsMenu.display.map((elem: SettingButtonProps) => (
-          <SettingButton {...elem} key={elem.label} />
-        ))}
-      </SettingCategory>
       <SettingCategory w="100%" title="その他">
+        <SettingButton
+          label="時間割追加リクエスト"
+          description="時間割データの追加をリクエストできます。"
+          onClick={() => window.open('https://forms.gle/XcmNLT7PJry9iuxy5')}
+        >
+          <Icon as={TbExternalLink} />
+        </SettingButton>
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
             <Modal isCentered isOpen={isOpen} onClose={onClose}>
@@ -171,25 +161,27 @@ function Top() {
         ログアウト
       </Button>
       <HStack w="100%" justify="center">
-        <Link
-          href={import.meta.env.VITE_REPO_URL}
-          isExternal
-          _hover={{ textDecoration: 'none' }}
-        >
+        <ButtonGroup rounded="lg" variant="ghost">
           <Button
-            variant="solid"
-            bg="#0d1117"
-            color="white"
-            _hover={{
-              bg: 'gray.600',
-            }}
-            rounded="lg"
             leftIcon={<TbBrandGithub />}
+            onClick={() => window.open(import.meta.env.VITE_REPO_URL)}
           >
             GitHub
           </Button>
-        </Link>
+          <Button
+            leftIcon={<TbActivity />}
+            onClick={() => window.open(import.meta.env.VITE_STATUSPAGE_URL)}
+          >
+            サービス稼働状況
+          </Button>
+        </ButtonGroup>
       </HStack>
+      <VStack>
+        <Text textStyle="description" color="gray.400">
+          Hato (Beta) build {__GIT_COMMIT_HASH__}/{' '}
+          {format(new Date(__GIT_COMMIT_TIMESTAMP__), 'yyyy-MM-dd HH:mm')}
+        </Text>
+      </VStack>
     </MotionVStack>
   );
 }

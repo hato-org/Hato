@@ -1,10 +1,10 @@
 import { HStack, Heading } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import Header from '../components/nav/Header';
-import BackButton from '../components/layout/BackButton';
-import Post from '../components/posts/Post';
-import BottomNavbar from '../components/nav/BottomNavbar';
+import Header from '@/components/nav/Header';
+import BackButton from '@/components/layout/BackButton';
+import Post from '@/components/posts/Post';
+import BottomNavbar from '@/components/nav/BottomNavbar';
 
 function PostDetail() {
   const { id } = useParams();
@@ -22,7 +22,7 @@ function PostDetail() {
           </Heading>
         </HStack>
       </Header>
-      <Post id={id} />
+      <Post id={id!} />
       <BottomNavbar />
     </>
   );

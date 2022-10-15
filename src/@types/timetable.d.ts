@@ -11,9 +11,11 @@ interface CurrentTimetable {
 }
 
 interface Note {
+  _id: string;
   date: Date;
   lunch?: boolean;
   cleaning?: boolean;
   target?: ClassInfo[];
   message?: string;
+  owner: string;
 }

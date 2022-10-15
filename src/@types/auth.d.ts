@@ -6,7 +6,7 @@ interface User {
   name: string;
   type: Type;
   grade: number;
-  class: 'A' | 'B' | number;
+  class: number;
   course: Course;
   apiKey: string;
   contributionCount: number;

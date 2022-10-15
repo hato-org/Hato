@@ -2,7 +2,7 @@ import { Heading, VStack, HStack, Icon, Spacer, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight } from 'react-icons/tb';
 import TimetableTable from '../timetable/Table';
-import { useCurrentTable } from '../../hooks/timetable';
+import { useCurrentTable } from '@/hooks/timetable';
 
 function Timetable() {
   const { data, isLoading, error } = useCurrentTable();

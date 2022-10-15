@@ -1,16 +1,23 @@
+import { execSync } from 'child_process';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import tsConfigPaths from 'vite-tsconfig-paths';
+import { VitePluginFonts } from 'vite-plugin-fonts';
+const gitCommitHash = execSync('git describe --always').toString();
+const gitCommitTimestamp = execSync(
+  `git show -s --format=%cD ${gitCommitHash}`
+).toString();
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd()));
 
   return {
-    base: './',
+    base: '/',
     server: {
       open: true,
+      port: 3000,
       proxy: {
         '/api/': {
           target: process.env.VITE_API_URL,
@@ -23,14 +30,23 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: './dist',
     },
+    define: {
+      __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
+      __GIT_COMMIT_TIMESTAMP__: JSON.stringify(gitCommitTimestamp),
+    },
     plugins: [
       react(),
       tsConfigPaths(),
+      VitePluginFonts({
+        google: {
+          families: ['Josefin Sans'],
+        },
+      }),
       VitePWA({
-        registerType: 'autoUpdate',
+        registerType: 'prompt',
         manifest: {
-          name: 'Hato',
-          short_name: 'Hato',
+          name: process.env.VITE_APP_NAME,
+          short_name: process.env.VITE_APP_NAME,
           description: '屋代高校非公式情報板',
           theme_color: '#ffffff',
           background_color: '#ffffff',

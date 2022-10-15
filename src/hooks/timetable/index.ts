@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import { useUser } from '../user';
 
 export const useCurrentTable = (queryKey?: string[]) => {

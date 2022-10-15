@@ -1,6 +1,6 @@
 import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 
 export const useGradeList = (
   options?: UseQueryOptions<GradeList, AxiosError>

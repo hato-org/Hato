@@ -12,7 +12,7 @@ import { AxiosError } from 'axios';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbChevronRight, TbMapPin, TbTag, TbWorld } from 'react-icons/tb';
-import { useClient } from '../../modules/client';
+import { useClient } from '@/modules/client';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 
