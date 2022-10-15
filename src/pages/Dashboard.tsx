@@ -17,7 +17,6 @@ import CardElement from '@/components/cards';
 import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
 import Loading from '@/components/common/Loading';
-import { useUser } from '@/hooks/user';
 
 function Dashboard() {
   // const [date] = useSeconds();
@@ -37,7 +36,6 @@ function Dashboard() {
   //     : 'こんばんは';
 
   const queryClient = useQueryClient();
-  const { data: user } = useUser();
 
   return (
     <>
@@ -91,15 +89,7 @@ function Dashboard() {
               {formatDate}
             </Text>
           </VStack> */}
-          {(!user.grade || !user.class) && (
-            <Card
-              w={{ base: '100%' }}
-              border="1px solid"
-              borderColor="gray.100"
-            >
-              <CardElement.Info info="setAccountInfo" />
-            </Card>
-          )}
+          <CardElement.Info />
           <Card w={{ base: '100%' }} border="1px solid" borderColor="gray.100">
             <CardElement.Timetable />
           </Card>

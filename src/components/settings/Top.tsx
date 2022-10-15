@@ -4,7 +4,6 @@ import {
   Avatar,
   Heading,
   Text,
-  Link,
   Icon,
   Spacer,
   Button,
@@ -20,9 +19,15 @@ import {
   ModalFooter,
   StackDivider,
   Box,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { TbBrandGithub, TbChevronRight, TbExternalLink } from 'react-icons/tb';
+import {
+  TbActivity,
+  TbBrandGithub,
+  TbChevronRight,
+  TbExternalLink,
+} from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
 import { useAuth } from '@/modules/auth';
@@ -156,24 +161,20 @@ function Top() {
         ログアウト
       </Button>
       <HStack w="100%" justify="center">
-        <Link
-          href={import.meta.env.VITE_REPO_URL}
-          isExternal
-          _hover={{ textDecoration: 'none' }}
-        >
+        <ButtonGroup rounded="lg" variant="ghost">
           <Button
-            variant="solid"
-            bg="#0d1117"
-            color="white"
-            _hover={{
-              bg: 'gray.600',
-            }}
-            rounded="lg"
             leftIcon={<TbBrandGithub />}
+            onClick={() => window.open(import.meta.env.VITE_REPO_URL)}
           >
             GitHub
           </Button>
-        </Link>
+          <Button
+            leftIcon={<TbActivity />}
+            onClick={() => window.open(import.meta.env.VITE_STATUSPAGE_URL)}
+          >
+            サービス稼働状況
+          </Button>
+        </ButtonGroup>
       </HStack>
       <VStack>
         <Text textStyle="description" color="gray.400">
