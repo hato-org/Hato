@@ -218,6 +218,18 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                               : 'blue.400'
                             /* eslint-enable no-nested-ternary */
                           }
+                          _hover={{
+                            /* eslint-disable no-nested-ternary */
+                            bg: event.external
+                              ? event.isAllDay
+                                ? 'green.500'
+                                : 'green.100'
+                              : event.isAllDay
+                              ? 'blue.500'
+                              : 'blue.100',
+                            /* eslint-enable no-nested-ternary */
+                          }}
+                          transition="all .2s ease"
                           as={RouterLink}
                           to={`/events/${event._id}`}
                         >

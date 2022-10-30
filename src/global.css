@@ -8,6 +8,9 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   scrollbar-width: thin;
+  overflow-scrolling: touch;
+  -webkit-overlow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar,

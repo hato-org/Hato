@@ -44,7 +44,7 @@ const theme = extendTheme({
       border: '1px solid transparent',
       transition: 'all .2s ease',
       _hover: {
-        bg: 'gray.50',
+        bg: 'gray.100',
         // borderColor: 'gray.100',
         cursor: 'pointer',
       },

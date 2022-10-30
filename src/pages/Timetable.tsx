@@ -14,7 +14,7 @@ import {
   MenuItem,
   Box,
 } from '@chakra-ui/react';
-import { useQueries } from '@tanstack/react-query';
+import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { addDays, format, startOfDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { useState, useEffect } from 'react';
@@ -32,10 +32,12 @@ import ReportModal from '@/components/common/ReportModal';
 import { useCourseList } from '@/hooks/info';
 import { useUser } from '@/hooks/user';
 import { useClient } from '@/modules/client';
+import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 
 function Timetable() {
   const { data: user } = useUser();
   const { client } = useClient();
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -43,6 +45,7 @@ function Timetable() {
     onOpen: reportOnOpen,
     onClose: reportOnClose,
   } = useDisclosure();
+  const [tableFocus, setTableFocus] = useState(false);
 
   const [date, setDate] = useState(new Date());
   const [type, setType] = useState(user.type);
@@ -96,7 +99,7 @@ function Timetable() {
         replace: true,
       });
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -138,103 +141,112 @@ function Timetable() {
           </Box>
         </HStack>
       </Header>
-      <Center w="100%" mb={32}>
-        <VStack w="100%" px={4}>
-          <DateSwitcher
-            onPrev={() => {
-              const prevDate = subDays(date, 1);
-              searchParams.set('y', String(prevDate.getFullYear()));
-              searchParams.set('m', String(prevDate.getMonth() + 1));
-              searchParams.set('d', String(prevDate.getDate()));
-              setSearchParams(searchParams, { replace: true });
-              setDate(prevDate);
-            }}
-            onNext={() => {
-              const nextDate = addDays(date, 1);
-              searchParams.set('y', String(nextDate.getFullYear()));
-              searchParams.set('m', String(nextDate.getMonth() + 1));
-              searchParams.set('d', String(nextDate.getDate()));
-              setSearchParams(searchParams, { replace: true });
-              setDate(nextDate);
-            }}
-            onSelect={(e) => {
-              const newDate = new Date(e.target.value);
-              searchParams.set('y', String(newDate.getFullYear()));
-              searchParams.set('m', String(newDate.getMonth() + 1));
-              searchParams.set('d', String(newDate.getDate()));
-              setSearchParams(searchParams, { replace: true });
-              setDate(newDate);
-            }}
-            date={date}
-            px={2}
-          />
-          <GradeClassPicker
-            onGradeSelect={(gradeInfo) => {
-              setType(gradeInfo.type);
-              setGrade(gradeInfo.grade_num);
-            }}
-            onClassSelect={(classInfo) => {
-              setClass(classInfo.class_num);
-            }}
-            px={2}
-          />
-          <VStack
-            rounded="xl"
-            shadow="xl"
-            border="1px solid"
-            borderColor="gray.100"
-            w="100%"
-            align="flex-start"
-            p={6}
-            spacing={6}
-          >
-            <VStack w="100%" overflowX="auto" align="flex-start" spacing={4}>
+      <ChakraPullToRefresh
+        isPullable={!tableFocus}
+        onRefresh={async () => {
+          queryClient.invalidateQueries(['timetable']);
+        }}
+      >
+        <Center w="100%" mb={32}>
+          <VStack w="100%" px={4}>
+            <DateSwitcher
+              onPrev={() => {
+                const prevDate = subDays(date, 1);
+                searchParams.set('y', String(prevDate.getFullYear()));
+                searchParams.set('m', String(prevDate.getMonth() + 1));
+                searchParams.set('d', String(prevDate.getDate()));
+                setSearchParams(searchParams, { replace: true });
+                setDate(prevDate);
+              }}
+              onNext={() => {
+                const nextDate = addDays(date, 1);
+                searchParams.set('y', String(nextDate.getFullYear()));
+                searchParams.set('m', String(nextDate.getMonth() + 1));
+                searchParams.set('d', String(nextDate.getDate()));
+                setSearchParams(searchParams, { replace: true });
+                setDate(nextDate);
+              }}
+              onSelect={(e) => {
+                const newDate = new Date(e.target.value);
+                searchParams.set('y', String(newDate.getFullYear()));
+                searchParams.set('m', String(newDate.getMonth() + 1));
+                searchParams.set('d', String(newDate.getDate()));
+                setSearchParams(searchParams, { replace: true });
+                setDate(newDate);
+              }}
+              date={date}
+              px={2}
+            />
+            <GradeClassPicker
+              onGradeSelect={(gradeInfo) => {
+                setType(gradeInfo.type);
+                setGrade(gradeInfo.grade_num);
+              }}
+              onClassSelect={(classInfo) => {
+                setClass(classInfo.class_num);
+              }}
+              px={2}
+            />
+            <VStack
+              rounded="xl"
+              shadow="xl"
+              border="1px solid"
+              borderColor="gray.100"
+              w="100%"
+              align="flex-start"
+              p={6}
+              spacing={6}
+            >
+              <VStack w="100%" overflowX="auto" align="flex-start" spacing={4}>
+                <HStack w="100%">
+                  <Heading size="md">日課</Heading>
+                  <Spacer />
+                  <Text textStyle="description" fontSize="lg" fontWeight="bold">
+                    {timetableList?.[0]?.data?.week}週{' '}
+                    {format(date, 'eeee', { locale: ja })}
+                  </Text>
+                </HStack>
+                <StackDivider borderWidth="1px" borderColor="gray.100" />
+                <TimetableTable
+                  timetable={timetableList
+                    .map((timetable) => timetable.data)
+                    .filter(
+                      (timetable): timetable is CurrentTimetable => !!timetable
+                    )}
+                  onTouchStart={() => setTableFocus(true)}
+                  onTouchEnd={() => setTableFocus(false)}
+                />
+              </VStack>
+              {/* <StackDivider borderWidth="1px" /> */}
               <HStack w="100%">
-                <Heading size="md">日課</Heading>
+                <Heading size="md">特記事項・備考</Heading>
                 <Spacer />
-                <Text textStyle="description" fontSize="lg" fontWeight="bold">
-                  {timetableList?.[0]?.data?.week}週{' '}
-                  {format(date, 'eeee', { locale: ja })}
-                </Text>
-              </HStack>
-              <StackDivider borderWidth="1px" borderColor="gray.100" />
-              <TimetableTable
-                timetable={timetableList
-                  .map((timetable) => timetable.data)
-                  .filter(
-                    (timetable): timetable is CurrentTimetable => !!timetable
+                <AddNoteDrawer
+                  date={startOfDay(
+                    new Date(
+                      dateParams.year,
+                      dateParams.month - 1,
+                      dateParams.day
+                    )
                   )}
-              />
+                  isOpen={isOpen}
+                  onClose={onClose}
+                />
+                <IconButton
+                  colorScheme="blue"
+                  color="blue.400"
+                  aria-label="Add note"
+                  icon={<TbPlus />}
+                  variant="ghost"
+                  isRound
+                  onClick={onOpen}
+                />
+              </HStack>
+              <Notes {...{ type, grade, schoolClass }} {...dateParams} />
             </VStack>
-            {/* <StackDivider borderWidth="1px" /> */}
-            <HStack w="100%">
-              <Heading size="md">特記事項・備考</Heading>
-              <Spacer />
-              <AddNoteDrawer
-                date={startOfDay(
-                  new Date(
-                    dateParams.year,
-                    dateParams.month - 1,
-                    dateParams.day
-                  )
-                )}
-                isOpen={isOpen}
-                onClose={onClose}
-              />
-              <IconButton
-                colorScheme="blue"
-                color="blue.400"
-                aria-label="Add note"
-                icon={<TbPlus />}
-                variant="ghost"
-                isRound
-                onClick={onOpen}
-              />
-            </HStack>
-            <Notes {...{ type, grade, schoolClass }} {...dateParams} />
           </VStack>
-        </VStack>
-      </Center>
+        </Center>
+      </ChakraPullToRefresh>
       <BottomNavbar />
     </>
   );

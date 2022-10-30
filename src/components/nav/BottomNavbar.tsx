@@ -1,4 +1,4 @@
-import { HStack, Icon, Center, Box } from '@chakra-ui/react';
+import { HStack, Icon, Center, Box, IconButton } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   TbHome,
@@ -14,22 +14,22 @@ function BottomNavbar() {
   const menu = useMemo(
     () => [
       {
-        icon: TbHome,
+        icon: <Icon as={TbHome} h={8} w={8} />,
         label: 'ホーム',
         href: '/',
       },
       {
-        icon: TbClipboardList,
+        icon: <Icon as={TbClipboardList} h={8} w={8} />,
         label: '時間割',
         href: '/timetable',
       },
       {
-        icon: TbCalendar,
+        icon: <Icon as={TbCalendar} h={8} w={8} />,
         label: 'カレンダー',
         href: '/events',
       },
       {
-        icon: TbFileDescription,
+        icon: <Icon as={TbFileDescription} h={8} w={8} />,
         label: '掲示物',
         href: '/posts/hatoboard',
       },
@@ -51,12 +51,14 @@ function BottomNavbar() {
     >
       <HStack w="100%" justify="space-around">
         {menu.map(({ icon, label, href }) => (
-          <Center w="100%" flexGrow={1} as={Link} to={href} key={label} py={2}>
-            <Icon
-              as={icon}
-              w={8}
-              h={8}
+          <Center w="100%" flexGrow={1} as={Link} to={href} key={label} pt={1}>
+            <IconButton
+              aria-label={label}
+              icon={icon}
+              size="lg"
+              variant="ghost"
               color={location.pathname === href ? 'blue.300' : 'gray.600'}
+              isRound
             />
           </Center>
         ))}

@@ -1,4 +1,4 @@
-import { IconButton } from '@chakra-ui/react';
+import { Icon, IconButton } from '@chakra-ui/react';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ function BackButton() {
   return (
     <IconButton
       aria-label="go back"
-      icon={<TbArrowNarrowLeft />}
+      icon={<Icon as={TbArrowNarrowLeft} w={6} h={6} />}
       variant="ghost"
       size="lg"
       isRound

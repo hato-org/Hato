@@ -6,6 +6,7 @@ import {
   Center,
   Spacer,
   Link,
+  Icon,
 } from '@chakra-ui/react';
 import { TbExternalLink } from 'react-icons/tb';
 import { Outlet } from 'react-router-dom';
@@ -26,7 +27,7 @@ function Posts() {
           <Spacer />
           <IconButton
             aria-label="open hatoboard"
-            icon={<TbExternalLink />}
+            icon={<Icon as={TbExternalLink} w={6} h={6} />}
             size="lg"
             variant="ghost"
             isRound
