@@ -69,7 +69,7 @@ const PDFViewer = React.memo(
         allowPinchZoom
       >
         <DrawerOverlay />
-        <DrawerContent top={0}>
+        <DrawerContent top={0} bg="bg">
           <DrawerHeader shadow="xl">
             <HStack w="100%" spacing={1}>
               <Text textStyle="title" noOfLines={1}>

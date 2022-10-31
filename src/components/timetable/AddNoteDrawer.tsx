@@ -105,7 +105,11 @@ const AddNoteDrawer = React.memo(
         {...rest}
       >
         <DrawerOverlay />
-        <DrawerContent borderTopRadius="xl" pb="env(safe-area-inset-bottom)">
+        <DrawerContent
+          borderTopRadius="xl"
+          pb="env(safe-area-inset-bottom)"
+          bg="panel"
+        >
           <DrawerHeader>備考の追加</DrawerHeader>
           <DrawerBody px={0}>
             <VStack w="100%" textStyle="title">
@@ -113,7 +117,8 @@ const AddNoteDrawer = React.memo(
                 w="100%"
                 allowToggle
                 defaultIndex={0}
-                border="0px solid var(--chakra-colors-gray-100)"
+                border="0px solid"
+                borderColor="border"
                 rounded="lg"
               >
                 <AccordionItem>
@@ -139,13 +144,13 @@ const AddNoteDrawer = React.memo(
                     <Spacer />
                     <AccordionIcon />
                   </AccordionButton>
-                  <AccordionPanel px={6} py={0}>
+                  <AccordionPanel px={4} py={0}>
                     <Accordion
                       w="100%"
                       // allowMultiple
                       allowToggle
                       // border="0px solid transparent"
-                      borderColor="gray.100"
+                      borderColor="border"
                     >
                       {gradeList?.map((grade) => (
                         <AccordionItem key={grade.name}>

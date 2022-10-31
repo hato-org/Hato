@@ -7,6 +7,7 @@ import {
   Tbody,
   Td,
   TableProps,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 import Error from '../cards/Error';
@@ -20,12 +21,13 @@ interface TimetableTableProps extends TableProps {
 
 const TimetableTable = React.memo(
   ({ timetable, isLoading, error, ...rest }: TimetableTableProps) => {
+    const highlight = useColorModeValue('blue.50', 'whiteAlpha.100');
     if (isLoading) return <Loading />;
     if (error) return <Error error={error} />;
 
     return (
       <TableContainer w="100%" {...rest}>
-        <Table variant="simple" size="sm" textStyle="title">
+        <Table variant="simple" size="sm" textStyle="title" colorScheme="bg">
           <Thead>
             <Tr>
               <Th>時間</Th>
@@ -52,7 +54,7 @@ const TimetableTable = React.memo(
                     key={`${index}-${_}`}
                     bg={
                       index + 1 === timetable[0].period
-                        ? 'blue.50'
+                        ? highlight
                         : 'transparent'
                     }
                     color={index + 1 === timetable[0].period ? 'blue.400' : ''}

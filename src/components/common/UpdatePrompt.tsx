@@ -21,7 +21,7 @@ function UpdatePrompt() {
     <Slide direction="top" in={needRefresh} style={{ zIndex: 10 }}>
       <VStack
         position="relative"
-        bg="whiteAlpha.700"
+        bg="panel"
         m={4}
         p={4}
         shadow={needRefresh ? 'xl' : 'none'}
@@ -43,7 +43,7 @@ function UpdatePrompt() {
           w="100%"
           rounded="lg"
           colorScheme="blue"
-          onClick={() => updateServiceWorker(true)}
+          onClick={() => updateServiceWorker(false)}
         >
           再読み込み
         </Button>

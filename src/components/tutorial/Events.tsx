@@ -26,7 +26,7 @@ function Events({ isOpen, onClose }: TutorialEventsProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
       <ModalOverlay />
-      <ModalContent rounded="xl">
+      <ModalContent rounded="xl" bg="panel">
         <ModalHeader>使い方</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

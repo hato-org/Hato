@@ -93,6 +93,13 @@ function Top() {
           <Icon as={TbChevronRight} />
         </HStack>
       </SettingCategory>
+      <SettingCategory w="100%" title="画面表示">
+        <SettingButton
+          label="テーマ"
+          description="画面のテーマを変更できます。"
+          href="theme"
+        />
+      </SettingCategory>
       <SettingCategory w="100%" title="その他">
         <SettingButton
           label="時間割追加リクエスト"
@@ -105,7 +112,7 @@ function Top() {
           <>
             <Modal isCentered isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
-              <ModalContent rounded="xl">
+              <ModalContent rounded="xl" bg="panel">
                 <ModalHeader>キャッシュを削除しますか？</ModalHeader>
                 <ModalBody>
                   <VStack align="flex-start" w="100%" textStyle="title">

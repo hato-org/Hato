@@ -1,6 +1,27 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+
+const config: ThemeConfig = {
+  initialColorMode: 'system',
+  useSystemColorMode: true,
+};
+
+const colors = {
+  bg: {
+    '50': '#f7f7f7',
+    '100': '#eeeeee',
+    '200': '#e2e2e2',
+    '300': '#d0d0d0',
+    '400': '#ababab',
+    '500': '#8a8a8a',
+    '600': '#636363',
+    '700': '#505050',
+    '800': '#323232',
+    '900': '#121212',
+  },
+};
 
 const theme = extendTheme({
+  colors,
   semanticTokens: {
     colors: {
       title: {
@@ -9,18 +30,31 @@ const theme = extendTheme({
       },
       description: {
         default: 'gray.500',
-        _dark: 'gray.200',
+        _dark: 'gray.300',
       },
       bg: {
-        default: '#fff',
-        _dark: '#121212',
+        default: 'white',
+        _dark: 'bg.900',
+      },
+      panel: {
+        default: 'white',
+        _dark: '#202020',
+      },
+      border: {
+        default: 'bg.50',
+        _dark: 'transparent',
+      },
+      hover: {
+        default: 'blackAlpha.100',
+        _dark: 'whiteAlpha.100',
       },
     },
   },
   styles: {
     global: {
       'html, body': {
-        color: 'gray.600',
+        color: 'title',
+        bg: 'bg',
       },
     },
   },
@@ -44,12 +78,13 @@ const theme = extendTheme({
       border: '1px solid transparent',
       transition: 'all .2s ease',
       _hover: {
-        bg: 'gray.100',
+        bg: 'hover',
         // borderColor: 'gray.100',
         cursor: 'pointer',
       },
     },
   },
+  config,
 });
 
 export default theme;

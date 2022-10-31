@@ -59,7 +59,7 @@ function LoginButton({ onCredentialResponse, ...rest }: GoogleButtonParams) {
           ref={divRef}
           // height={"32px"}
           // bgColor="white"
-          // rounded="lg"
+          rounded="md"
           overflow="hidden"
           {...rest}
         />

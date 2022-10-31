@@ -32,7 +32,7 @@ function Home() {
               Beta
             </Text>
           </Heading>
-          <Text color="gray.500" fontWeight="bold" textAlign="center">
+          <Text color="description" fontWeight="bold" textAlign="center">
             屋代高校のすべてが見れるプラットフォーム
             <br />
             （仮）

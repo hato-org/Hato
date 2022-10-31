@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   VStack,
   HStack,
@@ -22,6 +23,7 @@ import PDFViewer from './PDFViewer';
 function Post({ id }: { id: string }) {
   const { client } = useClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedAttachment, setSelectedAttachment] = useState('');
 
   const { data, error, isLoading } = useQuery<Post, AxiosError>(
     ['post', id],
@@ -54,14 +56,20 @@ function Post({ id }: { id: string }) {
               size="lg"
               variant="outline"
               rounded="full"
-              onClick={onOpen}
+              onClick={() => {
+                onOpen();
+                setSelectedAttachment(attachment.id);
+              }}
               layerStyle="button"
             >
               <TagLeftIcon as={TbFile} />
               <TagLabel fontWeight="bold">{attachment.name}</TagLabel>
               <PDFViewer
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpen && selectedAttachment === attachment.id}
+                onClose={() => {
+                  onClose();
+                  setSelectedAttachment('');
+                }}
                 attachment={attachment}
               />
             </Tag>

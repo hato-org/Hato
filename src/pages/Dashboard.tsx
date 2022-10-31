@@ -81,13 +81,13 @@ function Dashboard() {
             </Text>
           </VStack> */}
           <CardElement.Info />
-          <Card w={{ base: '100%' }} border="1px solid" borderColor="gray.100">
+          <Card w={{ base: '100%' }}>
             <CardElement.Timetable />
           </Card>
-          <Card w="100%" border="1px solid" borderColor="gray.100">
+          <Card w="100%">
             <CardElement.Events />
           </Card>
-          <Card w="100%" border="1px solid" borderColor="gray.100">
+          <Card w="100%">
             <CardElement.Hatoboard />
           </Card>
         </Stack>

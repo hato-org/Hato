@@ -33,6 +33,7 @@ import { useCourseList } from '@/hooks/info';
 import { useUser } from '@/hooks/user';
 import { useClient } from '@/modules/client';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
+import Card from '@/components/layout/Card';
 
 function Timetable() {
   const { data: user } = useUser();
@@ -187,63 +188,66 @@ function Timetable() {
               }}
               px={2}
             />
-            <VStack
-              rounded="xl"
-              shadow="xl"
-              border="1px solid"
-              borderColor="gray.100"
-              w="100%"
-              align="flex-start"
-              p={6}
-              spacing={6}
-            >
-              <VStack w="100%" overflowX="auto" align="flex-start" spacing={4}>
+            <Card w="100%">
+              <VStack w="100%" align="flex-start" p={2} spacing={6}>
+                <VStack
+                  w="100%"
+                  overflowX="auto"
+                  align="flex-start"
+                  spacing={4}
+                >
+                  <HStack w="100%">
+                    <Heading size="md">日課</Heading>
+                    <Spacer />
+                    <Text
+                      textStyle="description"
+                      fontSize="lg"
+                      fontWeight="bold"
+                    >
+                      {timetableList?.[0]?.data?.week}週{' '}
+                      {format(date, 'eeee', { locale: ja })}
+                    </Text>
+                  </HStack>
+                  <StackDivider borderWidth="1px" borderColor="border" />
+                  <TimetableTable
+                    timetable={timetableList
+                      .map((timetable) => timetable.data)
+                      .filter(
+                        (timetable): timetable is CurrentTimetable =>
+                          !!timetable
+                      )}
+                    onTouchStart={() => setTableFocus(true)}
+                    onTouchEnd={() => setTableFocus(false)}
+                  />
+                </VStack>
+                {/* <StackDivider borderWidth="1px" /> */}
                 <HStack w="100%">
-                  <Heading size="md">日課</Heading>
+                  <Heading size="md">特記事項・備考</Heading>
                   <Spacer />
-                  <Text textStyle="description" fontSize="lg" fontWeight="bold">
-                    {timetableList?.[0]?.data?.week}週{' '}
-                    {format(date, 'eeee', { locale: ja })}
-                  </Text>
-                </HStack>
-                <StackDivider borderWidth="1px" borderColor="gray.100" />
-                <TimetableTable
-                  timetable={timetableList
-                    .map((timetable) => timetable.data)
-                    .filter(
-                      (timetable): timetable is CurrentTimetable => !!timetable
+                  <AddNoteDrawer
+                    date={startOfDay(
+                      new Date(
+                        dateParams.year,
+                        dateParams.month - 1,
+                        dateParams.day
+                      )
                     )}
-                  onTouchStart={() => setTableFocus(true)}
-                  onTouchEnd={() => setTableFocus(false)}
-                />
+                    isOpen={isOpen}
+                    onClose={onClose}
+                  />
+                  <IconButton
+                    colorScheme="blue"
+                    color="blue.400"
+                    aria-label="Add note"
+                    icon={<TbPlus />}
+                    variant="ghost"
+                    isRound
+                    onClick={onOpen}
+                  />
+                </HStack>
+                <Notes {...{ type, grade, schoolClass }} {...dateParams} />
               </VStack>
-              {/* <StackDivider borderWidth="1px" /> */}
-              <HStack w="100%">
-                <Heading size="md">特記事項・備考</Heading>
-                <Spacer />
-                <AddNoteDrawer
-                  date={startOfDay(
-                    new Date(
-                      dateParams.year,
-                      dateParams.month - 1,
-                      dateParams.day
-                    )
-                  )}
-                  isOpen={isOpen}
-                  onClose={onClose}
-                />
-                <IconButton
-                  colorScheme="blue"
-                  color="blue.400"
-                  aria-label="Add note"
-                  icon={<TbPlus />}
-                  variant="ghost"
-                  isRound
-                  onClick={onOpen}
-                />
-              </HStack>
-              <Notes {...{ type, grade, schoolClass }} {...dateParams} />
-            </VStack>
+            </Card>
           </VStack>
         </Center>
       </ChakraPullToRefresh>

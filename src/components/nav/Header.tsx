@@ -24,8 +24,8 @@ function Header({ children, ...rest }: CenterProps) {
       // py={4}
       mb={4}
       borderBottom="1px solid"
-      borderColor="gray.100"
-      bg="white"
+      borderColor="border"
+      bg="bg"
       shadow="xl"
       zIndex={1}
       {...rest}

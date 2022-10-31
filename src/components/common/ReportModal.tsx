@@ -187,7 +187,7 @@ function ReportModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent rounded="xl">
+      <ModalContent rounded="xl" bg="panel">
         <ModalHeader>報告</ModalHeader>
         <ModalBody>
           <VStack align="flex-start">

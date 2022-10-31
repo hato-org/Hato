@@ -47,7 +47,7 @@ function BottomNavbar() {
       shadow="xl"
       bg="bg"
       borderTop="1px solid"
-      borderColor="gray.100"
+      borderColor="border"
     >
       <HStack w="100%" justify="space-around">
         {menu.map(({ icon, label, href }) => (
@@ -57,7 +57,7 @@ function BottomNavbar() {
               icon={icon}
               size="lg"
               variant="ghost"
-              color={location.pathname === href ? 'blue.300' : 'gray.600'}
+              color={location.pathname === href ? 'blue.300' : 'description'}
               isRound
             />
           </Center>
