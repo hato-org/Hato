@@ -1,4 +1,12 @@
-import { Heading, HStack, Icon, Spacer, Text, VStack } from '@chakra-ui/react';
+import {
+  Center,
+  Heading,
+  HStack,
+  Icon,
+  Spacer,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { TbChevronRight } from 'react-icons/tb';
@@ -36,7 +44,15 @@ function Hatoboard() {
           <Text pl={2} textStyle="title" fontSize="lg">
             最新の投稿
           </Text>
-          <Card {...data[0]} />
+          {data.length ? (
+            <Card {...data[0]} />
+          ) : (
+            <Center w="100%" pt={4}>
+              <Text textStyle="description" fontWeight="bold">
+                投稿がありません
+              </Text>
+            </Center>
+          )}
         </VStack>
       )}
       {/* eslint-enable no-nested-ternary */}

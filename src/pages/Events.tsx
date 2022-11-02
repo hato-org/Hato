@@ -86,7 +86,7 @@ function Events() {
           <Spacer />
           <IconButton
             aria-label="open help"
-            icon={<TbInfoCircle />}
+            icon={<Icon as={TbInfoCircle} w={6} h={6} />}
             onClick={onHelpOpen}
             isRound
             size="lg"

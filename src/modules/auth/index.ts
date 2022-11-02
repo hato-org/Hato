@@ -121,6 +121,7 @@ export const useAuth = () => {
     {
       onSuccess: (newUser) => {
         queryClient.setQueryData(['user', newUser._id], newUser);
+        setUser(newUser);
       },
       onError: (error) => {
         console.error(error);

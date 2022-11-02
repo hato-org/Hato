@@ -129,11 +129,16 @@ function NoteCard({ note }: { note: Note }) {
     setMessage(note.message);
   }, [note]);
 
-  const { mutate: editMutate } = useMutation<Note, AxiosError, Note>(
+  const { mutate: editMutate, isLoading: editMutateLoading } = useMutation<
+    Note,
+    AxiosError,
+    Note
+  >(
     async (newNote) =>
       (await client.post(`/timetable/note/${newNote._id}`, newNote)).data,
     {
       onSuccess: (newNote) => {
+        setEditMode(false);
         toast({
           status: 'success',
           title: '保存しました。',
@@ -240,9 +245,9 @@ function NoteCard({ note }: { note: Note }) {
               variant="solid"
               colorScheme="green"
               icon={<TbCheck />}
+              isLoading={editMutateLoading}
               onClick={() => {
                 editMutate({ ...note, message });
-                setEditMode(false);
               }}
             />
           </HStack>

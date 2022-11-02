@@ -1,5 +1,4 @@
 import {
-  Center,
   Heading,
   HStack,
   Icon,
@@ -8,7 +7,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { TbArrowNarrowDown, TbSettings } from 'react-icons/tb';
+import { TbSettings } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
@@ -16,7 +15,6 @@ import Card from '@/components/layout/Card';
 import CardElement from '@/components/cards';
 import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
-import Loading from '@/components/common/Loading';
 
 function Dashboard() {
   // const [date] = useSeconds();
@@ -43,7 +41,6 @@ function Dashboard() {
         <title>ホーム - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
       <Header>
-        {/* <Account rounded="xl" /> */}
         <HStack w="100%" px={2}>
           {/* <Image src='./hato.png' h={8} px={2} fallback={<SkeletonCircle size='8' px={2} />} /> */}
           {/* <Avatar src={user?.avatar} size='sm' ml={2} /> */}
@@ -53,7 +50,7 @@ function Dashboard() {
           <Spacer />
           <IconButton
             aria-label="Go to settings"
-            icon={<TbSettings />}
+            icon={<Icon as={TbSettings} w={6} h={6} />}
             variant="ghost"
             size="lg"
             isRound
@@ -73,14 +70,8 @@ function Dashboard() {
             queryClient.invalidateQueries(['posts']),
           ]);
         }}
-        refreshingContent={<Loading />}
-        pullingContent={
-          <Center flexGrow={1} p={4}>
-            <Icon as={TbArrowNarrowDown} w={6} h={6} color="gray.500" />
-          </Center>
-        }
       >
-        <Stack w="100%" p={4} pb={8} spacing={8}>
+        <Stack flex={1} p={4} pb={16} spacing={8}>
           {/* <VStack w="100%" align="flex-start" spacing={1}>
             <Heading as="h2" textStyle="title">
               {greet}
@@ -90,13 +81,13 @@ function Dashboard() {
             </Text>
           </VStack> */}
           <CardElement.Info />
-          <Card w={{ base: '100%' }} border="1px solid" borderColor="gray.100">
+          <Card w={{ base: '100%' }}>
             <CardElement.Timetable />
           </Card>
-          <Card w="100%" border="1px solid" borderColor="gray.100">
+          <Card w="100%">
             <CardElement.Events />
           </Card>
-          <Card w="100%" border="1px solid" borderColor="gray.100">
+          <Card w="100%">
             <CardElement.Hatoboard />
           </Card>
         </Stack>

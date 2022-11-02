@@ -61,23 +61,28 @@ function Account() {
     isLoading: courseIsLoading,
   } = useCourseList({ type: user?.type, grade: user?.grade });
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isUsernameOpen,
+    onOpen: onUsernameOpen,
+    onClose: onUsernameClose,
+  } = useDisclosure();
   const [username, setUsername] = useState(user.name);
   const isFulfilled = username.length <= 20;
 
   const list = [
     {
       label: 'アカウント名',
-      description: 'アカウント名を変更できます。',
+      description: 'Hato上で表示されるアカウント名。',
+      onClick: onUsernameOpen,
       children: (
         <>
-          <HStack rounded="md" onClick={onOpen} py={2}>
+          <HStack rounded="md" py={2}>
             <Text textStyle="title" noOfLines={1}>
               {username}
             </Text>
             <Icon as={TbEdit} />
           </HStack>
-          <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <Modal isOpen={isUsernameOpen} onClose={onUsernameClose} isCentered>
             <ModalOverlay />
             <ModalContent rounded="xl">
               <ModalHeader>アカウント名の変更</ModalHeader>
@@ -97,7 +102,12 @@ function Account() {
                 </VStack>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onClick={onClose} mr={2} rounded="lg">
+                <Button
+                  variant="ghost"
+                  onClick={onUsernameClose}
+                  mr={2}
+                  rounded="lg"
+                >
                   キャンセル
                 </Button>
                 <Button
@@ -105,7 +115,7 @@ function Account() {
                   onClick={
                     isFulfilled
                       ? () => {
-                          onClose();
+                          onUsernameClose();
                           update({ name: username });
                         }
                       : () => {}
@@ -123,14 +133,14 @@ function Account() {
     },
     {
       label: '学年',
-      description: '学年を変更できます。',
+      description: '自分が所属している学年。',
       children: (
         // <Select variant="unstyled" textStyle="title" placeholder="選択してください">
         //   {grades.map(({ type, grade, label }) => (
         //     <option value={[type, grade.toString()]}>{label}</option>
         //   ))}
         // </Select>
-        <Box>
+        <Box w="100%">
           <Menu>
             <Skeleton isLoaded={!gradeIsLoading} rounded="lg">
               {gradeError ? (
@@ -139,8 +149,8 @@ function Account() {
                   <Text textStyle="title">エラー</Text>
                 </HStack>
               ) : (
-                <MenuButton rounded="lg">
-                  <HStack py={2} pl={4}>
+                <MenuButton rounded="lg" w="100%">
+                  <HStack py={2} pl={4} justify="flex-end">
                     <Text textStyle="title">
                       {gradeList?.find(
                         ({ type, grade_num }) =>
@@ -155,8 +165,8 @@ function Account() {
             <MenuList shadow="lg" rounded="xl" py={2}>
               {gradeList?.map(({ name, type, grade_num }) => (
                 <MenuItem
-                  onClick={async () => {
-                    await update({ type, grade: grade_num });
+                  onClick={() => {
+                    update({ type, grade: grade_num });
                   }}
                   key={name}
                   fontWeight="bold"
@@ -171,14 +181,14 @@ function Account() {
     },
     {
       label: 'クラス',
-      description: 'クラスを変更できます。',
+      description: '自分が所属しているクラス。',
       children: (
         // <Select variant="unstyled" textStyle="title">
         //   {classes.map(({ class: schoolClass, label }) => (
         //     <option value={schoolClass}>{label}</option>
         //   ))}
         // </Select>
-        <Box>
+        <Box w="100%">
           <Menu>
             <Skeleton isLoaded={!classIsLoading} rounded="lg">
               {classError ? (
@@ -187,8 +197,8 @@ function Account() {
                   <Text textStyle="title">エラー</Text>
                 </HStack>
               ) : (
-                <MenuButton rounded="lg">
-                  <HStack rounded="xl" py={2} pl={4}>
+                <MenuButton rounded="lg" w="100%">
+                  <HStack rounded="xl" py={2} pl={4} justify="flex-end">
                     <Text textStyle="title">
                       {classList?.find(
                         ({ class_num }) => class_num === user?.class
@@ -219,9 +229,9 @@ function Account() {
     courseList?.length
       ? {
           label: 'コース',
-          description: 'コースを変更できます。',
+          description: '自分が所属しているコース。',
           children: (
-            <Box>
+            <Box w="100%">
               <Menu>
                 <Skeleton isLoaded={!courseIsLoading} rounded="lg">
                   {courseError ? (
@@ -230,8 +240,8 @@ function Account() {
                       <Text textStyle="title">エラー</Text>
                     </HStack>
                   ) : (
-                    <MenuButton rounded="lg">
-                      <HStack rounded="xl" py={2} pl={4}>
+                    <MenuButton rounded="lg" w="100%">
+                      <HStack rounded="xl" py={2} pl={4} justify="flex-end">
                         <Text textStyle="title">
                           {courseList?.find(({ code }) => code === user?.course)
                             ?.name ?? '未設定'}
@@ -244,8 +254,8 @@ function Account() {
                 <MenuList shadow="lg" rounded="xl">
                   {courseList?.map(({ name, code }) => (
                     <MenuItem
-                      onClick={async () => {
-                        await update({ course: code });
+                      onClick={() => {
+                        update({ course: code });
                       }}
                       key={name}
                       fontWeight="bold"

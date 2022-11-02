@@ -30,7 +30,7 @@ function Info() {
   if (isInfoSet && (isPWA || tutorial.ATHS)) return <></>;
 
   return (
-    <Card w={{ base: '100%' }} border="1px solid" borderColor="gray.100">
+    <Card w={{ base: '100%' }} border="1px solid" borderColor="border">
       <Center w="100%">
         <VStack w="100%">
           {!isInfoSet && (

@@ -28,7 +28,7 @@ function Login() {
             <br />
             でログインしてください。
           </Text>
-          <LoginButton shadow="xl" onCredentialResponse={login} />
+          <LoginButton shadow="md" onCredentialResponse={login} />
           <Button
             as={RouterLink}
             to="/"

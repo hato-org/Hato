@@ -118,7 +118,11 @@ const AddEventDrawer = React.memo(
         {...rest}
       >
         <DrawerOverlay />
-        <DrawerContent borderTopRadius="xl" pb="env(safe-area-inset-bottom)">
+        <DrawerContent
+          borderTopRadius="xl"
+          pb="env(safe-area-inset-bottom)"
+          bg="panel"
+        >
           <DrawerHeader>イベントの追加</DrawerHeader>
           <DrawerBody>
             <VStack spacing={8}>

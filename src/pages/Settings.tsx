@@ -1,14 +1,12 @@
-import { Center, HStack, Heading, IconButton } from '@chakra-ui/react';
+import { Center, HStack, Heading } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
-import { TbArrowNarrowLeft } from 'react-icons/tb';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
+import BackButton from '@/components/layout/BackButton';
 
 function Settings() {
-  const navigate = useNavigate();
-
   return (
     <>
       <Helmet>
@@ -16,14 +14,7 @@ function Settings() {
       </Helmet>
       <Header>
         <HStack w="100%" px={2}>
-          <IconButton
-            aria-label="go back"
-            icon={<TbArrowNarrowLeft />}
-            variant="ghost"
-            size="lg"
-            isRound
-            onClick={() => navigate(-1)}
-          />
+          <BackButton />
           <Heading size="md" py={4}>
             設定
           </Heading>
