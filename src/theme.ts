@@ -22,6 +22,9 @@ const colors = {
 
 const theme = extendTheme({
   colors,
+  fonts: {
+    body: `"Noto Sans JP", sans-serif`,
+  },
   semanticTokens: {
     colors: {
       title: {
@@ -71,6 +74,7 @@ const theme = extendTheme({
       color: 'blue.500',
       textDecoration: 'underline',
       textUnderlineOffset: '4px',
+      cursor: 'pointer',
     },
   },
   layerStyles: {

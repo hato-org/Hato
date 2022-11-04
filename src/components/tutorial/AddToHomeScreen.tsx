@@ -24,9 +24,9 @@ function AddToHomeScreen({ isOpen, onClose }: TutorialATHSProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg="panel">
         <ModalHeader>ホーム画面に追加</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton top={4} right={4} />
         <ModalBody>
           <VStack px={4} align="flex-start">
             <Heading size="md">iPhone (Safari)</Heading>

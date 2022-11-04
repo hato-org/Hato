@@ -37,11 +37,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tsConfigPaths(),
-      VitePluginFonts({
-        google: {
-          families: ['Josefin Sans'],
-        },
-      }),
       VitePWA({
         registerType: 'prompt',
         manifest: {
