@@ -21,7 +21,7 @@ import {
   Tag,
 } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import {
   TbCheck,
@@ -36,34 +36,19 @@ import { useUser } from '@/hooks/user';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import ReportModal from '../common/ReportModal';
+import { useNotes } from '@/hooks/timetable';
 
 interface NotesProps extends StackProps {
-  year: number;
-  month: number;
-  day: number;
+  date: Date;
   type: Type;
   grade: number;
   schoolClass: number;
 }
 
-function Notes({
-  year,
-  month,
-  day,
-  type,
-  grade,
-  schoolClass,
-  ...rest
-}: NotesProps) {
-  const { client } = useClient();
+function Notes({ date, type, grade, schoolClass, ...rest }: NotesProps) {
   const { data: user } = useUser();
 
-  const { data, isLoading, error } = useQuery<Note[], AxiosError>(
-    ['timetable', 'note', { year, month, day }],
-    async () =>
-      (await client.get('/timetable/note', { params: { year, month, day } }))
-        .data
-  );
+  const { data, isLoading, error } = useNotes({ date });
 
   if (isLoading) return <Loading />;
 

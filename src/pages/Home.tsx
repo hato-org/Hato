@@ -1,8 +1,14 @@
 import { Button, Center, Heading, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink } from 'react-router-dom';
+import { useUser } from '@/hooks/user';
+import Dashboard from './Dashboard';
 
 function Home() {
+  const { data: user } = useUser();
+
+  if (user) return <Dashboard />;
+
   return (
     <>
       <Helmet>

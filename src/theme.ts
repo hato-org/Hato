@@ -23,12 +23,13 @@ const colors = {
 const theme = extendTheme({
   colors,
   fonts: {
-    body: `"Noto Sans JP", sans-serif`,
+    heading: `-apple-system, "Noto Sans JP", sans-serif`,
+    body: `-apple-system, "Noto Sans JP", sans-serif`,
   },
   semanticTokens: {
     colors: {
       title: {
-        default: 'gray.600',
+        default: 'gray.700',
         _dark: 'gray.100',
       },
       description: {

@@ -7,11 +7,13 @@ import {
   Icon,
   Progress,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { onlineManager, useIsFetching } from '@tanstack/react-query';
 import { TbCloudOff } from 'react-icons/tb';
 
 function Header({ children, ...rest }: CenterProps) {
+  const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
   const isOnline = onlineManager.isOnline();
 
@@ -32,7 +34,7 @@ function Header({ children, ...rest }: CenterProps) {
     >
       <Box w="100%">
         <Collapse in={!isOnline}>
-          <HStack w="100%" justify="center" py={1} bg="gray.300">
+          <HStack w="100%" justify="center" py={1} bg={offlineBg}>
             <Icon as={TbCloudOff} w={6} h={6} />
             <Text textStyle="title">オフライン</Text>
           </HStack>
