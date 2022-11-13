@@ -55,7 +55,7 @@ const PDFViewer = React.memo(
           })
         ).data,
       {
-        staleTime: 1000 * 60 * 60 * 24, // 24 hours
+        staleTime: Infinity, // Infinity
         cacheTime: Infinity, // Infinity
       }
     );
