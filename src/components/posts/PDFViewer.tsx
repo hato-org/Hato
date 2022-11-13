@@ -11,8 +11,9 @@ import {
   Link,
   Collapse,
   Progress,
-  chakra,
   Spacer,
+  Center,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useQuery, useIsFetching } from '@tanstack/react-query';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -33,13 +34,14 @@ interface PDFViewerProps {
   attachment: Attachment;
 }
 
-const ChakraDocument = chakra(Document);
-const ChakraPage = chakra(Page);
-
 const PDFViewer = React.memo(
   ({ isOpen, onClose, attachment }: PDFViewerProps) => {
     const { client } = useClient();
-    const isFetching = useIsFetching();
+    const isFetching = useIsFetching(['post', 'attachment']);
+    const pdfWidth = useBreakpointValue({
+      base: window.innerWidth,
+      md: undefined,
+    });
 
     const { data, error, isLoading } = useQuery<ArrayBuffer, AxiosError>(
       ['post', 'attachment', attachment.id],
@@ -71,7 +73,14 @@ const PDFViewer = React.memo(
         <DrawerOverlay />
         <DrawerContent top={0} bg="bg">
           <DrawerHeader shadow="xl">
-            <HStack w="100%" spacing={1}>
+            <HStack align="center" w="100%" spacing={2}>
+              <IconButton
+                aria-label="close"
+                icon={<TbX />}
+                variant="ghost"
+                onClick={onClose}
+                isRound
+              />
               <Text textStyle="title" noOfLines={1}>
                 {attachment.name}
               </Text>
@@ -85,13 +94,6 @@ const PDFViewer = React.memo(
                 isExternal
                 isRound
               />
-              <IconButton
-                aria-label="close"
-                icon={<TbX />}
-                variant="ghost"
-                onClick={onClose}
-                isRound
-              />
             </HStack>
             <Box w="100%">
               <Collapse in={!!isFetching}>
@@ -99,21 +101,16 @@ const PDFViewer = React.memo(
               </Collapse>
             </Box>
           </DrawerHeader>
-          <DrawerBody>
-            <Box w="100%" py={4}>
+          <DrawerBody p={0} position="relative" zIndex={-5}>
+            <Center>
               {/* eslint-disable no-nested-ternary */}
               {isLoading ? (
                 <Loading />
               ) : error ? (
                 <Error error={error} />
               ) : (
-                <ChakraDocument
-                  w="100%"
+                <Document
                   file={{
-                    // url: `/api/post/attachment/${attachment.id}`,
-                    // httpHeaders: {
-                    // 	"X-APIKEY": user?.apiKey,
-                    // },
                     data,
                   }}
                   onLoadSuccess={(pdf) => {
@@ -123,18 +120,18 @@ const PDFViewer = React.memo(
                   // renderMode="svg"
                 >
                   {Array.from(new Array(pageCount), (el, index) => (
-                    <ChakraPage
-                      zIndex={-5}
-                      px="auto"
-                      key={`page_${index + 1}`}
-                      pageNumber={index + 1}
-                      loading={<Loading />}
-                    />
+                    <Center key={`page_${index + 1}`} py={2} shadow="md">
+                      <Page
+                        width={pdfWidth}
+                        pageNumber={index + 1}
+                        loading={<Loading />}
+                      />
+                    </Center>
                   ))}
-                </ChakraDocument>
+                </Document>
               )}
               {/* eslint-enable no-nested-ternary */}
-            </Box>
+            </Center>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
