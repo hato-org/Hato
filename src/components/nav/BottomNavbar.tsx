@@ -57,7 +57,7 @@ function BottomNavbar() {
               icon={icon}
               size="lg"
               variant="ghost"
-              color={location.pathname === href ? 'blue.300' : 'description'}
+              color={location.pathname === href ? 'blue.300' : 'title'}
               isRound
             />
           </Center>
