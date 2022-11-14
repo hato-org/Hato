@@ -6,13 +6,13 @@ import {
   Icon,
   Spacer,
   TagCloseButton,
-  Wrap,
   IconButton,
   Collapse,
   useDisclosure,
   Box,
   Center,
   StackDivider,
+  WrapItem,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -112,11 +112,11 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
 
   return (
     <VStack w="100%" spacing={2}>
-      <HStack w="100%">
+      <HStack w="100%" overflowX="auto">
         <Icon as={TbFilter} w={6} h={6} />
-        <Wrap align="center" w="100%">
-          {tags?.map((tag) => (
-            <Tag whiteSpace="nowrap" key={tag.value}>
+        {tags?.map((tag) => (
+          <WrapItem>
+            <Tag size="md" rounded="full" whiteSpace="nowrap" key={tag.value}>
               {tag.label}
               <TagCloseButton
                 onClick={() => {
@@ -126,7 +126,9 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
                 }}
               />
             </Tag>
-          ))}
+          </WrapItem>
+        ))}
+        <Center bg="panel" position="sticky" right={0} pl={1}>
           <IconButton
             aria-label="Add filter"
             icon={<TbPlus />}
@@ -135,7 +137,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             size="sm"
             onClick={onToggle}
           />
-        </Wrap>
+        </Center>
       </HStack>
       <Box w="100%">
         <Collapse in={isOpen}>
