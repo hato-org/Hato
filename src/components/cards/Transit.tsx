@@ -65,39 +65,23 @@ export default function Transit() {
             長野方面
           </Text>
           <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
-            {data?.nagano.length ? (
-              <TransitButton
-                date={date}
-                transits={data.nagano}
-                isOpen={isNaganoOpen}
-                onToggle={onNaganoToggle}
-              />
-            ) : (
-              <Center w="100%" py={2}>
-                <Text textStyle="description" fontWeight="bold">
-                  次の電車はありません
-                </Text>
-              </Center>
-            )}
+            <TransitButton
+              date={date}
+              transits={data?.nagano}
+              isOpen={isNaganoOpen}
+              onToggle={onNaganoToggle}
+            />
           </Skeleton>
           <Text textStyle="title" fontSize="lg">
             上田方面
           </Text>
           <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
-            {data?.ueda.length ? (
-              <TransitButton
-                date={date}
-                transits={data.ueda}
-                isOpen={isUedaOpen}
-                onToggle={onUedaToggle}
-              />
-            ) : (
-              <Center w="100%" py={2}>
-                <Text textStyle="description" fontWeight="bold">
-                  次の電車はありません
-                </Text>
-              </Center>
-            )}
+            <TransitButton
+              date={date}
+              transits={data?.ueda}
+              isOpen={isUedaOpen}
+              onToggle={onUedaToggle}
+            />
           </Skeleton>
         </VStack>
       </HStack>
@@ -111,16 +95,16 @@ function TransitButton({
   isOpen,
   onToggle,
 }: {
-  transits: TransitInfo[];
+  transits?: TransitInfo[];
   date: Date;
   isOpen: boolean;
   onToggle: () => void;
 }) {
-  const upcomingTransit = transits.filter(
+  const upcomingTransit = transits?.filter(
     (transit) => new Date(transit.leaveAt).valueOf() > Date.now()
   );
 
-  return (
+  return upcomingTransit?.length ? (
     <VStack w="100%" spacing={0} rounded="xl" layerStyle="button">
       <HStack w="100%" p={2} onClick={onToggle}>
         <StackDivider borderWidth={2} borderColor="blue.400" />
@@ -145,6 +129,12 @@ function TransitButton({
         </Collapse>
       </Box>
     </VStack>
+  ) : (
+    <Center w="100%" py={2}>
+      <Text textStyle="description" fontWeight="bold">
+        次の電車はありません
+      </Text>
+    </Center>
   );
 }
 
