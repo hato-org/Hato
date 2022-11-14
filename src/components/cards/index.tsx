@@ -3,6 +3,7 @@ import Events from './Events';
 import Error from './Error';
 import Info from './Info';
 import Hatoboard from './Hatoboard';
+import Transit from './Transit';
 
 export default {
   Timetable,
@@ -10,4 +11,5 @@ export default {
   Error,
   Info,
   Hatoboard,
+  Transit,
 };

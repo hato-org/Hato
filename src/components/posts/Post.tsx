@@ -55,7 +55,7 @@ function Post({ id }: { id: string }) {
         <HStack textStyle="description">
           <Icon as={TbClock} w={6} h={6} />
           <Text fontSize="md" fontWeight="bold">
-            {format(new Date(data.createdAt), 'yyyy/MM/dd hh:mm')}
+            {format(new Date(data.createdAt), 'yyyy/MM/dd HH:mm')}
           </Text>
         </HStack>
 

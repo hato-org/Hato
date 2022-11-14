@@ -68,6 +68,7 @@ function Dashboard() {
             queryClient.invalidateQueries(['timetable']),
             queryClient.invalidateQueries(['calendar']),
             queryClient.invalidateQueries(['posts']),
+            queryClient.invalidateQueries(['transit']),
           ]);
         }}
       >

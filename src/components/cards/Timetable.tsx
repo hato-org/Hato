@@ -13,10 +13,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight, TbPoint } from 'react-icons/tb';
 import TimetableTable from '../timetable/Table';
 import { useCurrentTable, useNotes } from '@/hooks/timetable';
+import Transit from './Transit';
 
 function Timetable() {
   const { data, isLoading, error } = useCurrentTable();
   const { data: notes } = useNotes({ date: new Date() });
+
+  if (data?.period === 7) return <Transit />;
 
   return (
     <VStack w="100%" spacing={4}>
