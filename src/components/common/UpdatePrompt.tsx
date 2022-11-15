@@ -43,7 +43,7 @@ function UpdatePrompt() {
           w="100%"
           rounded="lg"
           colorScheme="blue"
-          onClick={() => updateServiceWorker(false)}
+          onClick={() => updateServiceWorker(true)}
         >
           再読み込み
         </Button>
