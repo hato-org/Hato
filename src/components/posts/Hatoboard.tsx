@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   VStack,
   Center,
@@ -11,6 +12,7 @@ import {
 import { TbArrowNarrowDown } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useSearchParams } from 'react-router-dom';
 import { useClient } from '@/modules/client';
 import CardElement from '../cards';
 import Loading from '../common/Loading';
@@ -20,6 +22,21 @@ import Card from './Card';
 function Hatoboard() {
   const { client } = useClient();
   const queryClient = useQueryClient();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (!searchParams.has('tab')) {
+      setSearchParams(
+        {
+          tab: '0',
+        },
+        {
+          replace: true,
+        }
+      );
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data, error, isLoading } = useQuery<Post[], AxiosError>(
     ['posts', 'hatoboard'],
@@ -49,7 +66,13 @@ function Hatoboard() {
         </Center>
       }
     >
-      <Tabs w="100%" isFitted size="lg">
+      <Tabs
+        w="100%"
+        isFitted
+        size="lg"
+        defaultIndex={Number(searchParams.get('tab'))}
+        onChange={(index) => setSearchParams({ tab: index.toString() })}
+      >
         <TabList w="100%">
           <Tab
             textStyle="title"

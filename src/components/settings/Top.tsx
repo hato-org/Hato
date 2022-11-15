@@ -30,8 +30,10 @@ import {
 } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
+import { useSetRecoilState } from 'recoil';
 import { useAuth } from '@/modules/auth';
 import { useUser } from '@/hooks/user';
+import { tutorialAtom } from '@/store/tutorial';
 import { MotionVStack } from '../motion';
 import SettingButton from './Button';
 
@@ -40,6 +42,7 @@ function Top() {
   const { data: user } = useUser();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const queryClient = useQueryClient();
+  const setTutorial = useSetRecoilState(tutorialAtom);
   const { data: totalCache, refetch } = useQuery(
     ['storage'],
     async () => {
@@ -139,6 +142,7 @@ function Top() {
                       colorScheme="red"
                       rounded="lg"
                       onClick={() => {
+                        setTutorial({});
                         queryClient.removeQueries(['timetable']);
                         queryClient.removeQueries(['calendar']);
                         queryClient.removeQueries(['posts']);

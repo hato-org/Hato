@@ -28,7 +28,7 @@ function Events({ isOpen, onClose }: TutorialEventsProps) {
       <ModalOverlay />
       <ModalContent rounded="xl" bg="panel">
         <ModalHeader>使い方</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton top={4} right={4} />
         <ModalBody>
           <VStack align="flex-start">
             {/* <Heading size='lg'>年間行事予定</Heading> */}

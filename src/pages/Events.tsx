@@ -3,14 +3,21 @@ import {
   HStack,
   IconButton,
   Heading,
-  Box,
   useDisclosure,
   Text,
   Spacer,
   Center,
   Icon,
+  VStack,
+  Portal,
 } from '@chakra-ui/react';
-import { TbInfoCircle, TbPlus, TbArrowNarrowDown } from 'react-icons/tb';
+import {
+  TbInfoCircle,
+  TbPlus,
+  TbArrowNarrowDown,
+  TbX,
+  TbBulb,
+} from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -24,6 +31,7 @@ import AddEventDrawer from '@/components/calendar/AddEventDrawer';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Tutorial from '@/components/tutorial';
 import { tutorialAtom } from '@/store/tutorial';
+import Card from '@/components/layout/Card';
 
 function Events() {
   const queryClient = useQueryClient();
@@ -32,6 +40,11 @@ function Events() {
     isOpen: isHelpOpen,
     onOpen: onHelpOpen,
     onClose: onHelpClose,
+  } = useDisclosure();
+  const {
+    isOpen: isIcalOpen,
+    onOpen: onIcalOpen,
+    onClose: onIcalClose,
   } = useDisclosure();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
@@ -62,7 +75,7 @@ function Events() {
         events: true,
       }));
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -106,9 +119,39 @@ function Events() {
           </Center>
         }
       >
-        <Box px={4} mb={24}>
+        <VStack px={4} mb={24}>
+          {!tutorial.iCal && (
+            <Card w="100%">
+              <VStack w="100%" position="relative">
+                <Icon as={TbBulb} w={16} h={16} color="yellow.500" />
+                <Text textStyle="link" fontWeight="bold" onClick={onIcalOpen}>
+                  他のカレンダーと連携できます
+                </Text>
+                <Portal>
+                  <Tutorial.ICalendar
+                    isOpen={isIcalOpen}
+                    onClose={onIcalClose}
+                  />
+                </Portal>
+                <IconButton
+                  variant="ghost"
+                  aria-label="Close AddToHomeScreen info"
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  icon={<TbX />}
+                  onClick={() =>
+                    setTutorial((oldTutorial) => ({
+                      ...oldTutorial,
+                      iCal: true,
+                    }))
+                  }
+                />
+              </VStack>
+            </Card>
+          )}
           <Calendar year={year} month={month} />
-        </Box>
+        </VStack>
       </ChakraPullToRefresh>
       <FloatButton
         aria-label="create event"

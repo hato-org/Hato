@@ -1,12 +1,16 @@
 import { Button, Center, Heading, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Navigate } from 'react-router-dom';
 import LoginButton from '@/components/login/LoginButton';
 import { useAuth } from '@/modules/auth';
+import { useUser } from '@/hooks/user';
 
 function Login() {
   const { login } = useAuth();
+  const { data: user } = useUser();
+
+  if (user) return <Navigate to="/" />;
 
   return (
     <>

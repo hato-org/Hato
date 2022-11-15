@@ -9,5 +9,5 @@
 ## このプロジェクトに貢献する
 
 このプロジェクトのフロントエンド部分のソースコードは、[この GitHub リポジトリ](https://github.com/Hato-org/Hato)で公開されています。  
-サイト上のバグを発見した場合、また、サイトをよりよくするためのアイディアをお持ちの場合、[Issue を作成](https://github.com/Hato-org/Hato/issue)して私たちにお知らせください。  
+サイト上のバグを発見した場合、また、サイトをよりよくするためのアイディアをお持ちの場合、[Issue を作成](https://github.com/Hato-org/Hato/issues)して私たちにお知らせください。  
 また、プルリクエストも歓迎しております。詳細は[CONTRIBUTING.md](./CONTRIBUTING.md)を参照ください。

@@ -22,10 +22,14 @@ const colors = {
 
 const theme = extendTheme({
   colors,
+  fonts: {
+    heading: `-apple-system, "Noto Sans JP", sans-serif`,
+    body: `-apple-system, "Noto Sans JP", sans-serif`,
+  },
   semanticTokens: {
     colors: {
       title: {
-        default: 'gray.600',
+        default: 'gray.700',
         _dark: 'gray.100',
       },
       description: {
@@ -71,6 +75,7 @@ const theme = extendTheme({
       color: 'blue.500',
       textDecoration: 'underline',
       textUnderlineOffset: '4px',
+      cursor: 'pointer',
     },
   },
   layerStyles: {

@@ -2,14 +2,13 @@ import { useColorModeValue } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Helmet } from 'react-helmet-async';
+import { RouterProvider } from 'react-router-dom';
 import ErrorFallback from './components/common/ErrorFallback';
 import { GlobalLoading } from './components/common/Loading';
 import UpdatePrompt from './components/common/UpdatePrompt';
-import usePageTracking from './hooks/common/ga4';
-import Router from './routes';
+import router from './routes';
 
 function App() {
-  usePageTracking();
   const themeColor = useColorModeValue('white', '#121212');
 
   return (
@@ -24,7 +23,7 @@ function App() {
       </Helmet>
       <Suspense fallback={<GlobalLoading />}>
         <UpdatePrompt />
-        <Router />
+        <RouterProvider router={router} fallbackElement={<GlobalLoading />} />
       </Suspense>
     </ErrorBoundary>
   );

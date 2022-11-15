@@ -6,26 +6,28 @@ import {
   Icon,
   Spacer,
   TagCloseButton,
-  Wrap,
   IconButton,
   Collapse,
   useDisclosure,
   Box,
   Center,
   StackDivider,
+  WrapItem,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { format, isSameDay } from 'date-fns';
 import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { Select } from 'chakra-react-select';
 import { useClient } from '@/modules/client';
 import { useAllTagList } from '@/hooks/calendar/tag';
 import { useUser } from '@/hooks/user';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
+import { tagsAtom } from '@/store/tags';
 
 interface UpcomingEventsProps {
   year: number;
@@ -39,12 +41,12 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
   const queryClient = useQueryClient();
   const { data: allTag } = useAllTagList();
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const [tagFilter, setTagFilter] = useState<Tag[]>([]);
+  const [tags, setTags] = useRecoilState(tagsAtom);
 
   // 全タグリストが非同期でフェッチされるのでリストが変更された際に再計算
   useEffect(() => {
     if (!allTag) return;
-    setTagFilter((oldTags) => [
+    setTags((oldTags) => [
       ...oldTags,
       ...allTag.filter(
         (tag) =>
@@ -56,7 +58,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             tag.value === `${user?.type}-${user?.grade}-${user?.course}`) // コース
       ),
     ]);
-  }, [allTag, user]);
+  }, [allTag, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data, isLoading, error } = useQuery<Event[], AxiosError>(
     ['calendar', 'events', { year, month, day }],
@@ -99,8 +101,8 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
       return 0;
     })
     .filter((event) => {
-      if (!tagFilter.length) return true;
-      return tagFilter.some((tag) =>
+      if (!tags.length) return true;
+      return tags.some((tag) =>
         event.tags.some((eventTag) => tag.value === eventTag.value)
       );
     });
@@ -110,21 +112,23 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
 
   return (
     <VStack w="100%" spacing={2}>
-      <HStack w="100%">
+      <HStack w="100%" overflowX="auto">
         <Icon as={TbFilter} w={6} h={6} />
-        <Wrap align="center" w="100%">
-          {tagFilter?.map((tag) => (
-            <Tag whiteSpace="nowrap" key={tag.value}>
+        {tags?.map((tag) => (
+          <WrapItem>
+            <Tag size="md" rounded="full" whiteSpace="nowrap" key={tag.value}>
               {tag.label}
               <TagCloseButton
                 onClick={() => {
-                  setTagFilter((oldTags) =>
+                  setTags((oldTags) =>
                     oldTags.filter((oldTag) => oldTag.value !== tag.value)
                   );
                 }}
               />
             </Tag>
-          ))}
+          </WrapItem>
+        ))}
+        <Center bg="panel" position="sticky" right={0} pl={1}>
           <IconButton
             aria-label="Add filter"
             icon={<TbPlus />}
@@ -133,7 +137,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             size="sm"
             onClick={onToggle}
           />
-        </Wrap>
+        </Center>
       </HStack>
       <Box w="100%">
         <Collapse in={isOpen}>
@@ -141,7 +145,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             placeholder="タグを選択"
             menuPosition="fixed"
             onChange={(value) => {
-              setTagFilter((oldTags) => [...oldTags, value as Tag]);
+              setTags((oldTags) => [...oldTags, value as Tag]);
               onClose();
             }}
             options={allTag}

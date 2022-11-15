@@ -145,7 +145,7 @@ function Timetable() {
       <ChakraPullToRefresh
         isPullable={!tableFocus}
         onRefresh={async () => {
-          queryClient.invalidateQueries(['timetable']);
+          await queryClient.invalidateQueries(['timetable']);
         }}
       >
         <Center w="100%" mb={32}>
@@ -245,7 +245,7 @@ function Timetable() {
                     onClick={onOpen}
                   />
                 </HStack>
-                <Notes {...{ type, grade, schoolClass }} {...dateParams} />
+                <Notes {...{ type, grade, schoolClass }} date={date} />
               </VStack>
             </Card>
           </VStack>

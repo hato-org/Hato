@@ -4,6 +4,7 @@ import { recoilPersist } from 'recoil-persist';
 interface TutorialAtom {
   events: boolean;
   ATHS: boolean;
+  iCal: boolean;
 }
 
 const { persistAtom } = recoilPersist();
@@ -14,6 +15,7 @@ export const tutorialAtom = atom<TutorialAtom>({
   default: {
     events: false,
     ATHS: false,
+    iCal: false,
   },
   effects: [persistAtom],
 });

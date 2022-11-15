@@ -1,7 +1,8 @@
+import '@fontsource/josefin-sans/index.css';
+import '@fontsource/noto-sans-jp/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
-import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -39,10 +40,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           persistOptions={{ persister }}
         >
           <RecoilRoot>
-            <BrowserRouter>
-              <ColorModeScript />
-              <App />
-            </BrowserRouter>
+            <ColorModeScript />
+            <App />
           </RecoilRoot>
           <ReactQueryDevtools initialIsOpen={false} />
         </PersistQueryClientProvider>

@@ -1,15 +1,18 @@
-import { FallbackProps } from 'react-error-boundary';
 import { Button, Center, Code, Heading, VStack } from '@chakra-ui/react';
 import { TbLoader, TbRotate } from 'react-icons/tb';
+import { useRouteError } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@/modules/auth';
 import { useClient } from '@/modules/client';
 import { useUser } from '@/hooks/user';
 
-function ErrorFallback({ error }: FallbackProps) {
+function ErrorFallback() {
+  const error = useRouteError() as Error;
   const { logout } = useAuth();
   const { data: user } = useUser();
   const { client } = useClient();
+
+  console.error(error);
 
   const { mutate } = useMutation(async () =>
     client.post('/report', {
