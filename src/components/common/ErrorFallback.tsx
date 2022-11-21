@@ -58,7 +58,7 @@ function ErrorFallback() {
           colorScheme="blue"
           rounded="xl"
           onClick={() => {
-            mutate();
+            if (!import.meta.env.DEV) mutate();
             window.location.reload();
           }}
         >
@@ -68,7 +68,7 @@ function ErrorFallback() {
           leftIcon={<TbLoader />}
           rounded="xl"
           onClick={async () => {
-            mutate();
+            if (!import.meta.env.DEV) mutate();
             logout();
             const dbs = await window.indexedDB?.databases();
             dbs?.forEach((db) => {

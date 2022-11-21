@@ -29,7 +29,7 @@ function Header({ children, ...rest }: CenterProps) {
       borderColor="border"
       bg="bg"
       shadow="xl"
-      zIndex={1}
+      zIndex="banner"
       {...rest}
     >
       <Box w="100%">

@@ -1,4 +1,4 @@
-import { Center, Icon, Text, VStack } from '@chakra-ui/react';
+import { Center, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
 import { AxiosError } from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
@@ -125,6 +125,18 @@ function Error({ error = new AxiosError() }: ErrorProps) {
             </Text>
             <Text textStyle="title" align="center">
               データの取得に失敗しました。
+              <br />
+              障害が起こっている可能性があります。
+              <br />
+              <Text
+                textStyle="link"
+                as={Link}
+                isExternal
+                href={import.meta.env.VITE_STATUSPAGE_URL}
+              >
+                稼働状況
+              </Text>
+              をご確認ください。
             </Text>
           </VStack>
         </Center>

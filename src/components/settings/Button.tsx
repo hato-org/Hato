@@ -1,4 +1,11 @@
-import { HStack, VStack, Text, Icon, StackProps } from '@chakra-ui/react';
+import {
+  HStack,
+  VStack,
+  Text,
+  Icon,
+  StackProps,
+  Spacer,
+} from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight } from 'react-icons/tb';
 
@@ -26,7 +33,7 @@ function SettingButton({
       layerStyle="button"
       {...rest}
     >
-      <VStack align="flex-start" spacing={0} flexShrink={0} flexGrow={1}>
+      <VStack align="flex-start" spacing={0} flexGrow={1}>
         <Text fontWeight="bold" fontSize="md" textStyle="title">
           {label}
         </Text>
@@ -34,6 +41,7 @@ function SettingButton({
           {description}
         </Text>
       </VStack>
+      <Spacer />
       {children || <Icon as={TbChevronRight} />}
     </HStack>
   );

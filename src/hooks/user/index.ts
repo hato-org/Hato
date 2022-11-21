@@ -17,6 +17,7 @@ export const useUser = () => {
       onSuccess: (newUser) => {
         setUser(newUser);
       },
+      enabled: !!user,
     }
   );
 };

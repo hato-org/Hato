@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useClient } from '@/modules/client';
 import { useUser } from '../user';
 
-export const useCurrentTable = (queryKey?: string[]) => {
+export const useCurrentTable = () => {
   const { data: user } = useUser();
   const { client } = useClient();
 
@@ -15,7 +15,7 @@ export const useCurrentTable = (queryKey?: string[]) => {
   };
 
   return useQuery<CurrentTimetable, AxiosError>(
-    [...(queryKey ?? []), 'timetable', params],
+    ['timetable', 'current', params],
     async () => (await client.get('/timetable/now', { params })).data
   );
 };
@@ -36,39 +36,76 @@ export const useNotes = ({ date }: { date: Date }) => {
 
 export const useTable = (
   {
+    date,
+    type,
     grade,
     class: schoolClass,
     course,
   }: {
+    date: Date;
+    type: Type;
     grade: number;
     class: number;
     course: Course;
   },
-  queryKey?: string[]
+  options?: UseQueryOptions<DaySchedule, AxiosError>
 ) => {
   const { client } = useClient();
 
-  return useQuery(
-    [...(queryKey ?? []), 'timetable'],
+  const params = {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+    type,
+    grade,
+    class: schoolClass,
+    course,
+  };
+
+  return useQuery<DaySchedule, AxiosError>(
+    ['timetable', params],
     async () =>
       (
         await client.get('/timetable', {
-          params: {
-            grade,
-            class: schoolClass,
-            course,
-          },
+          params,
         })
-      ).data
+      ).data,
+    options
   );
+};
 
-  // return useApi<any, AxiosError, any, any>([
-  //   "/timetable/v1.1",
-  //   {
-  //     grade,
-  //     class: schoolClass,
-  //     course,
-  //   },
-  //   ...(queryKey || []),
-  // ]);
+export const useSchedule = (
+  {
+    type,
+    grade,
+    schoolClass,
+    course,
+    week,
+    dayOfWeek,
+  }: {
+    type: Type;
+    grade: number;
+    schoolClass: number;
+    course: Course;
+    week: Week;
+    dayOfWeek: Day;
+  },
+  options?: UseQueryOptions<DaySchedule, AxiosError>
+) => {
+  const { client } = useClient();
+
+  const params = {
+    type,
+    grade,
+    class: schoolClass,
+    course,
+    week,
+    dayOfWeek,
+  };
+
+  return useQuery<DaySchedule, AxiosError>(
+    ['timetable', params],
+    async () => (await client.get('/timetable', { params })).data,
+    options
+  );
 };

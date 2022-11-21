@@ -1,5 +1,5 @@
 interface TransitInfo {
-  leaveAt: Date;
+  leaveAt: string;
   destination: string;
 }
 

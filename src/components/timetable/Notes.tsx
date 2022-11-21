@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   VStack,
   Text,
   StackProps,
-  UnorderedList,
-  ListItem,
   IconButton,
   HStack,
   Menu,
@@ -19,6 +17,7 @@ import {
   Heading,
   Wrap,
   Tag,
+  Box,
 } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -50,6 +49,11 @@ function Notes({ date, type, grade, schoolClass, ...rest }: NotesProps) {
 
   const { data, isLoading, error } = useNotes({ date });
 
+  const myNotes = useMemo(
+    () => data?.filter((note) => note.owner === user.email),
+    [data, user]
+  );
+
   if (isLoading) return <Loading />;
 
   if (error) return <Error error={error} />;
@@ -66,7 +70,7 @@ function Notes({ date, type, grade, schoolClass, ...rest }: NotesProps) {
           ) || note.owner === user.email
       ).length ? (
         <VStack w="100%" align="flex-start">
-          <UnorderedList w="100%" px={4}>
+          <VStack w="100%">
             {data
               .filter(
                 (note) =>
@@ -80,15 +84,17 @@ function Notes({ date, type, grade, schoolClass, ...rest }: NotesProps) {
               .map((note) => (
                 <NoteCard key={note._id} note={note} />
               ))}
-          </UnorderedList>
-          <Heading size="sm">自分が追加したもの</Heading>
-          <UnorderedList w="100%" px={4}>
-            {data
-              .filter((note) => note.owner === user.email)
-              .map((note) => (
-                <NoteCard key={note._id} note={note} />
-              ))}
-          </UnorderedList>
+          </VStack>
+          {myNotes?.length && (
+            <>
+              <Heading size="sm">自分が追加したもの</Heading>
+              <VStack w="100%">
+                {myNotes.map((note) => (
+                  <NoteCard key={note._id} note={note} />
+                ))}
+              </VStack>
+            </>
+          )}
         </VStack>
       ) : (
         <Text textStyle="description" fontWeight="bold">
@@ -187,7 +193,7 @@ function NoteCard({ note }: { note: Note }) {
   );
 
   return (
-    <ListItem
+    <Box
       w="100%"
       whiteSpace="pre-wrap"
       layerStyle={editMode ? '' : 'button'}
@@ -265,7 +271,7 @@ function NoteCard({ note }: { note: Note }) {
           )}
         </>
       )}
-    </ListItem>
+    </Box>
   );
 }
 

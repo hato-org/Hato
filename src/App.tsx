@@ -7,6 +7,7 @@ import ErrorFallback from './components/common/ErrorFallback';
 import { GlobalLoading } from './components/common/Loading';
 import UpdatePrompt from './components/common/UpdatePrompt';
 import router from './routes';
+import { unregister } from './utils/serviceWorker';
 
 function App() {
   const themeColor = useColorModeValue('white', '#121212');
@@ -15,6 +16,7 @@ function App() {
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
       onReset={() => {
+        unregister();
         window.location.reload();
       }}
     >

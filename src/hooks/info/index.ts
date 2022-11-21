@@ -85,3 +85,30 @@ export const useCourseList = (
     options
   );
 };
+
+export const useSubjectList = (
+  {
+    type,
+    grade,
+  }: {
+    type: Type;
+    grade: number;
+  },
+  options?: UseQueryOptions<SubjectList, AxiosError>
+) => {
+  const { client } = useClient();
+
+  return useQuery<SubjectList, AxiosError>(
+    ['info', 'subject', type, grade],
+    async () =>
+      (
+        await client.get('/info/subject', {
+          params: {
+            type,
+            grade,
+          },
+        })
+      ).data,
+    options
+  );
+};

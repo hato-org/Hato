@@ -115,8 +115,8 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
       <HStack w="100%" overflowX="auto">
         <Icon as={TbFilter} w={6} h={6} />
         {tags?.map((tag) => (
-          <WrapItem>
-            <Tag size="md" rounded="full" whiteSpace="nowrap" key={tag.value}>
+          <WrapItem key={tag.value}>
+            <Tag size="md" rounded="full" whiteSpace="nowrap">
               {tag.label}
               <TagCloseButton
                 onClick={() => {

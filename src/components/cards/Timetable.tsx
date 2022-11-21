@@ -8,18 +8,34 @@ import {
   LinkBox,
   Tooltip,
   Flex,
+  Skeleton,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight, TbPoint } from 'react-icons/tb';
+import { format, setDay, startOfDay } from 'date-fns/esm';
+import { ja } from 'date-fns/locale';
 import TimetableTable from '../timetable/Table';
-import { useCurrentTable, useNotes } from '@/hooks/timetable';
+import { useTable, useNotes } from '@/hooks/timetable';
 import Transit from './Transit';
+import { useUser } from '@/hooks/user';
 
 function Timetable() {
-  const { data, isLoading, error } = useCurrentTable();
-  const { data: notes } = useNotes({ date: new Date() });
+  const date = new Date();
+  const { data: user } = useUser();
+  const { data, isLoading, error } = useTable({
+    date,
+    type: user.type,
+    grade: user.grade,
+    class: user.class,
+    course: user.course,
+  });
+  const { data: notes } = useNotes({ date });
 
-  if (data?.period === 7) return <Transit />;
+  if (
+    data &&
+    new Date(data?.timetable.at(-1)?.endAt ?? startOfDay(date)) < date
+  )
+    return <Transit />;
 
   return (
     <VStack w="100%" spacing={4}>
@@ -39,14 +55,21 @@ function Timetable() {
               </Flex>
             </Tooltip>
           )}
-          <Text textStyle="title" color="description">
-            {data?.week}週 {data?.period}時間目
-          </Text>
+          <Skeleton rounded="md" isLoaded={!isLoading}>
+            <Text textStyle="title" color="description">
+              {data?.schedule.week}週{' '}
+              {format(setDay(date, data?.schedule.day ?? date.getDay()), 'E', {
+                locale: ja,
+              })}
+              曜日課
+            </Text>
+          </Skeleton>
           <Icon as={TbChevronRight} w={5} h={5} />
         </HStack>
       </LinkBox>
       <TimetableTable
         p={2}
+        date={date}
         timetable={data ? [data] : []}
         isLoading={isLoading}
         error={error}

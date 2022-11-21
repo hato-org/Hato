@@ -124,7 +124,7 @@ function TransitButton({
       <Box w="100%">
         <Collapse in={isOpen}>
           {upcomingTransit.slice(1).map((transit) => (
-            <TransitQueue date={date} transit={transit} />
+            <TransitQueue key={transit.leaveAt} date={date} transit={transit} />
           ))}
         </Collapse>
       </Box>

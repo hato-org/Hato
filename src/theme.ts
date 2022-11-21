@@ -22,6 +22,13 @@ const colors = {
 
 const theme = extendTheme({
   colors,
+  components: {
+    Input: {
+      defaultProps: {
+        variant: 'flushed',
+      },
+    },
+  },
   fonts: {
     heading: `-apple-system, "Noto Sans JP", sans-serif`,
     body: `-apple-system, "Noto Sans JP", sans-serif`,
@@ -44,6 +51,10 @@ const theme = extendTheme({
         default: 'white',
         _dark: '#202020',
       },
+      popover: {
+        default: 'white',
+        _dark: 'bg.800',
+      },
       border: {
         default: 'bg.50',
         _dark: 'transparent',
@@ -51,6 +62,10 @@ const theme = extendTheme({
       hover: {
         default: 'blackAlpha.100',
         _dark: 'whiteAlpha.100',
+      },
+      active: {
+        default: 'blackAlpha.200',
+        _dark: 'whiteAlpha.200',
       },
     },
   },
@@ -86,6 +101,9 @@ const theme = extendTheme({
         bg: 'hover',
         // borderColor: 'gray.100',
         cursor: 'pointer',
+      },
+      _active: {
+        bg: 'active',
       },
     },
   },
