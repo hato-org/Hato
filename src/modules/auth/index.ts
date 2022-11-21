@@ -5,6 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userAtom } from '@/store/auth';
+import { unregister } from '@/utils/serviceWorker';
 
 const API_URL = import.meta.env.DEV
   ? `${window.location.protocol}//${window.location.host}/api`
@@ -68,7 +69,8 @@ export const useAuth = () => {
 
   const logout = useCallback(() => {
     setUser(null);
-    queryClient.removeQueries(['user']);
+    queryClient.clear();
+    unregister();
     navigate('/');
   }, [setUser, queryClient, navigate]);
 

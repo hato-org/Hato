@@ -81,7 +81,7 @@ function Top() {
           layerStyle="button"
         >
           <Avatar src={user?.avatar} size="sm" />
-          <VStack align="flex-start" spacing={0} flexShrink={1}>
+          <VStack align="flex-start" spacing={0} minW={0}>
             <Text textStyle="title" fontSize="md">
               {user?.name}
             </Text>
@@ -142,7 +142,11 @@ function Top() {
                       colorScheme="red"
                       rounded="lg"
                       onClick={() => {
-                        setTutorial({});
+                        setTutorial({
+                          ATHS: false,
+                          iCal: false,
+                          events: false,
+                        });
                         queryClient.removeQueries(['timetable']);
                         queryClient.removeQueries(['calendar']);
                         queryClient.removeQueries(['posts']);

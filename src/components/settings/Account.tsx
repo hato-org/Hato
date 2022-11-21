@@ -19,7 +19,6 @@ import {
   ModalFooter,
   Heading,
   Skeleton,
-  Box,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import {
@@ -84,7 +83,7 @@ function Account() {
           </HStack>
           <Modal isOpen={isUsernameOpen} onClose={onUsernameClose} isCentered>
             <ModalOverlay />
-            <ModalContent rounded="xl">
+            <ModalContent bg="panel" rounded="xl">
               <ModalHeader>アカウント名の変更</ModalHeader>
               <ModalBody>
                 <VStack>
@@ -140,43 +139,41 @@ function Account() {
         //     <option value={[type, grade.toString()]}>{label}</option>
         //   ))}
         // </Select>
-        <Box w="100%">
-          <Menu>
-            <Skeleton isLoaded={!gradeIsLoading} rounded="lg">
-              {gradeError ? (
-                <HStack py={2}>
-                  <Icon as={TbAlertCircle} color="red.500" />
-                  <Text textStyle="title">エラー</Text>
+        <Menu>
+          <Skeleton isLoaded={!gradeIsLoading} rounded="lg">
+            {gradeError ? (
+              <HStack py={2}>
+                <Icon as={TbAlertCircle} color="red.500" />
+                <Text textStyle="title">エラー</Text>
+              </HStack>
+            ) : (
+              <MenuButton rounded="lg" w="100%">
+                <HStack py={2} pl={4} justify="flex-end">
+                  <Text textStyle="title">
+                    {gradeList?.find(
+                      ({ type, grade_num }) =>
+                        type === user?.type && grade_num === user?.grade
+                    )?.name ?? '未設定'}
+                  </Text>
+                  <Icon as={TbChevronDown} />
                 </HStack>
-              ) : (
-                <MenuButton rounded="lg" w="100%">
-                  <HStack py={2} pl={4} justify="flex-end">
-                    <Text textStyle="title">
-                      {gradeList?.find(
-                        ({ type, grade_num }) =>
-                          type === user?.type && grade_num === user?.grade
-                      )?.name ?? '未設定'}
-                    </Text>
-                    <Icon as={TbChevronDown} />
-                  </HStack>
-                </MenuButton>
-              )}
-            </Skeleton>
-            <MenuList shadow="lg" rounded="xl" py={2}>
-              {gradeList?.map(({ name, type, grade_num }) => (
-                <MenuItem
-                  onClick={() => {
-                    update({ type, grade: grade_num });
-                  }}
-                  key={name}
-                  fontWeight="bold"
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-        </Box>
+              </MenuButton>
+            )}
+          </Skeleton>
+          <MenuList shadow="lg" rounded="xl" py={2}>
+            {gradeList?.map(({ name, type, grade_num }) => (
+              <MenuItem
+                onClick={() => {
+                  update({ type, grade: grade_num });
+                }}
+                key={name}
+                fontWeight="bold"
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
       ),
     },
     {
@@ -188,42 +185,40 @@ function Account() {
         //     <option value={schoolClass}>{label}</option>
         //   ))}
         // </Select>
-        <Box w="100%">
-          <Menu>
-            <Skeleton isLoaded={!classIsLoading} rounded="lg">
-              {classError ? (
-                <HStack py={2}>
-                  <Icon as={TbAlertCircle} color="red.500" />
-                  <Text textStyle="title">エラー</Text>
+        <Menu>
+          <Skeleton isLoaded={!classIsLoading} rounded="lg">
+            {classError ? (
+              <HStack py={2}>
+                <Icon as={TbAlertCircle} color="red.500" />
+                <Text textStyle="title">エラー</Text>
+              </HStack>
+            ) : (
+              <MenuButton rounded="lg" w="100%">
+                <HStack rounded="xl" py={2} pl={4} justify="flex-end">
+                  <Text textStyle="title">
+                    {classList?.find(
+                      ({ class_num }) => class_num === user?.class
+                    )?.name ?? '未設定'}
+                  </Text>
+                  <Icon as={TbChevronDown} />
                 </HStack>
-              ) : (
-                <MenuButton rounded="lg" w="100%">
-                  <HStack rounded="xl" py={2} pl={4} justify="flex-end">
-                    <Text textStyle="title">
-                      {classList?.find(
-                        ({ class_num }) => class_num === user?.class
-                      )?.name ?? '未設定'}
-                    </Text>
-                    <Icon as={TbChevronDown} />
-                  </HStack>
-                </MenuButton>
-              )}
-            </Skeleton>
-            <MenuList shadow="lg" rounded="xl">
-              {classList?.map(({ class_num, name }) => (
-                <MenuItem
-                  onClick={() => {
-                    update({ class: class_num });
-                  }}
-                  key={name}
-                  fontWeight="bold"
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-        </Box>
+              </MenuButton>
+            )}
+          </Skeleton>
+          <MenuList shadow="lg" rounded="xl">
+            {classList?.map(({ class_num, name }) => (
+              <MenuItem
+                onClick={() => {
+                  update({ class: class_num });
+                }}
+                key={name}
+                fontWeight="bold"
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
       ),
     },
     courseList?.length
@@ -231,41 +226,39 @@ function Account() {
           label: 'コース',
           description: '自分が所属しているコース。',
           children: (
-            <Box w="100%">
-              <Menu>
-                <Skeleton isLoaded={!courseIsLoading} rounded="lg">
-                  {courseError ? (
-                    <HStack py={2}>
-                      <Icon as={TbAlertCircle} color="red.500" />
-                      <Text textStyle="title">エラー</Text>
+            <Menu>
+              <Skeleton isLoaded={!courseIsLoading} rounded="lg">
+                {courseError ? (
+                  <HStack py={2}>
+                    <Icon as={TbAlertCircle} color="red.500" />
+                    <Text textStyle="title">エラー</Text>
+                  </HStack>
+                ) : (
+                  <MenuButton rounded="lg" w="100%">
+                    <HStack rounded="xl" py={2} pl={4} justify="flex-end">
+                      <Text textStyle="title">
+                        {courseList?.find(({ code }) => code === user?.course)
+                          ?.name ?? '未設定'}
+                      </Text>
+                      <Icon as={TbChevronDown} />
                     </HStack>
-                  ) : (
-                    <MenuButton rounded="lg" w="100%">
-                      <HStack rounded="xl" py={2} pl={4} justify="flex-end">
-                        <Text textStyle="title">
-                          {courseList?.find(({ code }) => code === user?.course)
-                            ?.name ?? '未設定'}
-                        </Text>
-                        <Icon as={TbChevronDown} />
-                      </HStack>
-                    </MenuButton>
-                  )}
-                </Skeleton>
-                <MenuList shadow="lg" rounded="xl">
-                  {courseList?.map(({ name, code }) => (
-                    <MenuItem
-                      onClick={() => {
-                        update({ course: code });
-                      }}
-                      key={name}
-                      fontWeight="bold"
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </Menu>
-            </Box>
+                  </MenuButton>
+                )}
+              </Skeleton>
+              <MenuList shadow="lg" rounded="xl">
+                {courseList?.map(({ name, code }) => (
+                  <MenuItem
+                    onClick={() => {
+                      update({ course: code });
+                    }}
+                    key={name}
+                    fontWeight="bold"
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
           ),
         }
       : undefined,

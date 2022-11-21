@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
 import {
   VStack,
-  Center,
-  Icon,
   Tabs,
   TabList,
   Tab,
   TabPanel,
   TabPanels,
 } from '@chakra-ui/react';
-import { TbArrowNarrowDown } from 'react-icons/tb';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useSearchParams } from 'react-router-dom';
@@ -50,49 +47,50 @@ function Hatoboard() {
   if (error) return <CardElement.Error error={error} />;
 
   return (
-    <ChakraPullToRefresh
+    <Tabs
       w="100%"
-      pt={4}
-      pb={8}
-      onRefresh={async () => {
-        await Promise.all([
-          queryClient.invalidateQueries(['posts', 'hatoboard']),
-        ]);
-      }}
-      refreshingContent={<Loading />}
-      pullingContent={
-        <Center flexGrow={1} p={4}>
-          <Icon as={TbArrowNarrowDown} w={6} h={6} color="gray.500" />
-        </Center>
-      }
+      isFitted
+      size="lg"
+      defaultIndex={Number(searchParams.get('tab'))}
+      onChange={(index) => setSearchParams({ tab: index.toString() })}
     >
-      <Tabs
+      <TabList
         w="100%"
-        isFitted
-        size="lg"
-        defaultIndex={Number(searchParams.get('tab'))}
-        onChange={(index) => setSearchParams({ tab: index.toString() })}
+        position="sticky"
+        top={14}
+        bg="bg"
+        shadow="lg"
+        zIndex={5}
       >
-        <TabList w="100%">
-          <Tab
-            textStyle="title"
-            _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
-          >
-            すべて
-          </Tab>
-          <Tab
-            textStyle="title"
-            _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
-          >
-            校外
-          </Tab>
-          <Tab
-            textStyle="title"
-            _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
-          >
-            校内
-          </Tab>
-        </TabList>
+        <Tab
+          textStyle="title"
+          _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
+        >
+          すべて
+        </Tab>
+        <Tab
+          textStyle="title"
+          _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
+        >
+          校外
+        </Tab>
+        <Tab
+          textStyle="title"
+          _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
+        >
+          校内
+        </Tab>
+      </TabList>
+      <ChakraPullToRefresh
+        w="100%"
+        pt={4}
+        pb={8}
+        onRefresh={async () => {
+          await Promise.all([
+            queryClient.invalidateQueries(['posts', 'hatoboard']),
+          ]);
+        }}
+      >
         <TabPanels w="100%" p={0}>
           <TabPanel w="100%" p={0}>
             <VStack p={4} spacing={4} w="100%">
@@ -124,8 +122,8 @@ function Hatoboard() {
             </VStack>
           </TabPanel>
         </TabPanels>
-      </Tabs>
-    </ChakraPullToRefresh>
+      </ChakraPullToRefresh>
+    </Tabs>
   );
 }
 

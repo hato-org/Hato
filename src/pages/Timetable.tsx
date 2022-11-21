@@ -1,4 +1,13 @@
 import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+  lazy,
+  Suspense,
+} from 'react';
+import {
   Center,
   Heading,
   HStack,
@@ -15,9 +24,8 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
-import { addDays, format, startOfDay, subDays } from 'date-fns/esm';
+import { addDays, format, setDay, startOfDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
-import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { TbPlus, TbDots, TbFlag } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
@@ -26,7 +34,6 @@ import Header from '@/components/nav/Header';
 import AddNoteDrawer from '@/components/timetable/AddNoteDrawer';
 import DateSwitcher from '@/components/timetable/DateSwitcher';
 import GradeClassPicker from '@/components/timetable/GradeClassPicker';
-import Notes from '@/components/timetable/Notes';
 import TimetableTable from '@/components/timetable/Table';
 import ReportModal from '@/components/common/ReportModal';
 import { useCourseList } from '@/hooks/info';
@@ -34,6 +41,9 @@ import { useUser } from '@/hooks/user';
 import { useClient } from '@/modules/client';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
+import Loading from '@/components/common/Loading';
+
+const Notes = lazy(() => import('@/components/timetable/Notes'));
 
 function Timetable() {
   const { data: user } = useUser();
@@ -47,6 +57,8 @@ function Timetable() {
     onClose: reportOnClose,
   } = useDisclosure();
   const [tableFocus, setTableFocus] = useState(false);
+
+  const popoverRef = useRef(null);
 
   const [date, setDate] = useState(new Date());
   const [type, setType] = useState(user.type);
@@ -74,10 +86,21 @@ function Timetable() {
         return {
           queryKey: ['timetable', params],
           queryFn: async () =>
-            (await client.get<CurrentTimetable>('/timetable', { params })).data,
+            (await client.get<DaySchedule>('/timetable', { params })).data,
         };
       }) ?? [],
   });
+
+  const settledTimetableList = useMemo(
+    () =>
+      timetableList
+        .map((timetable) => timetable.data)
+        .filter((timetable): timetable is DaySchedule => !!timetable),
+    [timetableList]
+  );
+
+  const onTableTouchStart = useCallback(() => setTableFocus(true), []);
+  const onTableTouchEnd = useCallback(() => setTableFocus(false), []);
 
   useEffect(() => {
     if (
@@ -148,7 +171,7 @@ function Timetable() {
           await queryClient.invalidateQueries(['timetable']);
         }}
       >
-        <Center w="100%" mb={32}>
+        <Center w="100%" mb={32} ref={popoverRef}>
           <VStack w="100%" px={4}>
             <DateSwitcher
               onPrev={() => {
@@ -190,12 +213,7 @@ function Timetable() {
             />
             <Card w="100%">
               <VStack w="100%" align="flex-start" p={2} spacing={6}>
-                <VStack
-                  w="100%"
-                  overflowX="auto"
-                  align="flex-start"
-                  spacing={4}
-                >
+                <VStack w="100%" align="flex-start" spacing={4}>
                   <HStack w="100%">
                     <Heading size="md">日課</Heading>
                     <Spacer />
@@ -204,20 +222,27 @@ function Timetable() {
                       fontSize="lg"
                       fontWeight="bold"
                     >
-                      {timetableList?.[0]?.data?.week}週{' '}
-                      {format(date, 'eeee', { locale: ja })}
+                      {timetableList?.[0]?.data?.schedule.week}週{' '}
+                      {format(
+                        setDay(
+                          date,
+                          timetableList?.[0]?.data?.schedule.day ??
+                            date.getDay()
+                        ),
+                        'E',
+                        { locale: ja }
+                      )}
+                      曜日課
                     </Text>
                   </HStack>
                   <StackDivider borderWidth="1px" borderColor="border" />
                   <TimetableTable
-                    timetable={timetableList
-                      .map((timetable) => timetable.data)
-                      .filter(
-                        (timetable): timetable is CurrentTimetable =>
-                          !!timetable
-                      )}
-                    onTouchStart={() => setTableFocus(true)}
-                    onTouchEnd={() => setTableFocus(false)}
+                    date={date}
+                    timetable={settledTimetableList}
+                    onTouchStart={onTableTouchStart}
+                    onTouchEnd={onTableTouchEnd}
+                    overflowX="auto"
+                    portalContainerRef={popoverRef}
                   />
                 </VStack>
                 {/* <StackDivider borderWidth="1px" /> */}
@@ -245,7 +270,9 @@ function Timetable() {
                     onClick={onOpen}
                   />
                 </HStack>
-                <Notes {...{ type, grade, schoolClass }} date={date} />
+                <Suspense fallback={<Loading />}>
+                  <Notes {...{ type, grade, schoolClass }} date={date} />
+                </Suspense>
               </VStack>
             </Card>
           </VStack>

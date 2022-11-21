@@ -40,3 +40,11 @@ interface ClassInfo {
 }
 
 type ClassList = ClassInfo[];
+
+interface SubjectInfo {
+  name: string;
+  code?: Subject;
+  description?: string;
+}
+
+type SubjectList = SubjectInfo[];

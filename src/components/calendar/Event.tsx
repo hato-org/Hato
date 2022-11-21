@@ -66,12 +66,12 @@ function Event({ id }: { id: string }) {
       </HStack>
       {data.location && (
         <HStack w="100%" textStyle="title">
-          <Icon as={TbMapPin} w={6} h={6} />
+          <Icon as={TbMapPin} color="description" w={6} h={6} />
           <Text>{data.location}</Text>
         </HStack>
       )}
       <HStack w="100%">
-        <Icon as={TbTag} w={6} h={6} />
+        <Icon as={TbTag} color="description" w={6} h={6} />
         <Wrap>
           {data.tags?.map((tag) => (
             <Tag whiteSpace="nowrap" key={tag.value}>
