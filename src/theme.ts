@@ -56,8 +56,8 @@ const theme = extendTheme({
         _dark: 'bg.800',
       },
       border: {
-        default: 'bg.50',
-        _dark: 'transparent',
+        default: 'bg.100',
+        _dark: 'bg.800',
       },
       hover: {
         default: 'blackAlpha.100',
@@ -66,6 +66,14 @@ const theme = extendTheme({
       active: {
         default: 'blackAlpha.200',
         _dark: 'whiteAlpha.200',
+      },
+      accent: {
+        default: 'blue.50',
+        _dark: 'blue.800',
+      },
+      'border-accent': {
+        default: 'blue.300',
+        _dark: 'blue.400',
       },
     },
   },

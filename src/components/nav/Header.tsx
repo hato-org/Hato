@@ -13,6 +13,7 @@ import { onlineManager, useIsFetching } from '@tanstack/react-query';
 import { TbCloudOff } from 'react-icons/tb';
 
 function Header({ children, ...rest }: CenterProps) {
+  const border = useColorModeValue('border', 'transparent');
   const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
   const isOnline = onlineManager.isOnline();
@@ -26,7 +27,7 @@ function Header({ children, ...rest }: CenterProps) {
       // py={4}
       mb={4}
       borderBottom="1px solid"
-      borderColor="border"
+      borderColor={border}
       bg="bg"
       shadow="xl"
       zIndex="banner"

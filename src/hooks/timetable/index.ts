@@ -1,4 +1,9 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useClient } from '@/modules/client';
 import { useUser } from '../user';
@@ -74,7 +79,7 @@ export const useTable = (
   );
 };
 
-export const useSchedule = (
+export const useDaySchedule = (
   {
     type,
     grade,
@@ -106,6 +111,43 @@ export const useSchedule = (
   return useQuery<DaySchedule, AxiosError>(
     ['timetable', params],
     async () => (await client.get('/timetable', { params })).data,
+    options
+  );
+};
+
+export const useSchedule = (
+  {
+    year,
+    month,
+    day,
+  }: {
+    year: number;
+    month: number;
+    day: number;
+  },
+  options?: UseMutationOptions<Schedule, AxiosError>
+) => {
+  const { client } = useClient();
+  const params = {
+    year,
+    month,
+    day,
+  };
+  return useMutation<Schedule, AxiosError>(
+    ['timetable', 'schedule', { year, month, day }],
+    async () => (await client.get('/timetable/schedule', { params })).data,
+    options
+  );
+};
+
+export const useSchedulePlaceholder = (
+  options?: UseQueryOptions<DefaultPeriod[], AxiosError>
+) => {
+  const { client } = useClient();
+
+  return useQuery<DefaultPeriod[], AxiosError>(
+    ['timetable', 'placeholder'],
+    async () => (await client.get('/timetable/period')).data,
     options
   );
 };

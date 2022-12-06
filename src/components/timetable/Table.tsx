@@ -51,7 +51,6 @@ const TimetableTable = React.memo(
 
     if (isLoading) return <Loading />;
     if (error) return <Error error={error} />;
-    console.log(timetable);
 
     return (
       <TableContainer w="100%" {...rest}>

@@ -22,12 +22,13 @@ import {
   MenuList,
   MenuItem,
   Box,
+  Icon,
 } from '@chakra-ui/react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { addDays, format, setDay, startOfDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { Helmet } from 'react-helmet-async';
-import { TbPlus, TbDots, TbFlag } from 'react-icons/tb';
+import { TbPlus, TbDots, TbFlag, TbPencil } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
 import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
@@ -44,6 +45,9 @@ import Card from '@/components/layout/Card';
 import Loading from '@/components/common/Loading';
 
 const Notes = lazy(() => import('@/components/timetable/Notes'));
+const ScheduleEditor = lazy(
+  () => import('@/components/timetable/ScheduleEditor')
+);
 
 function Timetable() {
   const { data: user } = useUser();
@@ -51,6 +55,11 @@ function Timetable() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isScheduleOpen,
+    onOpen: onScheduleOpen,
+    onClose: onScheduleClose,
+  } = useDisclosure();
   const {
     isOpen: reportOpen,
     onOpen: reportOnOpen,
@@ -217,24 +226,38 @@ function Timetable() {
                   <HStack w="100%">
                     <Heading size="md">日課</Heading>
                     <Spacer />
-                    <Text
-                      textStyle="description"
-                      fontSize="lg"
-                      fontWeight="bold"
+                    <Suspense>
+                      <ScheduleEditor
+                        date={date}
+                        isOpen={isScheduleOpen}
+                        onClose={onScheduleClose}
+                      />
+                    </Suspense>
+                    <HStack
+                      px={2}
+                      layerStyle="button"
+                      rounded="lg"
+                      color="description"
+                      onClick={onScheduleOpen}
                     >
-                      {timetableList?.[0]?.data?.schedule.week}週{' '}
-                      {format(
-                        setDay(
-                          date,
-                          timetableList?.[0]?.data?.schedule.day ??
-                            date.getDay()
-                        ),
-                        'E',
-                        { locale: ja }
-                      )}
-                      曜日課
-                    </Text>
+                      <Text fontWeight="bold">
+                        {timetableList?.[0]?.data?.schedule.week}週{' '}
+                        {timetableList?.[0]?.data?.schedule.irregular
+                          ? '特編日課'
+                          : `${format(
+                              setDay(
+                                date,
+                                timetableList?.[0]?.data?.schedule.day ??
+                                  date.getDay()
+                              ),
+                              'E',
+                              { locale: ja }
+                            )}曜日課`}
+                      </Text>
+                      <Icon as={TbPencil} />
+                    </HStack>
                   </HStack>
+
                   <StackDivider borderWidth="1px" borderColor="border" />
                   <TimetableTable
                     date={date}
