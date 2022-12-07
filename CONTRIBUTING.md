@@ -10,6 +10,8 @@
   - `/hooks` - Custom hooks
   - `/modules` - API, Authentication, ...
   - `/pages` - Page components
+  - `/store` - Global states
+  - `/utils` - Utilities
 
 ## Libraries
 

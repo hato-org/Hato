@@ -22,13 +22,6 @@ const colors = {
 
 const theme = extendTheme({
   colors,
-  components: {
-    Input: {
-      defaultProps: {
-        variant: 'flushed',
-      },
-    },
-  },
   fonts: {
     heading: `-apple-system, "Noto Sans JP", sans-serif`,
     body: `-apple-system, "Noto Sans JP", sans-serif`,

@@ -10,15 +10,18 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useSearchParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { useClient } from '@/modules/client';
 import CardElement from '../cards';
 import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Card from './Card';
+import { pinnedPostAtom } from '@/store/posts';
 
 function Hatoboard() {
   const { client } = useClient();
   const queryClient = useQueryClient();
+  const pinned = useRecoilValue(pinnedPostAtom);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -93,11 +96,30 @@ function Hatoboard() {
       >
         <TabPanels w="100%" p={0}>
           <TabPanel w="100%" p={0}>
-            <VStack p={4} spacing={4} w="100%">
-              {data?.map((post) => (
-                <Card {...post} key={post._id} />
-              ))}
-            </VStack>
+            {pinned.length ? (
+              <VStack p={4} spacing={6} w="100%">
+                {data
+                  ?.filter((post) =>
+                    pinned.some((postId) => postId === post._id)
+                  )
+                  .map((post) => (
+                    <Card {...post} key={post._id} />
+                  ))}
+                {data
+                  .filter((post) =>
+                    pinned.every((postId) => postId !== post._id)
+                  )
+                  .map((post) => (
+                    <Card {...post} key={post._id} />
+                  ))}
+              </VStack>
+            ) : (
+              <VStack p={4} spacing={6} w="100%">
+                {data?.map((post) => (
+                  <Card {...post} key={post._id} />
+                ))}
+              </VStack>
+            )}
           </TabPanel>
           <TabPanel w="100%" p={0}>
             <VStack p={4} spacing={4} w="100%">
