@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   HStack,
   IconButton,
@@ -9,7 +9,6 @@ import {
   Center,
   Icon,
   VStack,
-  Portal,
 } from '@chakra-ui/react';
 import {
   TbInfoCircle,
@@ -20,7 +19,7 @@ import {
 } from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import Loading from '@/components/common/Loading';
 import Header from '@/components/nav/Header';
@@ -29,23 +28,21 @@ import Calendar from '@/components/calendar/Calendar';
 import FloatButton from '@/components/layout/FloatButton';
 import AddEventDrawer from '@/components/calendar/AddEventDrawer';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
-import Tutorial from '@/components/tutorial';
-import { tutorialAtom } from '@/store/tutorial';
+import { tutorialAtom, tutorialModalAtom } from '@/store/tutorial';
 import Card from '@/components/layout/Card';
 
 function Events() {
   const queryClient = useQueryClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isHelpOpen,
-    onOpen: onHelpOpen,
-    onClose: onHelpClose,
-  } = useDisclosure();
-  const {
-    isOpen: isIcalOpen,
-    onOpen: onIcalOpen,
-    onClose: onIcalClose,
-  } = useDisclosure();
+  const setTutorialModal = useSetRecoilState(tutorialModalAtom);
+  const onHelpOpen = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, events: true })),
+    [setTutorialModal]
+  );
+  const onIcalOpen = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, iCal: true })),
+    [setTutorialModal]
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
   const [date, setDate] = useState(new Date());
@@ -95,7 +92,6 @@ function Events() {
           <Heading size="md" ml={4} py={4}>
             年間行事予定
           </Heading>
-          <Tutorial.Events isOpen={isHelpOpen} onClose={onHelpClose} />
           <Spacer />
           <IconButton
             aria-label="open help"
@@ -127,12 +123,6 @@ function Events() {
                 <Text textStyle="link" fontWeight="bold" onClick={onIcalOpen}>
                   他のカレンダーと連携できます
                 </Text>
-                <Portal>
-                  <Tutorial.ICalendar
-                    isOpen={isIcalOpen}
-                    onClose={onIcalClose}
-                  />
-                </Portal>
                 <IconButton
                   variant="ghost"
                   aria-label="Close AddToHomeScreen info"

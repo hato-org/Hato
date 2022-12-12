@@ -1,27 +1,19 @@
-import {
-  Center,
-  VStack,
-  Icon,
-  Text,
-  Portal,
-  useDisclosure,
-  IconButton,
-} from '@chakra-ui/react';
+import { useCallback } from 'react';
+import { Center, VStack, Icon, Text, IconButton } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbBulb, TbInfoCircle, TbX } from 'react-icons/tb';
-import { useRecoilState } from 'recoil';
-import Tutorial from '../tutorial';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useUser } from '@/hooks/user';
 import Card from '../layout/Card';
-import { tutorialAtom } from '@/store/tutorial';
+import { tutorialAtom, tutorialModalAtom } from '@/store/tutorial';
 
 function Info() {
   const { data: user } = useUser();
-  const {
-    isOpen: ATHSIsOpen,
-    onOpen: ATHSOnOpen,
-    onClose: ATHSOnClose,
-  } = useDisclosure();
+  const setTutorialModal = useSetRecoilState(tutorialModalAtom);
+  const onATHSOpen = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, ATHS: true })),
+    [setTutorialModal]
+  );
   const isInfoSet = user.grade && user.class;
   const isPWA = window.matchMedia('(display-mode: standalone)').matches;
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
@@ -60,7 +52,7 @@ function Info() {
               />
               <Icon as={TbBulb} w={16} h={16} color="yellow.500" />
               <Text textStyle="title" textAlign="center">
-                <Text as="span" textStyle="link" onClick={ATHSOnOpen}>
+                <Text as="span" textStyle="link" onClick={onATHSOpen}>
                   「ホーム画面に追加」
                 </Text>
                 すると、
@@ -70,9 +62,6 @@ function Info() {
             </VStack>
           )}
         </VStack>
-        <Portal>
-          <Tutorial.AddToHomeScreen isOpen={ATHSIsOpen} onClose={ATHSOnClose} />
-        </Portal>
       </Center>
     </Card>
   );

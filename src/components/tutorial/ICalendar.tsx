@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -26,15 +26,17 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbCopy, TbExternalLink } from 'react-icons/tb';
+import { useRecoilState } from 'recoil';
 import { useUser } from '@/hooks/user';
+import { tutorialModalAtom } from '@/store/tutorial';
 
-interface TutorialIcalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function ICalendar({ isOpen, onClose }: TutorialIcalProps) {
+export default function ICalendar() {
   const { data: user } = useUser();
+  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const onClose = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, iCal: false })),
+    [setTutorialModal]
+  );
   const iCalLink = useMemo(
     () =>
       `${import.meta.env.VITE_API_URL}/calendar/ical/events.ics?key=${
@@ -45,7 +47,7 @@ export default function ICalendar({ isOpen, onClose }: TutorialIcalProps) {
   const { onCopy, hasCopied } = useClipboard(iCalLink);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={tutorialModal.iCal} onClose={onClose}>
       <ModalOverlay />
       <ModalContent rounded="xl" bg="panel">
         <ModalHeader>iCalフィード</ModalHeader>

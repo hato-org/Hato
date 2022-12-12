@@ -18,12 +18,14 @@ function UpdatePrompt() {
   });
 
   return (
-    <Slide direction="top" in={needRefresh} style={{ zIndex: 10 }}>
+    <Slide direction="top" in={needRefresh} style={{ zIndex: 10000 }}>
       <VStack
         position="relative"
         bg="panel"
         m={4}
         p={4}
+        border="1px solid"
+        borderColor="border"
         shadow={needRefresh ? 'xl' : 'none'}
         rounded="xl"
         transition="all .2s ease"

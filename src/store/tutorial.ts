@@ -5,17 +5,28 @@ interface TutorialAtom {
   events: boolean;
   ATHS: boolean;
   iCal: boolean;
+  pin: boolean;
 }
 
 const { persistAtom } = recoilPersist();
 
-// eslint-disable-next-line import/prefer-default-export
 export const tutorialAtom = atom<TutorialAtom>({
   key: 'hato.tutorial',
   default: {
     events: false,
     ATHS: false,
     iCal: false,
+    pin: false,
   },
   effects: [persistAtom],
+});
+
+export const tutorialModalAtom = atom<TutorialAtom>({
+  key: 'hato.tutorial.modal',
+  default: {
+    events: false,
+    ATHS: false,
+    iCal: false,
+    pin: false,
+  },
 });

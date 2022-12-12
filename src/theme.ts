@@ -88,6 +88,9 @@ const theme = extendTheme({
       color: 'description',
     },
     link: {
+      layerStyle: 'button',
+      rounded: 'md',
+      px: 1,
       color: 'blue.500',
       textDecoration: 'underline',
       textUnderlineOffset: '4px',

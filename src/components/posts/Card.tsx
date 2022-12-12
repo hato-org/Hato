@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Flex,
+  FlexProps,
   HStack,
   Icon,
   Spacer,
@@ -23,15 +24,23 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import {
-  motion,
+  PanInfo,
   useDragControls,
   useMotionValue,
   useTransform,
 } from 'framer-motion';
-import { MotionCenter } from '../motion';
+import { MotionCenter, MotionFlex } from '../motion';
 import { pinnedPostAtom } from '@/store/posts';
 
-function Card({ _id, title, text, attachments, createdAt }: Post) {
+function Card({
+  _id,
+  title,
+  text,
+  attachments,
+  createdAt,
+  bg = 'bg',
+  ...rest
+}: Post & FlexProps) {
   const queryClient = useQueryClient();
   const controls = useDragControls();
   const x = useMotionValue(0);
@@ -49,9 +58,15 @@ function Card({ _id, title, text, attachments, createdAt }: Post) {
     <Flex
       w="100%"
       rounded="xl"
-      overflowX="hidden"
+      overflow="hidden"
       position="relative"
-      sx={{ touchAction: 'none' }}
+      zIndex={0}
+      sx={{
+        ':hover': {
+          touchAction: 'none',
+        },
+      }}
+      {...rest}
     >
       <MotionCenter
         bg={isPinned ? 'red.400' : 'blue.400'}
@@ -60,23 +75,30 @@ function Card({ _id, title, text, attachments, createdAt }: Post) {
         left={0}
         h="100%"
         style={{ width: pinWidth }}
-        animate={{ scale: pin ? 1.2 : 1 }}
-        zIndex={-10}
+
+        // zIndex={10}
       >
         <Icon
           as={isPinned ? TbPinnedOff : TbPin}
-          transform={`rotate(${pin ? '-45deg' : '0deg'})`}
+          transform={`rotate(${pin ? '-45deg' : '0deg'}) scale(${
+            pin ? 1.2 : 1
+          })`}
           transition="all .2s ease"
-          size="lg"
           boxSize={6}
         />
       </MotionCenter>
-      <motion.div
+      <MotionFlex
+        w="100%"
+        bg={bg}
         drag="x"
+        dragDirectionLock
         dragConstraints={{ left: 0, right: 0 }}
         dragControls={controls}
         dragListener={false}
-        onDrag={(event, info) => {
+        onDrag={(
+          event: MouseEvent | TouchEvent | PointerEvent,
+          info: PanInfo
+        ) => {
           setPin(info.offset.x > 160);
         }}
         onDragEnd={() => {
@@ -89,13 +111,12 @@ function Card({ _id, title, text, attachments, createdAt }: Post) {
         }}
         style={{
           x,
-          background: 'var(--chakra-colors-bg)',
-          width: '100%',
         }}
+        zIndex={5}
       >
         <HStack
           w="100%"
-          bg="bg"
+          bg={bg}
           as={RouterLink}
           to={`/posts/${_id}`}
           px={2}
@@ -130,7 +151,7 @@ function Card({ _id, title, text, attachments, createdAt }: Post) {
           <Spacer />
           <Icon as={TbChevronRight} />
         </HStack>
-      </motion.div>
+      </MotionFlex>
     </Flex>
   );
 }
