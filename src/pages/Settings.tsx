@@ -13,7 +13,7 @@ function Settings() {
         <title>設定 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
       <Header>
-        <HStack w="100%" px={2}>
+        <HStack w="100%">
           <BackButton />
           <Heading size="md" py={4}>
             設定

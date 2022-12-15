@@ -23,7 +23,6 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
       keepPreviousData: true,
       retry: 1,
-      cacheTime: Infinity, // Cache time (Infinity)
       staleTime: 1000 * 60 * 5, // Stale time (5 mins)
     },
   },
@@ -37,7 +36,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <HelmetProvider>
         <PersistQueryClientProvider
           client={queryClient}
-          persistOptions={{ persister }}
+          persistOptions={{
+            persister,
+            maxAge: 1000 * 60 * 60 * 24, // 24 hours
+          }}
         >
           <RecoilRoot>
             <ColorModeScript />

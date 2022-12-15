@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Heading,
   Text,
@@ -16,15 +17,22 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
+import { useRecoilState } from 'recoil';
+import { tutorialModalAtom } from '@/store/tutorial';
 
-interface TutorialEventsProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+export default function Events() {
+  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const onClose = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, events: false })),
+    [setTutorialModal]
+  );
 
-function Events({ isOpen, onClose }: TutorialEventsProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
+    <Modal
+      isOpen={tutorialModal.events}
+      onClose={onClose}
+      scrollBehavior="inside"
+    >
       <ModalOverlay />
       <ModalContent rounded="xl" bg="panel">
         <ModalHeader>使い方</ModalHeader>
@@ -120,5 +128,3 @@ function Events({ isOpen, onClose }: TutorialEventsProps) {
     </Modal>
   );
 }
-
-export default Events;

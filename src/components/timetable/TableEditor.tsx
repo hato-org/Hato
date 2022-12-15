@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Box,
   Button,
@@ -434,11 +440,12 @@ function PeriodEditor({
   const [newPeriod, setPeriod] = useState<
     Omit<Period, 'start' | 'end'> & Partial<Pick<Period, 'start' | 'end'>>
   >(period);
+  const initialRef = useRef(null);
 
   const { data: subjectList } = useSubjectList({ type, grade });
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent rounded="xl" bg="panel">
         <ModalCloseButton top={4} right={4} />
@@ -455,6 +462,7 @@ function PeriodEditor({
                   value={newPeriod.start}
                   textAlign="center"
                   isInvalid={!newPeriod.start}
+                  ref={initialRef}
                   onChange={(e) =>
                     setPeriod((oldPeriod) => ({
                       ...oldPeriod,

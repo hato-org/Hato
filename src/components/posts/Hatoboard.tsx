@@ -7,18 +7,19 @@ import {
   TabPanel,
   TabPanels,
 } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { useClient } from '@/modules/client';
+import { useRecoilValue } from 'recoil';
 import CardElement from '../cards';
 import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Card from './Card';
+import { pinnedPostAtom } from '@/store/posts';
+import { useHatoboard } from '@/hooks/posts';
 
 function Hatoboard() {
-  const { client } = useClient();
   const queryClient = useQueryClient();
+  const pinned = useRecoilValue(pinnedPostAtom);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -35,13 +36,7 @@ function Hatoboard() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { data, error, isLoading } = useQuery<Post[], AxiosError>(
-    ['posts', 'hatoboard'],
-    async () => (await client.get('/post')).data,
-    {
-      cacheTime: Infinity,
-    }
-  );
+  const { data, error, isLoading } = useHatoboard();
 
   if (isLoading) return <Loading />;
   if (error) return <CardElement.Error error={error} />;
@@ -93,11 +88,30 @@ function Hatoboard() {
       >
         <TabPanels w="100%" p={0}>
           <TabPanel w="100%" p={0}>
-            <VStack p={4} spacing={4} w="100%">
-              {data?.map((post) => (
-                <Card {...post} key={post._id} />
-              ))}
-            </VStack>
+            {pinned.length ? (
+              <VStack p={4} spacing={4} w="100%">
+                {data
+                  ?.filter((post) =>
+                    pinned.some((postId) => postId === post._id)
+                  )
+                  .map((post) => (
+                    <Card {...post} key={post._id} />
+                  ))}
+                {data
+                  .filter((post) =>
+                    pinned.every((postId) => postId !== post._id)
+                  )
+                  .map((post) => (
+                    <Card {...post} key={post._id} />
+                  ))}
+              </VStack>
+            ) : (
+              <VStack p={4} spacing={4} w="100%">
+                {data?.map((post) => (
+                  <Card {...post} key={post._id} />
+                ))}
+              </VStack>
+            )}
           </TabPanel>
           <TabPanel w="100%" p={0}>
             <VStack p={4} spacing={4} w="100%">

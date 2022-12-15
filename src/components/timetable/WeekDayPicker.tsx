@@ -47,8 +47,6 @@ const WeekDayPicker = React.memo(
     const [week, setWeek] = useState<Week>(defaultWeek ?? 'A');
     const [day, setDay] = useState<Day>(defaultDay ?? 0);
 
-    console.log('fff');
-
     return (
       <HStack w="100%">
         <Box w="100%">
@@ -58,6 +56,7 @@ const WeekDayPicker = React.memo(
               rounded="lg"
               layerStyle="button"
               textStyle="title"
+              borderColor="border"
             >
               <HStack w="100%" px={4} py={2}>
                 <Text>{week}週</Text>
@@ -94,6 +93,7 @@ const WeekDayPicker = React.memo(
               rounded="lg"
               layerStyle="button"
               textStyle="title"
+              borderColor="border"
             >
               <HStack w="100%" px={4} py={2}>
                 <Text>

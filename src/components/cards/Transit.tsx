@@ -36,7 +36,10 @@ export default function Transit() {
 
   const { data, isLoading } = useQuery<Transit>(
     ['transit'],
-    async () => (await client.get('/transit')).data
+    async () => (await client.get('/transit')).data,
+    {
+      refetchInterval: 1000 * 60 * 5, // Refetch in 5 mins
+    }
   );
 
   return (

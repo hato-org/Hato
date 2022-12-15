@@ -1,13 +1,13 @@
 import {
   Heading,
   HStack,
-  Icon,
-  IconButton,
+  // Icon,
+  // IconButton,
   Spacer,
   Stack,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { TbSettings } from 'react-icons/tb';
+// import { Link as RouterLink } from 'react-router-dom';
+// import { TbSettings } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
@@ -40,40 +40,41 @@ function Dashboard() {
       <Helmet>
         <title>ホーム - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
-      <Header>
-        <HStack w="100%" px={2}>
+      <Header withMenu>
+        <HStack w="100%">
           {/* <Image src='./hato.png' h={8} px={2} fallback={<SkeletonCircle size='8' px={2} />} /> */}
           {/* <Avatar src={user?.avatar} size='sm' ml={2} /> */}
-          <Heading size="md" ml={4} py={4}>
+          <Heading size="md" ml={2} py={4}>
             ホーム
           </Heading>
           <Spacer />
-          <IconButton
+          {/* <IconButton
             aria-label="Go to settings"
-            icon={<Icon as={TbSettings} w={6} h={6} />}
+            icon={<Icon as={TbSettings} boxSize={6} />}
             variant="ghost"
             size="lg"
             isRound
             as={RouterLink}
             to="/settings"
-          />
+          /> */}
         </HStack>
       </Header>
-      <ChakraPullToRefresh
-        w="100%"
-        minH="100vh"
-        mb={16}
-        onRefresh={async () => {
-          await Promise.all([
-            queryClient.invalidateQueries(['timetable']),
-            queryClient.invalidateQueries(['calendar']),
-            queryClient.invalidateQueries(['posts']),
-            queryClient.invalidateQueries(['transit']),
-          ]);
-        }}
-      >
-        <Stack flex={1} p={4} pb={16} spacing={8}>
-          {/* <VStack w="100%" align="flex-start" spacing={1}>
+      <HStack>
+        <ChakraPullToRefresh
+          w="100%"
+          minH="100vh"
+          mb={16}
+          onRefresh={async () => {
+            await Promise.all([
+              queryClient.invalidateQueries(['timetable']),
+              queryClient.invalidateQueries(['calendar']),
+              queryClient.invalidateQueries(['posts']),
+              queryClient.invalidateQueries(['transit']),
+            ]);
+          }}
+        >
+          <Stack flex={1} p={4} pb={16} spacing={8}>
+            {/* <VStack w="100%" align="flex-start" spacing={1}>
             <Heading as="h2" textStyle="title">
               {greet}
             </Heading>
@@ -81,18 +82,19 @@ function Dashboard() {
               {formatDate}
             </Text>
           </VStack> */}
-          <CardElement.Info />
-          <Card w={{ base: '100%' }}>
-            <CardElement.Timetable />
-          </Card>
-          <Card w="100%">
-            <CardElement.Events />
-          </Card>
-          <Card w="100%">
-            <CardElement.Hatoboard />
-          </Card>
-        </Stack>
-      </ChakraPullToRefresh>
+            <CardElement.Info />
+            <Card w={{ base: '100%' }}>
+              <CardElement.Timetable />
+            </Card>
+            <Card w="100%">
+              <CardElement.Events />
+            </Card>
+            <Card w="100%">
+              <CardElement.Hatoboard />
+            </Card>
+          </Stack>
+        </ChakraPullToRefresh>
+      </HStack>
       <BottomNavbar />
     </>
   );

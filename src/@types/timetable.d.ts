@@ -15,6 +15,11 @@ interface Period {
   event?: string[]; // Related event ID
 }
 
+interface DefaultPeriod extends Period {
+  startAt: string;
+  endAt: string;
+}
+
 interface CurrentTimetable {
   timetable: SubjectInfo[];
   period: number;
@@ -29,6 +34,7 @@ interface DaySchedule {
   schedule: {
     week: Week;
     day: Day;
+    irregular: boolean;
   };
   target: {
     type: Type;
@@ -42,6 +48,22 @@ interface DaySchedule {
     class: number;
     course: CourseInfo;
   };
+}
+
+interface Schedule {
+  date: Date | string;
+  week: Week;
+  day: Day;
+  schedule: {
+    type: Type;
+    grade: number;
+    timetable: {
+      index: number;
+      startAt: string;
+      endAt: string;
+    }[];
+  }[];
+  irregular: boolean;
 }
 
 interface Note {

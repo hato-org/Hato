@@ -1,5 +1,6 @@
+import { useState, useCallback } from 'react';
 import {
-  Center,
+  Button,
   Heading,
   HStack,
   Icon,
@@ -7,23 +8,24 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { TbChevronRight } from 'react-icons/tb';
+import { TbChevronDown, TbChevronRight } from 'react-icons/tb';
+import { useSetRecoilState } from 'recoil';
 import { Link as RouterLink } from 'react-router-dom';
-import { useClient } from '@/modules/client';
 import Loading from '../common/Loading';
 import Card from '../posts/Card';
 import Error from './Error';
+import { useHatoboard, usePinnedPosts } from '@/hooks/posts';
+import { tutorialModalAtom } from '@/store/tutorial';
 
 function Hatoboard() {
-  const { client } = useClient();
-
-  const { data, isLoading, error } = useQuery<Post[], AxiosError>(
-    ['posts', 'hatoboard'],
-    async () => (await client.get('/post')).data,
-    { cacheTime: Infinity }
+  const setTutorialModal = useSetRecoilState(tutorialModalAtom);
+  const onPinOpen = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, pin: true })),
+    [setTutorialModal]
   );
+  const { data, isLoading, isError, error } = useHatoboard();
+  const pinnedPosts = usePinnedPosts(data);
+  const [isLimited, setIsLimited] = useState(true);
 
   return (
     <VStack w="100%" spacing={4}>
@@ -37,21 +39,44 @@ function Hatoboard() {
       {/* eslint-disable no-nested-ternary */}
       {isLoading ? (
         <Loading />
-      ) : error ? (
+      ) : isError ? (
         <Error error={error} />
       ) : (
-        <VStack w="100%" align="flex-start" spacing={0}>
-          <Text pl={2} textStyle="title" fontSize="lg">
-            最新の投稿
-          </Text>
-          {data.length ? (
-            <Card {...data[0]} />
+        <VStack w="100%" align="flex-start" spacing={4}>
+          {pinnedPosts?.length ? (
+            <VStack w="100%">
+              {pinnedPosts.slice(0, isLimited ? 2 : undefined).map((post) => (
+                <Card key={post._id} {...post} bg="panel" />
+              ))}
+              {pinnedPosts.length > 2 && (
+                <Button
+                  w="100%"
+                  rounded="lg"
+                  size="sm"
+                  variant="ghost"
+                  color="description"
+                  leftIcon={
+                    <Icon
+                      as={TbChevronDown}
+                      transform={`rotate(${isLimited ? '0deg' : '180deg'})`}
+                      transition="all .2s ease"
+                    />
+                  }
+                  onClick={() => setIsLimited((oldVal) => !oldVal)}
+                >
+                  {isLimited ? ' さらに表示' : '一部を表示'}
+                </Button>
+              )}
+            </VStack>
           ) : (
-            <Center w="100%" pt={4}>
+            <VStack w="100%" pt={4}>
               <Text textStyle="description" fontWeight="bold">
-                投稿がありません
+                ピン留めされた投稿がありません
               </Text>
-            </Center>
+              <Text textStyle="link" fontWeight="bold" onClick={onPinOpen}>
+                ピン留め方法
+              </Text>
+            </VStack>
           )}
         </VStack>
       )}

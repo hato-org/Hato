@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
       VitePWA({
         registerType: 'prompt',
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+          globPatterns: ['**/*.{js,css,html,ico,png,gif,svg,woff,woff2}'],
         },
         manifest: {
           name: process.env.VITE_APP_NAME,

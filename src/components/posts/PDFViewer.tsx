@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Box,
   Drawer,
@@ -16,17 +17,15 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { useQuery, useIsFetching } from '@tanstack/react-query';
-import { Document, Page, pdfjs } from 'react-pdf';
-import React, { useState } from 'react';
 import { TbExternalLink, TbX } from 'react-icons/tb';
 import { AxiosError } from 'axios';
+// @ts-ignore: Type definitions for vite not yet provided
+import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import { useClient } from '@/modules/client';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
-// import pdfworker from './pdf.worker.min.js?url';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.js`;
-// pdfjs.GlobalWorkerOptions.workerSrc = pdfworker;
 
 interface PDFViewerProps {
   isOpen: boolean;
@@ -113,6 +112,7 @@ const PDFViewer = React.memo(
                   file={{
                     data,
                   }}
+                  // @ts-ignore: Type definitions for vite not yet provided
                   onLoadSuccess={(pdf) => {
                     setPageCount(pdf.numPages);
                   }}

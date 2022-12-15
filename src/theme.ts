@@ -22,13 +22,6 @@ const colors = {
 
 const theme = extendTheme({
   colors,
-  components: {
-    Input: {
-      defaultProps: {
-        variant: 'flushed',
-      },
-    },
-  },
   fonts: {
     heading: `-apple-system, "Noto Sans JP", sans-serif`,
     body: `-apple-system, "Noto Sans JP", sans-serif`,
@@ -56,8 +49,8 @@ const theme = extendTheme({
         _dark: 'bg.800',
       },
       border: {
-        default: 'bg.50',
-        _dark: 'transparent',
+        default: 'bg.100',
+        _dark: 'bg.800',
       },
       hover: {
         default: 'blackAlpha.100',
@@ -66,6 +59,14 @@ const theme = extendTheme({
       active: {
         default: 'blackAlpha.200',
         _dark: 'whiteAlpha.200',
+      },
+      accent: {
+        default: 'blue.50',
+        _dark: 'blue.800',
+      },
+      'border-accent': {
+        default: 'blue.300',
+        _dark: 'blue.400',
       },
     },
   },
@@ -87,6 +88,9 @@ const theme = extendTheme({
       color: 'description',
     },
     link: {
+      layerStyle: 'button',
+      rounded: 'md',
+      px: 1,
       color: 'blue.500',
       textDecoration: 'underline',
       textUnderlineOffset: '4px',

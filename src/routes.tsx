@@ -1,19 +1,11 @@
 import React from 'react';
-// import { AnimatePresence } from 'framer-motion';
-import {
-  // Routes,
-  // Route,
-  // useLocation,
-  createBrowserRouter,
-} from 'react-router-dom';
-// import { useRecoilValue } from 'recoil';
+import { createBrowserRouter } from 'react-router-dom';
 import RequireLogin from './components/login/RequireLogin';
 import Setting from './components/settings';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import PostElement from './components/posts';
 import ErrorFallback from './components/common/ErrorFallback';
-// import { userAtom } from './store/auth';
 
 const Events = React.lazy(() => import('./pages/Events'));
 // const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -23,6 +15,9 @@ const Settings = React.lazy(() => import('./pages/Settings'));
 const Timetable = React.lazy(() => import('./pages/Timetable'));
 const Posts = React.lazy(() => import('./pages/Posts'));
 const PostDetail = React.lazy(() => import('./pages/PostDetail'));
+const Library = React.lazy(() => import('./pages/Library'));
+const LibrarySearch = React.lazy(() => import('./pages/LibrarySearch'));
+const LibraryBookmarks = React.lazy(() => import('./pages/LibraryBookmarks'));
 
 // function Router() {
 //   const user = useRecoilValue(userAtom);
@@ -117,6 +112,28 @@ const router = createBrowserRouter([
       {
         path: 'posts/:id',
         element: <PostDetail />,
+      },
+      {
+        path: 'library',
+        element: <Library />,
+        // children: [
+        //   {
+        //     index: true,
+        //     element: <LibraryElement.Top />
+        //   },
+        //   {
+        //     path: 'search',
+        //     element: <LibraryElement.Search />
+        //   }
+        // ]
+      },
+      {
+        path: 'library/search',
+        element: <LibrarySearch />,
+      },
+      {
+        path: 'library/bookmarks',
+        element: <LibraryBookmarks />,
       },
     ],
   },

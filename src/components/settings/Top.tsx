@@ -146,11 +146,13 @@ function Top() {
                           ATHS: false,
                           iCal: false,
                           events: false,
+                          pin: false,
                         });
                         queryClient.removeQueries(['timetable']);
                         queryClient.removeQueries(['calendar']);
                         queryClient.removeQueries(['posts']);
                         queryClient.removeQueries(['post']);
+                        queryClient.removeQueries(['library']);
                         refetch();
                         onClose();
                       }}

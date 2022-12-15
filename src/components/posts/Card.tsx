@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import {
+  Flex,
+  FlexProps,
   HStack,
   Icon,
   Spacer,
@@ -11,57 +14,145 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns/esm';
-import { TbArrowDownCircle, TbChevronRight, TbFile } from 'react-icons/tb';
+import {
+  TbArrowDownCircle,
+  TbChevronRight,
+  TbFile,
+  TbPin,
+  TbPinnedOff,
+} from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRecoilState } from 'recoil';
+import {
+  PanInfo,
+  useDragControls,
+  useMotionValue,
+  useTransform,
+} from 'framer-motion';
+import { MotionCenter, MotionFlex } from '../motion';
+import { pinnedPostAtom } from '@/store/posts';
 
-function Card({ _id, title, text, attachments, createdAt }: Post) {
+function Card({
+  _id,
+  title,
+  text,
+  attachments,
+  createdAt,
+  bg = 'bg',
+  ...rest
+}: Post & FlexProps) {
   const queryClient = useQueryClient();
+  const controls = useDragControls();
+  const x = useMotionValue(0);
+  const pinWidth = useTransform(x, [0, 64, 1000], [32, 64, 1000]);
+
+  const [pinned, setPinned] = useRecoilState(pinnedPostAtom);
+  const [pin, setPin] = useState(false);
+  const isPinned = pinned.some((postId) => postId === _id);
 
   const attachmentQueries = attachments.map((attachment) =>
     queryClient.getQueryState(['post', 'attachment', attachment.id])
   );
 
   return (
-    <HStack
+    <Flex
       w="100%"
-      px={2}
-      py={4}
       rounded="xl"
-      as={RouterLink}
-      to={`/posts/${_id}`}
-      layerStyle="button"
+      overflow="hidden"
+      position="relative"
+      zIndex={0}
+      sx={{
+        ':hover': {
+          touchAction: 'none',
+        },
+      }}
+      {...rest}
     >
-      {/* {thumbnail ? (
-				<Image boxSize='100px' src={thumbnail} />
-			) : (
-				<Icon w={8} h={8} as={TbFile} />
-			)} */}
-      <VStack align="flex-start" w="100%" pl={4}>
-        <HStack w="100%">
-          <Text fontSize="lg" textStyle="title" noOfLines={1}>
-            {title}
-          </Text>
+      <MotionCenter
+        bg={isPinned ? 'red.400' : 'blue.400'}
+        color="white"
+        position="absolute"
+        left={0}
+        h="100%"
+        style={{ width: pinWidth }}
+
+        // zIndex={10}
+      >
+        <Icon
+          as={isPinned ? TbPinnedOff : TbPin}
+          transform={`rotate(${pin ? '-45deg' : '0deg'}) scale(${
+            pin ? 1.2 : 1
+          })`}
+          transition="all .2s ease"
+          boxSize={6}
+        />
+      </MotionCenter>
+      <MotionFlex
+        w="100%"
+        bg={bg}
+        drag="x"
+        dragDirectionLock
+        dragConstraints={{ left: 0, right: 0 }}
+        dragControls={controls}
+        dragListener={false}
+        onDrag={(
+          event: MouseEvent | TouchEvent | PointerEvent,
+          info: PanInfo
+        ) => {
+          setPin(info.offset.x > 160);
+        }}
+        onDragEnd={() => {
+          if (pin)
+            setPinned((oldPinned) =>
+              isPinned
+                ? oldPinned.filter((postId) => postId !== _id)
+                : [...oldPinned, _id]
+            );
+        }}
+        style={{
+          x,
+        }}
+        zIndex={5}
+      >
+        <HStack
+          w="100%"
+          bg={bg}
+          as={RouterLink}
+          to={`/posts/${_id}`}
+          px={2}
+          py={4}
+          layerStyle="button"
+          onTouchStart={(e) => controls.start(e, { snapToCursor: false })}
+        >
+          <VStack align="flex-start" w="100%" pl={2}>
+            <HStack w="100%">
+              {isPinned && <Icon as={TbPin} color="blue.400" />}
+              <Text fontSize="lg" textStyle="title" noOfLines={1}>
+                {title}
+              </Text>
+              <Spacer />
+              {attachmentQueries.every((queryState) => queryState?.data) && (
+                <Icon as={TbArrowDownCircle} />
+              )}
+              <Text textStyle="description" fontSize="xs">
+                {format(new Date(createdAt), 'MM/dd')}
+              </Text>
+            </HStack>
+            {text && <Text noOfLines={1}>{text}</Text>}
+            <Wrap>
+              {attachments.map((attachment) => (
+                <Tag variant="outline" rounded="full" key={attachment.id}>
+                  <TagLeftIcon as={TbFile} />
+                  <TagLabel>{attachment.name}</TagLabel>
+                </Tag>
+              ))}
+            </Wrap>
+          </VStack>
           <Spacer />
-          {attachmentQueries.every((queryState) => queryState?.data) && (
-            <Icon as={TbArrowDownCircle} />
-          )}
-          <Text textStyle="description" fontSize="xs">
-            {format(new Date(createdAt), 'MM/dd')}
-          </Text>
+          <Icon as={TbChevronRight} />
         </HStack>
-        {text && <Text noOfLines={1}>{text}</Text>}
-        <Wrap>
-          {attachments.map((attachment) => (
-            <Tag variant="outline" rounded="full" key={attachment.id}>
-              <TagLeftIcon as={TbFile} />
-              <TagLabel>{attachment.name}</TagLabel>
-            </Tag>
-          ))}
-        </Wrap>
-      </VStack>
-      <Spacer />
-      <Icon as={TbChevronRight} />
-    </HStack>
+      </MotionFlex>
+    </Flex>
   );
 }
 

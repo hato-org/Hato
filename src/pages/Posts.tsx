@@ -19,9 +19,9 @@ function Posts() {
       <Helmet>
         <title>掲示物 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
-      <Header>
-        <HStack w="100%" px={2}>
-          <Heading size="md" ml={4} py={4}>
+      <Header withMenu>
+        <HStack w="100%">
+          <Heading size="md" ml={2} py={4}>
             はとボード
           </Heading>
           <Spacer />

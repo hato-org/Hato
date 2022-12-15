@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Heading,
   Image,
@@ -14,17 +15,20 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { TbDotsVertical } from 'react-icons/tb';
+import { useRecoilState } from 'recoil';
+import { tutorialModalAtom } from '@/store/tutorial';
 
-interface TutorialATHSProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+function AddToHomeScreen() {
+  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const onClose = useCallback(
+    () => setTutorialModal((currVal) => ({ ...currVal, ATHS: false })),
+    [setTutorialModal]
+  );
 
-function AddToHomeScreen({ isOpen, onClose }: TutorialATHSProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={tutorialModal.ATHS} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent bg="panel">
+      <ModalContent bg="panel" rounded="xl">
         <ModalHeader>ホーム画面に追加</ModalHeader>
         <ModalCloseButton top={4} right={4} />
         <ModalBody>
