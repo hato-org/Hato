@@ -1,35 +1,19 @@
-import {
-  IconButton,
-  Heading,
-  HStack,
-  VStack,
-  Text,
-  Button,
-} from '@chakra-ui/react';
-import { TbArrowNarrowLeft } from 'react-icons/tb';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Heading, HStack, VStack, Text, Button } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
 import BottomNavbar from '@/components/nav/BottomNavbar';
+import BackButton from '@/components/layout/BackButton';
 
 function NotFound() {
-  const navigate = useNavigate();
-
   return (
     <>
       <Helmet>
         <title>404 Not Found - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
       <Header>
-        <HStack w="100%" px={2}>
-          <IconButton
-            aria-label="go back"
-            icon={<TbArrowNarrowLeft />}
-            variant="ghost"
-            size="lg"
-            isRound
-            onClick={() => navigate(-1)}
-          />
+        <HStack w="100%">
+          <BackButton />
           <Heading size="md" py={4}>
             404 Not found
           </Heading>

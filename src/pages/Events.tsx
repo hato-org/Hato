@@ -6,22 +6,14 @@ import {
   useDisclosure,
   Text,
   Spacer,
-  Center,
   Icon,
   VStack,
 } from '@chakra-ui/react';
-import {
-  TbInfoCircle,
-  TbPlus,
-  TbArrowNarrowDown,
-  TbX,
-  TbBulb,
-} from 'react-icons/tb';
+import { TbInfoCircle, TbPlus, TbX, TbBulb } from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
-import Loading from '@/components/common/Loading';
 import Header from '@/components/nav/Header';
 import BottomNavbar from '@/components/nav/BottomNavbar';
 import Calendar from '@/components/calendar/Calendar';
@@ -79,17 +71,9 @@ function Events() {
       <Helmet>
         <title>年間行事予定 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
-      <Header>
-        <HStack w="100%" px={2}>
-          {/* <IconButton
-            aria-label="go back"
-            icon={<TbArrowNarrowLeft />}
-            variant="ghost"
-            size="lg"
-            isRound
-            onClick={() => navigate(-1)}
-          /> */}
-          <Heading size="md" ml={4} py={4}>
+      <Header withMenu>
+        <HStack w="100%">
+          <Heading size="md" ml={2} py={4}>
             年間行事予定
           </Heading>
           <Spacer />
@@ -108,12 +92,6 @@ function Events() {
         onRefresh={async () => {
           await Promise.all([queryClient.invalidateQueries(['calendar'])]);
         }}
-        refreshingContent={<Loading />}
-        pullingContent={
-          <Center flexGrow={1} p={4}>
-            <Icon as={TbArrowNarrowDown} w={6} h={6} color="gray.500" />
-          </Center>
-        }
       >
         <VStack px={4} mb={24}>
           {!tutorial.iCal && (

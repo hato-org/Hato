@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Box,
   Center,
@@ -5,18 +6,32 @@ import {
   Collapse,
   HStack,
   Icon,
+  IconButton,
   Progress,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { onlineManager, useIsFetching } from '@tanstack/react-query';
-import { TbCloudOff } from 'react-icons/tb';
+import { TbCloudOff, TbMenu2 } from 'react-icons/tb';
+import { useSetRecoilState } from 'recoil';
+import { overlayAtom } from '@/store/overlay';
+import { SideMenuDrawer } from './SideMenu';
 
-function Header({ children, ...rest }: CenterProps) {
+interface HeaderProps extends CenterProps {
+  withMenu?: boolean;
+}
+
+function Header({ withMenu, children, ...rest }: HeaderProps) {
   const border = useColorModeValue('border', 'transparent');
   const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
   const isOnline = onlineManager.isOnline();
+  const setOverlay = useSetRecoilState(overlayAtom);
+
+  const onMenuOpen = useCallback(
+    () => setOverlay((currVal) => ({ ...currVal, menu: true })),
+    [setOverlay]
+  );
 
   return (
     <Center
@@ -41,12 +56,25 @@ function Header({ children, ...rest }: CenterProps) {
           </HStack>
         </Collapse>
       </Box>
-      {children}
+      <HStack px={2} w="100%" spacing={0}>
+        {withMenu && (
+          <IconButton
+            aria-label="menu"
+            icon={<Icon as={TbMenu2} boxSize={6} />}
+            variant="ghost"
+            isRound
+            size="lg"
+            onClick={onMenuOpen}
+          />
+        )}
+        {children}
+      </HStack>
       <Box w="100%">
         <Collapse in={!!isFetching}>
           <Progress w="100%" size="xs" isIndeterminate />
         </Collapse>
       </Box>
+      <SideMenuDrawer />
     </Center>
   );
 }

@@ -7,10 +7,12 @@ import ErrorFallback from './components/common/ErrorFallback';
 import { GlobalLoading } from './components/common/Loading';
 import UpdatePrompt from './components/common/UpdatePrompt';
 import Tutorial from './components/tutorial';
+import { useUser } from './hooks/user';
 import router from './routes';
 import { unregister } from './utils/serviceWorker';
 
 function App() {
+  const { data: user } = useUser();
   const themeColor = useColorModeValue('white', '#121212');
 
   return (
@@ -26,7 +28,7 @@ function App() {
       </Helmet>
       <Suspense fallback={<GlobalLoading />}>
         <UpdatePrompt />
-        <Tutorial />
+        {user && <Tutorial />}
         <RouterProvider router={router} fallbackElement={<GlobalLoading />} />
       </Suspense>
     </ErrorBoundary>

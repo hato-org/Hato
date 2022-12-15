@@ -15,7 +15,7 @@ function PostDetail() {
         <title>投稿の詳細 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
       <Header>
-        <HStack w="100%" px={2}>
+        <HStack w="100%">
           <BackButton />
           <Heading size="md" py={4}>
             投稿の詳細
