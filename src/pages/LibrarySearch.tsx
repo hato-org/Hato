@@ -15,7 +15,7 @@ export default function LibrarySearch() {
         <HStack w="100%">
           <BackButton />
           <Heading size="md" ml={2} py={4}>
-            蔵書検索
+            蔵書検索・予約
           </Heading>
         </HStack>
       </Header>

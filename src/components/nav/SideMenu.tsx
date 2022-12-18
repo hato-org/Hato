@@ -124,7 +124,7 @@ function MenuBody() {
       {
         type: 'button',
         icon: <Icon as={TbBook2} boxSize={7} />,
-        label: '蔵書検索・予約',
+        label: '図書館',
         href: '/library',
       },
       {
