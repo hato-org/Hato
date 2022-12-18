@@ -82,7 +82,7 @@ export default function BookInfo({
         zIndex={-1}
         objectFit="cover"
         filter="auto"
-        blur="4px"
+        blur="10px"
         brightness={bgBrightness}
         transition="all .4s ease"
         opacity={isOpen ? bgOpacity : 0}

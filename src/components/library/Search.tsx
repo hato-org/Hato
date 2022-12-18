@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Collapse,
@@ -97,6 +99,16 @@ const SearchResult = React.memo(
           <Loading />
         ) : result?.count ? (
           <VStack w="100%" h="100%" spacing={4}>
+            {result?.messages.length && (
+              <Alert status="info" rounded="xl" shadow="xl">
+                <AlertIcon mr={4} />
+                <VStack align="flex-start" spacing={1}>
+                  {result.messages.map((message) => (
+                    <Text textStyle="title">{message}</Text>
+                  ))}
+                </VStack>
+              </Alert>
+            )}
             <HStack w="100%" px={2}>
               <Skeleton isLoaded={!isLoading} rounded="lg" w={24}>
                 <Text textStyle="title" color="description">
@@ -116,7 +128,17 @@ const SearchResult = React.memo(
             />
           </VStack>
         ) : (
-          <VStack w="100%">
+          <VStack w="100%" spacing={4}>
+            {result?.messages.length && (
+              <Alert status="info" rounded="xl" shadow="xl">
+                <AlertIcon mr={4} />
+                <VStack align="flex-start" spacing={1}>
+                  {result.messages.map((message) => (
+                    <Text textStyle="title">{message}</Text>
+                  ))}
+                </VStack>
+              </Alert>
+            )}
             <Icon as={TbMoodSad} boxSize={16} color="description" />
             <Text textStyle="description" fontWeight="bold">
               本が見つかりませんでした
@@ -218,7 +240,7 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               textStyle="title"
               rounded="lg"
               type="number"
-              value={params.year_start}
+              value={params.year_start || ''}
               onChange={(e) =>
                 setParams((currVal) => ({
                   ...currVal,
@@ -231,7 +253,7 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               textStyle="title"
               rounded="lg"
               type="number"
-              value={params.year_end}
+              value={params.year_end || ''}
               onChange={(e) =>
                 setParams((currVal) => ({
                   ...currVal,
