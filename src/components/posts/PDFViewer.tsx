@@ -15,6 +15,7 @@ import {
   Spacer,
   Center,
   useBreakpointValue,
+  Icon,
 } from '@chakra-ui/react';
 import { useQuery, useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX } from 'react-icons/tb';
@@ -46,15 +47,12 @@ const PDFViewer = React.memo(
       async () =>
         (
           await client.get(`/post/attachment/${attachment.id}`, {
-            // params: {
-            //   base64: true,
-            // },
             responseType: 'arraybuffer',
           })
         ).data,
       {
+        enabled: isOpen,
         staleTime: Infinity, // Infinity
-        cacheTime: Infinity, // Infinity
       }
     );
 
@@ -70,22 +68,24 @@ const PDFViewer = React.memo(
       >
         <DrawerOverlay />
         <DrawerContent top={0} bg="bg">
-          <DrawerHeader shadow="xl">
-            <HStack align="center" w="100%" spacing={2}>
+          <DrawerHeader shadow="xl" p={0}>
+            <HStack align="center" w="100%" px={2} spacing={2}>
               <IconButton
                 aria-label="close"
-                icon={<TbX />}
+                icon={<Icon as={TbX} boxSize={6} />}
+                size="lg"
                 variant="ghost"
                 onClick={onClose}
                 isRound
               />
-              <Text textStyle="title" noOfLines={1}>
+              <Text textStyle="title" whiteSpace="nowrap" noOfLines={1} py={4}>
                 {attachment.name}
               </Text>
               <Spacer />
               <IconButton
                 aria-label="open source link"
-                icon={<TbExternalLink />}
+                icon={<Icon as={TbExternalLink} boxSize={6} />}
+                size="lg"
                 variant="ghost"
                 as={Link}
                 href={attachment.url ?? ''}

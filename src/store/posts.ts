@@ -9,3 +9,8 @@ export const pinnedPostAtom = atom<string[]>({
   default: [],
   effects: [persistAtom],
 });
+
+export const postsScrollIndexAtom = atom({
+  key: 'hato.posts.scroll',
+  default: 0,
+});

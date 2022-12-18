@@ -104,12 +104,6 @@ const SearchResult = React.memo(
                 </Text>
               </Skeleton>
             </HStack>
-            {/* <VStack w="100%" spacing={4}>
-              {result?.books.map((book) => (
-                <BookInfo key={book.id} {...book} />
-              ))}
-            </VStack> */}
-
             <Virtuoso
               useWindowScroll
               data={result?.books ?? []}
@@ -118,7 +112,6 @@ const SearchResult = React.memo(
                   <BookInfo {...book} />
                 </Box>
               )}
-              increaseViewportBy={{ top: 8, bottom: 8 }}
               style={{ width: '100%' }}
             />
           </VStack>

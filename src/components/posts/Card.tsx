@@ -75,8 +75,6 @@ function Card({
         left={0}
         h="100%"
         style={{ width: pinWidth }}
-
-        // zIndex={10}
       >
         <Icon
           as={isPinned ? TbPinnedOff : TbPin}
