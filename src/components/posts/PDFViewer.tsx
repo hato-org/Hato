@@ -19,7 +19,6 @@ import {
 import { useQuery, useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX } from 'react-icons/tb';
 import { AxiosError } from 'axios';
-// @ts-ignore: Type definitions for vite not yet provided
 import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -112,7 +111,6 @@ const PDFViewer = React.memo(
                   file={{
                     data,
                   }}
-                  // @ts-ignore: Type definitions for vite not yet provided
                   onLoadSuccess={(pdf) => {
                     setPageCount(pdf.numPages);
                   }}
