@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import {
   VStack,
   HStack,
@@ -18,8 +18,9 @@ import { TbClock, TbFile, TbPaperclip, TbTag } from 'react-icons/tb';
 import { useClient } from '@/modules/client';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
-import PDFViewer from './PDFViewer';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
+
+const PDFViewer = lazy(() => import('./PDFViewer'));
 
 function Post({ id }: { id: string }) {
   const { client } = useClient();
@@ -63,28 +64,30 @@ function Post({ id }: { id: string }) {
           <Icon as={TbPaperclip} w={6} h={6} />
           <Wrap>
             {data.attachments.map((attachment) => (
-              <Tag
-                key={attachment.id}
-                size="lg"
-                variant="outline"
-                rounded="full"
-                onClick={() => {
-                  onOpen();
-                  setSelectedAttachment(attachment.id);
-                }}
-                layerStyle="button"
-              >
-                <TagLeftIcon as={TbFile} />
-                <TagLabel fontWeight="bold">{attachment.name}</TagLabel>
-                <PDFViewer
-                  isOpen={isOpen && selectedAttachment === attachment.id}
-                  onClose={() => {
-                    onClose();
-                    setSelectedAttachment('');
+              <Suspense fallback={<Loading size="sm" />}>
+                <Tag
+                  key={attachment.id}
+                  size="lg"
+                  variant="outline"
+                  rounded="full"
+                  onClick={() => {
+                    onOpen();
+                    setSelectedAttachment(attachment.id);
                   }}
-                  attachment={attachment}
-                />
-              </Tag>
+                  layerStyle="button"
+                >
+                  <TagLeftIcon as={TbFile} />
+                  <TagLabel fontWeight="bold">{attachment.name}</TagLabel>
+                  <PDFViewer
+                    isOpen={isOpen && selectedAttachment === attachment.id}
+                    onClose={() => {
+                      onClose();
+                      setSelectedAttachment('');
+                    }}
+                    attachment={attachment}
+                  />
+                </Tag>
+              </Suspense>
             ))}
           </Wrap>
         </HStack>

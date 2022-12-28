@@ -1,11 +1,11 @@
-import { Center, Spinner } from '@chakra-ui/react';
+import { Center, Spinner, SpinnerProps } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { MotionCenter } from '../motion';
 
-const Loading = React.memo(() => (
+const Loading = React.memo(({ ...rest }: SpinnerProps) => (
   <Center w="100%" flexGrow={1} p={4}>
-    <Spinner color="blue.400" thickness="3px" />
+    <Spinner color="blue.400" thickness="3px" {...rest} />
   </Center>
 ));
 
