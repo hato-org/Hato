@@ -41,7 +41,7 @@ import { TbChevronDown, TbPencil, TbPlus, TbTrash, TbX } from 'react-icons/tb';
 import { CreatableSelect } from 'chakra-react-select';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
-import { useTable } from '@/hooks/timetable';
+import { useTimetable } from '@/hooks/timetable';
 import WeekDayPicker from './WeekDayPicker';
 import { useClassList, useCourseList, useSubjectList } from '@/hooks/info';
 import { useClient } from '@/modules/client';
@@ -90,7 +90,7 @@ export default function TableEditor({
         await client.post<DaySchedule, AxiosResponse<DaySchedule>, DaySchedule>(
           '/timetable',
           {
-            _id: schedule?._id,
+            _id: schedule?.[0]._id,
             ...newSchedule!,
             date: date.toISOString(),
             target: [
@@ -137,13 +137,18 @@ export default function TableEditor({
     }
   );
 
-  const { data: schedule } = useTable({
-    date,
-    type,
-    grade,
-    class: schoolClass,
-    course,
-  });
+  const { data: schedule } = useTimetable(
+    {
+      date,
+      type,
+      grade,
+      class: schoolClass,
+      course: [course],
+    },
+    {
+      enabled: isOpen,
+    }
+  );
 
   const { data: defaultSchedule, mutate: defaultScheduleMutate } = useMutation<
     DaySchedule,
@@ -167,9 +172,9 @@ export default function TableEditor({
 
   useEffect(() => {
     if (!schedule) return;
-    setSchedule(schedule);
-    setDay(schedule.schedule.day);
-    setWeek(schedule.schedule.week);
+    setSchedule(schedule[0]);
+    setDay(schedule[0].schedule.day);
+    setWeek(schedule[0].schedule.week);
   }, [schedule, date]);
 
   useEffect(() => {

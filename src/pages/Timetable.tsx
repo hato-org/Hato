@@ -1,8 +1,7 @@
-import {
+import React, {
   useState,
   useEffect,
   useCallback,
-  useMemo,
   useRef,
   lazy,
   Suspense,
@@ -24,7 +23,7 @@ import {
   Box,
   Icon,
 } from '@chakra-ui/react';
-import { useQueries, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { addDays, format, setDay, startOfDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { Helmet } from 'react-helmet-async';
@@ -37,12 +36,12 @@ import DateSwitcher from '@/components/timetable/DateSwitcher';
 import GradeClassPicker from '@/components/timetable/GradeClassPicker';
 import TimetableTable from '@/components/timetable/Table';
 import ReportModal from '@/components/common/ReportModal';
-import { useCourseList } from '@/hooks/info';
-import { useUser } from '@/hooks/user';
-import { useClient } from '@/modules/client';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import Loading from '@/components/common/Loading';
+import { useCourseList } from '@/hooks/info';
+import { useUser } from '@/hooks/user';
+import { useTimetable } from '@/hooks/timetable';
 
 const Notes = lazy(() => import('@/components/timetable/Notes'));
 const ScheduleEditor = lazy(
@@ -51,7 +50,6 @@ const ScheduleEditor = lazy(
 
 function Timetable() {
   const { data: user } = useUser();
-  const { client } = useClient();
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -81,32 +79,52 @@ function Timetable() {
 
   const { data: courseList } = useCourseList({ type, grade });
 
-  const timetableList = useQueries({
-    queries:
-      courseList?.map(({ code }) => {
-        const params = {
-          ...dateParams,
-          type,
-          grade,
-          class: schoolClass,
-          course: code,
-        };
-
-        return {
-          queryKey: ['timetable', params],
-          queryFn: async () =>
-            (await client.get<DaySchedule>('/timetable', { params })).data,
-        };
-      }) ?? [],
+  const { data: timetableList } = useTimetable({
+    date,
+    type,
+    grade,
+    class: schoolClass,
+    course: courseList?.map((courseInfo) => courseInfo.code) ?? [],
   });
 
-  const settledTimetableList = useMemo(
-    () =>
-      timetableList
-        .map((timetable) => timetable.data)
-        .filter((timetable): timetable is DaySchedule => !!timetable),
-    [timetableList]
+  const onPrevDay = useCallback(() => {
+    const prevDate = subDays(date, 1);
+    searchParams.set('y', String(prevDate.getFullYear()));
+    searchParams.set('m', String(prevDate.getMonth() + 1));
+    searchParams.set('d', String(prevDate.getDate()));
+    setSearchParams(searchParams, { replace: true });
+    setDate(prevDate);
+  }, [date, searchParams, setSearchParams]);
+
+  const onNextDay = useCallback(() => {
+    const nextDate = addDays(date, 1);
+    searchParams.set('y', String(nextDate.getFullYear()));
+    searchParams.set('m', String(nextDate.getMonth() + 1));
+    searchParams.set('d', String(nextDate.getDate()));
+    setSearchParams(searchParams, { replace: true });
+    setDate(nextDate);
+  }, [date, searchParams, setSearchParams]);
+
+  const onSelectDay = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newDate = new Date(e.target.value);
+      searchParams.set('y', String(newDate.getFullYear()));
+      searchParams.set('m', String(newDate.getMonth() + 1));
+      searchParams.set('d', String(newDate.getDate()));
+      setSearchParams(searchParams, { replace: true });
+      setDate(newDate);
+    },
+    [searchParams, setSearchParams]
   );
+
+  const onGradeSelect = useCallback((gradeInfo: GradeInfo) => {
+    setType(gradeInfo.type);
+    setGrade(gradeInfo.grade_num);
+  }, []);
+
+  const onClassSelect = useCallback((classInfo: ClassInfo) => {
+    setClass(classInfo.class_num);
+  }, []);
 
   const onTableTouchStart = useCallback(() => setTableFocus(true), []);
   const onTableTouchEnd = useCallback(() => setTableFocus(false), []);
@@ -183,41 +201,15 @@ function Timetable() {
         <Center w="100%" mb={32} ref={popoverRef}>
           <VStack w="100%" px={4}>
             <DateSwitcher
-              onPrev={() => {
-                const prevDate = subDays(date, 1);
-                searchParams.set('y', String(prevDate.getFullYear()));
-                searchParams.set('m', String(prevDate.getMonth() + 1));
-                searchParams.set('d', String(prevDate.getDate()));
-                setSearchParams(searchParams, { replace: true });
-                setDate(prevDate);
-              }}
-              onNext={() => {
-                const nextDate = addDays(date, 1);
-                searchParams.set('y', String(nextDate.getFullYear()));
-                searchParams.set('m', String(nextDate.getMonth() + 1));
-                searchParams.set('d', String(nextDate.getDate()));
-                setSearchParams(searchParams, { replace: true });
-                setDate(nextDate);
-              }}
-              onSelect={(e) => {
-                const newDate = new Date(e.target.value);
-                searchParams.set('y', String(newDate.getFullYear()));
-                searchParams.set('m', String(newDate.getMonth() + 1));
-                searchParams.set('d', String(newDate.getDate()));
-                setSearchParams(searchParams, { replace: true });
-                setDate(newDate);
-              }}
+              onPrev={onPrevDay}
+              onNext={onNextDay}
+              onSelect={onSelectDay}
               date={date}
               px={2}
             />
             <GradeClassPicker
-              onGradeSelect={(gradeInfo) => {
-                setType(gradeInfo.type);
-                setGrade(gradeInfo.grade_num);
-              }}
-              onClassSelect={(classInfo) => {
-                setClass(classInfo.class_num);
-              }}
+              onGradeSelect={onGradeSelect}
+              onClassSelect={onClassSelect}
               px={2}
             />
             <Card w="100%">
@@ -241,13 +233,13 @@ function Timetable() {
                       onClick={onScheduleOpen}
                     >
                       <Text fontWeight="bold">
-                        {timetableList?.[0]?.data?.schedule.week}週{' '}
-                        {timetableList?.[0]?.data?.schedule.irregular
+                        {timetableList?.[0]?.schedule.week}週{' '}
+                        {timetableList?.[0]?.schedule.irregular
                           ? '特編日課'
                           : `${format(
                               setDay(
                                 date,
-                                timetableList?.[0]?.data?.schedule.day ??
+                                timetableList?.[0]?.schedule.day ??
                                   date.getDay()
                               ),
                               'E',
@@ -261,7 +253,7 @@ function Timetable() {
                   <StackDivider borderWidth="1px" borderColor="border" />
                   <TimetableTable
                     date={date}
-                    timetable={settledTimetableList}
+                    timetable={timetableList}
                     onTouchStart={onTableTouchStart}
                     onTouchEnd={onTableTouchEnd}
                     overflowX="auto"
