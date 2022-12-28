@@ -61,7 +61,7 @@ export const useLibrarySearch = (
 };
 
 export const useBookInfo = (isbn: string) =>
-  useQuery(['library', 'book', isbn], async () => {
+  useQuery<Book, AxiosError>(['library', 'book', isbn], async () => {
     const books = [];
     let running;
     let version = 1;
