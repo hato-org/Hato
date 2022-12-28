@@ -31,11 +31,9 @@ import { TbPlus, TbDots, TbFlag, TbPencil } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
 import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
-import AddNoteDrawer from '@/components/timetable/AddNoteDrawer';
 import DateSwitcher from '@/components/timetable/DateSwitcher';
 import GradeClassPicker from '@/components/timetable/GradeClassPicker';
 import TimetableTable from '@/components/timetable/Table';
-import ReportModal from '@/components/common/ReportModal';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import Loading from '@/components/common/Loading';
@@ -43,7 +41,11 @@ import { useCourseList } from '@/hooks/info';
 import { useUser } from '@/hooks/user';
 import { useTimetable } from '@/hooks/timetable';
 
+const ReportModal = lazy(() => import('@/components/common/ReportModal'));
 const Notes = lazy(() => import('@/components/timetable/Notes'));
+const AddNoteDrawer = lazy(
+  () => import('@/components/timetable/AddNoteDrawer')
+);
 const ScheduleEditor = lazy(
   () => import('@/components/timetable/ScheduleEditor')
 );
@@ -181,12 +183,14 @@ function Timetable() {
                 >
                   報告
                 </MenuItem>
-                <ReportModal
-                  isOpen={reportOpen}
-                  onClose={reportOnClose}
-                  timetable
-                  placeholder="例：〇年〇組〇〇コース〇週〇時間目が△△ではなく□□です"
-                />
+                <Suspense>
+                  <ReportModal
+                    isOpen={reportOpen}
+                    onClose={reportOnClose}
+                    timetable
+                    placeholder="例：〇年〇組〇〇コース〇週〇時間目が△△ではなく□□です"
+                  />
+                </Suspense>
               </MenuList>
             </Menu>
           </Box>
@@ -264,17 +268,19 @@ function Timetable() {
                 <HStack w="100%">
                   <Heading size="md">特記事項・備考</Heading>
                   <Spacer />
-                  <AddNoteDrawer
-                    date={startOfDay(
-                      new Date(
-                        dateParams.year,
-                        dateParams.month - 1,
-                        dateParams.day
-                      )
-                    )}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                  />
+                  <Suspense>
+                    <AddNoteDrawer
+                      date={startOfDay(
+                        new Date(
+                          dateParams.year,
+                          dateParams.month - 1,
+                          dateParams.day
+                        )
+                      )}
+                      isOpen={isOpen}
+                      onClose={onClose}
+                    />
+                  </Suspense>
                   <IconButton
                     colorScheme="blue"
                     color="blue.400"

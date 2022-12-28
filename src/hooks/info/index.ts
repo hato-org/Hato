@@ -14,7 +14,9 @@ export const useGradeList = (
   );
 };
 
-export const useAllClassList = () => {
+export const useAllClassList = (
+  options: UseQueryOptions<ClassList, AxiosError>
+) => {
   const { client } = useClient();
   const { data: gradeList } = useGradeList();
 
@@ -28,6 +30,7 @@ export const useAllClassList = () => {
               params: { type: gradeInfo.type, grade: gradeInfo.grade_num },
             })
           ).data,
+        ...options,
       })) ?? [],
   });
 };

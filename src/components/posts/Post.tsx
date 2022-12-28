@@ -64,9 +64,8 @@ function Post({ id }: { id: string }) {
           <Icon as={TbPaperclip} w={6} h={6} />
           <Wrap>
             {data.attachments.map((attachment) => (
-              <Suspense fallback={<Loading size="sm" />}>
+              <Suspense key={attachment.id} fallback={<Loading size="sm" />}>
                 <Tag
-                  key={attachment.id}
                   size="lg"
                   variant="outline"
                   rounded="full"
