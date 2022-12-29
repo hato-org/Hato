@@ -48,7 +48,6 @@ export const useLibrarySearch = (
         ).data;
         // eslint-disable-next-line no-continue
         if (!pollingRes) continue;
-        console.log(pollingRes);
         books.push(...pollingRes.books_diff.insert);
         running = pollingRes.running;
         version = pollingRes.version;
@@ -86,7 +85,6 @@ export const useBookInfo = (isbn: string) =>
       ).data;
       // eslint-disable-next-line no-continue
       if (!pollingRes) continue;
-      console.log(pollingRes);
       books.push(...pollingRes.books_diff.insert);
 
       running = pollingRes.running;
