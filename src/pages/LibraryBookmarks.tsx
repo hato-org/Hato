@@ -1,13 +1,12 @@
-import { Heading, HStack } from '@chakra-ui/react';
+import { Box, Heading, HStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
-import BottomNavbar from '@/components/nav/BottomNavbar';
 import Bookmarks from '@/components/library/Bookmarks';
 import BackButton from '@/components/layout/BackButton';
 
 export default function LibraryBookmarks() {
   return (
-    <>
+    <Box>
       <Helmet>
         <title>ブックマーク - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -20,7 +19,6 @@ export default function LibraryBookmarks() {
         </HStack>
       </Header>
       <Bookmarks />
-      <BottomNavbar />
-    </>
+    </Box>
   );
 }

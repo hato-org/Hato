@@ -1,5 +1,6 @@
-import { useMemo, useCallback, useEffect } from 'react';
+import React, { useMemo, useCallback, useEffect } from 'react';
 import {
+  Box,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -8,6 +9,8 @@ import {
   Heading,
   HStack,
   Icon,
+  IconButton,
+  Image,
   Portal,
   Spacer,
   StackDivider,
@@ -33,22 +36,13 @@ import Account from '../login/Account';
 
 export default function SideMenu() {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [overlay, setOverlay] = useRecoilState(overlayAtom);
-  const onClose = useCallback(
-    () => setOverlay((currVal) => ({ ...currVal, menu: false })),
-    [setOverlay]
-  );
+
   return isMobile ? (
-    <Drawer isOpen={overlay.menu} onClose={onClose} placement="left">
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerBody p={4}>
-          <MenuBody />
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+    <SideMenuDrawer />
   ) : (
-    <MenuBody />
+    <Box px={2}>
+      <MenuBody />
+    </Box>
   );
 }
 
@@ -82,6 +76,7 @@ export function SideMenuDrawer() {
 function MenuBody() {
   const { logout } = useAuth();
   const location = useLocation();
+  const breakPoint = useBreakpointValue({ base: 0, md: 1, lg: 2 }) ?? 0;
 
   const menu = useMemo<
     (
@@ -101,7 +96,7 @@ function MenuBody() {
         type: 'button',
         icon: <Icon as={TbHome} boxSize={7} />,
         label: 'ホーム',
-        href: '/',
+        href: '/dashboard',
       },
       {
         type: 'button',
@@ -149,55 +144,78 @@ function MenuBody() {
   );
 
   return (
-    <VStack
-      w="100%"
-      h="100%"
-      spacing={2}
-      align="flex-start"
-      pb="env(safe-area-inset-bottom)"
-    >
-      <Heading
-        p={2}
-        pt={4}
-        size="2xl"
-        fontFamily="Josefin Sans, -apple-system, sans-serif"
-      >
-        Hato
-      </Heading>
-      {menu.map((menuItem, index) =>
-        menuItem.type === 'divider' ? (
-          <StackDivider
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${menuItem.type}-${index}`}
-            borderWidth="1px"
-            borderColor="border"
-          />
-        ) : (
-          <HStack
-            p={2}
-            key={menuItem.label}
+    <VStack w="100%" h="100%" spacing={2} pb="env(safe-area-inset-bottom)">
+      <HStack w="100%" spacing={0}>
+        <Image src="/logo_alpha.png" boxSize={12} />
+        {breakPoint !== 1 && (
+          <Heading
             w="100%"
-            spacing={4}
-            color={location.pathname === menuItem.href ? 'blue.400' : undefined}
-            layerStyle="button"
-            rounded="xl"
-            as={RouterLink}
-            to={menuItem.href}
-            {...menuItem}
+            p={2}
+            pt={4}
+            size="2xl"
+            fontFamily="Josefin Sans, -apple-system, sans-serif"
           >
-            {menuItem.icon}
-            <Text
+            Hato
+          </Heading>
+        )}
+      </HStack>
+      {menu.map(
+        (menuItem, index) =>
+          /* eslint-disable no-nested-ternary */
+          menuItem.type === 'divider' ? (
+            <StackDivider
+              // eslint-disable-next-line react/no-array-index-key
+              key={`${menuItem.type}-${index}`}
+              borderWidth="1px"
+              borderColor="border"
+            />
+          ) : breakPoint === 1 ? (
+            <IconButton
+              aria-label={menuItem.label}
+              icon={menuItem.icon}
+              size="lg"
+              variant="ghost"
+              isRound
               color={
                 menuItem.color ??
                 (location.pathname === menuItem.href ? 'blue.400' : undefined)
               }
-              textStyle="title"
-              fontSize="lg"
+              as={RouterLink}
+              to={menuItem.href}
+              onClick={
+                menuItem.onClick as unknown as React.MouseEventHandler<HTMLButtonElement>
+              }
+            />
+          ) : (
+            <HStack
+              p={2}
+              key={menuItem.label}
+              w="100%"
+              spacing={4}
+              color={
+                location.pathname === menuItem.href ? 'blue.400' : undefined
+              }
+              layerStyle="button"
+              rounded="xl"
+              as={RouterLink}
+              to={menuItem.href}
+              {...menuItem}
             >
-              {menuItem.label}
-            </Text>
-          </HStack>
-        )
+              {menuItem.icon}
+
+              <Text
+                color={
+                  menuItem.color ??
+                  (location.pathname === menuItem.href ? 'blue.400' : undefined)
+                }
+                textStyle="title"
+                fontSize="lg"
+              >
+                {menuItem.label}
+              </Text>
+            </HStack>
+          )
+        /* eslint-enable no-nested-ternary */
       )}
       <Spacer />
       <Account />

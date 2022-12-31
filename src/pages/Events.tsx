@@ -8,6 +8,7 @@ import {
   Spacer,
   Icon,
   VStack,
+  Box,
 } from '@chakra-ui/react';
 import { TbInfoCircle, TbPlus, TbX, TbBulb } from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
@@ -15,7 +16,6 @@ import { useSearchParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/nav/Header';
-import BottomNavbar from '@/components/nav/BottomNavbar';
 import Calendar from '@/components/calendar/Calendar';
 import FloatButton from '@/components/layout/FloatButton';
 import AddEventDrawer from '@/components/calendar/AddEventDrawer';
@@ -67,7 +67,7 @@ function Events() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <>
+    <Box>
       <Helmet>
         <title>年間行事予定 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -133,8 +133,7 @@ function Events() {
         <Text>イベントを追加</Text>
       </FloatButton>
       <AddEventDrawer isOpen={isOpen} onClose={onClose} />
-      <BottomNavbar />
-    </>
+    </Box>
   );
 }
 

@@ -1,6 +1,7 @@
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
 import { useUser } from '@/hooks/user';
 import usePageTracking from '@/hooks/common/ga4';
+import PageContainer from '../layout/PageContainer';
 
 function RequireLogin() {
   usePageTracking();
@@ -8,10 +9,12 @@ function RequireLogin() {
 
   if (user)
     return (
-      <>
-        <ScrollRestoration getKey={(location) => location.pathname} />
-        <Outlet />
-      </>
+      <PageContainer>
+        <>
+          <ScrollRestoration getKey={(location) => location.pathname} />
+          <Outlet />
+        </>
+      </PageContainer>
     );
 
   return <Navigate to="/login" replace />;

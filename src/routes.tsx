@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import PostElement from './components/posts';
 import ErrorFallback from './components/common/ErrorFallback';
+import Dashboard from './pages/Dashboard';
 
 const Events = React.lazy(() => import('./pages/Events'));
 // const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -69,6 +70,11 @@ const router = createBrowserRouter([
     element: <RequireLogin />,
     errorElement: <ErrorFallback />,
     children: [
+      {
+        path: 'dashboard',
+        errorElement: <ErrorFallback />,
+        element: <Dashboard />,
+      },
       {
         path: 'settings',
         element: <Settings />,

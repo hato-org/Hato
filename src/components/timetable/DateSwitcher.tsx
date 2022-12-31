@@ -31,7 +31,6 @@ const DateSwitcher = React.memo(
           onChange={onSelect}
           ref={inputElement}
         />
-        {/* <Button variant='ghost' rounded='lg' onClick={() => inputElement.current?.click()} >{format(date, 'yyyy/MM/dd')}</Button> */}
         <IconButton
           aria-label="next day"
           icon={<TbChevronRight />}

@@ -29,7 +29,6 @@ import { ja } from 'date-fns/esm/locale';
 import { Helmet } from 'react-helmet-async';
 import { TbPlus, TbDots, TbFlag, TbPencil } from 'react-icons/tb';
 import { useSearchParams } from 'react-router-dom';
-import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
 import DateSwitcher from '@/components/timetable/DateSwitcher';
 import GradeClassPicker from '@/components/timetable/GradeClassPicker';
@@ -155,7 +154,7 @@ function Timetable() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <>
+    <Box>
       <Helmet>
         <title>時間割 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -253,7 +252,6 @@ function Timetable() {
                       <Icon as={TbPencil} />
                     </HStack>
                   </HStack>
-
                   <StackDivider borderWidth="1px" borderColor="border" />
                   <TimetableTable
                     date={date}
@@ -299,8 +297,7 @@ function Timetable() {
           </VStack>
         </Center>
       </ChakraPullToRefresh>
-      <BottomNavbar />
-    </>
+    </Box>
   );
 }
 

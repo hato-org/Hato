@@ -1,14 +1,13 @@
-import { Center, HStack, Heading } from '@chakra-ui/react';
+import { Center, HStack, Heading, Box } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
 
 function Settings() {
   return (
-    <>
+    <Box>
       <Helmet>
         <title>設定 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -50,8 +49,7 @@ function Settings() {
           {/* </MotionCenter> */}
         </AnimatePresence>
       </Center>
-      <BottomNavbar />
-    </>
+    </Box>
   );
 }
 

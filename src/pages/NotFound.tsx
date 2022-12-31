@@ -1,13 +1,12 @@
-import { Heading, HStack, VStack, Text, Button } from '@chakra-ui/react';
+import { Heading, HStack, VStack, Text, Button, Box } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
-import BottomNavbar from '@/components/nav/BottomNavbar';
 import BackButton from '@/components/layout/BackButton';
 
 function NotFound() {
   return (
-    <>
+    <Box>
       <Helmet>
         <title>404 Not Found - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -33,8 +32,7 @@ function NotFound() {
           ホームに戻る
         </Button>
       </VStack>
-      <BottomNavbar />
-    </>
+    </Box>
   );
 }
 
