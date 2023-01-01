@@ -40,13 +40,14 @@ export default function BookInfo({
   const bgBrightness = useColorModeValue('100%', '40%');
   const bgOpacity = useColorModeValue(0.3, 0.9);
   const isBookmarked = bookmarks.includes(isbn);
+  const localId = id.match(/^Negima_GK_2004103-(.*)/)?.[1] || id;
 
   const { data: detail } = useQuery(
     ['library', 'book', id, 'detail'],
     async () =>
       (
         await axios.get(
-          `https://private.calil.jp/bib/gk-2004103-auf08/${id}.json`
+          `https://private.calil.jp/bib/gk-2004103-auf08/${localId}.json`
         )
       ).data,
     {
@@ -82,7 +83,7 @@ export default function BookInfo({
         zIndex={-1}
         objectFit="cover"
         filter="auto"
-        blur="4px"
+        blur="10px"
         brightness={bgBrightness}
         transition="all .4s ease"
         opacity={isOpen ? bgOpacity : 0}

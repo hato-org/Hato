@@ -16,7 +16,7 @@ function BottomNavbar() {
       {
         icon: <Icon as={TbHome} h={8} w={8} />,
         label: 'ホーム',
-        href: '/',
+        href: '/dashboard',
       },
       {
         icon: <Icon as={TbClipboardList} h={8} w={8} />,

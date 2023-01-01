@@ -7,6 +7,8 @@ import {
   IconButton,
   Divider,
   useToast,
+  Center,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
@@ -29,7 +31,6 @@ import {
 import { useState } from 'react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
 import { useClient } from '@/modules/client';
-import { MotionCenter } from '../motion';
 import Card from '../layout/Card';
 
 interface CalendarProps extends StackProps {
@@ -43,6 +44,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
   const toast = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDate = new Date();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
   const [date, setDate] = useState(
@@ -113,9 +115,8 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
         }}
       />
       <Card w="100%" p={0}>
-        <MotionCenter
+        <Center
           w="100%"
-          h="80vh"
           p={1}
           // drag="x"
           // dragSnapToOrigin
@@ -142,7 +143,8 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                     key={day.toString()}
                     flex={1}
                     minW={0}
-                    h="100%"
+                    h={isMobile ? 24 : 32}
+                    // h="100%"
                     bg={isToday(day) ? 'hover' : ''}
                   >
                     <Text
@@ -193,7 +195,9 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                           <Box
                             key={event._id}
                             w="100%"
-                            rounded="sm"
+                            rounded={isMobile ? 'sm' : 4}
+                            px={isMobile ? 0 : '2px'}
+                            py={isMobile ? 0 : '1px'}
                             bg={
                               /* eslint-disable no-nested-ternary */
                               event.external
@@ -233,9 +237,10 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                           >
                             <Text
                               noOfLines={1}
-                              fontSize="xx-small"
+                              fontSize={isMobile ? 'xx-small' : 'xs'}
                               fontWeight="bold"
                               textAlign="center"
+                              wordBreak="break-all"
                             >
                               {event.title}
                             </Text>
@@ -247,7 +252,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
               </HStack>
             ))}
           </VStack>
-        </MotionCenter>
+        </Center>
       </Card>
     </VStack>
   );

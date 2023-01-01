@@ -7,8 +7,8 @@ export default function Top() {
   const links = useMemo(
     () => [
       {
-        label: '蔵書検索',
-        description: '図書館にある本を検索できます。',
+        label: '蔵書検索・予約',
+        description: '図書館の本を検索・予約できます。',
         icon: <Icon as={TbSearch} boxSize={6} />,
         href: 'search',
       },

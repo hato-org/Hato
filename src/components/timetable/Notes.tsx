@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   VStack,
   Text,
@@ -44,68 +44,70 @@ interface NotesProps extends StackProps {
   schoolClass: number;
 }
 
-function Notes({ date, type, grade, schoolClass, ...rest }: NotesProps) {
-  const { data: user } = useUser();
+const Notes = React.memo(
+  ({ date, type, grade, schoolClass, ...rest }: NotesProps) => {
+    const { data: user } = useUser();
 
-  const { data, isLoading, error } = useNotes({ date });
+    const { data, isLoading, error } = useNotes({ date });
 
-  const myNotes = useMemo(
-    () => data?.filter((note) => note.owner === user.email),
-    [data, user]
-  );
+    const myNotes = useMemo(
+      () => data?.filter((note) => note.owner === user.email),
+      [data, user]
+    );
 
-  if (isLoading) return <Loading />;
+    if (isLoading) return <Loading />;
 
-  if (error) return <Error error={error} />;
+    if (error) return <Error error={error} />;
 
-  return (
-    <VStack w="100%" {...rest}>
-      {data.filter(
-        (note) =>
-          note.target?.some(
-            (classInfo) =>
-              classInfo.type === type &&
-              classInfo.grade_num === grade &&
-              classInfo.class_num === schoolClass
-          ) || note.owner === user.email
-      ).length ? (
-        <VStack w="100%" align="flex-start">
-          <VStack w="100%">
-            {data
-              .filter(
-                (note) =>
-                  note.target?.some(
-                    (classInfo) =>
-                      classInfo.type === user.type &&
-                      classInfo.grade_num === user.grade &&
-                      classInfo.class_num === user.class
-                  ) && note.owner !== user.email
-              )
-              .map((note) => (
-                <NoteCard key={note._id} note={note} />
-              ))}
-          </VStack>
-          {myNotes?.length && (
-            <>
-              <Heading size="sm">自分が追加したもの</Heading>
-              <VStack w="100%">
-                {myNotes.map((note) => (
+    return (
+      <VStack w="100%" {...rest}>
+        {data.filter(
+          (note) =>
+            note.target?.some(
+              (classInfo) =>
+                classInfo.type === type &&
+                classInfo.grade_num === grade &&
+                classInfo.class_num === schoolClass
+            ) || note.owner === user.email
+        ).length ? (
+          <VStack w="100%" align="flex-start">
+            <VStack w="100%">
+              {data
+                .filter(
+                  (note) =>
+                    note.target?.some(
+                      (classInfo) =>
+                        classInfo.type === user.type &&
+                        classInfo.grade_num === user.grade &&
+                        classInfo.class_num === user.class
+                    ) && note.owner !== user.email
+                )
+                .map((note) => (
                   <NoteCard key={note._id} note={note} />
                 ))}
-              </VStack>
-            </>
-          )}
-        </VStack>
-      ) : (
-        <Text textStyle="description" fontWeight="bold">
-          特にありません
-        </Text>
-      )}
-    </VStack>
-  );
-}
+            </VStack>
+            {myNotes?.length && (
+              <>
+                <Heading size="sm">自分が追加したもの</Heading>
+                <VStack w="100%">
+                  {myNotes.map((note) => (
+                    <NoteCard key={note._id} note={note} />
+                  ))}
+                </VStack>
+              </>
+            )}
+          </VStack>
+        ) : (
+          <Text textStyle="description" fontWeight="bold">
+            特にありません
+          </Text>
+        )}
+      </VStack>
+    );
+  }
+);
 
-function NoteCard({ note }: { note: Note }) {
+const NoteCard = React.memo(({ note }: { note: Note }) => {
   const toast = useToast({
     position: 'top-right',
     variant: 'left-accent',
@@ -273,7 +275,7 @@ function NoteCard({ note }: { note: Note }) {
       )}
     </Box>
   );
-}
+});
 
 interface NotesMenuProps extends MenuButtonProps {
   note: Note;
@@ -281,61 +283,63 @@ interface NotesMenuProps extends MenuButtonProps {
   onDelete: () => void;
 }
 
-function NotesMenu({ note, onEdit, onDelete, ...rest }: NotesMenuProps) {
-  const { data: user } = useUser();
+const NotesMenu = React.memo(
+  ({ note, onEdit, onDelete, ...rest }: NotesMenuProps) => {
+    const { data: user } = useUser();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
-    <Menu>
-      <MenuButton
-        as={IconButton}
-        icon={<TbDotsVertical />}
-        variant="ghost"
-        size="sm"
-        _hover={{
-          bg: 'whiteAlpha.500',
-        }}
-        _active={{
-          bg: 'whiteAlpha.500',
-        }}
-        isRound
-        {...rest}
-      />
-      <MenuList textStyle="title" shadow="lg">
-        {note.owner === user.email || user.role === 'admin' ? (
-          <>
-            {user.role === 'admin' && (
-              <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
-                報告
-                <Portal>
-                  <ReportModal {...{ isOpen, onClose, note }} />
-                </Portal>
+    return (
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          icon={<TbDotsVertical />}
+          variant="ghost"
+          size="sm"
+          _hover={{
+            bg: 'whiteAlpha.500',
+          }}
+          _active={{
+            bg: 'whiteAlpha.500',
+          }}
+          isRound
+          {...rest}
+        />
+        <MenuList textStyle="title" shadow="lg">
+          {note.owner === user.email || user.role === 'admin' ? (
+            <>
+              {user.role === 'admin' && (
+                <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
+                  報告
+                  <Portal>
+                    <ReportModal {...{ isOpen, onClose, note }} />
+                  </Portal>
+                </MenuItem>
+              )}
+              <MenuItem textStyle="title" icon={<TbEdit />} onClick={onEdit}>
+                編集
               </MenuItem>
-            )}
-            <MenuItem textStyle="title" icon={<TbEdit />} onClick={onEdit}>
-              編集
+              <MenuItem
+                textStyle="title"
+                icon={<TbTrash />}
+                onClick={onDelete}
+                color="red.500"
+              >
+                削除
+              </MenuItem>
+            </>
+          ) : (
+            <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
+              報告
+              <Portal>
+                <ReportModal {...{ isOpen, onClose, note }} />
+              </Portal>
             </MenuItem>
-            <MenuItem
-              textStyle="title"
-              icon={<TbTrash />}
-              onClick={onDelete}
-              color="red.500"
-            >
-              削除
-            </MenuItem>
-          </>
-        ) : (
-          <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
-            報告
-            <Portal>
-              <ReportModal {...{ isOpen, onClose, note }} />
-            </Portal>
-          </MenuItem>
-        )}
-      </MenuList>
-    </Menu>
-  );
-}
+          )}
+        </MenuList>
+      </Menu>
+    );
+  }
+);
 
 export default Notes;

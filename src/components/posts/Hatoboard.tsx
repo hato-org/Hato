@@ -1,27 +1,49 @@
-import { useEffect } from 'react';
-import {
-  VStack,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
-  TabPanels,
-} from '@chakra-ui/react';
+import { useEffect, useMemo } from 'react';
+import { Tabs, TabList, Tab, TabPanel, TabPanels, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Virtuoso } from 'react-virtuoso';
 import CardElement from '../cards';
 import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Card from './Card';
-import { pinnedPostAtom } from '@/store/posts';
+import { pinnedPostAtom, postsScrollIndexAtom } from '@/store/posts';
 import { useHatoboard } from '@/hooks/posts';
 
 function Hatoboard() {
   const queryClient = useQueryClient();
   const pinned = useRecoilValue(pinnedPostAtom);
+  const [startIndex, setStartIndex] = useRecoilState(postsScrollIndexAtom);
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const { data, error, isLoading } = useHatoboard();
+
+  const pinnedPosts = useMemo(
+    () =>
+      data?.filter((post) => pinned.some((postId) => post._id === postId)) ??
+      [],
+    [pinned, data]
+  );
+
+  const unpinnedPosts = useMemo(
+    () =>
+      data?.filter((post) => pinned.every((postId) => post._id !== postId)) ??
+      [],
+    [pinned, data]
+  );
+
+  const privatePosts = useMemo(
+    () =>
+      data?.filter((post) => post.tags.some((tag) => tag.value === 'private')),
+    [data]
+  );
+
+  const publicPosts = useMemo(
+    () =>
+      data?.filter((post) => post.tags.some((tag) => tag.value === 'public')),
+    [data]
+  );
 
   useEffect(() => {
     if (!searchParams.has('tab')) {
@@ -36,8 +58,6 @@ function Hatoboard() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { data, error, isLoading } = useHatoboard();
-
   if (isLoading) return <Loading />;
   if (error) return <CardElement.Error error={error} />;
 
@@ -47,7 +67,13 @@ function Hatoboard() {
       isFitted
       size="lg"
       defaultIndex={Number(searchParams.get('tab'))}
-      onChange={(index) => setSearchParams({ tab: index.toString() })}
+      onChange={(index) => {
+        setSearchParams({ tab: index.toString() });
+        setStartIndex(0);
+        window.scrollTo({
+          top: 0,
+        });
+      }}
     >
       <TabList
         w="100%"
@@ -87,53 +113,44 @@ function Hatoboard() {
         }}
       >
         <TabPanels w="100%" p={0}>
-          <TabPanel w="100%" p={0}>
-            {pinned.length ? (
-              <VStack p={4} spacing={4} w="100%">
-                {data
-                  ?.filter((post) =>
-                    pinned.some((postId) => postId === post._id)
-                  )
-                  .map((post) => (
-                    <Card {...post} key={post._id} />
-                  ))}
-                {data
-                  .filter((post) =>
-                    pinned.every((postId) => postId !== post._id)
-                  )
-                  .map((post) => (
-                    <Card {...post} key={post._id} />
-                  ))}
-              </VStack>
-            ) : (
-              <VStack p={4} spacing={4} w="100%">
-                {data?.map((post) => (
+          <TabPanel w="100%" px={4} py={2}>
+            <Virtuoso
+              useWindowScroll
+              data={[...pinnedPosts, ...unpinnedPosts]}
+              itemContent={(index, post) => (
+                <Box py={2}>
                   <Card {...post} key={post._id} />
-                ))}
-              </VStack>
-            )}
+                </Box>
+              )}
+              rangeChanged={(range) => setStartIndex(range.startIndex)}
+              initialTopMostItemIndex={startIndex}
+            />
           </TabPanel>
-          <TabPanel w="100%" p={0}>
-            <VStack p={4} spacing={4} w="100%">
-              {data
-                ?.filter((post) =>
-                  post.tags.some((tag) => tag.value === 'public')
-                )
-                .map((post) => (
+          <TabPanel w="100%" px={4} py={2}>
+            <Virtuoso
+              useWindowScroll
+              data={publicPosts}
+              itemContent={(index, post) => (
+                <Box py={2}>
                   <Card {...post} key={post._id} />
-                ))}
-            </VStack>
+                </Box>
+              )}
+              rangeChanged={(range) => setStartIndex(range.startIndex)}
+              initialTopMostItemIndex={startIndex}
+            />
           </TabPanel>
-          <TabPanel w="100%" p={0}>
-            <VStack p={4} spacing={4} w="100%">
-              {data
-                ?.filter((post) =>
-                  post.tags.some((tag) => tag.value === 'private')
-                )
-                .map((post) => (
+          <TabPanel w="100%" px={4} py={2}>
+            <Virtuoso
+              useWindowScroll
+              data={privatePosts}
+              itemContent={(index, post) => (
+                <Box py={2}>
                   <Card {...post} key={post._id} />
-                ))}
-            </VStack>
+                </Box>
+              )}
+              rangeChanged={(range) => setStartIndex(range.startIndex)}
+              initialTopMostItemIndex={startIndex}
+            />
           </TabPanel>
         </TabPanels>
       </ChakraPullToRefresh>

@@ -6,14 +6,14 @@ const { persistAtom } = recoilPersist();
 export const librarySearchAtom = atom<LibrarySearchParams>({
   key: 'hato.library.search',
   default: {
-    free: undefined,
-    title: undefined,
-    author: undefined,
-    publisher: undefined,
-    ndc: undefined,
-    yearStart: undefined,
-    yearEnd: undefined,
-    isbn: undefined,
+    free: '',
+    title: '',
+    author: '',
+    publisher: '',
+    ndc: '',
+    year_start: 0,
+    year_end: 0,
+    isbn: '',
     region: 'gk-2004103-auf08',
   },
 });

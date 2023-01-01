@@ -18,7 +18,7 @@ export const useClient = () => {
         headers: {
           'X-APIKEY': user?.apiKey || '',
         },
-        timeout: 1000 * 3,
+        timeout: 1000 * 15,
         timeoutErrorMessage: 'Timeout exceeded',
       }),
     [user]

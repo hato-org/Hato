@@ -27,7 +27,6 @@ import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { eachMonthOfInterval } from 'date-fns/esm';
-import BottomNavbar from '@/components/nav/BottomNavbar';
 import Header from '@/components/nav/Header';
 import { useClient } from '@/modules/client';
 import Error from '@/components/cards/Error';
@@ -109,7 +108,7 @@ function EventDetail() {
   if (error) return <Error error={error} />;
 
   return (
-    <>
+    <Box>
       <Helmet>
         <title>
           {data?.title ?? 'イベントの詳細'} - {import.meta.env.VITE_APP_NAME}
@@ -217,8 +216,7 @@ function EventDetail() {
         </HStack>
       </Header>
       <Event id={id!} />
-      <BottomNavbar />
-    </>
+    </Box>
   );
 }
 

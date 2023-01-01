@@ -40,6 +40,10 @@ const theme = extendTheme({
         default: 'white',
         _dark: 'bg.900',
       },
+      bgAlpha: {
+        default: 'whiteAlpha.800',
+        _dark: '#121212CC',
+      },
       panel: {
         default: 'white',
         _dark: '#202020',

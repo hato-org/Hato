@@ -57,9 +57,8 @@ export const useAuth = () => {
           title: `${userdata.name}でログインしました。`,
           status: 'success',
         });
-        console.log(`Logged in as ${userdata.name}, User data:`, userdata);
 
-        navigate('/');
+        navigate('/dashboard');
       } catch (error) {
         onFail(error);
       }

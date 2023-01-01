@@ -9,13 +9,13 @@ import {
   IconButton,
   Progress,
   Text,
+  useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { onlineManager, useIsFetching } from '@tanstack/react-query';
 import { TbCloudOff, TbMenu2 } from 'react-icons/tb';
 import { useSetRecoilState } from 'recoil';
 import { overlayAtom } from '@/store/overlay';
-import { SideMenuDrawer } from './SideMenu';
 
 interface HeaderProps extends CenterProps {
   withMenu?: boolean;
@@ -26,6 +26,7 @@ function Header({ withMenu, children, ...rest }: HeaderProps) {
   const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
   const isOnline = onlineManager.isOnline();
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const setOverlay = useSetRecoilState(overlayAtom);
 
   const onMenuOpen = useCallback(
@@ -39,13 +40,14 @@ function Header({ withMenu, children, ...rest }: HeaderProps) {
       flexDirection="column"
       w="100%"
       top={0}
-      // py={4}
       mb={4}
       borderBottom="1px solid"
       borderColor={border}
-      bg="bg"
+      bg="bgAlpha"
+      backdropFilter="auto"
+      backdropBlur="8px"
       shadow="xl"
-      zIndex="banner"
+      zIndex={10}
       {...rest}
     >
       <Box w="100%">
@@ -57,7 +59,7 @@ function Header({ withMenu, children, ...rest }: HeaderProps) {
         </Collapse>
       </Box>
       <HStack px={2} w="100%" spacing={0}>
-        {withMenu && (
+        {withMenu && isMobile && (
           <IconButton
             aria-label="menu"
             icon={<Icon as={TbMenu2} boxSize={6} />}
@@ -74,7 +76,6 @@ function Header({ withMenu, children, ...rest }: HeaderProps) {
           <Progress w="100%" size="xs" isIndeterminate />
         </Collapse>
       </Box>
-      <SideMenuDrawer />
     </Center>
   );
 }

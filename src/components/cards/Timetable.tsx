@@ -15,25 +15,25 @@ import { TbChevronRight, TbPoint } from 'react-icons/tb';
 import { format, setDay, startOfDay } from 'date-fns/esm';
 import { ja } from 'date-fns/locale';
 import TimetableTable from '../timetable/Table';
-import { useTable, useNotes } from '@/hooks/timetable';
+import { useTimetable, useNotes } from '@/hooks/timetable';
 import Transit from './Transit';
 import { useUser } from '@/hooks/user';
 
 function Timetable() {
   const date = new Date();
   const { data: user } = useUser();
-  const { data, isLoading, error } = useTable({
+  const { data, isLoading, error } = useTimetable({
     date,
     type: user.type,
     grade: user.grade,
     class: user.class,
-    course: user.course,
+    course: [user.course],
   });
   const { data: notes } = useNotes({ date });
 
   if (
     data &&
-    new Date(data?.timetable.at(-1)?.endAt ?? startOfDay(date)) < date
+    new Date(data?.[0].timetable.at(-1)?.endAt ?? startOfDay(date)) < date
   )
     return <Transit />;
 
@@ -57,10 +57,14 @@ function Timetable() {
           )}
           <Skeleton rounded="md" isLoaded={!isLoading}>
             <Text textStyle="title" color="description">
-              {data?.schedule.week}週{' '}
-              {format(setDay(date, data?.schedule.day ?? date.getDay()), 'E', {
-                locale: ja,
-              })}
+              {data?.[0].schedule.week}週{' '}
+              {format(
+                setDay(date, data?.[0].schedule.day ?? date.getDay()),
+                'E',
+                {
+                  locale: ja,
+                }
+              )}
               曜日課
             </Text>
           </Skeleton>
@@ -70,7 +74,7 @@ function Timetable() {
       <TimetableTable
         p={2}
         date={date}
-        timetable={data ? [data] : []}
+        timetable={data}
         isLoading={isLoading}
         error={error}
       />

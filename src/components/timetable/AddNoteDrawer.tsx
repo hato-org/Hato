@@ -48,9 +48,8 @@ const AddNoteDrawer = React.memo(
     const queryClient = useQueryClient();
     const [message, setMessage] = useState('');
     const [targetDate, setTargetDate] = useState(date);
-    const { data: gradeList } = useGradeList();
-
-    const classListQueries = useAllClassList();
+    const { data: gradeList } = useGradeList({ enabled: isOpen });
+    const classListQueries = useAllClassList({ enabled: isOpen });
     const classListList = classListQueries.map(
       (classInfoQuery) => classInfoQuery.data
     );

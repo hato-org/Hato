@@ -39,7 +39,7 @@ export const useNotes = ({ date }: { date: Date }) => {
   );
 };
 
-export const useTable = (
+export const useTimetable = (
   {
     date,
     type,
@@ -51,9 +51,9 @@ export const useTable = (
     type: Type;
     grade: number;
     class: number;
-    course: Course;
+    course: Course[];
   },
-  options?: UseQueryOptions<DaySchedule, AxiosError>
+  options?: UseQueryOptions<DaySchedule[], AxiosError>
 ) => {
   const { client } = useClient();
 
@@ -67,7 +67,7 @@ export const useTable = (
     course,
   };
 
-  return useQuery<DaySchedule, AxiosError>(
+  return useQuery<DaySchedule[], AxiosError>(
     ['timetable', params],
     async () =>
       (

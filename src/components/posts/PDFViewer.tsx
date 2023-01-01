@@ -15,11 +15,11 @@ import {
   Spacer,
   Center,
   useBreakpointValue,
+  Icon,
 } from '@chakra-ui/react';
 import { useQuery, useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX } from 'react-icons/tb';
 import { AxiosError } from 'axios';
-// @ts-ignore: Type definitions for vite not yet provided
 import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -47,15 +47,12 @@ const PDFViewer = React.memo(
       async () =>
         (
           await client.get(`/post/attachment/${attachment.id}`, {
-            // params: {
-            //   base64: true,
-            // },
             responseType: 'arraybuffer',
           })
         ).data,
       {
+        enabled: isOpen,
         staleTime: Infinity, // Infinity
-        cacheTime: Infinity, // Infinity
       }
     );
 
@@ -71,22 +68,24 @@ const PDFViewer = React.memo(
       >
         <DrawerOverlay />
         <DrawerContent top={0} bg="bg">
-          <DrawerHeader shadow="xl">
-            <HStack align="center" w="100%" spacing={2}>
+          <DrawerHeader shadow="xl" p={0}>
+            <HStack align="center" w="100%" px={2} spacing={2}>
               <IconButton
                 aria-label="close"
-                icon={<TbX />}
+                icon={<Icon as={TbX} boxSize={6} />}
+                size="lg"
                 variant="ghost"
                 onClick={onClose}
                 isRound
               />
-              <Text textStyle="title" noOfLines={1}>
+              <Text textStyle="title" whiteSpace="nowrap" noOfLines={1} py={4}>
                 {attachment.name}
               </Text>
               <Spacer />
               <IconButton
                 aria-label="open source link"
-                icon={<TbExternalLink />}
+                icon={<Icon as={TbExternalLink} boxSize={6} />}
+                size="lg"
                 variant="ghost"
                 as={Link}
                 href={attachment.url ?? ''}
@@ -112,7 +111,6 @@ const PDFViewer = React.memo(
                   file={{
                     data,
                   }}
-                  // @ts-ignore: Type definitions for vite not yet provided
                   onLoadSuccess={(pdf) => {
                     setPageCount(pdf.numPages);
                   }}
@@ -120,7 +118,12 @@ const PDFViewer = React.memo(
                   // renderMode="svg"
                 >
                   {Array.from(new Array(pageCount), (el, index) => (
-                    <Center key={`page_${index + 1}`} py={2} shadow="md">
+                    <Center
+                      key={`page_${index + 1}`}
+                      py={2}
+                      shadow="md"
+                      maxW="100vw"
+                    >
                       <Page
                         width={pdfWidth}
                         pageNumber={index + 1}
