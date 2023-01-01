@@ -1,4 +1,12 @@
-import { Container, Flex, Portal, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Center,
+  Container,
+  Flex,
+  Portal,
+  useBreakpointValue,
+} from '@chakra-ui/react';
+import { Suspense } from 'react';
+import Loading from '../common/Loading';
 import UpdatePrompt from '../common/UpdatePrompt';
 import BottomNavbar from '../nav/BottomNavbar';
 import SideMenu from '../nav/SideMenu';
@@ -38,7 +46,15 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
           borderX="1px solid"
           borderColor={isMobile ? 'transparent' : 'border'}
         >
-          {children}
+          <Suspense
+            fallback={
+              <Center h="100%">
+                <Loading size="lg" />
+              </Center>
+            }
+          >
+            {children}
+          </Suspense>
         </Container>
       </Container>
     </>

@@ -118,7 +118,12 @@ const PDFViewer = React.memo(
                   // renderMode="svg"
                 >
                   {Array.from(new Array(pageCount), (el, index) => (
-                    <Center key={`page_${index + 1}`} py={2} shadow="md">
+                    <Center
+                      key={`page_${index + 1}`}
+                      py={2}
+                      shadow="md"
+                      maxW="100vw"
+                    >
                       <Page
                         width={pdfWidth}
                         pageNumber={index + 1}

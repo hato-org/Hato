@@ -143,8 +143,8 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                     key={day.toString()}
                     flex={1}
                     minW={0}
-                    minH={32}
-                    h="100%"
+                    h={isMobile ? 24 : 32}
+                    // h="100%"
                     bg={isToday(day) ? 'hover' : ''}
                   >
                     <Text

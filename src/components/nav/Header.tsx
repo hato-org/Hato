@@ -43,9 +43,11 @@ function Header({ withMenu, children, ...rest }: HeaderProps) {
       mb={4}
       borderBottom="1px solid"
       borderColor={border}
-      bg="bg"
+      bg="bgAlpha"
+      backdropFilter="auto"
+      backdropBlur="8px"
       shadow="xl"
-      zIndex="banner"
+      zIndex={10}
       {...rest}
     >
       <Box w="100%">
