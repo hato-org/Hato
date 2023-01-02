@@ -17,10 +17,9 @@ interface LibrarySearchParams {
   author?: string;
   publisher?: string;
   ndc?: string;
-  year_start?: number;
-  year_end?: number;
+  year_start?: string;
+  year_end?: string;
   isbn?: string;
-  region: string;
 }
 
 interface LibrarySearchResponse {

@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
@@ -11,21 +11,10 @@ export const librarySearchAtom = atom<LibrarySearchParams>({
     author: '',
     publisher: '',
     ndc: '',
-    year_start: 0,
-    year_end: 0,
+    year_start: '',
+    year_end: '',
     isbn: '',
-    region: 'gk-2004103-auf08',
   },
-});
-
-export const librarySearchParamsSelector = selector<LibrarySearchParams>({
-  key: 'hato.library.search.params',
-  get: ({ get }) => ({
-    ...Object.fromEntries(
-      Object.entries(get(librarySearchAtom)).filter(([, v]) => !!v)
-    ),
-    region: 'gk-2004103-auf08',
-  }),
 });
 
 export const libraryBookmarkAtom = atom<string[]>({
