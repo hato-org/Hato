@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   AlertIcon,
@@ -19,7 +19,8 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useSearchParams } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { Virtuoso } from 'react-virtuoso';
 import { TbMoodSad } from 'react-icons/tb';
 import { librarySearchAtom } from '@/store/library';
@@ -29,9 +30,23 @@ import BookInfo from './BookInfo';
 import Loading from '../common/Loading';
 
 export default function Search() {
+  const [searchParams] = useSearchParams();
+  const setParams = useSetRecoilState(librarySearchAtom);
   const { mutate, data, isLoading } = useLibrarySearch();
-  const [selected, setSelected] = useState<'free' | 'detail'>('free');
+  const defaultIndex =
+    [...searchParams.entries()].length && !searchParams.has('free') ? 1 : 0;
   const category: ['free', 'detail'] = useMemo(() => ['free', 'detail'], []);
+  const [selected, setSelected] = useState<'free' | 'detail'>(
+    category[defaultIndex]
+  );
+
+  useEffect(() => {
+    if ([...searchParams.entries()].length) {
+      searchParams.forEach((value, key) => {
+        setParams((currVal) => ({ ...currVal, [key]: value }));
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <VStack pt={2} px={4} mb={24} w="100%" spacing={8}>
@@ -42,6 +57,7 @@ export default function Search() {
             isFitted
             size="lg"
             onChange={(index) => setSelected(category[index])}
+            defaultIndex={defaultIndex}
           >
             <TabList>
               <Tab
@@ -104,7 +120,9 @@ const SearchResult = React.memo(
                 <AlertIcon mr={4} />
                 <VStack align="flex-start" spacing={1}>
                   {result.messages.map((message) => (
-                    <Text textStyle="title">{message}</Text>
+                    <Text key={message} textStyle="title">
+                      {message}
+                    </Text>
                   ))}
                 </VStack>
               </Alert>
@@ -134,7 +152,9 @@ const SearchResult = React.memo(
                 <AlertIcon mr={4} />
                 <VStack align="flex-start" spacing={1}>
                   {result.messages.map((message) => (
-                    <Text textStyle="title">{message}</Text>
+                    <Text key={message} textStyle="title">
+                      {message}
+                    </Text>
                   ))}
                 </VStack>
               </Alert>
@@ -244,7 +264,7 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               onChange={(e) =>
                 setParams((currVal) => ({
                   ...currVal,
-                  year_start: Number(e.target.value) || undefined,
+                  year_start: e.target.value,
                 }))
               }
             />
@@ -257,7 +277,7 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               onChange={(e) =>
                 setParams((currVal) => ({
                   ...currVal,
-                  year_end: Number(e.target.value) || undefined,
+                  year_end: e.target.value,
                 }))
               }
             />

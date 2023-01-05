@@ -24,7 +24,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { addDays, format, setDay, startOfDay, subDays } from 'date-fns/esm';
+import { addDays, format, setDay, subDays } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { Helmet } from 'react-helmet-async';
 import { TbPlus, TbDots, TbFlag, TbPencil } from 'react-icons/tb';
@@ -72,11 +72,6 @@ function Timetable() {
   const [type, setType] = useState(user.type);
   const [grade, setGrade] = useState(user.grade);
   const [schoolClass, setClass] = useState(user.class);
-  const dateParams = {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    day: date.getDate(),
-  };
 
   const { data: courseList } = useCourseList({ type, grade });
 
@@ -268,13 +263,7 @@ function Timetable() {
                   <Spacer />
                   <Suspense>
                     <AddNoteDrawer
-                      date={startOfDay(
-                        new Date(
-                          dateParams.year,
-                          dateParams.month - 1,
-                          dateParams.day
-                        )
-                      )}
+                      date={date}
                       isOpen={isOpen}
                       onClose={onClose}
                     />
