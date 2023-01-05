@@ -92,7 +92,7 @@ export default function TableEditor({
           {
             _id: schedule?.[0]._id,
             ...newSchedule!,
-            date: date.toISOString(),
+            date: startOfDay(date).toISOString(),
             target: [
               {
                 type,
@@ -105,26 +105,23 @@ export default function TableEditor({
         )
       ).data,
     {
-      onSuccess: (daySchedule) => {
+      onSuccess: () => {
         toast({
           title: '変更しました。',
           status: 'success',
         });
-        queryClient.setQueryData(
-          [
-            'timetable',
-            {
-              year: date.getFullYear(),
-              month: date.getMonth() + 1,
-              day: date.getDate(),
-              type,
-              grade,
-              class: schoolClass,
-              course,
-            },
-          ],
-          daySchedule
-        );
+        queryClient.invalidateQueries([
+          'timetable',
+          {
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate(),
+            type,
+            grade,
+            class: schoolClass,
+          },
+        ]);
+
         onClose();
       },
       onError: (error) => {
@@ -151,7 +148,7 @@ export default function TableEditor({
   );
 
   const { data: defaultSchedule, mutate: defaultScheduleMutate } = useMutation<
-    DaySchedule,
+    DaySchedule[],
     AxiosError,
     { newWeek: Week; newDay: Day }
   >(
@@ -178,15 +175,22 @@ export default function TableEditor({
   }, [schedule, date]);
 
   useEffect(() => {
-    if (!defaultSchedule) return;
-    const newDaySchedule = { ...defaultSchedule };
+    const newDaySchedule = defaultSchedule?.find(
+      (daySchedule) =>
+        daySchedule.meta.type === type &&
+        daySchedule.meta.grade === grade &&
+        daySchedule.meta.class === schoolClass &&
+        daySchedule.meta.course.code === course
+    );
+    if (!newDaySchedule) return;
+
     newDaySchedule.timetable = newDaySchedule?.timetable.map((period) => ({
       ...period,
       startAt: parse(period.startAt, 'HH:mm', date).toISOString(),
       endAt: parse(period.endAt, 'HH:mm', date).toISOString(),
     }));
     setSchedule(newDaySchedule);
-  }, [defaultSchedule, date]);
+  }, [defaultSchedule, date]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onWeekSelect = useCallback(
     (newWeek: Week) => {
