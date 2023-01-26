@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   HStack,
   VStack,
@@ -36,6 +37,7 @@ import { useUser } from '@/hooks/user';
 import { tutorialAtom } from '@/store/tutorial';
 import { MotionVStack } from '../motion';
 import SettingButton from './Button';
+import { overlayAtom } from '@/store/overlay';
 
 function Top() {
   const { logout } = useAuth();
@@ -43,6 +45,12 @@ function Top() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const queryClient = useQueryClient();
   const setTutorial = useSetRecoilState(tutorialAtom);
+  const setOverlay = useSetRecoilState(overlayAtom);
+
+  const onWhatsNewOpen = useCallback(() => {
+    setOverlay((currVal) => ({ ...currVal, whatsNew: true }));
+  }, [setOverlay]);
+
   const { data: totalCache, refetch } = useQuery(
     ['storage'],
     async () => {
@@ -111,6 +119,7 @@ function Top() {
         >
           <Icon as={TbExternalLink} />
         </SettingButton>
+        <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
             <Modal isCentered isOpen={isOpen} onClose={onClose}>
@@ -209,7 +218,7 @@ interface CategoryProps extends StackProps {
 
 function SettingCategory({ title, children, ...rest }: CategoryProps) {
   return (
-    <VStack align="flex-start" spacing={4} {...rest}>
+    <VStack align="flex-start" spacing={2} {...rest}>
       <Heading as="h2" size="lg" textStyle="title">
         {title}
       </Heading>

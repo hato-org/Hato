@@ -8,6 +8,7 @@ import {
 import { Suspense } from 'react';
 import Loading from '../common/Loading';
 import UpdatePrompt from '../common/UpdatePrompt';
+import WhatsNew from '../common/WhatsNew';
 import BottomNavbar from '../nav/BottomNavbar';
 import SideMenu from '../nav/SideMenu';
 import Tutorial from '../tutorial';
@@ -20,6 +21,7 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
       <Portal>
         <UpdatePrompt />
         <Tutorial />
+        <WhatsNew />
         {isMobile && <BottomNavbar />}
       </Portal>
       <Container

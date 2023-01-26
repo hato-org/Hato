@@ -5,5 +5,6 @@ export const overlayAtom = atom({
   key: 'hato.overlay',
   default: {
     menu: false,
+    whatsNew: false,
   },
 });
