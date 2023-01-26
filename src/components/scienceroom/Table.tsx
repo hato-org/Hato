@@ -1,0 +1,68 @@
+import React from 'react';
+import {
+  Table,
+  TableContainer,
+  TableProps,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react';
+import { useRoomTable } from '@/hooks/scienceroom';
+import Loading from '../common/Loading';
+import Error from '../cards/Error';
+
+interface RoomTableTableProps extends TableProps {
+  date: Date;
+}
+
+const ScienceRoomTableTable = React.memo(
+  ({ date, ...rest }: RoomTableTableProps) => {
+    const { data, isLoading, error } = useRoomTable(date);
+
+    if (isLoading) return <Loading />;
+    if (error) return <Error error={error} />;
+
+    return (
+      <TableContainer {...rest}>
+        <Table variant="simple" size="sm" textStyle="title" colorScheme="bg">
+          <Thead>
+            <Tr>
+              <Th>時間</Th>
+              {data.roomTable.map((room) => (
+                <Th key={room.name}>
+                  <Text>{room.name}</Text>
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {Array.from({
+              length: Math.max(
+                ...data.roomTable.map((room) => room.table.length)
+              ),
+            }).map((_, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Tr key={`${index}-${_}`}>
+                <Td>{index + 1}</Td>
+                {data.roomTable.map((room) => (
+                  <Td>
+                    <Text whiteSpace="pre" textAlign="center">
+                      {room.table[index] !== '\n'
+                        ? room.table[index] || '-'
+                        : '-'}
+                    </Text>
+                  </Td>
+                ))}
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    );
+  }
+);
+
+export default ScienceRoomTableTable;
