@@ -1,5 +1,5 @@
 @media (prefers-color-scheme: dark) {
-  .changelog  {
+  .changelog {
     color-scheme: dark;
     --color-prettylights-syntax-comment: #8b949e;
     --color-prettylights-syntax-constant: #79c0ff;
@@ -38,16 +38,16 @@
     --color-canvas-subtle: #161b22;
     --color-border-default: #30363d;
     --color-border-muted: #21262d;
-    --color-neutral-muted: rgba(110,118,129,0.4);
+    --color-neutral-muted: rgba(110, 118, 129, 0.4);
     --color-accent-fg: #58a6ff;
     --color-accent-emphasis: #1f6feb;
-    --color-attention-subtle: rgba(187,128,9,0.15);
+    --color-attention-subtle: rgba(187, 128, 9, 0.15);
     --color-danger-fg: #f85149;
   }
 }
 
 @media (prefers-color-scheme: light) {
-  .changelog  {
+  .changelog {
     color-scheme: light;
     --color-prettylights-syntax-comment: #6e7781;
     --color-prettylights-syntax-constant: #0550ae;
@@ -68,7 +68,7 @@
     --color-prettylights-syntax-markup-italic: #24292f;
     --color-prettylights-syntax-markup-bold: #24292f;
     --color-prettylights-syntax-markup-deleted-text: #82071e;
-    --color-prettylights-syntax-markup-deleted-bg: #FFEBE9;
+    --color-prettylights-syntax-markup-deleted-bg: #ffebe9;
     --color-prettylights-syntax-markup-inserted-text: #116329;
     --color-prettylights-syntax-markup-inserted-bg: #dafbe1;
     --color-prettylights-syntax-markup-changed-text: #953800;
@@ -85,8 +85,8 @@
     --color-canvas-default: #ffffff;
     --color-canvas-subtle: #f6f8fa;
     --color-border-default: #d0d7de;
-    --color-border-muted: hsla(210,18%,87%,1);
-    --color-neutral-muted: rgba(175,184,193,0.2);
+    --color-border-muted: hsla(210, 18%, 87%, 1);
+    --color-neutral-muted: rgba(175, 184, 193, 0.2);
     --color-accent-fg: #0969da;
     --color-accent-emphasis: #0969da;
     --color-attention-subtle: #fff8c5;
@@ -94,30 +94,31 @@
   }
 }
 
-.changelog  {
+.changelog {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
   color: var(--color-fg-default);
   background-color: var(--color-canvas-default);
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
 }
 
-.changelog  .octicon {
+.changelog .octicon {
   display: inline-block;
   fill: currentColor;
   vertical-align: text-bottom;
 }
 
-.changelog  h1:hover .anchor .octicon-link:before,
-.changelog  h2:hover .anchor .octicon-link:before,
-.changelog  h3:hover .anchor .octicon-link:before,
-.changelog  h4:hover .anchor .octicon-link:before,
-.changelog  h5:hover .anchor .octicon-link:before,
-.changelog  h6:hover .anchor .octicon-link:before {
+.changelog h1:hover .anchor .octicon-link:before,
+.changelog h2:hover .anchor .octicon-link:before,
+.changelog h3:hover .anchor .octicon-link:before,
+.changelog h4:hover .anchor .octicon-link:before,
+.changelog h5:hover .anchor .octicon-link:before,
+.changelog h6:hover .anchor .octicon-link:before {
   width: 16px;
   height: 16px;
   content: ' ';
@@ -127,110 +128,110 @@
   mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
 }
 
-.changelog  details,
-.changelog  figcaption,
-.changelog  figure {
+.changelog details,
+.changelog figcaption,
+.changelog figure {
   display: block;
 }
 
-.changelog  summary {
+.changelog summary {
   display: list-item;
 }
 
-.changelog  [hidden] {
+.changelog [hidden] {
   display: none !important;
 }
 
-.changelog  a {
+.changelog a {
   background-color: transparent;
   color: var(--color-accent-fg);
   text-decoration: none;
 }
 
-.changelog  a:active,
-.changelog  a:hover {
+.changelog a:active,
+.changelog a:hover {
   outline-width: 0;
 }
 
-.changelog  abbr[title] {
+.changelog abbr[title] {
   border-bottom: none;
   text-decoration: underline dotted;
 }
 
-.changelog  b,
-.changelog  strong {
+.changelog b,
+.changelog strong {
   font-weight: 600;
 }
 
-.changelog  dfn {
+.changelog dfn {
   font-style: italic;
 }
 
-.changelog  h1 {
-  margin: .67em 0;
+.changelog h1 {
+  margin: 0.67em 0;
   font-weight: 600;
-  padding-bottom: .3em;
+  padding-bottom: 0.3em;
   font-size: 2em;
   border-bottom: 1px solid var(--color-border-muted);
 }
 
-.changelog  mark {
+.changelog mark {
   background-color: var(--color-attention-subtle);
   color: var(--color-text-primary);
 }
 
-.changelog  small {
+.changelog small {
   font-size: 90%;
 }
 
-.changelog  sub,
-.changelog  sup {
+.changelog sub,
+.changelog sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
   vertical-align: baseline;
 }
 
-.changelog  sub {
+.changelog sub {
   bottom: -0.25em;
 }
 
-.changelog  sup {
+.changelog sup {
   top: -0.5em;
 }
 
-.changelog  img {
+.changelog img {
   border-style: none;
   max-width: 100%;
   box-sizing: content-box;
   background-color: var(--color-canvas-default);
 }
 
-.changelog  code,
-.changelog  kbd,
-.changelog  pre,
-.changelog  samp {
-  font-family: monospace,monospace;
+.changelog code,
+.changelog kbd,
+.changelog pre,
+.changelog samp {
+  font-family: monospace, monospace;
   font-size: 1em;
 }
 
-.changelog  figure {
+.changelog figure {
   margin: 1em 40px;
 }
 
-.changelog  hr {
+.changelog hr {
   box-sizing: content-box;
   overflow: hidden;
   background: transparent;
   border-bottom: 1px solid var(--color-border-muted);
-  height: .25em;
+  height: 0.25em;
   padding: 0;
   margin: 24px 0;
   background-color: var(--color-border-default);
   border: 0;
 }
 
-.changelog  input {
+.changelog input {
   font: inherit;
   margin: 0;
   overflow: visible;
@@ -239,72 +240,72 @@
   line-height: inherit;
 }
 
-.changelog  [type=button],
-.changelog  [type=reset],
-.changelog  [type=submit] {
+.changelog [type='button'],
+.changelog [type='reset'],
+.changelog [type='submit'] {
   -webkit-appearance: button;
 }
 
-.changelog  [type=button]::-moz-focus-inner,
-.changelog  [type=reset]::-moz-focus-inner,
-.changelog  [type=submit]::-moz-focus-inner {
+.changelog [type='button']::-moz-focus-inner,
+.changelog [type='reset']::-moz-focus-inner,
+.changelog [type='submit']::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
 
-.changelog  [type=button]:-moz-focusring,
-.changelog  [type=reset]:-moz-focusring,
-.changelog  [type=submit]:-moz-focusring {
+.changelog [type='button']:-moz-focusring,
+.changelog [type='reset']:-moz-focusring,
+.changelog [type='submit']:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
-.changelog  [type=checkbox],
-.changelog  [type=radio] {
+.changelog [type='checkbox'],
+.changelog [type='radio'] {
   box-sizing: border-box;
   padding: 0;
 }
 
-.changelog  [type=number]::-webkit-inner-spin-button,
-.changelog  [type=number]::-webkit-outer-spin-button {
+.changelog [type='number']::-webkit-inner-spin-button,
+.changelog [type='number']::-webkit-outer-spin-button {
   height: auto;
 }
 
-.changelog  [type=search] {
+.changelog [type='search'] {
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 
-.changelog  [type=search]::-webkit-search-cancel-button,
-.changelog  [type=search]::-webkit-search-decoration {
+.changelog [type='search']::-webkit-search-cancel-button,
+.changelog [type='search']::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
-.changelog  ::-webkit-input-placeholder {
+.changelog ::-webkit-input-placeholder {
   color: inherit;
-  opacity: .54;
+  opacity: 0.54;
 }
 
-.changelog  ::-webkit-file-upload-button {
+.changelog ::-webkit-file-upload-button {
   -webkit-appearance: button;
   font: inherit;
 }
 
-.changelog  a:hover {
+.changelog a:hover {
   text-decoration: underline;
 }
 
-.changelog  hr::before {
+.changelog hr::before {
   display: table;
-  content: "";
+  content: '';
 }
 
-.changelog  hr::after {
+.changelog hr::after {
   display: table;
   clear: both;
-  content: "";
+  content: '';
 }
 
-.changelog  table {
+.changelog table {
   border-spacing: 0;
   border-collapse: collapse;
   display: block;
@@ -313,23 +314,24 @@
   overflow: auto;
 }
 
-.changelog  td,
-.changelog  th {
+.changelog td,
+.changelog th {
   padding: 0;
 }
 
-.changelog  details summary {
+.changelog details summary {
   cursor: pointer;
 }
 
-.changelog  details:not([open])>*:not(summary) {
+.changelog details:not([open]) > *:not(summary) {
   display: none !important;
 }
 
-.changelog  kbd {
+.changelog kbd {
   display: inline-block;
   padding: 3px 5px;
-  font: 11px ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+  font: 11px ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
   line-height: 10px;
   color: var(--color-fg-default);
   vertical-align: middle;
@@ -340,240 +342,242 @@
   box-shadow: inset 0 -1px 0 var(--color-neutral-muted);
 }
 
-.changelog  h1,
-.changelog  h2,
-.changelog  h3,
-.changelog  h4,
-.changelog  h5,
-.changelog  h6 {
+.changelog h1,
+.changelog h2,
+.changelog h3,
+.changelog h4,
+.changelog h5,
+.changelog h6 {
   margin-top: 24px;
   margin-bottom: 16px;
   font-weight: 600;
   line-height: 1.25;
 }
 
-.changelog  h2 {
+.changelog h2 {
   font-weight: 600;
-  padding-bottom: .3em;
+  padding-bottom: 0.3em;
   font-size: 1.5em;
   border-bottom: 1px solid var(--color-border-muted);
 }
 
-.changelog  h3 {
+.changelog h3 {
   font-weight: 600;
   font-size: 1.25em;
 }
 
-.changelog  h4 {
+.changelog h4 {
   font-weight: 600;
   font-size: 1em;
 }
 
-.changelog  h5 {
+.changelog h5 {
   font-weight: 600;
-  font-size: .875em;
+  font-size: 0.875em;
 }
 
-.changelog  h6 {
+.changelog h6 {
   font-weight: 600;
-  font-size: .85em;
+  font-size: 0.85em;
   color: var(--color-fg-muted);
 }
 
-.changelog  p {
+.changelog p {
   margin-top: 0;
   margin-bottom: 10px;
 }
 
-.changelog  blockquote {
+.changelog blockquote {
   margin: 0;
   padding: 0 1em;
   color: var(--color-fg-muted);
-  border-left: .25em solid var(--color-border-default);
+  border-left: 0.25em solid var(--color-border-default);
 }
 
-.changelog  ul,
-.changelog  ol {
+.changelog ul,
+.changelog ol {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 2em;
 }
 
-.changelog  ol ol,
-.changelog  ul ol {
+.changelog ol ol,
+.changelog ul ol {
   list-style-type: lower-roman;
 }
 
-.changelog  ul ul ol,
-.changelog  ul ol ol,
-.changelog  ol ul ol,
-.changelog  ol ol ol {
+.changelog ul ul ol,
+.changelog ul ol ol,
+.changelog ol ul ol,
+.changelog ol ol ol {
   list-style-type: lower-alpha;
 }
 
-.changelog  dd {
+.changelog dd {
   margin-left: 0;
 }
 
-.changelog  tt,
-.changelog  code {
-  font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+.changelog tt,
+.changelog code {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
   font-size: 12px;
 }
 
-.changelog  pre {
+.changelog pre {
   margin-top: 0;
   margin-bottom: 0;
-  font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
   font-size: 12px;
   word-wrap: normal;
 }
 
-.changelog  .octicon {
+.changelog .octicon {
   display: inline-block;
   overflow: visible !important;
   vertical-align: text-bottom;
   fill: currentColor;
 }
 
-.changelog  ::placeholder {
+.changelog ::placeholder {
   color: var(--color-fg-subtle);
   opacity: 1;
 }
 
-.changelog  input::-webkit-outer-spin-button,
-.changelog  input::-webkit-inner-spin-button {
+.changelog input::-webkit-outer-spin-button,
+.changelog input::-webkit-inner-spin-button {
   margin: 0;
   -webkit-appearance: none;
   appearance: none;
 }
 
-.changelog  .pl-c {
+.changelog .pl-c {
   color: var(--color-prettylights-syntax-comment);
 }
 
-.changelog  .pl-c1,
-.changelog  .pl-s .pl-v {
+.changelog .pl-c1,
+.changelog .pl-s .pl-v {
   color: var(--color-prettylights-syntax-constant);
 }
 
-.changelog  .pl-e,
-.changelog  .pl-en {
+.changelog .pl-e,
+.changelog .pl-en {
   color: var(--color-prettylights-syntax-entity);
 }
 
-.changelog  .pl-smi,
-.changelog  .pl-s .pl-s1 {
+.changelog .pl-smi,
+.changelog .pl-s .pl-s1 {
   color: var(--color-prettylights-syntax-storage-modifier-import);
 }
 
-.changelog  .pl-ent {
+.changelog .pl-ent {
   color: var(--color-prettylights-syntax-entity-tag);
 }
 
-.changelog  .pl-k {
+.changelog .pl-k {
   color: var(--color-prettylights-syntax-keyword);
 }
 
-.changelog  .pl-s,
-.changelog  .pl-pds,
-.changelog  .pl-s .pl-pse .pl-s1,
-.changelog  .pl-sr,
-.changelog  .pl-sr .pl-cce,
-.changelog  .pl-sr .pl-sre,
-.changelog  .pl-sr .pl-sra {
+.changelog .pl-s,
+.changelog .pl-pds,
+.changelog .pl-s .pl-pse .pl-s1,
+.changelog .pl-sr,
+.changelog .pl-sr .pl-cce,
+.changelog .pl-sr .pl-sre,
+.changelog .pl-sr .pl-sra {
   color: var(--color-prettylights-syntax-string);
 }
 
-.changelog  .pl-v,
-.changelog  .pl-smw {
+.changelog .pl-v,
+.changelog .pl-smw {
   color: var(--color-prettylights-syntax-variable);
 }
 
-.changelog  .pl-bu {
+.changelog .pl-bu {
   color: var(--color-prettylights-syntax-brackethighlighter-unmatched);
 }
 
-.changelog  .pl-ii {
+.changelog .pl-ii {
   color: var(--color-prettylights-syntax-invalid-illegal-text);
   background-color: var(--color-prettylights-syntax-invalid-illegal-bg);
 }
 
-.changelog  .pl-c2 {
+.changelog .pl-c2 {
   color: var(--color-prettylights-syntax-carriage-return-text);
   background-color: var(--color-prettylights-syntax-carriage-return-bg);
 }
 
-.changelog  .pl-sr .pl-cce {
+.changelog .pl-sr .pl-cce {
   font-weight: bold;
   color: var(--color-prettylights-syntax-string-regexp);
 }
 
-.changelog  .pl-ml {
+.changelog .pl-ml {
   color: var(--color-prettylights-syntax-markup-list);
 }
 
-.changelog  .pl-mh,
-.changelog  .pl-mh .pl-en,
-.changelog  .pl-ms {
+.changelog .pl-mh,
+.changelog .pl-mh .pl-en,
+.changelog .pl-ms {
   font-weight: bold;
   color: var(--color-prettylights-syntax-markup-heading);
 }
 
-.changelog  .pl-mi {
+.changelog .pl-mi {
   font-style: italic;
   color: var(--color-prettylights-syntax-markup-italic);
 }
 
-.changelog  .pl-mb {
+.changelog .pl-mb {
   font-weight: bold;
   color: var(--color-prettylights-syntax-markup-bold);
 }
 
-.changelog  .pl-md {
+.changelog .pl-md {
   color: var(--color-prettylights-syntax-markup-deleted-text);
   background-color: var(--color-prettylights-syntax-markup-deleted-bg);
 }
 
-.changelog  .pl-mi1 {
+.changelog .pl-mi1 {
   color: var(--color-prettylights-syntax-markup-inserted-text);
   background-color: var(--color-prettylights-syntax-markup-inserted-bg);
 }
 
-.changelog  .pl-mc {
+.changelog .pl-mc {
   color: var(--color-prettylights-syntax-markup-changed-text);
   background-color: var(--color-prettylights-syntax-markup-changed-bg);
 }
 
-.changelog  .pl-mi2 {
+.changelog .pl-mi2 {
   color: var(--color-prettylights-syntax-markup-ignored-text);
   background-color: var(--color-prettylights-syntax-markup-ignored-bg);
 }
 
-.changelog  .pl-mdr {
+.changelog .pl-mdr {
   font-weight: bold;
   color: var(--color-prettylights-syntax-meta-diff-range);
 }
 
-.changelog  .pl-ba {
+.changelog .pl-ba {
   color: var(--color-prettylights-syntax-brackethighlighter-angle);
 }
 
-.changelog  .pl-sg {
+.changelog .pl-sg {
   color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
 }
 
-.changelog  .pl-corl {
+.changelog .pl-corl {
   text-decoration: underline;
   color: var(--color-prettylights-syntax-constant-other-reference-link);
 }
 
-.changelog  [data-catalyst] {
+.changelog [data-catalyst] {
   display: block;
 }
 
-.changelog  g-emoji {
-  font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+.changelog g-emoji {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 1em;
   font-style: normal !important;
   font-weight: 400;
@@ -581,166 +585,166 @@
   vertical-align: -0.075em;
 }
 
-.changelog  g-emoji img {
+.changelog g-emoji img {
   width: 1em;
   height: 1em;
 }
 
 .changelog ::before {
   display: table;
-  content: "";
+  content: '';
 }
 
 .changelog ::after {
   display: table;
   clear: both;
-  content: "";
+  content: '';
 }
 
-.changelog >*:first-child {
+.changelog > *:first-child {
   margin-top: 0 !important;
 }
 
-.changelog >*:last-child {
+.changelog > *:last-child {
   margin-bottom: 0 !important;
 }
 
-.changelog  a:not([href]) {
+.changelog a:not([href]) {
   color: inherit;
   text-decoration: none;
 }
 
-.changelog  .absent {
+.changelog .absent {
   color: var(--color-danger-fg);
 }
 
-.changelog  .anchor {
+.changelog .anchor {
   float: left;
   padding-right: 4px;
   margin-left: -20px;
   line-height: 1;
 }
 
-.changelog  .anchor:focus {
+.changelog .anchor:focus {
   outline: none;
 }
 
-.changelog  p,
-.changelog  blockquote,
-.changelog  ul,
-.changelog  ol,
-.changelog  dl,
-.changelog  table,
-.changelog  pre,
-.changelog  details {
+.changelog p,
+.changelog blockquote,
+.changelog ul,
+.changelog ol,
+.changelog dl,
+.changelog table,
+.changelog pre,
+.changelog details {
   margin-top: 0;
   margin-bottom: 16px;
 }
 
-.changelog  blockquote>:first-child {
+.changelog blockquote > :first-child {
   margin-top: 0;
 }
 
-.changelog  blockquote>:last-child {
+.changelog blockquote > :last-child {
   margin-bottom: 0;
 }
 
-.changelog  sup>a::before {
-  content: "[";
+.changelog sup > a::before {
+  content: '[';
 }
 
-.changelog  sup>a::after {
-  content: "]";
+.changelog sup > a::after {
+  content: ']';
 }
 
-.changelog  h1 .octicon-link,
-.changelog  h2 .octicon-link,
-.changelog  h3 .octicon-link,
-.changelog  h4 .octicon-link,
-.changelog  h5 .octicon-link,
-.changelog  h6 .octicon-link {
+.changelog h1 .octicon-link,
+.changelog h2 .octicon-link,
+.changelog h3 .octicon-link,
+.changelog h4 .octicon-link,
+.changelog h5 .octicon-link,
+.changelog h6 .octicon-link {
   color: var(--color-fg-default);
   vertical-align: middle;
   visibility: hidden;
 }
 
-.changelog  h1:hover .anchor,
-.changelog  h2:hover .anchor,
-.changelog  h3:hover .anchor,
-.changelog  h4:hover .anchor,
-.changelog  h5:hover .anchor,
-.changelog  h6:hover .anchor {
+.changelog h1:hover .anchor,
+.changelog h2:hover .anchor,
+.changelog h3:hover .anchor,
+.changelog h4:hover .anchor,
+.changelog h5:hover .anchor,
+.changelog h6:hover .anchor {
   text-decoration: none;
 }
 
-.changelog  h1:hover .anchor .octicon-link,
-.changelog  h2:hover .anchor .octicon-link,
-.changelog  h3:hover .anchor .octicon-link,
-.changelog  h4:hover .anchor .octicon-link,
-.changelog  h5:hover .anchor .octicon-link,
-.changelog  h6:hover .anchor .octicon-link {
+.changelog h1:hover .anchor .octicon-link,
+.changelog h2:hover .anchor .octicon-link,
+.changelog h3:hover .anchor .octicon-link,
+.changelog h4:hover .anchor .octicon-link,
+.changelog h5:hover .anchor .octicon-link,
+.changelog h6:hover .anchor .octicon-link {
   visibility: visible;
 }
 
-.changelog  h1 tt,
-.changelog  h1 code,
-.changelog  h2 tt,
-.changelog  h2 code,
-.changelog  h3 tt,
-.changelog  h3 code,
-.changelog  h4 tt,
-.changelog  h4 code,
-.changelog  h5 tt,
-.changelog  h5 code,
-.changelog  h6 tt,
-.changelog  h6 code {
-  padding: 0 .2em;
+.changelog h1 tt,
+.changelog h1 code,
+.changelog h2 tt,
+.changelog h2 code,
+.changelog h3 tt,
+.changelog h3 code,
+.changelog h4 tt,
+.changelog h4 code,
+.changelog h5 tt,
+.changelog h5 code,
+.changelog h6 tt,
+.changelog h6 code {
+  padding: 0 0.2em;
   font-size: inherit;
 }
 
-.changelog  ul.no-list,
-.changelog  ol.no-list {
+.changelog ul.no-list,
+.changelog ol.no-list {
   padding: 0;
   list-style-type: none;
 }
 
-.changelog  ol[type="1"] {
+.changelog ol[type='1'] {
   list-style-type: decimal;
 }
 
-.changelog  ol[type=a] {
+.changelog ol[type='a'] {
   list-style-type: lower-alpha;
 }
 
-.changelog  ol[type=i] {
+.changelog ol[type='i'] {
   list-style-type: lower-roman;
 }
 
-.changelog  div>ol:not([type]) {
+.changelog div > ol:not([type]) {
   list-style-type: decimal;
 }
 
-.changelog  ul ul,
-.changelog  ul ol,
-.changelog  ol ol,
-.changelog  ol ul {
+.changelog ul ul,
+.changelog ul ol,
+.changelog ol ol,
+.changelog ol ul {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.changelog  li>p {
+.changelog li > p {
   margin-top: 16px;
 }
 
-.changelog  li+li {
-  margin-top: .25em;
+.changelog li + li {
+  margin-top: 0.25em;
 }
 
-.changelog  dl {
+.changelog dl {
   padding: 0;
 }
 
-.changelog  dl dt {
+.changelog dl dt {
   padding: 0;
   margin-top: 16px;
   font-size: 1em;
@@ -748,54 +752,54 @@
   font-weight: 600;
 }
 
-.changelog  dl dd {
+.changelog dl dd {
   padding: 0 16px;
   margin-bottom: 16px;
 }
 
-.changelog  table th {
+.changelog table th {
   font-weight: 600;
 }
 
-.changelog  table th,
-.changelog  table td {
+.changelog table th,
+.changelog table td {
   padding: 6px 13px;
   border: 1px solid var(--color-border-default);
 }
 
-.changelog  table tr {
+.changelog table tr {
   background-color: var(--color-canvas-default);
   border-top: 1px solid var(--color-border-muted);
 }
 
-.changelog  table tr:nth-child(2n) {
+.changelog table tr:nth-child(2n) {
   background-color: var(--color-canvas-subtle);
 }
 
-.changelog  table img {
+.changelog table img {
   background-color: transparent;
 }
 
-.changelog  img[align=right] {
+.changelog img[align='right'] {
   padding-left: 20px;
 }
 
-.changelog  img[align=left] {
+.changelog img[align='left'] {
   padding-right: 20px;
 }
 
-.changelog  .emoji {
+.changelog .emoji {
   max-width: none;
   vertical-align: text-top;
   background-color: transparent;
 }
 
-.changelog  span.frame {
+.changelog span.frame {
   display: block;
   overflow: hidden;
 }
 
-.changelog  span.frame>span {
+.changelog span.frame > span {
   display: block;
   float: left;
   width: auto;
@@ -805,102 +809,102 @@
   border: 1px solid var(--color-border-default);
 }
 
-.changelog  span.frame span img {
+.changelog span.frame span img {
   display: block;
   float: left;
 }
 
-.changelog  span.frame span span {
+.changelog span.frame span span {
   display: block;
   padding: 5px 0 0;
   clear: both;
   color: var(--color-fg-default);
 }
 
-.changelog  span.align-center {
+.changelog span.align-center {
   display: block;
   overflow: hidden;
   clear: both;
 }
 
-.changelog  span.align-center>span {
+.changelog span.align-center > span {
   display: block;
   margin: 13px auto 0;
   overflow: hidden;
   text-align: center;
 }
 
-.changelog  span.align-center span img {
+.changelog span.align-center span img {
   margin: 0 auto;
   text-align: center;
 }
 
-.changelog  span.align-right {
+.changelog span.align-right {
   display: block;
   overflow: hidden;
   clear: both;
 }
 
-.changelog  span.align-right>span {
+.changelog span.align-right > span {
   display: block;
   margin: 13px 0 0;
   overflow: hidden;
   text-align: right;
 }
 
-.changelog  span.align-right span img {
+.changelog span.align-right span img {
   margin: 0;
   text-align: right;
 }
 
-.changelog  span.float-left {
+.changelog span.float-left {
   display: block;
   float: left;
   margin-right: 13px;
   overflow: hidden;
 }
 
-.changelog  span.float-left span {
+.changelog span.float-left span {
   margin: 13px 0 0;
 }
 
-.changelog  span.float-right {
+.changelog span.float-right {
   display: block;
   float: right;
   margin-left: 13px;
   overflow: hidden;
 }
 
-.changelog  span.float-right>span {
+.changelog span.float-right > span {
   display: block;
   margin: 13px auto 0;
   overflow: hidden;
   text-align: right;
 }
 
-.changelog  code,
-.changelog  tt {
-  padding: .2em .4em;
+.changelog code,
+.changelog tt {
+  padding: 0.2em 0.4em;
   margin: 0;
   font-size: 85%;
   background-color: var(--color-neutral-muted);
   border-radius: 6px;
 }
 
-.changelog  code br,
-.changelog  tt br {
+.changelog code br,
+.changelog tt br {
   display: none;
 }
 
-.changelog  del code {
+.changelog del code {
   text-decoration: inherit;
 }
 
-.changelog  pre code {
+.changelog pre code {
   font-size: 100%;
 }
 
-.changelog  pre>code {
+.changelog pre > code {
   padding: 0;
   margin: 0;
   word-break: normal;
@@ -909,17 +913,17 @@
   border: 0;
 }
 
-.changelog  .highlight {
+.changelog .highlight {
   margin-bottom: 16px;
 }
 
-.changelog  .highlight pre {
+.changelog .highlight pre {
   margin-bottom: 0;
   word-break: normal;
 }
 
-.changelog  .highlight pre,
-.changelog  pre {
+.changelog .highlight pre,
+.changelog pre {
   padding: 16px;
   overflow: auto;
   font-size: 85%;
@@ -928,8 +932,8 @@
   border-radius: 6px;
 }
 
-.changelog  pre code,
-.changelog  pre tt {
+.changelog pre code,
+.changelog pre tt {
   display: inline;
   max-width: auto;
   padding: 0;
@@ -941,8 +945,8 @@
   border: 0;
 }
 
-.changelog  .csv-data td,
-.changelog  .csv-data th {
+.changelog .csv-data td,
+.changelog .csv-data th {
   padding: 5px;
   overflow: hidden;
   font-size: 12px;
@@ -951,86 +955,86 @@
   white-space: nowrap;
 }
 
-.changelog  .csv-data .blob-num {
+.changelog .csv-data .blob-num {
   padding: 10px 8px 9px;
   text-align: right;
   background: var(--color-canvas-default);
   border: 0;
 }
 
-.changelog  .csv-data tr {
+.changelog .csv-data tr {
   border-top: 0;
 }
 
-.changelog  .csv-data th {
+.changelog .csv-data th {
   font-weight: 600;
   background: var(--color-canvas-subtle);
   border-top: 0;
 }
 
-.changelog  .footnotes {
+.changelog .footnotes {
   font-size: 12px;
   color: var(--color-fg-muted);
   border-top: 1px solid var(--color-border-default);
 }
 
-.changelog  .footnotes ol {
+.changelog .footnotes ol {
   padding-left: 16px;
 }
 
-.changelog  .footnotes li {
+.changelog .footnotes li {
   position: relative;
 }
 
-.changelog  .footnotes li:target::before {
+.changelog .footnotes li:target::before {
   position: absolute;
   top: -8px;
   right: -8px;
   bottom: -8px;
   left: -24px;
   pointer-events: none;
-  content: "";
+  content: '';
   border: 2px solid var(--color-accent-emphasis);
   border-radius: 6px;
 }
 
-.changelog  .footnotes li:target {
+.changelog .footnotes li:target {
   color: var(--color-fg-default);
 }
 
-.changelog  .footnotes .data-footnote-backref g-emoji {
+.changelog .footnotes .data-footnote-backref g-emoji {
   font-family: monospace;
 }
 
-.changelog  .task-list-item {
+.changelog .task-list-item {
   list-style-type: none;
 }
 
-.changelog  .task-list-item label {
+.changelog .task-list-item label {
   font-weight: 400;
 }
 
-.changelog  .task-list-item.enabled label {
+.changelog .task-list-item.enabled label {
   cursor: pointer;
 }
 
-.changelog  .task-list-item+.task-list-item {
+.changelog .task-list-item + .task-list-item {
   margin-top: 3px;
 }
 
-.changelog  .task-list-item .handle {
+.changelog .task-list-item .handle {
   display: none;
 }
 
-.changelog  .task-list-item-checkbox {
-  margin: 0 .2em .25em -1.6em;
+.changelog .task-list-item-checkbox {
+  margin: 0 0.2em 0.25em -1.6em;
   vertical-align: middle;
 }
 
-.changelog  .contains-task-list:dir(rtl) .task-list-item-checkbox {
-  margin: 0 -1.6em .25em .2em;
+.changelog .contains-task-list:dir(rtl) .task-list-item-checkbox {
+  margin: 0 -1.6em 0.25em 0.2em;
 }
 
-.changelog  ::-webkit-calendar-picker-indicator {
+.changelog ::-webkit-calendar-picker-indicator {
   filter: invert(50%);
 }
