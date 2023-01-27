@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Center,
   Table,
   TableContainer,
   TableProps,
@@ -26,7 +27,7 @@ const ScienceRoomTableTable = React.memo(
     if (error) return <Error error={error} />;
 
     return (
-      <TableContainer {...rest}>
+      <TableContainer w="100%" {...rest}>
         <Table variant="simple" size="sm" textStyle="title" colorScheme="bg">
           <Thead>
             <Tr>
@@ -39,25 +40,37 @@ const ScienceRoomTableTable = React.memo(
             </Tr>
           </Thead>
           <Tbody>
-            {Array.from({
-              length: Math.max(
-                ...data.roomTable.map((room) => room.table.length)
-              ),
-            }).map((_, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Tr key={`${index}-${_}`}>
-                <Td>{index + 1}</Td>
-                {data.roomTable.map((room) => (
-                  <Td>
-                    <Text whiteSpace="pre" textAlign="center">
-                      {room.table[index] !== '\n'
-                        ? room.table[index] || '-'
-                        : '-'}
+            {data.roomTable.some((room) => !!room.table.length) ? (
+              Array.from({
+                length: Math.max(
+                  ...data.roomTable.map((room) => room.table.length)
+                ),
+              }).map((_, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Tr key={`${index}-${_}`}>
+                  <Td>{index + 1}</Td>
+                  {data.roomTable.map((room) => (
+                    <Td>
+                      <Text whiteSpace="pre" textAlign="center">
+                        {room.table[index] !== '\n'
+                          ? room.table[index] || '-'
+                          : '-'}
+                      </Text>
+                    </Td>
+                  ))}
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td>
+                  <Center py={4}>
+                    <Text textStyle="description" fontWeight="bold">
+                      データがありません
                     </Text>
-                  </Td>
-                ))}
+                  </Center>
+                </Td>
               </Tr>
-            ))}
+            )}
           </Tbody>
         </Table>
       </TableContainer>
