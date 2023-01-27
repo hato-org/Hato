@@ -1,8 +1,11 @@
 import { VStack, Text, Button, Slide, IconButton } from '@chakra-ui/react';
 import { TbX } from 'react-icons/tb';
+import { useSetRecoilState } from 'recoil';
 import { useRegisterSW } from 'virtual:pwa-register/react';
+import { overlayAtom } from '@/store/overlay';
 
 function UpdatePrompt() {
+  const setOverlay = useSetRecoilState(overlayAtom);
   const {
     // offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
@@ -45,7 +48,10 @@ function UpdatePrompt() {
           w="100%"
           rounded="lg"
           colorScheme="blue"
-          onClick={() => updateServiceWorker(true)}
+          onClick={() => {
+            setOverlay((currVal) => ({ ...currVal, whatsNew: true }));
+            updateServiceWorker(true);
+          }}
         >
           再読み込み
         </Button>

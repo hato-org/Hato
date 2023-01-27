@@ -33,6 +33,7 @@ import Header from '@/components/nav/Header';
 import DateSwitcher from '@/components/timetable/DateSwitcher';
 import GradeClassPicker from '@/components/timetable/GradeClassPicker';
 import TimetableTable from '@/components/timetable/Table';
+import ScienceRoomTableTable from '@/components/scienceroom/Table';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import Loading from '@/components/common/Loading';
@@ -197,19 +198,21 @@ function Timetable() {
         }}
       >
         <Center w="100%" mb={32} ref={popoverRef}>
-          <VStack w="100%" px={4}>
-            <DateSwitcher
-              onPrev={onPrevDay}
-              onNext={onNextDay}
-              onSelect={onSelectDay}
-              date={date}
-              px={2}
-            />
-            <GradeClassPicker
-              onGradeSelect={onGradeSelect}
-              onClassSelect={onClassSelect}
-              px={2}
-            />
+          <VStack w="100%" px={4} spacing={8}>
+            <VStack w="100%">
+              <DateSwitcher
+                onPrev={onPrevDay}
+                onNext={onNextDay}
+                onSelect={onSelectDay}
+                date={date}
+                px={2}
+              />
+              <GradeClassPicker
+                onGradeSelect={onGradeSelect}
+                onClassSelect={onClassSelect}
+                px={2}
+              />
+            </VStack>
             <Card w="100%">
               <VStack w="100%" align="flex-start" p={2} spacing={6}>
                 <VStack w="100%" align="flex-start" spacing={4}>
@@ -281,6 +284,18 @@ function Timetable() {
                 <Suspense fallback={<Loading />}>
                   <Notes {...{ type, grade, schoolClass }} date={date} />
                 </Suspense>
+              </VStack>
+            </Card>
+            <Card w="100%">
+              <VStack w="100%" p={2} align="flex-start" spacing={4}>
+                <HStack w="100%">
+                  <Heading size="md">理科室割</Heading>
+                </HStack>
+                <ScienceRoomTableTable
+                  date={date}
+                  onTouchStart={onTableTouchStart}
+                  onTouchEnd={onTableTouchEnd}
+                />
               </VStack>
             </Card>
           </VStack>
