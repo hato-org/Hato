@@ -17,15 +17,18 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-  Heading,
   Skeleton,
+  useClipboard,
+  useToast,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   TbAlertCircle,
   TbChevronDown,
   TbEdit,
   TbArrowNarrowDown,
+  TbCopy,
+  TbCheck,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/modules/auth';
@@ -36,6 +39,7 @@ import { MotionCenter } from '../motion';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Loading from '../common/Loading';
 import Profile from '../account/Profile';
+import SettingCategory from './Category';
 
 function Account() {
   const {
@@ -43,6 +47,10 @@ function Account() {
   } = useAuth();
   const { data: user } = useUser();
   const queryClient = useQueryClient();
+  const { onCopy, hasCopied } = useClipboard(user.apiKey);
+  const toast = useToast({
+    position: 'top-right',
+  });
 
   const {
     data: gradeList,
@@ -268,6 +276,37 @@ function Account() {
     ): settingsButton is Exclude<typeof settingsButton, undefined> =>
       !!settingsButton
   );
+
+  const listForDevs = useMemo(
+    () => [
+      {
+        label: 'APIキー',
+        description: 'APIにアクセスする際に必要なキーです。',
+        children: (
+          <HStack
+            onClick={() => {
+              onCopy();
+              toast({
+                title: 'コピーしました。',
+                status: 'success',
+              });
+            }}
+          >
+            <Text wordBreak="break-all" noOfLines={1} textStyle="title">
+              {user.apiKey.slice(0, 4).padEnd(22, '*')}
+            </Text>
+            <Icon
+              transition="all .2s ease"
+              color={hasCopied ? 'green.400' : undefined}
+              as={hasCopied ? TbCheck : TbCopy}
+            />
+          </HStack>
+        ),
+      },
+    ],
+    [toast, user, onCopy, hasCopied]
+  );
+
   return (
     <MotionCenter
       w="100%"
@@ -301,15 +340,24 @@ function Account() {
       <Text fontSize='lg' fontWeight='bold' >{user?.contributionCount} pt</Text>
       </VStack> */}
 
-        <VStack spacing={4} align="flex-start" w="100%">
-          <Heading size="lg">プロフィール</Heading>
-          <Profile />
-          <Heading size="lg">アカウント</Heading>
-          <VStack w="100%" spacing={1}>
-            {list.map((elem) => (
-              <SettingButton {...elem} key={elem.label} />
-            ))}
-          </VStack>
+        <VStack spacing={8} align="flex-start" w="100%">
+          <SettingCategory title="プロフィール">
+            <Profile />
+          </SettingCategory>
+          <SettingCategory title="アカウント">
+            <VStack w="100%" spacing={1}>
+              {list.map((elem) => (
+                <SettingButton {...elem} key={elem.label} />
+              ))}
+            </VStack>
+          </SettingCategory>
+          <SettingCategory title="開発者向け">
+            <VStack w="100%" spacing={1}>
+              {listForDevs.map((elem) => (
+                <SettingButton {...elem} key={elem.label} />
+              ))}
+            </VStack>
+          </SettingCategory>
         </VStack>
       </ChakraPullToRefresh>
     </MotionCenter>

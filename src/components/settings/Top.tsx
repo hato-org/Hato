@@ -3,12 +3,10 @@ import {
   HStack,
   VStack,
   Avatar,
-  Heading,
   Text,
   Icon,
   Spacer,
   Button,
-  StackProps,
   Modal,
   useDisclosure,
   ModalContent,
@@ -38,6 +36,7 @@ import { tutorialAtom } from '@/store/tutorial';
 import { MotionVStack } from '../motion';
 import SettingButton from './Button';
 import { overlayAtom } from '@/store/overlay';
+import SettingCategory from './Category';
 
 function Top() {
   const { logout } = useAuth();
@@ -78,7 +77,7 @@ function Top() {
       }}
       layout
     >
-      <SettingCategory w="100%" title="アカウント">
+      <SettingCategory title="アカウント">
         <HStack
           p={2}
           w="100%"
@@ -104,14 +103,23 @@ function Top() {
           <Icon as={TbChevronRight} />
         </HStack>
       </SettingCategory>
-      <SettingCategory w="100%" title="画面表示">
+      <SettingCategory title="画面表示">
         <SettingButton
           label="テーマ"
           description="画面のテーマを変更できます。"
           href="theme"
         />
       </SettingCategory>
-      <SettingCategory w="100%" title="その他">
+      <SettingCategory title="開発者向け">
+        <SettingButton
+          label="APIドキュメント"
+          description="Hato APIについてのドキュメントです。"
+          onClick={() => window.open(import.meta.env.VITE_API_DOCS_URL)}
+        >
+          <Icon as={TbExternalLink} />
+        </SettingButton>
+      </SettingCategory>
+      <SettingCategory title="その他">
         <SettingButton
           label="時間割追加リクエスト"
           description="時間割データの追加をリクエストできます。"
@@ -209,21 +217,6 @@ function Top() {
         </Text>
       </VStack>
     </MotionVStack>
-  );
-}
-
-interface CategoryProps extends StackProps {
-  title: string;
-}
-
-function SettingCategory({ title, children, ...rest }: CategoryProps) {
-  return (
-    <VStack align="flex-start" spacing={2} {...rest}>
-      <Heading as="h2" size="lg" textStyle="title">
-        {title}
-      </Heading>
-      {children}
-    </VStack>
   );
 }
 

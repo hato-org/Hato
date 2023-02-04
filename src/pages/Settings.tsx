@@ -1,5 +1,4 @@
 import { Center, HStack, Heading, Box } from '@chakra-ui/react';
-import { AnimatePresence } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
@@ -19,35 +18,8 @@ function Settings() {
           </Heading>
         </HStack>
       </Header>
-      <Center mb={16} p={8} flexDir="column" overflow="hidden">
-        <AnimatePresence
-          mode="wait"
-          // initial
-        >
-          {/* <MotionCenter
-            w="100%"
-            initial={{
-              // x: "100vw",
-              opacity: 0,
-            }}
-            animate={{
-              x: 0,
-              opacity: 1,
-            }}
-            exit={{
-              x: "100vw",
-              opacity: 0,
-            }}
-            transition={{
-              type: "spring",
-              bounce: 0,
-              duration: 0.4,
-            }}
-            key={location.pathname}
-          > */}
-          <Outlet />
-          {/* </MotionCenter> */}
-        </AnimatePresence>
+      <Center mb={32} pt={4} px={8} flexDir="column" overflow="hidden">
+        <Outlet />
       </Center>
     </Box>
   );
