@@ -8,7 +8,6 @@ import {
   Divider,
   useToast,
   Center,
-  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
@@ -44,7 +43,6 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
   const toast = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDate = new Date();
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
   const [date, setDate] = useState(
@@ -143,7 +141,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                     key={day.toString()}
                     flex={1}
                     minW={0}
-                    h={isMobile ? 24 : 32}
+                    h={{ base: 24, md: 32 }}
                     // h="100%"
                     bg={isToday(day) ? 'hover' : ''}
                   >
@@ -195,9 +193,9 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                           <Box
                             key={event._id}
                             w="100%"
-                            rounded={isMobile ? 'sm' : 4}
-                            px={isMobile ? 0 : '2px'}
-                            py={isMobile ? 0 : '1px'}
+                            rounded={{ base: 'sm', md: 4 }}
+                            px={{ base: 0, md: '2px' }}
+                            py={{ base: 0, md: '1px' }}
                             bg={
                               /* eslint-disable no-nested-ternary */
                               event.external
@@ -237,7 +235,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                           >
                             <Text
                               noOfLines={1}
-                              fontSize={isMobile ? 'xx-small' : 'xs'}
+                              fontSize={{ base: 'xx-small', md: 'xs' }}
                               fontWeight="bold"
                               textAlign="center"
                               wordBreak="break-all"
