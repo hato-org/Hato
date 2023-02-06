@@ -5,10 +5,12 @@ import Header from '@/components/nav/Header';
 import { useDiainfo } from '@/hooks/transit';
 import DiaInfo from '@/components/transit/DiaInfo';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
+import Loading from '@/components/common/Loading';
+import Error from '@/components/cards/Error';
 
 function Transit() {
   const queryClient = useQueryClient();
-  const { data } = useDiainfo();
+  const { data, isLoading, error } = useDiainfo();
 
   return (
     <Box>
@@ -27,11 +29,19 @@ function Transit() {
           await queryClient.invalidateQueries(['transit']);
         }}
       >
-        <VStack w="100%" mb={32} p={4} spacing={8}>
-          {data?.map((diaInfo) => (
-            <DiaInfo diaInfo={diaInfo} />
-          ))}
-        </VStack>
+        {/* eslint-disable no-nested-ternary */}
+        {isLoading ? (
+          <Loading />
+        ) : error ? (
+          <Error error={error} />
+        ) : (
+          <VStack w="100%" mb={32} p={4} spacing={8}>
+            {data?.map((diaInfo) => (
+              <DiaInfo diaInfo={diaInfo} />
+            ))}
+          </VStack>
+        )}
+        {/* eslint-enable */}
       </ChakraPullToRefresh>
     </Box>
   );

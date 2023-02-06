@@ -36,10 +36,7 @@ const timedifference = (dateLeft: Date, dateRight: Date) => {
 };
 
 export default function Transit() {
-  const [date] = useSeconds();
   const { client } = useClient();
-  const { isOpen: isNaganoOpen, onToggle: onNaganoToggle } = useDisclosure();
-  const { isOpen: isUedaOpen, onToggle: onUedaToggle } = useDisclosure();
 
   const { data, isLoading } = useQuery<Transit>(
     ['transit'],
@@ -96,23 +93,13 @@ export default function Transit() {
             長野方面
           </Text>
           <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
-            <TransitButton
-              date={date}
-              transits={data?.nagano}
-              isOpen={isNaganoOpen}
-              onToggle={onNaganoToggle}
-            />
+            <TransitButton transits={data?.nagano} />
           </Skeleton>
           <Text textStyle="title" fontSize="lg">
             上田方面
           </Text>
           <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
-            <TransitButton
-              date={date}
-              transits={data?.ueda}
-              isOpen={isUedaOpen}
-              onToggle={onUedaToggle}
-            />
+            <TransitButton transits={data?.ueda} />
           </Skeleton>
         </VStack>
       </HStack>
@@ -120,17 +107,9 @@ export default function Transit() {
   );
 }
 
-function TransitButton({
-  transits,
-  date,
-  isOpen,
-  onToggle,
-}: {
-  transits?: TransitInfo[];
-  date: Date;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
+function TransitButton({ transits }: { transits?: TransitInfo[] }) {
+  const { isOpen, onToggle } = useDisclosure();
+  const [date] = useSeconds();
   const upcomingTransit = transits?.filter(
     (transit) => new Date(transit.leaveAt).valueOf() > Date.now()
   );
