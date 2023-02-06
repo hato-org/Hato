@@ -19,6 +19,7 @@ const PostDetail = React.lazy(() => import('./pages/PostDetail'));
 const Library = React.lazy(() => import('./pages/Library'));
 const LibrarySearch = React.lazy(() => import('./pages/LibrarySearch'));
 const LibraryBookmarks = React.lazy(() => import('./pages/LibraryBookmarks'));
+const Transit = React.lazy(() => import('./pages/Transit'));
 
 // function Router() {
 //   const user = useRecoilValue(userAtom);
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
       {
         path: 'library/bookmarks',
         element: <LibraryBookmarks />,
+      },
+      {
+        path: 'transit',
+        element: <Transit />,
       },
     ],
   },

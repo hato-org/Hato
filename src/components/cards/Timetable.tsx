@@ -68,7 +68,7 @@ function Timetable() {
               曜日課
             </Text>
           </Skeleton>
-          <Icon as={TbChevronRight} w={5} h={5} />
+          <Icon as={TbChevronRight} boxSize={5} />
         </HStack>
       </LinkBox>
       <TimetableTable

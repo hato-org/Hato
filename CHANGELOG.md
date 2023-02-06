@@ -1,5 +1,15 @@
 # Changelog
 
+## 2023-02-07
+
+### 交通情報を拡張
+
+従来「ホーム」で表示していた鉄道情報を拡張し、周辺路線の運行状況がHato内で確認できるようになりました。「交通情報」ページから利用可能です。
+
+#### フォント（英数字）を変更
+
+Android / PCで閲覧した際のフォント（英数字）を[Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans+JP)から[Inter](https://fonts.google.com/specimen/Inter)に変更しました。
+
 ## 2023-02-04
 
 ### 開発者向け項目を追加

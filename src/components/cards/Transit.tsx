@@ -1,4 +1,8 @@
+import { useMemo } from 'react';
 import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
   Box,
   Center,
   Collapse,
@@ -6,6 +10,7 @@ import {
   HStack,
   Icon,
   Link,
+  LinkBox,
   Skeleton,
   Spacer,
   StackDivider,
@@ -13,11 +18,13 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { TbExternalLink } from 'react-icons/tb';
+import { Link as RouterLink } from 'react-router-dom';
+import { TbChevronRight } from 'react-icons/tb';
 import { useQuery } from '@tanstack/react-query';
 import { differenceInMinutes, differenceInSeconds, format } from 'date-fns/esm';
 import { useSeconds } from 'use-seconds';
 import { useClient } from '@/modules/client';
+import { useDiainfo } from '@/hooks/transit';
 
 const timedifference = (dateLeft: Date, dateRight: Date) => {
   const diffSec = differenceInSeconds(dateLeft, dateRight);
@@ -41,15 +48,21 @@ export default function Transit() {
       refetchInterval: 1000 * 60 * 5, // Refetch in 5 mins
     }
   );
+  const { data: diaInfos } = useDiainfo();
+
+  const unstableLines = useMemo(
+    () => diaInfos?.filter((diaInfo) => diaInfo.status.code !== 'normal'),
+    [diaInfos]
+  );
 
   return (
-    <VStack p={2} spacing={4} w="100%" align="flex-start">
-      <HStack w="100%">
-        <Heading as="h2" size="md">
-          鉄道情報
-        </Heading>
-        <Spacer />
-        <HStack spacing={0}>
+    <VStack spacing={4} w="100%" align="flex-start">
+      <LinkBox w="100%" as={RouterLink} to="/transit">
+        <HStack pt={2} pl={2} w="100%">
+          <Heading as="h2" size="md">
+            交通情報
+          </Heading>
+          <Spacer />
           <Link
             isExternal
             href="https://transit.yahoo.co.jp"
@@ -59,11 +72,26 @@ export default function Transit() {
           >
             Yahoo! 路線情報提供
           </Link>
-          <Icon pl={1} as={TbExternalLink} />
+          <Icon as={TbChevronRight} boxSize={5} />
         </HStack>
-      </HStack>
-      <HStack w="100%">
+      </LinkBox>
+      <HStack w="100%" p={2}>
         <VStack align="flex-start" w="100%">
+          {unstableLines?.length && (
+            <Alert status="warning" rounded="lg">
+              <VStack w="100%" align="flex-start">
+                <HStack spacing={0}>
+                  <AlertIcon />
+                  <AlertTitle>情報あり</AlertTitle>
+                </HStack>
+                {unstableLines.map((diaInfo) => (
+                  <Text fontSize="sm">
+                    {diaInfo.lineInfo.name} （{diaInfo.status.text}）
+                  </Text>
+                ))}
+              </VStack>
+            </Alert>
+          )}
           <Text textStyle="title" fontSize="lg">
             長野方面
           </Text>
@@ -110,7 +138,7 @@ function TransitButton({
   return upcomingTransit?.length ? (
     <VStack w="100%" spacing={0} rounded="xl" layerStyle="button">
       <HStack w="100%" p={2} onClick={onToggle}>
-        <StackDivider borderWidth={2} borderColor="blue.400" />
+        <StackDivider borderWidth={2} borderColor="blue.400" rounded="full" />
         <VStack spacing={0} align="flex-start">
           <Text textStyle="title" fontSize="xl">
             {format(new Date(upcomingTransit[0].leaveAt), 'HH:mm')}
@@ -144,7 +172,7 @@ function TransitButton({
 function TransitQueue({ date, transit }: { date: Date; transit: TransitInfo }) {
   return (
     <HStack w="100%" p={2} pl={6}>
-      <StackDivider borderWidth={1} borderColor="blue.400" />
+      <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
       <VStack spacing={0} align="flex-start">
         <Text fontSize="md">{format(new Date(transit.leaveAt), 'HH:mm')}</Text>
         <Text textStyle="description" fontSize="2xs">

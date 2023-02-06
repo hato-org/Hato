@@ -27,6 +27,7 @@ import {
   TbSettings,
   TbBook2,
   TbLogout,
+  TbTrain,
 } from 'react-icons/tb';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -121,6 +122,12 @@ function MenuBody() {
         icon: <Icon as={TbBook2} boxSize={7} />,
         label: '図書館',
         href: '/library',
+      },
+      {
+        type: 'button',
+        icon: <Icon as={TbTrain} boxSize={7} />,
+        label: '交通情報',
+        href: '/transit',
       },
       {
         type: 'divider',
