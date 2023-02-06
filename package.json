@@ -25,6 +25,7 @@
     "@chakra-ui/react": "^2.4.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@fontsource/inter": "^4.5.15",
     "@fontsource/josefin-sans": "^4.5.11",
     "@fontsource/noto-sans-jp": "^4.5.12",
     "@hello-pangea/dnd": "^16.2.0",

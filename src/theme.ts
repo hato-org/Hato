@@ -23,8 +23,8 @@ const colors = {
 const theme = extendTheme({
   colors,
   fonts: {
-    heading: `-apple-system, "Noto Sans JP", sans-serif`,
-    body: `-apple-system, "Noto Sans JP", sans-serif`,
+    heading: `-apple-system, Inter, "Noto Sans JP", sans-serif`,
+    body: `-apple-system, Inter, "Noto Sans JP", sans-serif`,
   },
   semanticTokens: {
     colors: {

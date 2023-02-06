@@ -2043,6 +2043,11 @@
   dependencies:
     "@floating-ui/core" "^1.0.4"
 
+"@fontsource/inter@^4.5.15":
+  version "4.5.15"
+  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.15.tgz#eed1873d68755d3b52d6fcfcfa3493118430a512"
+  integrity sha512-FzleM9AxZQK2nqsTDtBiY0PMEVWvnKnuu2i09+p6DHvrHsuucoV2j0tmw+kAT3L4hvsLdAIDv6MdGehsPIdT+Q==
+
 "@fontsource/josefin-sans@^4.5.11":
   version "4.5.11"
   resolved "https://registry.yarnpkg.com/@fontsource/josefin-sans/-/josefin-sans-4.5.11.tgz#46d6fc02d1fed992c68df599132871f65fc412d5"
