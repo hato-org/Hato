@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   VStack,
   Center,
@@ -20,6 +21,7 @@ import {
   Skeleton,
   useClipboard,
   useToast,
+  Image,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import {
@@ -29,17 +31,23 @@ import {
   TbArrowNarrowDown,
   TbCopy,
   TbCheck,
+  TbExternalLink,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/modules/auth';
-import { useClassList, useCourseList, useGradeList } from '@/hooks/info';
+import {
+  useClassList,
+  useCourseList,
+  useGradeList,
+  useProfile,
+} from '@/hooks/info';
 import { useUser } from '@/hooks/user';
 import SettingButton from './Button';
 import { MotionCenter } from '../motion';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Loading from '../common/Loading';
-import Profile from '../account/Profile';
 import SettingCategory from './Category';
+import Error from '../cards/Error';
 
 function Account() {
   const {
@@ -51,6 +59,12 @@ function Account() {
   const toast = useToast({
     position: 'top-right',
   });
+
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    error: profileError,
+  } = useProfile();
 
   const {
     data: gradeList,
@@ -292,8 +306,13 @@ function Account() {
               });
             }}
           >
-            <Text wordBreak="break-all" noOfLines={1} textStyle="title">
-              {user.apiKey.slice(0, 4).padEnd(22, '*')}
+            <Text
+              fontFamily="monospace"
+              wordBreak="break-all"
+              noOfLines={1}
+              textStyle="title"
+            >
+              {user.apiKey.slice(0, 4).padEnd(user.apiKey.length, '*')}
             </Text>
             <Icon
               transition="all .2s ease"
@@ -342,7 +361,47 @@ function Account() {
 
         <VStack spacing={8} align="flex-start" w="100%">
           <SettingCategory title="プロフィール">
-            <Profile />
+            <Skeleton
+              w="full"
+              rounded="xl"
+              sx={{ aspectRatio: '16 / 9' }}
+              isLoaded={!isProfileLoading}
+            >
+              {profileError ? (
+                <Error error={profileError} />
+              ) : (
+                <Box
+                  position="relative"
+                  rounded="xl"
+                  overflow="hidden"
+                  onClick={() =>
+                    profile && window.open(URL.createObjectURL(profile))
+                  }
+                >
+                  <Center
+                    position="absolute"
+                    rounded="xl"
+                    backdropFilter="auto"
+                    opacity={0}
+                    transition="all .2s ease"
+                    _hover={{
+                      opacity: 1,
+                      bg: 'hover',
+                      backdropBrightness: 0.9,
+                    }}
+                    inset={0}
+                  >
+                    <Icon as={TbExternalLink} boxSize={8} />
+                  </Center>
+                  <Image
+                    w="full"
+                    objectFit="contain"
+                    src={profile ? URL.createObjectURL(profile) : undefined}
+                  />
+                </Box>
+              )}
+            </Skeleton>
+            {/* <Profile /> */}
           </SettingCategory>
           <SettingCategory title="アカウント">
             <VStack w="100%" spacing={1}>
