@@ -42,7 +42,7 @@ export const useAuth = () => {
         // 返却されたJWTとユーザーデータをatomに格納
         setUser(userdata);
 
-        queryClient.setQueryDefaults(['user'], {
+        queryClient.setQueryDefaults(['user', userdata._id], {
           staleTime: 1000 * 60 * 10, // 10 mins
           cacheTime: Infinity,
           refetchInterval: 1000 * 60 * 10, // 10 mins

@@ -1,4 +1,4 @@
-import { Button, Center, Heading, Text, VStack } from '@chakra-ui/react';
+import { Button, Center, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import { useUser } from '@/hooks/user';
@@ -20,6 +20,7 @@ function Home() {
         p={8}
       >
         <VStack>
+          <Image src="/logo_alpha.png" boxSize={72} />
           <Heading
             size="4xl"
             color="blue.500"

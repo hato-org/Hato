@@ -79,7 +79,7 @@ const theme = extendTheme({
       'html, body': {
         color: 'title',
         bg: 'bg',
-        '-webkit-touch-callout': 'none',
+        WebkitTouchCallout: 'none',
         userSelect: 'none',
       },
     },

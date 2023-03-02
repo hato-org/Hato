@@ -37,7 +37,7 @@ function Transit() {
         ) : (
           <VStack w="100%" mb={32} p={4} spacing={8}>
             {data?.map((diaInfo) => (
-              <DiaInfo diaInfo={diaInfo} />
+              <DiaInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
             ))}
           </VStack>
         )}

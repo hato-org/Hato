@@ -385,6 +385,7 @@ function Account() {
                     opacity={0}
                     transition="all .2s ease"
                     _hover={{
+                      cursor: 'pointer',
                       opacity: 1,
                       bg: 'hover',
                       backdropBrightness: 0.9,

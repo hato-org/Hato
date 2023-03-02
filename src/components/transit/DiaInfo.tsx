@@ -40,7 +40,7 @@ const DiaInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
           </VStack>
         </HStack>
         <Center w="100%">
-          <Text>{diaInfo.description}</Text>
+          <Text textStyle="title">{diaInfo.description}</Text>
         </Center>
         <Text
           w="100%"

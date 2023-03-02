@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Tabs, TabList, Tab, TabPanel, TabPanels, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ import Card from './Card';
 import { pinnedPostAtom, postsScrollIndexAtom } from '@/store/posts';
 import { useHatoboard } from '@/hooks/posts';
 
-function Hatoboard() {
+const Hatoboard = React.memo(() => {
   const queryClient = useQueryClient();
   const pinned = useRecoilValue(pinnedPostAtom);
   const [startIndex, setStartIndex] = useRecoilState(postsScrollIndexAtom);
@@ -156,6 +156,6 @@ function Hatoboard() {
       </ChakraPullToRefresh>
     </Tabs>
   );
-}
+});
 
 export default Hatoboard;
