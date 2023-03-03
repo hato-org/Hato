@@ -292,10 +292,10 @@ const ScheduleRadio = React.memo(
           px={4}
           py={2}
           _groupChecked={{ bg: 'accent' }}
+          _hover={{ cursor: 'pointer' }}
           transition="all .2s ease"
         >
           <Text textStyle="title">{title}</Text>
-          <Spacer />
         </HStack>
         <Input {...input} hidden />
         <Collapse in={state.isChecked}>{children}</Collapse>
@@ -393,7 +393,8 @@ const BatchSchedule = React.memo(
             {(droppableProvided, snapshot) => (
               <VStack spacing={0}>
                 <HStack
-                  spacing={2}
+                  spacing={0}
+                  gap={2}
                   w="100%"
                   align="stretch"
                   overflowX="auto"
