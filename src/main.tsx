@@ -1,5 +1,6 @@
-import '@fontsource/josefin-sans/index.css';
-import '@fontsource/noto-sans-jp/index.css';
+import '@fontsource/josefin-sans';
+import '@fontsource/noto-sans-jp';
+import '@fontsource/inter';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';

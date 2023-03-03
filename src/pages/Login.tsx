@@ -1,6 +1,19 @@
-import { Button, Center, Heading, Text, VStack } from '@chakra-ui/react';
+import { useMemo } from 'react';
+import {
+  Button,
+  Center,
+  Heading,
+  Text,
+  VStack,
+  Icon,
+  Tooltip,
+  useClipboard,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { TbArrowNarrowLeft } from 'react-icons/tb';
+import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import LoginButton from '@/components/login/LoginButton';
 import { useAuth } from '@/modules/auth';
@@ -9,6 +22,11 @@ import { useUser } from '@/hooks/user';
 function Login() {
   const { login } = useAuth();
   const { data: user } = useUser();
+  const { onCopy, hasCopied } = useClipboard(window.origin);
+  const isEmbedBrowser = useMemo(
+    () => /(Instagram|Line)/.test(navigator.userAgent),
+    []
+  );
 
   if (user) return <Navigate to="/" />;
 
@@ -32,7 +50,48 @@ function Login() {
             <br />
             でログインしてください。
           </Text>
-          <LoginButton shadow="md" onCredentialResponse={login} />
+          {isEmbedBrowser ? (
+            <VStack w="full">
+              <Alert
+                status="warning"
+                rounded="xl"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                gap={4}
+                textAlign="center"
+                p={4}
+              >
+                <AlertIcon boxSize={8} mr={0} />
+                <AlertDescription fontWeight="bold" fontSize="sm">
+                  <Tooltip label={navigator.userAgent}>
+                    お使いのブラウザ
+                  </Tooltip>
+                  では
+                  <br />
+                  正常にログインできません。
+                  <br />
+                  他のブラウザで開いてみてください。
+                  <Button
+                    mt={2}
+                    variant="ghost"
+                    rounded="lg"
+                    leftIcon={
+                      <Icon
+                        color={hasCopied ? 'green.400' : undefined}
+                        as={hasCopied ? TbCheck : TbCopy}
+                      />
+                    }
+                    onClick={onCopy}
+                  >
+                    リンクをコピー
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            </VStack>
+          ) : (
+            <LoginButton shadow="md" onCredentialResponse={login} />
+          )}
           <Button
             as={RouterLink}
             to="/"

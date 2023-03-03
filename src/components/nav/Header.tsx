@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   Box,
   Center,
@@ -21,7 +21,7 @@ interface HeaderProps extends CenterProps {
   withMenu?: boolean;
 }
 
-function Header({ withMenu, children, ...rest }: HeaderProps) {
+const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
   const border = useColorModeValue('border', 'transparent');
   const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
@@ -78,6 +78,6 @@ function Header({ withMenu, children, ...rest }: HeaderProps) {
       </Box>
     </Center>
   );
-}
+});
 
 export default Header;

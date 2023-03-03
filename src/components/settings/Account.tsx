@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   VStack,
   Center,
@@ -17,25 +18,36 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-  Heading,
   Skeleton,
+  useClipboard,
+  useToast,
+  Image,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   TbAlertCircle,
   TbChevronDown,
   TbEdit,
   TbArrowNarrowDown,
+  TbCopy,
+  TbCheck,
+  TbExternalLink,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/modules/auth';
-import { useClassList, useCourseList, useGradeList } from '@/hooks/info';
+import {
+  useClassList,
+  useCourseList,
+  useGradeList,
+  useProfile,
+} from '@/hooks/info';
 import { useUser } from '@/hooks/user';
 import SettingButton from './Button';
 import { MotionCenter } from '../motion';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Loading from '../common/Loading';
-import Profile from '../account/Profile';
+import SettingCategory from './Category';
+import Error from '../cards/Error';
 
 function Account() {
   const {
@@ -43,6 +55,16 @@ function Account() {
   } = useAuth();
   const { data: user } = useUser();
   const queryClient = useQueryClient();
+  const { onCopy, hasCopied } = useClipboard(user.apiKey);
+  const toast = useToast({
+    position: 'top-right',
+  });
+
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    error: profileError,
+  } = useProfile();
 
   const {
     data: gradeList,
@@ -268,6 +290,42 @@ function Account() {
     ): settingsButton is Exclude<typeof settingsButton, undefined> =>
       !!settingsButton
   );
+
+  const listForDevs = useMemo(
+    () => [
+      {
+        label: 'APIキー',
+        description: 'APIにアクセスする際に必要なキーです。',
+        children: (
+          <HStack
+            onClick={() => {
+              onCopy();
+              toast({
+                title: 'コピーしました。',
+                status: 'success',
+              });
+            }}
+          >
+            <Text
+              fontFamily="monospace"
+              wordBreak="break-all"
+              noOfLines={1}
+              textStyle="title"
+            >
+              {user.apiKey.slice(0, 4).padEnd(user.apiKey.length, '*')}
+            </Text>
+            <Icon
+              transition="all .2s ease"
+              color={hasCopied ? 'green.400' : undefined}
+              as={hasCopied ? TbCheck : TbCopy}
+            />
+          </HStack>
+        ),
+      },
+    ],
+    [toast, user, onCopy, hasCopied]
+  );
+
   return (
     <MotionCenter
       w="100%"
@@ -301,15 +359,65 @@ function Account() {
       <Text fontSize='lg' fontWeight='bold' >{user?.contributionCount} pt</Text>
       </VStack> */}
 
-        <VStack spacing={4} align="flex-start" w="100%">
-          <Heading size="lg">プロフィール</Heading>
-          <Profile />
-          <Heading size="lg">アカウント</Heading>
-          <VStack w="100%" spacing={1}>
-            {list.map((elem) => (
-              <SettingButton {...elem} key={elem.label} />
-            ))}
-          </VStack>
+        <VStack spacing={8} align="flex-start" w="100%">
+          <SettingCategory title="プロフィール">
+            <Skeleton
+              w="full"
+              rounded="xl"
+              sx={{ aspectRatio: '16 / 9' }}
+              isLoaded={!isProfileLoading}
+            >
+              {profileError ? (
+                <Error error={profileError} />
+              ) : (
+                <Box
+                  position="relative"
+                  rounded="xl"
+                  overflow="hidden"
+                  onClick={() =>
+                    profile && window.open(URL.createObjectURL(profile))
+                  }
+                >
+                  <Center
+                    position="absolute"
+                    rounded="xl"
+                    backdropFilter="auto"
+                    opacity={0}
+                    transition="all .2s ease"
+                    _hover={{
+                      cursor: 'pointer',
+                      opacity: 1,
+                      bg: 'hover',
+                      backdropBrightness: 0.9,
+                    }}
+                    inset={0}
+                  >
+                    <Icon as={TbExternalLink} boxSize={8} />
+                  </Center>
+                  <Image
+                    w="full"
+                    objectFit="contain"
+                    src={profile ? URL.createObjectURL(profile) : undefined}
+                  />
+                </Box>
+              )}
+            </Skeleton>
+            {/* <Profile /> */}
+          </SettingCategory>
+          <SettingCategory title="アカウント">
+            <VStack w="100%" spacing={1}>
+              {list.map((elem) => (
+                <SettingButton {...elem} key={elem.label} />
+              ))}
+            </VStack>
+          </SettingCategory>
+          <SettingCategory title="開発者向け">
+            <VStack w="100%" spacing={1}>
+              {listForDevs.map((elem) => (
+                <SettingButton {...elem} key={elem.label} />
+              ))}
+            </VStack>
+          </SettingCategory>
         </VStack>
       </ChakraPullToRefresh>
     </MotionCenter>

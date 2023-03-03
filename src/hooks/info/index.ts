@@ -1,4 +1,11 @@
-import { useQueries, useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useColorModeValue } from '@chakra-ui/react';
+import {
+  useQueries,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useClient } from '@/modules/client';
 
@@ -113,5 +120,26 @@ export const useSubjectList = (
         })
       ).data,
     options
+  );
+};
+
+export const useProfile = () => {
+  const { client } = useClient();
+  const queryClient = useQueryClient();
+  const isDark = useColorModeValue(false, true);
+
+  useEffect(() => {
+    queryClient.invalidateQueries(['user', 'profile']);
+  }, [queryClient, isDark]);
+
+  return useQuery<Blob, AxiosError>(
+    ['user', 'profile'],
+    async () =>
+      (
+        await client.get('/assets/profile', {
+          params: isDark ? { dark: '' } : {},
+          responseType: 'blob',
+        })
+      ).data
   );
 };

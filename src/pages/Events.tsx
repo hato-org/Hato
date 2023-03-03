@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   HStack,
   IconButton,
@@ -39,8 +39,8 @@ function Events() {
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
   const [date, setDate] = useState(new Date());
 
-  const year = Number(searchParams.get('y'));
-  const month = Number(searchParams.get('m'));
+  const year = useMemo(() => Number(searchParams.get('y')), [searchParams]);
+  const month = useMemo(() => Number(searchParams.get('m')), [searchParams]);
 
   useEffect(() => {
     if (searchParams.has('y') && searchParams.has('m')) {
@@ -103,7 +103,7 @@ function Events() {
                 </Text>
                 <IconButton
                   variant="ghost"
-                  aria-label="Close AddToHomeScreen info"
+                  aria-label="Close iCal info"
                   position="absolute"
                   top={0}
                   right={0}

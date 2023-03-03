@@ -42,7 +42,7 @@ export const useAuth = () => {
         // 返却されたJWTとユーザーデータをatomに格納
         setUser(userdata);
 
-        queryClient.setQueryDefaults(['user'], {
+        queryClient.setQueryDefaults(['user', userdata._id], {
           staleTime: 1000 * 60 * 10, // 10 mins
           cacheTime: Infinity,
           refetchInterval: 1000 * 60 * 10, // 10 mins
@@ -73,38 +73,6 @@ export const useAuth = () => {
     navigate('/');
   }, [setUser, queryClient, navigate]);
 
-  // const update = useCallback(
-  //   async (newUser: Partial<User>) => {
-  //     try {
-  //       const res = await axios.post<User>(
-  //         '/user',
-  //         {
-  //           ...newUser,
-  //           _id: user?._id,
-  //         },
-  //         {
-  //           baseURL: API_URL,
-  //         }
-  //       );
-  //       if (res.status !== 200) throw Error('Failed to save user setting');
-
-  //       toast({
-  //         title: '保存しました',
-  //         status: 'success',
-  //       });
-
-  //       setUser(res.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //       toast({
-  //         title: '保存できませんでした',
-  //         status: 'error',
-  //       });
-  //     }
-  //   },
-  //   [user]
-  // );
-
   const update = useMutation<User, AxiosError, Partial<User>>(
     async (newUser) =>
       (
@@ -121,6 +89,7 @@ export const useAuth = () => {
       ).data,
     {
       onSuccess: (newUser) => {
+        queryClient.invalidateQueries(['user', 'profile']);
         queryClient.setQueryData(['user', newUser._id], newUser);
         setUser(newUser);
       },

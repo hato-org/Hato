@@ -8,7 +8,6 @@ import {
   Divider,
   useToast,
   Center,
-  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
@@ -28,7 +27,7 @@ import {
   isSameDay,
   isToday,
 } from 'date-fns/esm';
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
 import { useClient } from '@/modules/client';
 import Card from '../layout/Card';
@@ -38,13 +37,12 @@ interface CalendarProps extends StackProps {
   month: number;
 }
 
-function Calendar({ year, month, ...rest }: CalendarProps) {
+const Calendar = React.memo(({ year, month, ...rest }: CalendarProps) => {
   const { client } = useClient();
   const queryClient = useQueryClient();
   const toast = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDate = new Date();
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
   const [date, setDate] = useState(
@@ -63,6 +61,22 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
       end: endOfWeek(sunday),
     })
   );
+
+  const onPrevMonth = useCallback(() => {
+    const prevDate = subMonths(date, 1);
+    searchParams.set('y', String(prevDate.getFullYear()));
+    searchParams.set('m', String(prevDate.getMonth() + 1));
+    setSearchParams(searchParams, { replace: true });
+    setDate(subMonths(date, 1));
+  }, [date, searchParams, setSearchParams]);
+
+  const onNextMonth = useCallback(() => {
+    const nextDate = addMonths(date, 1);
+    searchParams.set('y', String(nextDate.getFullYear()));
+    searchParams.set('m', String(nextDate.getMonth() + 1));
+    setSearchParams(searchParams, { replace: true });
+    setDate(addMonths(date, 1));
+  }, [date, searchParams, setSearchParams]);
 
   const { data: events } = useQuery<Event[], AxiosError>(
     [
@@ -97,23 +111,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
 
   return (
     <VStack w="100%" spacing={4} {...rest}>
-      <MonthSwitcher
-        date={date}
-        onNext={() => {
-          const nextDate = addMonths(date, 1);
-          searchParams.set('y', String(nextDate.getFullYear()));
-          searchParams.set('m', String(nextDate.getMonth() + 1));
-          setSearchParams(searchParams, { replace: true });
-          setDate(addMonths(date, 1));
-        }}
-        onPrev={() => {
-          const prevDate = subMonths(date, 1);
-          searchParams.set('y', String(prevDate.getFullYear()));
-          searchParams.set('m', String(prevDate.getMonth() + 1));
-          setSearchParams(searchParams, { replace: true });
-          setDate(subMonths(date, 1));
-        }}
-      />
+      <MonthSwitcher date={date} onNext={onNextMonth} onPrev={onPrevMonth} />
       <Card w="100%" p={0}>
         <Center
           w="100%"
@@ -143,7 +141,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                     key={day.toString()}
                     flex={1}
                     minW={0}
-                    h={isMobile ? 24 : 32}
+                    h={{ base: 24, md: 32 }}
                     // h="100%"
                     bg={isToday(day) ? 'hover' : ''}
                   >
@@ -195,9 +193,9 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                           <Box
                             key={event._id}
                             w="100%"
-                            rounded={isMobile ? 'sm' : 4}
-                            px={isMobile ? 0 : '2px'}
-                            py={isMobile ? 0 : '1px'}
+                            rounded={{ base: 'sm', md: 4 }}
+                            px={{ base: 0, md: '2px' }}
+                            py={{ base: 0, md: '1px' }}
                             bg={
                               /* eslint-disable no-nested-ternary */
                               event.external
@@ -237,7 +235,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
                           >
                             <Text
                               noOfLines={1}
-                              fontSize={isMobile ? 'xx-small' : 'xs'}
+                              fontSize={{ base: 'xx-small', md: 'xs' }}
                               fontWeight="bold"
                               textAlign="center"
                               wordBreak="break-all"
@@ -256,7 +254,7 @@ function Calendar({ year, month, ...rest }: CalendarProps) {
       </Card>
     </VStack>
   );
-}
+});
 
 interface MonthSwitcherProps {
   date: Date;
@@ -264,8 +262,8 @@ interface MonthSwitcherProps {
   onPrev: () => void;
 }
 
-function MonthSwitcher({ date, onNext, onPrev }: MonthSwitcherProps) {
-  return (
+const MonthSwitcher = React.memo(
+  ({ date, onNext, onPrev }: MonthSwitcherProps) => (
     <HStack p={2} w="100%" rounded="xl" justify="space-between">
       <IconButton
         aria-label="previous month"
@@ -283,7 +281,7 @@ function MonthSwitcher({ date, onNext, onPrev }: MonthSwitcherProps) {
         variant="ghost"
       />
     </HStack>
-  );
-}
+  )
+);
 
 export default Calendar;
