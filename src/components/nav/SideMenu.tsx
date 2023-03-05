@@ -12,6 +12,7 @@ import {
   IconButton,
   Image,
   Portal,
+  Show,
   Spacer,
   StackDivider,
   StackProps,
@@ -36,14 +37,17 @@ import { useAuth } from '@/modules/auth';
 import Account from '../login/Account';
 
 export default function SideMenu() {
-  const isMobile = useBreakpointValue({ base: true, md: false });
-
-  return isMobile ? (
-    <SideMenuDrawer />
-  ) : (
-    <Box px={2}>
-      <MenuBody />
-    </Box>
+  return (
+    <>
+      <Show below="md">
+        <SideMenuDrawer />
+      </Show>
+      <Show above="md">
+        <Box px={2}>
+          <MenuBody />
+        </Box>
+      </Show>
+    </>
   );
 }
 

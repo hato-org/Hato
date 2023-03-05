@@ -1,28 +1,24 @@
-import {
-  Center,
-  Container,
-  Flex,
-  Portal,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Center, Container, Flex, Portal, Show } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import Loading from '../common/Loading';
 import UpdatePrompt from '../common/UpdatePrompt';
 import WhatsNew from '../common/WhatsNew';
+import AddCardDrawer from '../dashboard/AddCardDrawer';
 import BottomNavbar from '../nav/BottomNavbar';
 import SideMenu from '../nav/SideMenu';
 import Tutorial from '../tutorial';
 
 export default function PageContainer({ children }: { children: JSX.Element }) {
-  const isMobile = useBreakpointValue({ base: true, md: false });
-
   return (
     <>
       <Portal>
         <UpdatePrompt />
         <Tutorial />
         <WhatsNew />
-        {isMobile && <BottomNavbar />}
+        <AddCardDrawer />
+        <Show below="md">
+          <BottomNavbar />
+        </Show>
       </Portal>
       <Container
         maxW={{ base: '100%', md: 'container.sm', lg: 'container.lg' }}
@@ -46,7 +42,7 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
           m={0}
           w="100%"
           borderX="1px solid"
-          borderColor={isMobile ? 'transparent' : 'border'}
+          borderColor={{ base: 'transparent', md: 'border' }}
         >
           <Suspense
             fallback={

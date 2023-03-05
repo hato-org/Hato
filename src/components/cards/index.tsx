@@ -4,6 +4,7 @@ import Error from './Error';
 import Info from './Info';
 import Hatoboard from './Hatoboard';
 import Transit from './Transit';
+import Scienceroom from './Scienceroom';
 
 export default {
   Timetable,
@@ -12,4 +13,5 @@ export default {
   Info,
   Hatoboard,
   Transit,
+  Scienceroom,
 };

@@ -128,7 +128,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             </Tag>
           </WrapItem>
         ))}
-        <Center bg="panel" position="sticky" right={0} pl={1}>
+        <Center bg="inherit" position="sticky" right={0} pl={1}>
           <IconButton
             aria-label="Add filter"
             icon={<TbPlus />}

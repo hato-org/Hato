@@ -1,5 +1,6 @@
-import { HStack, Icon, Center, Box, IconButton } from '@chakra-ui/react';
+import { HStack, Icon, Center, Box, IconButton, Slide } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import {
   TbHome,
   TbClipboardList,
@@ -7,8 +8,11 @@ import {
   TbFileDescription,
 } from 'react-icons/tb';
 import { useMemo } from 'react';
+import { dashboardEditModeAtom } from '@/store/dashboard';
 
 function BottomNavbar() {
+  const editMode = useRecoilValue(dashboardEditModeAtom);
+
   const location = useLocation();
 
   const menu = useMemo(
@@ -38,32 +42,38 @@ function BottomNavbar() {
   );
 
   return (
-    <Box
-      w="100%"
-      pb="env(safe-area-inset-bottom)"
-      zIndex={10}
-      position="fixed"
-      bottom={0}
-      shadow="xl"
-      bg="bg"
-      borderTop="1px solid"
-      borderColor="border"
-    >
-      <HStack w="100%" justify="space-around">
-        {menu.map(({ icon, label, href }) => (
-          <Center w="100%" flexGrow={1} as={Link} to={href} key={label} py={1}>
-            <IconButton
-              aria-label={label}
-              icon={icon}
-              size="lg"
-              variant="ghost"
-              color={location.pathname === href ? 'blue.300' : 'title'}
-              isRound
-            />
-          </Center>
-        ))}
-      </HStack>
-      {/* <Box w="100%">
+    <Slide direction="bottom" in={!editMode}>
+      <Box
+        w="100%"
+        pb="env(safe-area-inset-bottom)"
+        zIndex={10}
+        shadow="xl"
+        bg="bg"
+        borderTop="1px solid"
+        borderColor="border"
+      >
+        <HStack w="100%" justify="space-around">
+          {menu.map(({ icon, label, href }) => (
+            <Center
+              w="100%"
+              flexGrow={1}
+              as={Link}
+              to={href}
+              key={label}
+              py={1}
+            >
+              <IconButton
+                aria-label={label}
+                icon={icon}
+                size="lg"
+                variant="ghost"
+                color={location.pathname === href ? 'blue.300' : 'title'}
+                isRound
+              />
+            </Center>
+          ))}
+        </HStack>
+        {/* <Box w="100%">
         <Collapse in={!onlineManager.isOnline()}>
           <HStack w="100%" justify="center" py={1}>
             <Icon as={TbCloudOff} w={6} h={6} />
@@ -71,7 +81,8 @@ function BottomNavbar() {
           </HStack>
         </Collapse>
       </Box> */}
-    </Box>
+      </Box>
+    </Slide>
   );
 }
 

@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -32,7 +26,6 @@ import {
   Switch,
   Text,
   useDisclosure,
-  useOutsideClick,
   useRadio,
   useRadioGroup,
   useToast,
@@ -394,7 +387,6 @@ const BatchSchedule = React.memo(
               <VStack spacing={0}>
                 <HStack
                   spacing={0}
-                  gap={2}
                   w="100%"
                   align="stretch"
                   overflowX="auto"
@@ -538,7 +530,7 @@ const IndividualSchedule = React.memo(
                     {(droppableProvided, snapshot) => (
                       <VStack spacing={0}>
                         <HStack
-                          spacing={2}
+                          spacing={0}
                           w="100%"
                           align="stretch"
                           overflowX="auto"
@@ -652,14 +644,7 @@ const DraggablePeriod = React.memo(
       index: number
     ) => void;
   }) => {
-    const popoverRef = useRef<HTMLInputElement>(null);
-
-    const { isOpen, onClose, onToggle } = useDisclosure();
-
-    useOutsideClick({
-      ref: popoverRef,
-      handler: () => onClose(),
-    });
+    const { isOpen, onToggle } = useDisclosure();
 
     return (
       <Draggable draggableId={`${period.index}-${index}`} index={index}>
@@ -669,6 +654,7 @@ const DraggablePeriod = React.memo(
               <PopoverTrigger>
                 <VStack
                   key={`${period.index}-${index}`}
+                  mx={1}
                   px={4}
                   py={2}
                   rounded="lg"
@@ -679,6 +665,7 @@ const DraggablePeriod = React.memo(
                   justify="center"
                   {...draggableProvided.draggableProps}
                   {...draggableProvided.dragHandleProps}
+                  transitionDuration="0.01s"
                   ref={draggableProvided.innerRef}
                   onClick={onToggle}
                 >
@@ -687,13 +674,7 @@ const DraggablePeriod = React.memo(
                   </Text>
                 </VStack>
               </PopoverTrigger>
-              <PopoverContent
-                ref={popoverRef}
-                p={2}
-                bg="popover"
-                rounded="xl"
-                shadow="xl"
-              >
+              <PopoverContent p={2} bg="popover" rounded="xl" shadow="xl">
                 <PopoverArrow bg="popover" />
                 <PopoverBody>
                   <VStack>
