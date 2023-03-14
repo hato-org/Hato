@@ -71,7 +71,7 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
         )}
         {children}
       </HStack>
-      <Box w="100%">
+      <Box w="100%" pos="absolute" bottom={0}>
         <Collapse in={!!isFetching}>
           <Progress w="100%" size="xs" isIndeterminate />
         </Collapse>

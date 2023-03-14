@@ -16,11 +16,9 @@ import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
 import LoginButton from '@/components/login/LoginButton';
-import { useAuth } from '@/modules/auth';
 import { useUser } from '@/hooks/user';
 
 function Login() {
-  const { login } = useAuth();
   const { data: user } = useUser();
   const { onCopy, hasCopied } = useClipboard(window.origin);
   const isEmbedBrowser = useMemo(
@@ -90,7 +88,7 @@ function Login() {
               </Alert>
             </VStack>
           ) : (
-            <LoginButton shadow="md" onCredentialResponse={login} />
+            <LoginButton />
           )}
           <Button
             as={RouterLink}

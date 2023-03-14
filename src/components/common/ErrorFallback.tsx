@@ -50,7 +50,7 @@ function ErrorFallback() {
   return (
     // @ts-ignore
     <Center h={[['100vh', '100dvh']]} p={8}>
-      <VStack spacing={4}>
+      <VStack spacing={4} userSelect="text">
         <Heading>エラーが発生しました</Heading>
         <Code rounded="md">{error.message}</Code>
         <Button

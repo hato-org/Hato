@@ -20,6 +20,15 @@ const Library = React.lazy(() => import('./pages/Library'));
 const LibrarySearch = React.lazy(() => import('./pages/LibrarySearch'));
 const LibraryBookmarks = React.lazy(() => import('./pages/LibraryBookmarks'));
 const Transit = React.lazy(() => import('./pages/Transit'));
+const Classroom = React.lazy(() => import('./pages/Classroom'));
+const ClassroomCourse = React.lazy(() => import('./pages/ClassroomCourse'));
+const ClassroomCoursework = React.lazy(
+  () => import('./pages/ClassroomCoursework')
+);
+const ClassroomMaterial = React.lazy(() => import('./pages/ClassroomMaterial'));
+const ClassroomBookmarks = React.lazy(
+  () => import('./pages/ClassroomBookmarks')
+);
 
 // function Router() {
 //   const user = useRecoilValue(userAtom);
@@ -145,6 +154,26 @@ const router = createBrowserRouter([
       {
         path: 'transit',
         element: <Transit />,
+      },
+      {
+        path: 'classroom',
+        element: <Classroom />,
+      },
+      {
+        path: 'classroom/bookmarks',
+        element: <ClassroomBookmarks />,
+      },
+      {
+        path: 'classroom/course/:id',
+        element: <ClassroomCourse />,
+      },
+      {
+        path: 'classroom/course/:id/courseWork/:courseworkId',
+        element: <ClassroomCoursework />,
+      },
+      {
+        path: 'classroom/course/:id/courseWorkMaterial/:materialId',
+        element: <ClassroomMaterial />,
       },
     ],
   },

@@ -1,19 +1,11 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-interface AuthAtom {
-  token: string | null;
-  isLoggedIn: boolean;
-}
-
 const { persistAtom } = recoilPersist();
 
-export const authAtom = atom<AuthAtom>({
+export const jwtAtom = atom<string | null>({
   key: 'hato.auth',
-  default: {
-    token: null,
-    isLoggedIn: false,
-  },
+  default: null,
   effects: [persistAtom],
 });
 

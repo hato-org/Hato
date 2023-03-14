@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { HStack, Icon, Center, Box, IconButton, Slide } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -7,7 +8,7 @@ import {
   TbCalendar,
   TbFileDescription,
 } from 'react-icons/tb';
-import { useMemo } from 'react';
+import { SiGoogleclassroom } from 'react-icons/si';
 import { dashboardEditModeAtom } from '@/store/dashboard';
 
 function BottomNavbar() {
@@ -18,22 +19,27 @@ function BottomNavbar() {
   const menu = useMemo(
     () => [
       {
-        icon: <Icon as={TbHome} h={8} w={8} />,
+        icon: <Icon as={TbHome} boxSize={8} />,
         label: 'ホーム',
         href: '/dashboard',
       },
       {
-        icon: <Icon as={TbClipboardList} h={8} w={8} />,
+        icon: <Icon as={TbClipboardList} boxSize={8} />,
         label: '時間割',
         href: '/timetable',
       },
       {
-        icon: <Icon as={TbCalendar} h={8} w={8} />,
+        icon: <Icon as={SiGoogleclassroom} boxSize={8} p="2px" />,
+        label: 'Classroom',
+        href: '/classroom',
+      },
+      {
+        icon: <Icon as={TbCalendar} boxSize={8} />,
         label: 'カレンダー',
         href: '/events',
       },
       {
-        icon: <Icon as={TbFileDescription} h={8} w={8} />,
+        icon: <Icon as={TbFileDescription} boxSize={8} />,
         label: '掲示物',
         href: '/posts/hatoboard',
       },

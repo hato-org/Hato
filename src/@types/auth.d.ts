@@ -13,6 +13,11 @@ interface User {
   createdAt: string;
 }
 
+interface LoginResponse {
+  jwt: string;
+  user: User;
+}
+
 interface GoogleCredentialResponse {
   credential: string;
 }

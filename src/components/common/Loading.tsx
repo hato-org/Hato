@@ -1,13 +1,60 @@
-import { Center, Spinner, SpinnerProps } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Fade, Spinner, SpinnerProps, Text, VStack } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
-import React from 'react';
 import { MotionCenter } from '../motion';
 
-const Loading = React.memo(({ ...rest }: SpinnerProps) => (
-  <Center w="100%" flexGrow={1} p={4}>
-    <Spinner color="blue.400" thickness="3px" {...rest} />
-  </Center>
-));
+const tips = [
+  'Classroomの読み込みは時間がかかる場合があります\nその間はTipsをお楽しみください',
+  'Hatoはオープンソースです。ぜひ貢献してください！',
+  'Hatoは多くの方の協力で成り立っています\n皆さんの協力に感謝します',
+  '時間割は有志の方が手動で設定しています\nあなたも協力してみませんか？',
+  'はとボードの新着投稿は5分以内に反映されます',
+  '交通情報は5分ごとに更新しています',
+  'Classroomの課題と資料はブックマークできます',
+];
+
+const Loading = React.memo(
+  ({
+    withTips,
+    initialTip,
+    ...rest
+  }: { withTips?: boolean; initialTip?: number } & SpinnerProps) => {
+    const [tipsShowed, setTipsShowed] = useState(false);
+    const [tip, setTip] = useState(
+      tips[initialTip ?? Math.floor(Math.random() * tips.length)]
+    );
+
+    useEffect(() => {
+      setTimeout(() => {
+        setTipsShowed(true);
+      }, 1500);
+    }, []);
+
+    return (
+      <VStack
+        w="full"
+        spacing={4}
+        flexGrow={1}
+        p={4}
+        onClick={() => setTip(tips[Math.floor(Math.random() * tips.length)])}
+        _hover={{ cursor: 'pointer' }}
+      >
+        <Spinner color="blue.400" thickness="3px" {...rest} />
+        {withTips && (
+          <Fade in={tipsShowed}>
+            <Text
+              whiteSpace="pre-wrap"
+              textAlign="center"
+              textStyle="description"
+            >
+              {tip}
+            </Text>
+          </Fade>
+        )}
+      </VStack>
+    );
+  }
+);
 
 export const GlobalLoading = React.memo(() => (
   <AnimatePresence>

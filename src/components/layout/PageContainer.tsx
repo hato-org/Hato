@@ -41,8 +41,9 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
           p={0}
           m={0}
           w="100%"
-          borderX="1px solid"
-          borderColor={{ base: 'transparent', md: 'border' }}
+          borderLeftWidth={{ base: '0px', md: '1px' }}
+          borderRightWidth={{ base: '0px', md: '1px' }}
+          borderColor="border"
         >
           <Suspense
             fallback={
