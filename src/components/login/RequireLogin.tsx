@@ -1,13 +1,14 @@
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
-import { useUser } from '@/hooks/user';
+import { useRecoilValue } from 'recoil';
 import usePageTracking from '@/hooks/common/ga4';
 import PageContainer from '../layout/PageContainer';
+import { jwtAtom } from '@/store/auth';
 
 function RequireLogin() {
   usePageTracking();
-  const { data: user } = useUser();
+  const jwt = useRecoilValue(jwtAtom);
 
-  if (user)
+  if (jwt)
     return (
       <PageContainer>
         <>

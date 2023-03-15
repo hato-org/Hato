@@ -5,6 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { HelmetProvider } from 'react-helmet-async';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -35,19 +36,21 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <HelmetProvider>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister,
-            maxAge: 1000 * 60 * 60 * 24, // 24 hours
-          }}
-        >
-          <RecoilRoot>
-            <ColorModeScript />
-            <App />
-          </RecoilRoot>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </PersistQueryClientProvider>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister,
+              maxAge: 1000 * 60 * 60 * 24, // 24 hours
+            }}
+          >
+            <RecoilRoot>
+              <ColorModeScript />
+              <App />
+            </RecoilRoot>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </PersistQueryClientProvider>
+        </GoogleOAuthProvider>
       </HelmetProvider>
     </ChakraProvider>
   </React.StrictMode>

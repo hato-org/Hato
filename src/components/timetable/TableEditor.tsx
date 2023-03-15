@@ -225,7 +225,7 @@ export default function TableEditor({
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent top={0} bg="panel" pb={4}>
-          <DrawerHeader>
+          <DrawerHeader w="full" maxW="container.lg" mx="auto">
             <HStack spacing={2}>
               <Text>時間割の編集</Text>
               <Spacer />
@@ -250,7 +250,7 @@ export default function TableEditor({
               />
             </HStack>
           </DrawerHeader>
-          <DrawerBody>
+          <DrawerBody w="full" maxW="container.lg" mx="auto">
             <VStack align="flex-start" w="100%">
               <Text textStyle="title">日課</Text>
               <WeekDayPicker
@@ -349,7 +349,12 @@ export default function TableEditor({
               </Button>
             </VStack>
           </DrawerBody>
-          <DrawerFooter pb="env(safe-area-inset-bottom)">
+          <DrawerFooter
+            w="full"
+            maxW="container.lg"
+            mx="auto"
+            pb="env(safe-area-inset-bottom)"
+          >
             <Button
               colorScheme="blue"
               w="100%"

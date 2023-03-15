@@ -12,6 +12,7 @@ import {
   IconButton,
   Image,
   Portal,
+  Show,
   Spacer,
   StackDivider,
   StackProps,
@@ -27,8 +28,9 @@ import {
   TbSettings,
   TbBook2,
   TbLogout,
-  TbTrain,
 } from 'react-icons/tb';
+import { MdOutlineTrain } from 'react-icons/md';
+import { SiGoogleclassroom } from 'react-icons/si';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { overlayAtom } from '@/store/overlay';
@@ -36,14 +38,17 @@ import { useAuth } from '@/modules/auth';
 import Account from '../login/Account';
 
 export default function SideMenu() {
-  const isMobile = useBreakpointValue({ base: true, md: false });
-
-  return isMobile ? (
-    <SideMenuDrawer />
-  ) : (
-    <Box px={2}>
-      <MenuBody />
-    </Box>
+  return (
+    <>
+      <Show below="md">
+        <SideMenuDrawer />
+      </Show>
+      <Show above="md">
+        <Box px={2}>
+          <MenuBody />
+        </Box>
+      </Show>
+    </>
   );
 }
 
@@ -107,6 +112,12 @@ function MenuBody() {
       },
       {
         type: 'button',
+        icon: <Icon as={SiGoogleclassroom} boxSize={7} p="2px" />,
+        label: 'Classroom',
+        href: '/classroom',
+      },
+      {
+        type: 'button',
         icon: <Icon as={TbCalendar} boxSize={7} />,
         label: '年間行事予定',
         href: '/events',
@@ -125,7 +136,7 @@ function MenuBody() {
       },
       {
         type: 'button',
-        icon: <Icon as={TbTrain} boxSize={7} />,
+        icon: <Icon as={MdOutlineTrain} boxSize={7} />,
         label: '交通情報',
         href: '/transit',
       },
@@ -209,7 +220,6 @@ function MenuBody() {
               {...menuItem}
             >
               {menuItem.icon}
-
               <Text
                 color={
                   menuItem.color ??

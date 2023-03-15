@@ -5,6 +5,7 @@ const { persistAtom } = recoilPersist();
 
 interface Overlay {
   menu: boolean;
+  cardOrder: boolean;
   whatsNew: boolean;
 }
 
@@ -13,6 +14,7 @@ export const overlayAtom = atom<Overlay>({
   key: 'hato.overlay',
   default: {
     menu: false,
+    cardOrder: false,
     whatsNew: false,
   },
   effects: [persistAtom],

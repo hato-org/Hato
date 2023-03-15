@@ -123,8 +123,10 @@ const AddEventDrawer = React.memo(
           pb="env(safe-area-inset-bottom)"
           bg="panel"
         >
-          <DrawerHeader>イベントの追加</DrawerHeader>
-          <DrawerBody>
+          <DrawerHeader w="full" maxW="container.lg" mx="auto">
+            イベントの追加
+          </DrawerHeader>
+          <DrawerBody w="full" maxW="container.lg" mx="auto">
             <VStack spacing={8}>
               <VStack w="100%">
                 <Input
@@ -253,7 +255,7 @@ const AddEventDrawer = React.memo(
               </VStack>
             </VStack>
           </DrawerBody>
-          <DrawerFooter>
+          <DrawerFooter w="full" maxW="container.lg" mx="auto">
             <Button
               w="100%"
               colorScheme="blue"
