@@ -1,12 +1,13 @@
 import { Button, Center, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
-import { useUser } from '@/hooks/user';
+import { useRecoilValue } from 'recoil';
+import { jwtAtom } from '@/store/auth';
 
 function Home() {
-  const { data: user } = useUser();
+  const jwt = useRecoilValue(jwtAtom);
 
-  if (user) return <Navigate to="/dashboard" replace />;
+  if (jwt) return <Navigate to="/dashboard" replace />;
 
   return (
     <>

@@ -15,18 +15,19 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import LoginButton from '@/components/login/LoginButton';
-import { useUser } from '@/hooks/user';
+import { jwtAtom } from '@/store/auth';
 
 function Login() {
-  const { data: user } = useUser();
+  const jwt = useRecoilValue(jwtAtom);
   const { onCopy, hasCopied } = useClipboard(window.origin);
   const isEmbedBrowser = useMemo(
     () => /(Instagram|Line)/.test(navigator.userAgent),
     []
   );
 
-  if (user) return <Navigate to="/" />;
+  if (jwt) return <Navigate to="/" />;
 
   return (
     <>
