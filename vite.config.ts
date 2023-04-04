@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd()));
 
   return {
-    base: '/',
+    base: '/Hato/',
     server: {
       open: true,
       port: 3000,
