@@ -1,7 +1,7 @@
 import { Center, Container, Flex, Portal, Show } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import Loading from '../common/Loading';
-import UpdatePrompt from '../common/UpdatePrompt';
+// import UpdatePrompt from '../common/UpdatePrompt';
 import WhatsNew from '../common/WhatsNew';
 import AddCardDrawer from '../dashboard/AddCardDrawer';
 import BottomNavbar from '../nav/BottomNavbar';
@@ -12,7 +12,7 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
   return (
     <>
       <Portal>
-        <UpdatePrompt />
+        {/* <UpdatePrompt /> */}
         <Tutorial />
         <WhatsNew />
         <AddCardDrawer />

@@ -23,13 +23,3 @@ interface GoogleCredentialResponse {
 }
 
 type Type = 'hs' | 'jhs';
-
-type Course =
-  | 'libA'
-  | 'libB'
-  | 'libC'
-  | 'libZ'
-  | 'sciD'
-  | 'sciE'
-  | 'sciX'
-  | 'sciY';

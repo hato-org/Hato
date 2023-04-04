@@ -15,6 +15,9 @@ import theme from './theme';
 import './global.css';
 
 import { createIDBPersister } from './modules/common/querypersist';
+import { worker } from './mocks/browser';
+
+worker.start();
 
 const queryClient = new QueryClient({
   defaultOptions: {

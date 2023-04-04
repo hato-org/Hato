@@ -45,10 +45,25 @@ function Login() {
             <br />
             学校所持のGoogleアカウント
             <br />
-            (~@g.nagano-c.ed.jp)
-            <br />
             でログインしてください。
           </Text>
+          <Alert
+            w="auto"
+            rounded="xl"
+            flexDir="column"
+            alignItems="center"
+            justifyContent="center"
+            gap={2}
+            textAlign="center"
+            p={4}
+          >
+            <AlertIcon />
+            <AlertDescription>
+              デモ版ではどのアカウントでもログインできます。
+              <br />
+              ユーザーデータを保存することはありません。
+            </AlertDescription>
+          </Alert>
           {isEmbedBrowser ? (
             <VStack w="full">
               <Alert

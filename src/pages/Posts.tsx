@@ -22,7 +22,7 @@ function Posts() {
       <Header withMenu>
         <HStack w="100%">
           <Heading size="md" ml={2} py={4}>
-            はとボード
+            掲示物
           </Heading>
           <Spacer />
           <IconButton

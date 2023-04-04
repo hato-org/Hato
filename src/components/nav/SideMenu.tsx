@@ -26,10 +26,8 @@ import {
   TbCalendar,
   TbFileDescription,
   TbSettings,
-  TbBook2,
   TbLogout,
 } from 'react-icons/tb';
-import { MdOutlineTrain } from 'react-icons/md';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -125,21 +123,21 @@ function MenuBody() {
       {
         type: 'button',
         icon: <Icon as={TbFileDescription} boxSize={7} />,
-        label: 'はとボード',
+        label: '掲示物',
         href: '/posts/hatoboard',
       },
-      {
-        type: 'button',
-        icon: <Icon as={TbBook2} boxSize={7} />,
-        label: '図書館',
-        href: '/library',
-      },
-      {
-        type: 'button',
-        icon: <Icon as={MdOutlineTrain} boxSize={7} />,
-        label: '交通情報',
-        href: '/transit',
-      },
+      // {
+      //   type: 'button',
+      //   icon: <Icon as={TbBook2} boxSize={7} />,
+      //   label: '図書館',
+      //   href: '/library',
+      // },
+      // {
+      //   type: 'button',
+      //   icon: <Icon as={MdOutlineTrain} boxSize={7} />,
+      //   label: '交通情報',
+      //   href: '/transit',
+      // },
       {
         type: 'divider',
       },
@@ -174,6 +172,9 @@ function MenuBody() {
             fontFamily="Josefin Sans, -apple-system, sans-serif"
           >
             Hato
+            <Text ml={2} as="span" fontSize="lg" fontWeight="light">
+              Demo
+            </Text>
           </Heading>
         )}
       </HStack>

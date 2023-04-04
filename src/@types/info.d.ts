@@ -1,12 +1,4 @@
-type Course =
-  | 'libA'
-  | 'libB'
-  | 'libC'
-  | 'libZ'
-  | 'sciD'
-  | 'sciE'
-  | 'sciX'
-  | 'sciY';
+type Course = 'lib1' | 'lib2' | 'lib3' | 'sci1' | 'sci2' | 'sci3';
 
 type CourseCategory = 'liberal' | 'science';
 

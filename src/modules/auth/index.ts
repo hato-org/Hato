@@ -109,7 +109,7 @@ export const useAuth = (scopes?: string[]) => {
       console.error(err);
     },
     flow: 'auth-code',
-    hosted_domain: 'g.nagano-c.ed.jp',
+    // hosted_domain: 'g.nagano-c.ed.jp',
     scope: scopes?.join(' '),
   });
 

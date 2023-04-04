@@ -36,7 +36,7 @@ function Home() {
               color="blue.300"
               fontWeight="light"
             >
-              Beta
+              Demo
             </Text>
           </Heading>
           <Text color="description" fontWeight="bold" textAlign="center">

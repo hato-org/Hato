@@ -1,4 +1,7 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
   Box,
   Heading,
   HStack,
@@ -67,7 +70,11 @@ export default function Classroom() {
             （表示される項目をすべて許可してください）
           </Text>
         </Text>
-        <LoginButton scopes={scopes} />
+        <LoginButton scopes={scopes} isDisabled />
+        <Alert w="auto" rounded="xl" status="warning">
+          <AlertIcon />
+          <AlertDescription>デモ版ではご利用になれません。</AlertDescription>
+        </Alert>
       </VStack>
     );
 
