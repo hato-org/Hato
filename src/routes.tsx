@@ -64,128 +64,123 @@ const ClassroomBookmarks = React.lazy(
 //   );
 // }
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      errorElement: <ErrorFallback />,
-      element: <Home />,
-    },
-    {
-      path: '/login',
-      errorElement: <ErrorFallback />,
-      element: <Login />,
-    },
-    {
-      path: '/',
-      element: <RequireLogin />,
-      errorElement: <ErrorFallback />,
-      children: [
-        {
-          path: 'dashboard',
-          errorElement: <ErrorFallback />,
-          element: <Dashboard />,
-        },
-        {
-          path: 'settings',
-          element: <Settings />,
-          children: [
-            {
-              index: true,
-              element: <Setting.Top />,
-            },
-            {
-              path: 'account',
-              element: <Setting.Account />,
-            },
-            {
-              path: 'theme',
-              element: <Setting.Theme />,
-            },
-          ],
-        },
-        {
-          path: 'timetable',
-          element: <Timetable />,
-        },
-        {
-          path: 'events',
-          element: <Events />,
-        },
-        {
-          path: 'events/:id',
-          element: <EventDetail />,
-        },
-        {
-          path: 'posts',
-          element: <Posts />,
-          children: [
-            {
-              path: 'hatoboard',
-              element: <PostElement.Hatoboard />,
-            },
-          ],
-        },
-        {
-          path: 'posts/:id',
-          element: <PostDetail />,
-        },
-        {
-          path: 'library',
-          element: <Library />,
-          // children: [
-          //   {
-          //     index: true,
-          //     element: <LibraryElement.Top />
-          //   },
-          //   {
-          //     path: 'search',
-          //     element: <LibraryElement.Search />
-          //   }
-          // ]
-        },
-        {
-          path: 'library/search',
-          element: <LibrarySearch />,
-        },
-        {
-          path: 'library/bookmarks',
-          element: <LibraryBookmarks />,
-        },
-        {
-          path: 'transit',
-          element: <Transit />,
-        },
-        {
-          path: 'classroom',
-          element: <Classroom />,
-        },
-        {
-          path: 'classroom/bookmarks',
-          element: <ClassroomBookmarks />,
-        },
-        {
-          path: 'classroom/course/:id',
-          element: <ClassroomCourse />,
-        },
-        {
-          path: 'classroom/course/:id/courseWork/:courseworkId',
-          element: <ClassroomCoursework />,
-        },
-        {
-          path: 'classroom/course/:id/courseWorkMaterial/:materialId',
-          element: <ClassroomMaterial />,
-        },
-      ],
-    },
-    {
-      path: '*',
-      element: <NotFound />,
-    },
-  ],
+const router = createBrowserRouter([
   {
-    basename: '/Hato/',
-  }
-);
+    path: '/',
+    errorElement: <ErrorFallback />,
+    element: <Home />,
+  },
+  {
+    path: '/login',
+    errorElement: <ErrorFallback />,
+    element: <Login />,
+  },
+  {
+    path: '/',
+    element: <RequireLogin />,
+    errorElement: <ErrorFallback />,
+    children: [
+      {
+        path: 'dashboard',
+        errorElement: <ErrorFallback />,
+        element: <Dashboard />,
+      },
+      {
+        path: 'settings',
+        element: <Settings />,
+        children: [
+          {
+            index: true,
+            element: <Setting.Top />,
+          },
+          {
+            path: 'account',
+            element: <Setting.Account />,
+          },
+          {
+            path: 'theme',
+            element: <Setting.Theme />,
+          },
+        ],
+      },
+      {
+        path: 'timetable',
+        element: <Timetable />,
+      },
+      {
+        path: 'events',
+        element: <Events />,
+      },
+      {
+        path: 'events/:id',
+        element: <EventDetail />,
+      },
+      {
+        path: 'posts',
+        element: <Posts />,
+        children: [
+          {
+            path: 'hatoboard',
+            element: <PostElement.Hatoboard />,
+          },
+        ],
+      },
+      {
+        path: 'posts/:id',
+        element: <PostDetail />,
+      },
+      {
+        path: 'library',
+        element: <Library />,
+        // children: [
+        //   {
+        //     index: true,
+        //     element: <LibraryElement.Top />
+        //   },
+        //   {
+        //     path: 'search',
+        //     element: <LibraryElement.Search />
+        //   }
+        // ]
+      },
+      {
+        path: 'library/search',
+        element: <LibrarySearch />,
+      },
+      {
+        path: 'library/bookmarks',
+        element: <LibraryBookmarks />,
+      },
+      {
+        path: 'transit',
+        element: <Transit />,
+      },
+      {
+        path: 'classroom',
+        element: <Classroom />,
+      },
+      {
+        path: 'classroom/bookmarks',
+        element: <ClassroomBookmarks />,
+      },
+      {
+        path: 'classroom/course/:id',
+        element: <ClassroomCourse />,
+      },
+      {
+        path: 'classroom/course/:id/courseWork/:courseworkId',
+        element: <ClassroomCoursework />,
+      },
+      {
+        path: 'classroom/course/:id/courseWorkMaterial/:materialId',
+        element: <ClassroomMaterial />,
+      },
+    ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+]);
 
 export default router;
