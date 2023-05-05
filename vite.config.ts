@@ -3,6 +3,9 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
 import tsConfigPaths from 'vite-tsconfig-paths';
+import mdx from '@mdx-js/rollup';
+import remarkGfm from 'remark-gfm';
+
 const gitCommitHash = execSync('git describe --always').toString();
 const gitCommitTimestamp = execSync(
   `git show -s --format=%cD ${gitCommitHash}`
@@ -34,6 +37,12 @@ export default defineConfig(({ mode }) => {
       __GIT_COMMIT_TIMESTAMP__: JSON.stringify(gitCommitTimestamp),
     },
     plugins: [
+      {
+        enforce: 'pre',
+        ...mdx({
+          remarkPlugins: [remarkGfm],
+        }),
+      },
       react(),
       tsConfigPaths(),
       VitePWA({
