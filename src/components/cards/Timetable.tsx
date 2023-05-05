@@ -12,30 +12,22 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight, TbPoint } from 'react-icons/tb';
-import { format, setDay, startOfDay } from 'date-fns/esm';
+import { format, setDay } from 'date-fns/esm';
 import { ja } from 'date-fns/locale';
 import TimetableTable from '../timetable/Table';
-import { useTimetable, useNotes } from '@/hooks/timetable';
-import Transit from './Transit';
+import { useUserSchedule, useNotes, useDivision } from '@/hooks/timetable';
 import { useUser } from '@/hooks/user';
+import Error from '../timetable/Error';
 
 function Timetable() {
   const date = new Date();
   const { data: user } = useUser();
-  const { data, isLoading, error } = useTimetable({
-    date,
-    type: user.type,
-    grade: user.grade,
-    class: user.class,
-    course: [user.course],
-  });
+  const { data } = useUserSchedule(
+    { id: user.userScheduleId ?? '' },
+    { enabled: !!user.userScheduleId }
+  );
+  const { data: division, isLoading, error } = useDivision({ date });
   const { data: notes } = useNotes({ date });
-
-  if (
-    data &&
-    new Date(data?.[0].timetable.at(-1)?.endAt ?? startOfDay(date)) < date
-  )
-    return <Transit />;
 
   return (
     <VStack w="100%" spacing={4}>
@@ -57,27 +49,38 @@ function Timetable() {
           )}
           <Skeleton rounded="md" isLoaded={!isLoading}>
             <Text textStyle="title" color="description">
-              {data?.[0].schedule.week}週{' '}
-              {format(
-                setDay(date, data?.[0].schedule.day ?? date.getDay()),
-                'E',
-                {
-                  locale: ja,
-                }
-              )}
-              曜日課
+              {division
+                ? `${division.week}週 ${format(
+                    setDay(date, division.day),
+                    'E',
+                    {
+                      locale: ja,
+                    }
+                  )}曜日課`
+                : '日課未設定'}
             </Text>
           </Skeleton>
           <Icon as={TbChevronRight} boxSize={5} />
         </HStack>
       </LinkBox>
-      <TimetableTable
-        p={2}
-        date={date}
-        timetable={data}
-        isLoading={isLoading}
-        error={error}
-      />
+      {/* eslint-disable no-nested-ternary */}
+      {user.userScheduleId ? (
+        division ? (
+          <TimetableTable
+            p={2}
+            week={division?.week}
+            day={division?.day}
+            schedules={data?.schedules}
+            isLoading={isLoading}
+            error={error}
+          />
+        ) : (
+          <Error type="divisionNotSet" date={date} />
+        )
+      ) : (
+        <Error type="userScheduleNotSet" />
+      )}
+      {/* eslint-enable no-nested-ternary */}
     </VStack>
   );
 }

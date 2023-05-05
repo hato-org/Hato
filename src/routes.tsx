@@ -14,6 +14,7 @@ const EventDetail = React.lazy(() => import('./pages/EventDetail'));
 const Home = React.lazy(() => import('./pages/Home'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const Timetable = React.lazy(() => import('./pages/Timetable'));
+const MyTimetable = React.lazy(() => import('./pages/MyTimetable'));
 const Posts = React.lazy(() => import('./pages/Posts'));
 const PostDetail = React.lazy(() => import('./pages/PostDetail'));
 const Library = React.lazy(() => import('./pages/Library'));
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: 'timetable',
         element: <Timetable />,
+      },
+      {
+        path: 'timetable/editor',
+        element: <MyTimetable />,
       },
       {
         path: 'events',
