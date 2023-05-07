@@ -99,7 +99,7 @@ const Post = React.memo(
           {type === 'announcement' && materials?.length && (
             <Wrap>
               {materials?.map((material) => (
-                <Material {...material} />
+                <Material key={JSON.stringify(material)} {...material} />
               ))}
             </Wrap>
           )}

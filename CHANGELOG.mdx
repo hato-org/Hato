@@ -1,4 +1,29 @@
+export const YouTubeEmbed = ({ id }) => (
+  <iframe
+    style={{
+      width: '100%',
+      aspectRatio: '9/16',
+      margin: 'var(--chakra-sizes-8) 0',
+      borderRadius: 'var(--chakra-radii-xl)',
+			boxShadow: 'var(--chakra-shadows-lg)'
+    }}
+    src={`https://youtube.com/embed/${id}`}
+  />
+);
+
 # Changelog
+
+## 2023-05-06
+
+### ユーザーごとの時間割
+
+時間割の提供システムを刷新し、これまでのクラス・コースごとにあらかじめ設定された時間割を提供する方式から、ユーザーごとに各自が自分の時間割を作成する方式になりました。
+
+「マイ時間割」ページから自分専用の時間割を作成することができ、選択した時間割は「ホーム」や「時間割」ページに表示することができます。
+
+### 設定方法
+
+<YouTubeEmbed id="lHqLW06dXps" />
 
 ## 2023-03-14
 
@@ -22,7 +47,7 @@ Google アカウントで追加の連携を行うことにより、Classroom の
 ホーム画面右上のペンのボタンを押すと、ホーム画面に表示されているカードを並べ替え・追加・削除できるようになりました。  
 ホーム画面をあなた好みのレイアウトにしてより便利にお使いいただけます。
 
-![ホーム画面の並べ替え](https://cdn.discordapp.com/attachments/709566626797846538/1085212240715722802/RPReplay_Final1678805124.mov)
+<YouTubeEmbed id="lSddn6-VHHY" />
 
 ## 2023-02-07
 

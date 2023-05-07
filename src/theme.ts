@@ -64,6 +64,10 @@ const theme = extendTheme({
         default: 'blackAlpha.200',
         _dark: 'whiteAlpha.200',
       },
+      invalid: {
+        default: 'red.100',
+        _dark: 'red.800',
+      },
       accent: {
         default: 'blue.50',
         _dark: 'blue.800',
