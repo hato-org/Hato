@@ -359,7 +359,7 @@ const EditorProperties = React.memo(
                             gradeList?.find(
                               (grade) =>
                                 grade.type === meta.type &&
-                                grade.grade_num === meta.grade
+                                grade.gradeCode === meta.grade
                             )?.name
                           }
                         </MenuButton>
@@ -373,8 +373,7 @@ const EditorProperties = React.memo(
                                   meta: {
                                     ...val.meta,
                                     type: gradeInfo.type,
-                                    grade: gradeInfo.grade_num,
-                                    class: 0,
+                                    grade: gradeInfo.gradeCode,
                                     course: undefined,
                                   },
                                 }))
@@ -402,8 +401,8 @@ const EditorProperties = React.memo(
                             classList?.find(
                               (classInfo) =>
                                 classInfo.type === meta.type &&
-                                classInfo.grade_num === meta.grade &&
-                                classInfo.class_num === meta.class
+                                classInfo.gradeCode === meta.grade &&
+                                classInfo.classCode === meta.class
                             )?.name
                           }
                         </MenuButton>
@@ -417,8 +416,8 @@ const EditorProperties = React.memo(
                                   meta: {
                                     ...val.meta,
                                     type: classInfo.type,
-                                    grade: classInfo.grade_num,
-                                    class: classInfo.class_num,
+                                    grade: classInfo.gradeCode,
+                                    class: classInfo.classCode,
                                   },
                                 }))
                               }
@@ -535,7 +534,7 @@ const EditorTable = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapse in={isOpen}>
+          <Collapse in={isOpen} unmountOnExit>
             <SimpleGrid w="full" p={4} pt={8} columns={7} gap={1}>
               {schedules?.map((weekSchedule, index) => (
                 <EditorTableCol

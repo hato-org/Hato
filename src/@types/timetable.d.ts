@@ -34,8 +34,8 @@ interface UserSchedule {
   };
   meta: {
     type: Type;
-    grade: number;
-    class: number;
+    grade: GradeCode;
+    class: ClassCode;
     course?: string;
   };
 }

@@ -40,8 +40,8 @@ import { useNotes } from '@/hooks/timetable';
 interface NotesProps extends StackProps {
   date: Date;
   type: Type;
-  grade: number;
-  schoolClass: number;
+  grade: GradeCode;
+  schoolClass: ClassCode;
 }
 
 const Notes = React.memo(
@@ -66,8 +66,8 @@ const Notes = React.memo(
             note.target?.some(
               (classInfo) =>
                 classInfo.type === type &&
-                classInfo.grade_num === grade &&
-                classInfo.class_num === schoolClass
+                classInfo.gradeCode === grade &&
+                classInfo.classCode === schoolClass
             ) || note.owner === user.email
         ).length ? (
           <VStack w="100%" align="flex-start">
@@ -78,8 +78,8 @@ const Notes = React.memo(
                     note.target?.some(
                       (classInfo) =>
                         classInfo.type === user.type &&
-                        classInfo.grade_num === user.grade &&
-                        classInfo.class_num === user.class
+                        classInfo.gradeCode === user.grade &&
+                        classInfo.classCode === user.class
                     ) && note.owner !== user.email
                 )
                 .map((note) => (
@@ -264,10 +264,10 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                   size="sm"
                   key={
                     targetClass.type +
-                    targetClass.grade_num +
-                    targetClass.class_num
+                    targetClass.gradeCode +
+                    targetClass.classCode
                   }
-                >{`${targetClass.grade_num}年${targetClass.name}`}</Tag>
+                >{`${targetClass.gradeCode}年${targetClass.name}`}</Tag>
               ))}
             </Wrap>
           )}
