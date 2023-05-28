@@ -28,6 +28,7 @@ import {
   TbSettings,
   TbBook2,
   TbLogout,
+  TbTrophy,
 } from 'react-icons/tb';
 import { MdOutlineTrain } from 'react-icons/md';
 import { SiGoogleclassroom } from 'react-icons/si';
@@ -139,6 +140,12 @@ function MenuBody() {
         icon: <Icon as={MdOutlineTrain} boxSize={7} />,
         label: '交通情報',
         href: '/transit',
+      },
+      {
+        type: 'button',
+        icon: <Icon as={TbTrophy} boxSize={7} />,
+        label: 'クラスマッチ',
+        href: '/classmatch/2023',
       },
       {
         type: 'divider',

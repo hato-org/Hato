@@ -72,17 +72,17 @@ function Profile() {
               gradeList?.find(
                 (gradeInfo) =>
                   gradeInfo.type === user.type &&
-                  gradeInfo.grade_num === user.grade
-              )?.short_name
+                  gradeInfo.gradeCode === user.grade
+              )?.shortName
             }
             -
             {
               classList?.find(
                 (classInfo) =>
                   classInfo.type === user.type &&
-                  classInfo.class_num === user.class
-              )?.short_name
-            }{' '}
+                  classInfo.gradeCode === user.class
+              )?.shortName
+            }
           </Text>
           <Text fontWeight="bold">
             {courseList?.find((course) => user?.course === course.code)?.name}

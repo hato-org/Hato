@@ -13,8 +13,6 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalBody,
-  UnorderedList,
-  ListItem,
   ModalFooter,
   StackDivider,
   Box,
@@ -136,12 +134,11 @@ function Top() {
                 <ModalHeader>キャッシュを削除しますか？</ModalHeader>
                 <ModalBody>
                   <VStack align="flex-start" w="100%" textStyle="title">
-                    <Text fontSize="lg">以下のキャッシュが削除されます</Text>
-                    <UnorderedList pl={4}>
-                      <ListItem>はとボード投稿</ListItem>
-                      <ListItem>時間割</ListItem>
-                      <ListItem>イベント</ListItem>
-                    </UnorderedList>
+                    <Text w="full" textAlign="center">
+                      現在アプリ内に保存されている
+                      <br />
+                      一時データが削除されます
+                    </Text>
                     {totalCache && (
                       <Box w="100%">
                         <StackDivider />
@@ -151,11 +148,17 @@ function Top() {
                   </VStack>
                 </ModalBody>
                 <ModalFooter>
-                  <HStack>
-                    <Button variant="ghost" rounded="lg" onClick={onClose}>
+                  <HStack w="full" spacing={4}>
+                    <Button
+                      w="full"
+                      variant="ghost"
+                      rounded="lg"
+                      onClick={onClose}
+                    >
                       キャンセル
                     </Button>
                     <Button
+                      w="full"
                       colorScheme="red"
                       rounded="lg"
                       onClick={() => {
