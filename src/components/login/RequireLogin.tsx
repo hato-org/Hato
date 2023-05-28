@@ -25,7 +25,10 @@ function RequireLogin() {
     );
 
   return (
-    <Navigate to="/login" replace state={{ returnTo: location.pathname }} />
+    <Navigate
+      to={`/login?return_to=${location.pathname + location.search}`}
+      replace
+    />
   );
 }
 
