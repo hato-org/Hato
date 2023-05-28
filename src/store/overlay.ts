@@ -10,6 +10,9 @@ interface Overlay {
   userScheduleEditor: string | false;
   userSubjectEditor: string | false;
   divisionEditor: Date | false;
+  classmatchTournament:
+    | { year: number; season: ClassmatchSeason; sport: ClassmatchSportId }
+    | undefined;
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -22,6 +25,7 @@ export const overlayAtom = atom<Overlay>({
     userScheduleEditor: false,
     userSubjectEditor: false,
     divisionEditor: false,
+    classmatchTournament: undefined,
   },
   effects: [persistAtom],
 });

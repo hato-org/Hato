@@ -16,7 +16,7 @@ const API_URL = import.meta.env.DEV
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useRecoilState(userAtom);
-  const [loginLoading, setLoginLLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
   const setJWT = useSetRecoilState(jwtAtom);
   const toast = useToast({
     position: 'top-right',
@@ -71,7 +71,7 @@ export const useAuth = (scopes?: string[]) => {
 
   const login = useGoogleLogin({
     onSuccess: async ({ code }) => {
-      setLoginLLoading(true);
+      setLoginLoading(true);
       const {
         status,
         data: { jwt, user: userData },
@@ -102,7 +102,7 @@ export const useAuth = (scopes?: string[]) => {
         title: `${userData.name}でログインしました。`,
         status: 'success',
       });
-      setLoginLLoading(false);
+      setLoginLoading(false);
     },
     onError: (err) => {
       onFail(err);

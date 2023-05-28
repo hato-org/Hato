@@ -48,7 +48,8 @@ const TimetableTable = React.memo(
           <Tbody>
             {Array.from({ length: schedules?.[week][day].length ?? 0 }).map(
               (_, index) => (
-                <Tr>
+                // eslint-disable-next-line react/no-array-index-key
+                <Tr key={`${schedules?.[week][day][index]?.subjectId}${index}`}>
                   <Td>{index + 1}</Td>
                   <TablePeriod {...schedules?.[week][day][index]} />
                 </Tr>

@@ -30,6 +30,9 @@ const ClassroomMaterial = React.lazy(() => import('./pages/ClassroomMaterial'));
 const ClassroomBookmarks = React.lazy(
   () => import('./pages/ClassroomBookmarks')
 );
+const Classmatch2023 = React.lazy(
+  () => import('./pages/classmatch/Classmatch2023')
+);
 
 // function Router() {
 //   const user = useRecoilValue(userAtom);
@@ -179,6 +182,10 @@ const router = createBrowserRouter([
       {
         path: 'classroom/course/:id/courseWorkMaterial/:materialId',
         element: <ClassroomMaterial />,
+      },
+      {
+        path: 'classmatch/2023',
+        element: <Classmatch2023 />,
       },
     ],
   },
