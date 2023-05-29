@@ -8,23 +8,31 @@ import {
   MenuItem,
   MenuList,
   Spacer,
+  Stack,
   StackProps,
   Text,
 } from '@chakra-ui/react';
 import { TbChevronDown } from 'react-icons/tb';
 import { useClassList, useGradeList } from '@/hooks/info';
-import { useUser } from '@/hooks/user';
 
 interface GradeClassPickerProps extends StackProps {
   onGradeSelect: (gradeInfo: GradeInfo) => void;
   onClassSelect: (classInfo: ClassInfo) => void;
+  defaultType?: Type;
+  defaultGrade?: GradeCode;
+  defaultClass?: ClassCode;
 }
 
 const GradeClassPicker = React.memo(
-  ({ onGradeSelect, onClassSelect, ...rest }: GradeClassPickerProps) => {
-    const { data: user } = useUser();
-
-    const [type, setType] = useState(user.type);
+  ({
+    onGradeSelect,
+    onClassSelect,
+    defaultType,
+    defaultGrade,
+    defaultClass,
+    ...rest
+  }: GradeClassPickerProps) => {
+    const [type, setType] = useState<Type | undefined>(defaultType);
     const [grade, setGrade] = useState<GradeInfo>();
     const [schoolClass, setClass] = useState<ClassInfo>();
 
@@ -33,35 +41,51 @@ const GradeClassPicker = React.memo(
     const { data: classList } = useClassList(
       {
         type,
-        grade: grade?.grade_num,
+        grade: grade?.gradeCode ?? defaultGrade,
       },
       {
-        enabled: !!grade,
+        enabled: !!(grade || defaultGrade),
       }
     );
 
     useEffect(() => {
-      setGrade(
-        gradeList?.find(
-          (gradeInfo) =>
-            gradeInfo.type === type && gradeInfo.grade_num === user?.grade
-        )
-      );
-    }, [gradeList]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-      setClass(
-        classList?.find((classInfo) => classInfo.class_num === user.class)
-      );
-    }, [classList]); // eslint-disable-line react-hooks/exhaustive-deps
+      if (!grade)
+        setGrade(
+          gradeList?.find(
+            ({ type: gradeType, gradeCode }) =>
+              gradeType === defaultType && gradeCode === defaultGrade
+          )
+        );
+      if (!schoolClass)
+        setClass(
+          classList?.find(({ classCode }) => classCode === defaultClass)
+        );
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gradeList, classList]);
 
     return (
-      <HStack w="100%" {...rest}>
+      <Stack w="100%" {...rest}>
         <Box w="100%">
           <Menu>
-            <MenuButton w="100%" rounded="lg" layerStyle="button">
+            <MenuButton
+              w="100%"
+              h="full"
+              rounded="lg"
+              layerStyle="button"
+              border="1px solid"
+              borderColor="border"
+            >
               <HStack w="100%" px={4} py={2} textStyle="title">
-                <Text>{grade?.name}</Text>
+                <Text>
+                  {grade?.shortName ??
+                    (defaultGrade
+                      ? gradeList?.find(
+                          (gradeInfo) =>
+                            defaultType === gradeInfo.type &&
+                            defaultGrade === gradeInfo.gradeCode
+                        )?.shortName
+                      : '学年')}
+                </Text>
                 <Spacer />
                 <Icon as={TbChevronDown} />
               </HStack>
@@ -85,30 +109,56 @@ const GradeClassPicker = React.memo(
         </Box>
         <Box w="100%">
           <Menu>
-            <MenuButton w="100%" rounded="lg" layerStyle="button">
+            <MenuButton
+              w="100%"
+              h="full"
+              rounded="lg"
+              layerStyle="button"
+              border="1px solid"
+              borderColor="border"
+            >
               <HStack w="100%" px={4} py={2} textStyle="title">
-                <Text>{schoolClass?.name}</Text>
+                <Text>
+                  {schoolClass?.name ??
+                    (defaultClass
+                      ? classList?.find(
+                          ({ classCode }) => classCode === defaultClass
+                        )?.name
+                      : 'クラス')}
+                </Text>
                 <Spacer />
                 <Icon as={TbChevronDown} />
               </HStack>
             </MenuButton>
             <MenuList shadow="lg" rounded="xl">
-              {classList?.map((classInfo) => (
-                <MenuItem
-                  key={classInfo.name}
+              {grade ? (
+                classList?.map((classInfo) => (
+                  <MenuItem
+                    key={classInfo.name}
+                    fontWeight="bold"
+                    onClick={() => {
+                      setClass(classInfo);
+                      onClassSelect(classInfo);
+                    }}
+                  >
+                    {classInfo.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <Text
+                  w="full"
+                  py={2}
+                  textAlign="center"
+                  textStyle="description"
                   fontWeight="bold"
-                  onClick={() => {
-                    setClass(classInfo);
-                    onClassSelect(classInfo);
-                  }}
                 >
-                  {classInfo.name}
-                </MenuItem>
-              ))}
+                  最初に学年を選択
+                </Text>
+              )}
             </MenuList>
           </Menu>
         </Box>
-      </HStack>
+      </Stack>
     );
   }
 );

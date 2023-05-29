@@ -48,6 +48,7 @@ const AddCardDrawer = React.memo(() => {
             {unlistedCards.length ? (
               unlistedCards.map((card) => (
                 <VStack
+                  key={card.id}
                   scrollSnapAlign="center"
                   alignContent="stretch"
                   minW="full"

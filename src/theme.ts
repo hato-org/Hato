@@ -34,7 +34,7 @@ const theme = extendTheme({
       },
       description: {
         default: 'gray.500',
-        _dark: 'gray.300',
+        _dark: 'gray.400',
       },
       bg: {
         default: 'white',

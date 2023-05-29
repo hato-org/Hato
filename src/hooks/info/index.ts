@@ -29,12 +29,12 @@ export const useAllClassList = (
 
   return useQueries({
     queries:
-      gradeList?.map((gradeInfo) => ({
-        queryKey: ['info', 'class', gradeInfo.type, gradeInfo.grade_num],
+      gradeList?.map(({ type, gradeCode }) => ({
+        queryKey: ['info', 'class', type, gradeCode],
         queryFn: async () =>
           (
             await client.get<ClassList>('/info/class', {
-              params: { type: gradeInfo.type, grade: gradeInfo.grade_num },
+              params: { type, grade: gradeCode },
             })
           ).data,
         ...options,
@@ -48,7 +48,7 @@ export const useClassList = (
     grade,
   }: {
     type?: Type;
-    grade?: number;
+    grade?: GradeCode;
   },
   options?: UseQueryOptions<ClassList, AxiosError>
 ) => {
@@ -75,7 +75,7 @@ export const useCourseList = (
     grade,
   }: {
     type?: Type;
-    grade?: number;
+    grade?: GradeCode;
   },
   options?: UseQueryOptions<CourseList, AxiosError>
 ) => {
@@ -102,7 +102,7 @@ export const useSubjectList = (
     grade,
   }: {
     type: Type;
-    grade: number;
+    grade: GradeCode;
   },
   options?: UseQueryOptions<SubjectList, AxiosError>
 ) => {

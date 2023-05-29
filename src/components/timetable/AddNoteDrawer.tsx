@@ -146,15 +146,15 @@ const AddNoteDrawer = React.memo(
                         const classList = classListList.find(
                           (clList) =>
                             clList[0].type === grade.type &&
-                            clList[0].grade_num === grade.grade_num
+                            clList[0].gradeCode === grade.gradeCode
                         );
                         const allChecked = classList?.every((classInfo) =>
                           targetClass.some(
                             (targetClassInfo) =>
                               targetClassInfo.type === classInfo.type &&
-                              targetClassInfo.grade_num ===
-                                classInfo.grade_num &&
-                              targetClassInfo.class_num === classInfo.class_num
+                              targetClassInfo.gradeCode ===
+                                classInfo.gradeCode &&
+                              targetClassInfo.classCode === classInfo.classCode
                           )
                         );
                         const isIndeterminate =
@@ -162,10 +162,10 @@ const AddNoteDrawer = React.memo(
                             targetClass.some(
                               (targetClassInfo) =>
                                 targetClassInfo.type === classInfo.type &&
-                                targetClassInfo.grade_num ===
-                                  classInfo.grade_num &&
-                                targetClassInfo.class_num ===
-                                  classInfo.class_num
+                                targetClassInfo.gradeCode ===
+                                  classInfo.gradeCode &&
+                                targetClassInfo.classCode ===
+                                  classInfo.classCode
                             )
                           ) && !allChecked;
 
@@ -191,10 +191,10 @@ const AddNoteDrawer = React.memo(
                                               (classInfo) =>
                                                 newTargetClassInfo.type ===
                                                   classInfo.type &&
-                                                newTargetClassInfo.grade_num ===
-                                                  classInfo.grade_num &&
-                                                newTargetClassInfo.class_num ===
-                                                  classInfo.class_num
+                                                newTargetClassInfo.gradeCode ===
+                                                  classInfo.gradeCode &&
+                                                newTargetClassInfo.classCode ===
+                                                  classInfo.classCode
                                             )
                                         );
                                       })
@@ -215,10 +215,10 @@ const AddNoteDrawer = React.memo(
                                         (targetClassInfo) =>
                                           targetClassInfo.type ===
                                             classInfo.type &&
-                                          targetClassInfo.grade_num ===
-                                            classInfo.grade_num &&
-                                          targetClassInfo.class_num ===
-                                            classInfo.class_num
+                                          targetClassInfo.gradeCode ===
+                                            classInfo.gradeCode &&
+                                          targetClassInfo.classCode ===
+                                            classInfo.classCode
                                       )}
                                       onChange={(e) =>
                                         e.target.checked
@@ -235,10 +235,10 @@ const AddNoteDrawer = React.memo(
                                                   !(
                                                     newTargetClassInfo.type ===
                                                       classInfo.type &&
-                                                    newTargetClassInfo.grade_num ===
-                                                      classInfo.grade_num &&
-                                                    newTargetClassInfo.class_num ===
-                                                      classInfo.class_num
+                                                    newTargetClassInfo.gradeCode ===
+                                                      classInfo.gradeCode &&
+                                                    newTargetClassInfo.classCode ===
+                                                      classInfo.classCode
                                                   )
                                               );
                                             })

@@ -161,6 +161,7 @@
 
 .changelog b,
 .changelog strong {
+  display: inline-block;
   font-weight: 600;
 }
 
