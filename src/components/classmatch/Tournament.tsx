@@ -49,7 +49,9 @@ export default function Tournament({
           <Icon as={TbCrown} boxSize={8} color="yellow.400" />
           {participants.length && (
             <Text textStyle="title" fontSize="2xl" fontFamily="monospace">
-              {winner.grade}-{winner.class}
+              {winner.type === 'teacher'
+                ? '職員'
+                : `${winner.grade}-${winner.class}`}
             </Text>
           )}
         </VStack>
@@ -93,15 +95,6 @@ const TournamentSection = React.memo(
           justify="center"
           w={{ base: 8, md: 12 }}
           spacing={0}
-          // _before={{
-          //   content: '""',
-          //   pos: 'absolute',
-          //   [(id.at(-1) ?? '') === '0' ? 'bottom' : 'top']: `-4px`,
-          //   left: 0,
-          //   [(id.at(-1) ?? '') === '0' ? 'top' : 'bottom']: '50%',
-          //   w: 1,
-          //   bg: isWinner ? 'blue.400' : 'border',
-          // }}
         >
           {match.map((tournament, index) => (
             <Box
@@ -156,15 +149,6 @@ const TournamentLeaf = React.memo(
         justify="center"
         minW={{ base: 8, md: 12 }}
         flexGrow={1}
-        // _before={{
-        //   content: '""',
-        //   pos: 'absolute',
-        //   [(id.at(-1) ?? '') === '0' ? 'bottom' : 'top']: 0,
-        //   right: 0,
-        //   h: '50%',
-        //   w: 1,
-        //   bg: isWinner ? 'blue.400' : 'border',
-        // }}
       >
         <StackDivider
           borderColor={isWinner ? 'blue.400' : 'border'}

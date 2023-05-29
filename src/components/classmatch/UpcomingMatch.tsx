@@ -86,7 +86,6 @@ const UpcomingMatch = React.memo(
           <Button
             w="full"
             rounded="lg"
-            variant="ghost"
             leftIcon={
               <Icon
                 as={TbChevronDown}

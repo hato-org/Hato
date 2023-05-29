@@ -18,14 +18,18 @@ type Classmatch = Record<ClassmatchSports, ClassmatchTournament>;
 type ClassmatchTournament =
   | {
       id: string;
-      participants: [ClassmatchParticipant, ClassmatchParticipant];
+      participants:
+        | [ClassmatchParticipant, ClassmatchParticipant]
+        | ([] & Array<ClassmatchParticipant>); // https://github.com/microsoft/TypeScript/issues/38514#issuecomment-639866438
       match: [ClassmatchTournament, ClassmatchTournament];
       class?: never;
       meta: ClassmatchTournamentMeta;
     }
   | {
       id: string;
-      participants: [ClassmatchParticipant, ClassmatchParticipant];
+      participants:
+        | [ClassmatchParticipant, ClassmatchParticipant]
+        | ([] & Array<ClassmatchParticipant>);
       match?: never;
       class: ClassmatchClass;
       meta: ClassmatchTournamentMeta;

@@ -84,10 +84,10 @@ const TournamentMetaPopover = React.memo(
             pos="absolute"
             left="-2px"
             top="50%"
-            w={4}
-            h={4}
+            w={5}
+            h={5}
             bg={participants.length ? 'blue.400' : 'border'}
-            rounded="md"
+            rounded="lg"
             transform="translate(-50%, -50%)"
             onClick={onToggle}
           />
@@ -121,72 +121,89 @@ const TournamentMetaPopover = React.memo(
                     </Text>
                   </Center>
                 )}
-                <HStack
-                  w="full"
-                  justify="space-around"
-                  spacing={0}
-                  divider={
-                    <Text fontSize="xl" color="description" fontWeight="bold">
-                      ―
-                    </Text>
-                  }
-                >
-                  {editMode ? (
-                    (participants.length
-                      ? participants
-                      : Array.from({ length: 2 })
-                    ).map((_, index) => (
-                      <VStack w="full" p={2} rounded="xl" spacing={4}>
-                        <NumberInput
+                {editMode ? (
+                  <VStack w="full" p={2} spacing={0}>
+                    <HStack w="full" justify="space-around" spacing={0}>
+                      {Array.from({ length: 2 }).map((_, index) => (
+                        <VStack
                           w="full"
-                          min={0}
-                          size="lg"
-                          borderColor="border"
-                          value={participantsValue[index]?.point}
-                          onChange={(__, value) =>
-                            setParticipantsValue((prev) => {
-                              const newParticipants = structuredClone(prev);
-                              newParticipants[index] = {
-                                ...newParticipants[index],
-                                point: Number.isNaN(value) ? 0 : value,
-                              };
-                              return newParticipants;
-                            })
-                          }
+                          rounded="xl"
+                          spacing={4}
+                          _first={{ pr: 2 }}
+                          _last={{ pl: 2 }}
                         >
-                          <NumberInputField
+                          <NumberInput
                             w="full"
-                            rounded="lg"
-                            textStyle="title"
-                            textAlign="center"
+                            min={0}
+                            size="lg"
+                            borderColor="border"
+                            value={participantsValue[index]?.point ?? ''}
+                            onChange={(__, value) =>
+                              setParticipantsValue((prev) => {
+                                const newParticipants = structuredClone(prev);
+                                newParticipants[index] = {
+                                  ...newParticipants[index],
+                                  point: Number.isNaN(value) ? 0 : value,
+                                };
+                                return newParticipants;
+                              })
+                            }
+                          >
+                            <NumberInputField
+                              w="full"
+                              rounded="lg"
+                              textStyle="title"
+                              textAlign="center"
+                            />
+                            <NumberInputStepper borderColor="border">
+                              <NumberIncrementStepper>
+                                <Icon as={TbChevronUp} />
+                              </NumberIncrementStepper>
+                              <NumberDecrementStepper>
+                                <Icon as={TbChevronDown} />
+                              </NumberDecrementStepper>
+                            </NumberInputStepper>
+                          </NumberInput>
+                          <ClassSelectMenu
+                            currentClass={participantsValue[index]}
+                            match={match}
+                            onSelect={(classInfo) =>
+                              setParticipantsValue((prev) => {
+                                const newParticipants = structuredClone(prev);
+                                newParticipants[index] = {
+                                  ...newParticipants[index],
+                                  ...classInfo,
+                                };
+                                return newParticipants;
+                              })
+                            }
                           />
-                          <NumberInputStepper borderColor="border">
-                            <NumberIncrementStepper>
-                              <Icon as={TbChevronUp} />
-                            </NumberIncrementStepper>
-                            <NumberDecrementStepper>
-                              <Icon as={TbChevronDown} />
-                            </NumberDecrementStepper>
-                          </NumberInputStepper>
-                        </NumberInput>
-                        <ClassSelectMenu
-                          currentClass={participantsValue[index]}
-                          match={match}
-                          onSelect={(classInfo) =>
-                            setParticipantsValue((prev) => {
-                              const newParticipants = structuredClone(prev);
-                              newParticipants[index] = {
-                                ...newParticipants[index],
-                                ...classInfo,
-                              };
-                              return newParticipants;
-                            })
-                          }
-                        />
-                      </VStack>
-                    ))
-                  ) : participants.length ? (
-                    participants.map((classInfo, index) => (
+                        </VStack>
+                      ))}
+                    </HStack>
+                    <Button
+                      w="full"
+                      rounded="lg"
+                      variant="outline"
+                      colorScheme="red"
+                      leftIcon={<Icon as={TbX} />}
+                      onClick={() => setParticipantsValue([])}
+                    >
+                      クリア
+                    </Button>
+                  </VStack>
+                ) : participants.length ? (
+                  <HStack
+                    w="full"
+                    justify="space-around"
+                    spacing={0}
+                    divider={
+                      <Text fontSize="xl" color="description" fontWeight="bold">
+                        ―
+                      </Text>
+                    }
+                  >
+                    {participants.map((classInfo, index) => (
                       <VStack
                         key={JSON.stringify(`${classInfo} ${index}`)}
                         spacing={0}
@@ -196,20 +213,22 @@ const TournamentMetaPopover = React.memo(
                           {classInfo.point}
                         </Text>
                         <Text textStyle="description">
-                          {classInfo.grade}-{classInfo.class}
+                          {classInfo.type === 'teacher'
+                            ? '職員'
+                            : `${classInfo.grade}-${classInfo.class}`}
                         </Text>
                       </VStack>
-                    ))
-                  ) : (
-                    <Text
-                      textAlign="center"
-                      textStyle="description"
-                      fontWeight="bold"
-                    >
-                      まだ結果が分かっていません
-                    </Text>
-                  )}
-                </HStack>
+                    ))}
+                  </HStack>
+                ) : (
+                  <Text
+                    textAlign="center"
+                    textStyle="description"
+                    fontWeight="bold"
+                  >
+                    まだ結果が分かっていません
+                  </Text>
+                )}
               </Box>
               {/* eslint-enable no-nested-ternary */}
               <StackDivider
@@ -298,7 +317,7 @@ const TournamentMetaPopover = React.memo(
                     aria-label="cancel"
                     icon={<Icon as={TbX} />}
                     colorScheme="red"
-                    variant="ghost"
+                    variant="outline"
                     rounded="lg"
                     flex={1}
                     onClick={() => setEditMode(false)}
@@ -359,11 +378,17 @@ function ClassSelectMenu({
         as={Button}
         rounded="lg"
         w="full"
+        variant="outline"
         rightIcon={<Icon as={TbChevronDown} />}
+        textStyle={currentClass?.from ? 'title' : 'description'}
       >
-        {currentClass?.grade
-          ? `${currentClass.grade}-${currentClass.class}`
-          : 'ｸﾗｽ'}
+        {/* eslint-disable no-nested-ternary */}
+        {currentClass?.from
+          ? currentClass.type === 'teacher'
+            ? '職員'
+            : `${currentClass.grade}-${currentClass.class}`
+          : 'クラス'}
+        {/* eslint-enable no-nested-ternary */}
       </MenuButton>
       <Box>
         <MenuList rounded="xl" shadow="xl">
@@ -388,7 +413,7 @@ function ClassSelectMenuItem({
     { from: '', point: 0, type: 'hs', grade: '0', class: '0' }
   );
 
-  if (!tournament.class && !winner.grade)
+  if (!tournament.class && !winner.from)
     return (
       <Text
         w="full"
@@ -415,9 +440,15 @@ function ClassSelectMenuItem({
         })
       }
     >
+      {/* eslint-disable no-nested-ternary */}
       {tournament.class
-        ? `${tournament.class.grade}-${tournament.class.class}`
+        ? tournament.class.type === 'teacher'
+          ? '職員'
+          : `${tournament.class.grade}-${tournament.class.class}`
+        : winner.type === 'teacher'
+        ? '職員'
         : `${winner.grade}-${winner.class}`}
+      {/* eslint-enable no-nested-ternary */}
     </MenuItem>
   );
 }
