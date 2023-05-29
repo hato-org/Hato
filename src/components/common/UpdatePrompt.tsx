@@ -4,6 +4,8 @@ import { useSetRecoilState } from 'recoil';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import { overlayAtom } from '@/store/overlay';
 
+const intervalMS = 1000 * 60 * 1; // 1 min
+
 function UpdatePrompt() {
   const setOverlay = useSetRecoilState(overlayAtom);
   const {
@@ -14,6 +16,15 @@ function UpdatePrompt() {
     onRegistered(r) {
       // eslint-disable-next-line prefer-template
       console.log('SW Registered: ' + r);
+
+      if (r)
+        setInterval(async () => {
+          if (!(!r.installing && navigator)) return;
+
+          if ('connection' in navigator && !navigator.onLine) return;
+
+          await r.update();
+        }, intervalMS);
     },
     onRegisterError(error) {
       console.log('SW registration error', error);
