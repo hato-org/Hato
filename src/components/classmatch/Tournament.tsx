@@ -67,6 +67,7 @@ const TournamentSection = React.memo(
     class: classInfo,
     meta,
     participants,
+    editHistory,
     isWinner,
   }: ClassmatchTournament & {
     isWinner: boolean;
@@ -117,6 +118,7 @@ const TournamentSection = React.memo(
             meta={meta}
             participants={participants}
             match={match}
+            editHistory={editHistory}
           />
           <StackDivider
             borderColor={participants.length ? 'blue.400' : 'border'}

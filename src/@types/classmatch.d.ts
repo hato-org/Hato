@@ -24,6 +24,7 @@ type ClassmatchTournament =
       match: [ClassmatchTournament, ClassmatchTournament];
       class?: never;
       meta: ClassmatchTournamentMeta;
+      editHistory?: ClassmatchTournamentEditHistory[];
     }
   | {
       id: string;
@@ -33,6 +34,7 @@ type ClassmatchTournament =
       match?: never;
       class: ClassmatchClass;
       meta: ClassmatchTournamentMeta;
+      editHistory?: ClassmatchTournamentEditHistory[];
     };
 
 interface ClassmatchClass {
@@ -62,4 +64,9 @@ interface ClassmatchLiveStream {
   type: 'youtube' | 'instagram';
   name: string;
   url: string;
+}
+
+interface ClassmatchTournamentEditHistory {
+  userId: string;
+  date: string;
 }

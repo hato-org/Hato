@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useClient } from '@/modules/client';
@@ -25,5 +25,18 @@ export const useUser = () => {
       },
       enabled: !!user,
     }
+  );
+};
+
+export const useUserInfo = (
+  { id }: { id?: string },
+  options: UseQueryOptions<User, AxiosError>
+) => {
+  const { client } = useClient();
+
+  return useQuery<User, AxiosError>(
+    ['user', id],
+    async () => (await client.get(`/user/${id}`)).data,
+    options
   );
 };
