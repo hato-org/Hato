@@ -81,7 +81,7 @@ export default function Classmatch2023() {
           </Card>
           <Card w="full">
             <VStack align="flex-start" w="full" p={2} spacing={4}>
-              <Heading size="md">トーナメント表</Heading>
+              <Heading size="md">トーナメント表・会場図</Heading>
               {/* eslint-disable no-nested-ternary */}
               {sportsError ? (
                 <Error error={sportsError} />

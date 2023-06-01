@@ -13,7 +13,10 @@ interface ClassmatchSport {
   name: string;
 }
 
-type Classmatch = Record<ClassmatchSports, ClassmatchTournament>;
+type ClassmatchSportInfo = ClassmatchSport & {
+  map: string;
+  tournament: ClassmatchTournament;
+};
 
 type ClassmatchTournament =
   | {
