@@ -24,7 +24,7 @@ import Error from '../cards/Error';
 
 const TournamentModal = React.memo(
   ({ year, season }: { year: number; season: ClassmatchSeason }) => {
-    const invertValue = useColorModeValue('0%', '87.2%');
+    const darkSuffix = useColorModeValue('', '_dark');
     const [{ classmatchTournament }, setOverlay] = useRecoilState(overlayAtom);
 
     const { data, isLoading, error } = useClassmatchSportInfo(
@@ -70,9 +70,8 @@ const TournamentModal = React.memo(
               <VStack spacing={0}>
                 <Box p={4}>
                   <Image
-                    src={`/classmatch/${classmatchTournament?.year}/${data.map}.png`}
+                    src={`/classmatch/${classmatchTournament?.year}/${data.map}${darkSuffix}.png`}
                     rounded="xl"
-                    filter={`invert(${invertValue})`}
                   />
                 </Box>
                 <Tournament {...data.tournament} />
