@@ -6,7 +6,7 @@ interface Report {
   url: string;
 }
 
-type ReportType = 'spam' | 'inaccurate' | 'other';
+type ReportType = 'error' | 'spam' | 'inaccurate' | 'other';
 
 interface ReportField {
   name: string;
