@@ -1,21 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
   Box,
   Button,
-  Center,
   HStack,
   Icon,
-  IconButton,
-  Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -28,16 +16,10 @@ import {
   useOutsideClick,
 } from '@chakra-ui/react';
 import { format } from 'date-fns/esm';
-import {
-  TbCheck,
-  TbChevronDown,
-  TbChevronUp,
-  TbPencil,
-  TbX,
-} from 'react-icons/tb';
-import { useRecoilValue } from 'recoil';
-import { useClassmatchMutation } from '@/hooks/classmatch';
-import { overlayAtom } from '@/store/overlay';
+import { TbFlag, TbPencil } from 'react-icons/tb';
+
+import MetaEditor from './MetaEditor';
+import MetaReporter from './MetaReporter';
 
 const TournamentMetaPopover = React.memo(
   ({
@@ -45,39 +27,23 @@ const TournamentMetaPopover = React.memo(
     meta,
     participants,
     match,
-  }: Pick<ClassmatchTournament, 'id' | 'meta' | 'participants' | 'match'>) => {
+    editHistory,
+  }: Omit<ClassmatchTournament, 'class'>) => {
     const { isOpen, onToggle, onClose } = useDisclosure();
-    const [editMode, setEditMode] = useState(false);
+    const [editMode, setEditMode] = useState<'editor' | 'reporter' | undefined>(
+      undefined
+    );
     const popoverRef = useRef<HTMLDivElement>(null);
-    const [metaValue, setMetaValue] = useState(meta);
-    const [participantsValue, setParticipantsValue] = useState(participants);
-    const { classmatchTournament } = useRecoilValue(overlayAtom);
-
-    const { mutate, isLoading } = useClassmatchMutation({
-      year: classmatchTournament?.year,
-      season: classmatchTournament?.season,
-      sport: classmatchTournament?.sport,
-      id,
-    });
 
     useOutsideClick({
       ref: popoverRef,
       handler: onClose,
     });
 
-    const isParticipantsEditable = match?.every(
-      (tournament) => tournament.class ?? tournament.participants.length
-    );
-
-    // Clear placeholder value when popover is disappeared / opened
-    // (To prevent showing previous value)
-    useEffect(() => {
-      setMetaValue(meta);
-      setParticipantsValue(participants);
-    }, [meta, participants]);
+    const onSubmit = useCallback(() => setEditMode(undefined), []);
 
     return (
-      <Popover isOpen={editMode || isOpen}>
+      <Popover isOpen={!!editMode || isOpen}>
         <PopoverTrigger>
           <Box
             role="button"
@@ -102,355 +68,149 @@ const TournamentMetaPopover = React.memo(
         >
           <PopoverArrow bg="panel" borderColor="border" />
           <PopoverBody>
-            <VStack w="full" spacing={4}>
-              <Text textStyle="description" fontWeight="bold" fontSize="xs">
-                試合結果
-              </Text>
-              {/* eslint-disable no-nested-ternary */}
-              <Box w="full" pos="relative">
-                {editMode && !isParticipantsEditable && (
-                  <Center
-                    pos="absolute"
-                    inset={0}
-                    backdropFilter="auto"
-                    backdropBlur="4px"
-                    zIndex={1}
-                  >
-                    <Text textStyle="description" fontWeight="bold">
-                      最初に前試合の結果を入力
-                    </Text>
-                  </Center>
-                )}
-                {editMode ? (
-                  <VStack w="full" p={2} spacing={0}>
-                    <HStack w="full" justify="space-around" spacing={0}>
-                      {Array.from({ length: 2 }).map((_, index) => (
-                        <VStack
-                          w="full"
-                          rounded="xl"
-                          spacing={4}
-                          _first={{ pr: 2 }}
-                          _last={{ pl: 2 }}
-                        >
-                          <NumberInput
-                            w="full"
-                            min={0}
-                            size="lg"
-                            borderColor="border"
-                            value={participantsValue[index]?.point ?? ''}
-                            onChange={(__, value) =>
-                              setParticipantsValue((prev) => {
-                                const newParticipants = structuredClone(prev);
-                                newParticipants[index] = {
-                                  ...newParticipants[index],
-                                  point: Number.isNaN(value) ? 0 : value,
-                                };
-                                return newParticipants;
-                              })
-                            }
-                          >
-                            <NumberInputField
-                              w="full"
-                              rounded="lg"
-                              textStyle="title"
-                              textAlign="center"
-                            />
-                            <NumberInputStepper borderColor="border">
-                              <NumberIncrementStepper>
-                                <Icon as={TbChevronUp} />
-                              </NumberIncrementStepper>
-                              <NumberDecrementStepper>
-                                <Icon as={TbChevronDown} />
-                              </NumberDecrementStepper>
-                            </NumberInputStepper>
-                          </NumberInput>
-                          <ClassSelectMenu
-                            currentClass={participantsValue[index]}
-                            match={match}
-                            onSelect={(classInfo) =>
-                              setParticipantsValue((prev) => {
-                                const newParticipants = structuredClone(prev);
-                                newParticipants[index] = {
-                                  ...newParticipants[index],
-                                  ...classInfo,
-                                };
-                                return newParticipants;
-                              })
-                            }
-                          />
-                        </VStack>
-                      ))}
-                    </HStack>
-                    <Button
-                      w="full"
-                      rounded="lg"
-                      variant="outline"
-                      colorScheme="red"
-                      leftIcon={<Icon as={TbX} />}
-                      onClick={() => setParticipantsValue([])}
-                    >
-                      クリア
-                    </Button>
-                  </VStack>
-                ) : participants.length ? (
-                  <HStack
-                    w="full"
-                    justify="space-around"
-                    spacing={0}
-                    divider={
-                      <Text fontSize="xl" color="description" fontWeight="bold">
-                        ―
-                      </Text>
-                    }
-                  >
-                    {participants.map((classInfo, index) => (
-                      <VStack
-                        key={JSON.stringify(`${classInfo} ${index}`)}
-                        spacing={0}
-                        flex={1}
+            {(() => {
+              switch (editMode) {
+                case 'editor':
+                  return (
+                    <MetaEditor
+                      id={id}
+                      meta={meta}
+                      participants={participants}
+                      match={match}
+                      onSubmit={onSubmit}
+                    />
+                  );
+
+                case 'reporter':
+                  return (
+                    <MetaReporter
+                      id={id}
+                      history={editHistory}
+                      onSubmit={onSubmit}
+                    />
+                  );
+
+                default:
+                  return (
+                    <VStack w="full" spacing={4}>
+                      <Text
+                        textStyle="description"
+                        fontWeight="bold"
+                        fontSize="xs"
                       >
-                        <Text textStyle="title" fontSize="3xl">
-                          {classInfo.point}
+                        試合結果
+                      </Text>
+                      {participants.length ? (
+                        <HStack
+                          w="full"
+                          justify="space-around"
+                          spacing={0}
+                          divider={
+                            <Text
+                              fontSize="xl"
+                              color="description"
+                              fontWeight="bold"
+                            >
+                              ―
+                            </Text>
+                          }
+                        >
+                          {participants.map((classInfo, index) => (
+                            <VStack
+                              key={JSON.stringify(`${classInfo} ${index}`)}
+                              spacing={0}
+                              flex={1}
+                            >
+                              <Text textStyle="title" fontSize="3xl">
+                                {classInfo.point}
+                              </Text>
+                              <Text textStyle="description">
+                                {classInfo.type === 'teacher'
+                                  ? '職員'
+                                  : `${classInfo.grade}-${classInfo.class}`}
+                              </Text>
+                            </VStack>
+                          ))}
+                        </HStack>
+                      ) : (
+                        <Text
+                          textAlign="center"
+                          textStyle="description"
+                          fontWeight="bold"
+                        >
+                          まだ結果が分かっていません
                         </Text>
-                        <Text textStyle="description">
-                          {classInfo.type === 'teacher'
-                            ? '職員'
-                            : `${classInfo.grade}-${classInfo.class}`}
-                        </Text>
-                      </VStack>
-                    ))}
-                  </HStack>
-                ) : (
-                  <Text
-                    textAlign="center"
-                    textStyle="description"
-                    fontWeight="bold"
-                  >
-                    まだ結果が分かっていません
-                  </Text>
-                )}
-              </Box>
-              {/* eslint-enable no-nested-ternary */}
-              <StackDivider
-                borderWidth={1}
-                borderColor="border"
-                rounded="full"
-              />
-              {editMode ? (
-                <VStack w="full" align="flex-start">
-                  <Text textStyle="description" fontWeight="bold" fontSize="xs">
-                    開始時間
-                  </Text>
-                  <Input
-                    variant="flushed"
-                    type="datetime-local"
-                    textStyle="title"
-                    value={
-                      metaValue.startAt
-                        ? format(
-                            new Date(metaValue.startAt),
-                            'yyyy-MM-dd HH:mm'
-                          )
-                        : ''
-                    }
-                    onChange={(e) =>
-                      setMetaValue((prev) => ({
-                        ...prev,
-                        startAt: new Date(e.target.value).toISOString(),
-                      }))
-                    }
-                  />
-                  <Text textStyle="description" fontWeight="bold" fontSize="xs">
-                    場所
-                  </Text>
-                  <Input
-                    variant="flushed"
-                    textStyle="title"
-                    value={metaValue.location ?? ''}
-                    onChange={(e) =>
-                      setMetaValue((prev) => ({
-                        ...prev,
-                        location: e.target.value,
-                      }))
-                    }
-                  />
-                </VStack>
-              ) : (
-                <HStack
-                  w="full"
-                  justify="space-evenly"
-                  align="flex-start"
-                  spacing={4}
-                  divider={<StackDivider borderColor="border" />}
-                >
-                  <VStack spacing={1} align="flex-start">
-                    <Text
-                      textStyle="description"
-                      fontWeight="bold"
-                      fontSize="xs"
-                    >
-                      開始時間
-                    </Text>
-                    <Text textStyle="title" fontSize="xl" whiteSpace="nowrap">
-                      {meta.startAt
-                        ? format(new Date(meta.startAt), 'HH:mm')
-                        : '不明'}
-                    </Text>
-                  </VStack>
-                  <VStack spacing={1} align="flex-start">
-                    <Text
-                      textStyle="description"
-                      fontWeight="bold"
-                      fontSize="xs"
-                    >
-                      場所
-                    </Text>
-                    <Text textStyle="title" fontSize="xl">
-                      {meta.location ?? '不明'}
-                    </Text>
-                  </VStack>
-                </HStack>
-              )}
-              {editMode ? (
-                <HStack w="full" spacing={4}>
-                  <IconButton
-                    aria-label="cancel"
-                    icon={<Icon as={TbX} />}
-                    colorScheme="red"
-                    variant="outline"
-                    rounded="lg"
-                    flex={1}
-                    onClick={() => setEditMode(false)}
-                  />
-                  <IconButton
-                    aria-label="confirm changes"
-                    icon={<Icon as={TbCheck} />}
-                    rounded="lg"
-                    colorScheme="green"
-                    flex={2}
-                    onClick={() =>
-                      mutate(
-                        {
-                          meta: metaValue,
-                          participants: participantsValue,
-                        },
-                        {
-                          onSuccess: () => {
-                            setEditMode(false);
-                            onClose();
-                          },
-                        }
-                      )
-                    }
-                    isLoading={isLoading}
-                  />
-                </HStack>
-              ) : (
-                <Button
-                  w="full"
-                  leftIcon={<Icon as={TbPencil} />}
-                  rounded="lg"
-                  onClick={() => setEditMode(true)}
-                >
-                  編集する
-                </Button>
-              )}
-            </VStack>
+                      )}
+                      <StackDivider
+                        borderWidth={1}
+                        borderColor="border"
+                        rounded="full"
+                      />
+                      <HStack
+                        w="full"
+                        justify="space-evenly"
+                        align="flex-start"
+                        spacing={4}
+                        divider={<StackDivider borderColor="border" />}
+                      >
+                        <VStack spacing={1} align="flex-start">
+                          <Text
+                            textStyle="description"
+                            fontWeight="bold"
+                            fontSize="xs"
+                          >
+                            開始時間
+                          </Text>
+                          <Text
+                            textStyle="title"
+                            fontSize="xl"
+                            whiteSpace="nowrap"
+                          >
+                            {meta.startAt
+                              ? format(new Date(meta.startAt), 'HH:mm')
+                              : '不明'}
+                          </Text>
+                        </VStack>
+                        <VStack spacing={1} align="flex-start">
+                          <Text
+                            textStyle="description"
+                            fontWeight="bold"
+                            fontSize="xs"
+                          >
+                            場所
+                          </Text>
+                          <Text textStyle="title" fontSize="xl">
+                            {meta.location ?? '不明'}
+                          </Text>
+                        </VStack>
+                      </HStack>
+                      <HStack w="full">
+                        <Button
+                          w="full"
+                          leftIcon={<Icon as={TbPencil} />}
+                          rounded="lg"
+                          onClick={() => setEditMode('editor')}
+                        >
+                          編集
+                        </Button>
+                        <Button
+                          w="full"
+                          leftIcon={<Icon as={TbFlag} />}
+                          rounded="lg"
+                          onClick={() => setEditMode('reporter')}
+                        >
+                          報告
+                        </Button>
+                      </HStack>
+                    </VStack>
+                  );
+              }
+            })()}
           </PopoverBody>
         </PopoverContent>
       </Popover>
     );
   }
 );
-
-function ClassSelectMenu({
-  currentClass,
-  match,
-  onSelect,
-}: {
-  currentClass?: ClassmatchParticipant;
-  match: ClassmatchTournament['match'];
-  onSelect: (classInfo: Omit<ClassmatchParticipant, 'point'>) => void;
-}) {
-  return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rounded="lg"
-        w="full"
-        variant="outline"
-        rightIcon={<Icon as={TbChevronDown} />}
-        textStyle={currentClass?.from ? 'title' : 'description'}
-      >
-        {/* eslint-disable no-nested-ternary */}
-        {currentClass?.from
-          ? currentClass.type === 'teacher'
-            ? '職員'
-            : `${currentClass.grade}-${currentClass.class}`
-          : 'クラス'}
-        {/* eslint-enable no-nested-ternary */}
-      </MenuButton>
-      <Box>
-        <MenuList rounded="xl" shadow="xl">
-          {match?.map((tournament) => (
-            <ClassSelectMenuItem onSelect={onSelect} tournament={tournament} />
-          ))}
-        </MenuList>
-      </Box>
-    </Menu>
-  );
-}
-
-function ClassSelectMenuItem({
-  tournament,
-  onSelect,
-}: {
-  tournament: ClassmatchTournament;
-  onSelect: (classInfo: Omit<ClassmatchParticipant, 'point'>) => void;
-}) {
-  const winner = tournament.participants.reduce<ClassmatchParticipant>(
-    (prev, curr) => (prev.point > curr.point ? prev : curr),
-    { from: '', point: 0, type: 'hs', grade: '0', class: '0' }
-  );
-
-  if (!tournament.class && !winner.from)
-    return (
-      <Text
-        w="full"
-        py={2}
-        textAlign="center"
-        textStyle="description"
-        fontWeight="bold"
-      >
-        前試合の情報なし
-      </Text>
-    );
-
-  return (
-    <MenuItem
-      textStyle="title"
-      onClick={() =>
-        onSelect({
-          from: tournament.id,
-          ...(tournament.class ?? {
-            type: winner.type,
-            grade: winner.grade,
-            class: winner.class,
-          }),
-        })
-      }
-    >
-      {/* eslint-disable no-nested-ternary */}
-      {tournament.class
-        ? tournament.class.type === 'teacher'
-          ? '職員'
-          : `${tournament.class.grade}-${tournament.class.class}`
-        : winner.type === 'teacher'
-        ? '職員'
-        : `${winner.grade}-${winner.class}`}
-      {/* eslint-enable no-nested-ternary */}
-    </MenuItem>
-  );
-}
 
 export default TournamentMetaPopover;

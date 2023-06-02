@@ -7,11 +7,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  VStack,
+  Image,
+  Box,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import {
+  useClassmatchSportInfo,
   useClassmatchSports,
-  useClassmatchTournament,
 } from '@/hooks/classmatch';
 import { overlayAtom } from '@/store/overlay';
 import Tournament from './Tournament';
@@ -20,9 +24,10 @@ import Error from '../cards/Error';
 
 const TournamentModal = React.memo(
   ({ year, season }: { year: number; season: ClassmatchSeason }) => {
+    const invertValue = useColorModeValue('0%', '87.2%');
     const [{ classmatchTournament }, setOverlay] = useRecoilState(overlayAtom);
 
-    const { data, isLoading, error } = useClassmatchTournament(
+    const { data, isLoading, error } = useClassmatchSportInfo(
       { year, season, sport: classmatchTournament?.sport },
       { enabled: !!classmatchTournament }
     );
@@ -62,7 +67,16 @@ const TournamentModal = React.memo(
             ) : error ? (
               <Error error={error} />
             ) : (
-              <Tournament {...data} />
+              <VStack spacing={0}>
+                <Box p={4}>
+                  <Image
+                    src={`/classmatch/${classmatchTournament?.year}/${data.map}.png`}
+                    rounded="xl"
+                    filter={`invert(${invertValue})`}
+                  />
+                </Box>
+                <Tournament {...data.tournament} />
+              </VStack>
             )}
             {/* eslint-enable no-nested-ternary */}
           </ModalBody>

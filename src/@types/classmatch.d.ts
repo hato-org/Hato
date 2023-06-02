@@ -13,7 +13,10 @@ interface ClassmatchSport {
   name: string;
 }
 
-type Classmatch = Record<ClassmatchSports, ClassmatchTournament>;
+type ClassmatchSportInfo = ClassmatchSport & {
+  map: string;
+  tournament: ClassmatchTournament;
+};
 
 type ClassmatchTournament =
   | {
@@ -24,6 +27,7 @@ type ClassmatchTournament =
       match: [ClassmatchTournament, ClassmatchTournament];
       class?: never;
       meta: ClassmatchTournamentMeta;
+      editHistory?: ClassmatchTournamentEditHistory[];
     }
   | {
       id: string;
@@ -33,6 +37,7 @@ type ClassmatchTournament =
       match?: never;
       class: ClassmatchClass;
       meta: ClassmatchTournamentMeta;
+      editHistory?: ClassmatchTournamentEditHistory[];
     };
 
 interface ClassmatchClass {
@@ -62,4 +67,9 @@ interface ClassmatchLiveStream {
   type: 'youtube' | 'instagram';
   name: string;
   url: string;
+}
+
+interface ClassmatchTournamentEditHistory {
+  userId: string;
+  date: string;
 }

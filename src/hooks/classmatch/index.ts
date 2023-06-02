@@ -23,7 +23,7 @@ export const useClassmatchSports = (
   );
 };
 
-export const useClassmatchTournament = (
+export const useClassmatchSportInfo = (
   {
     year,
     season,
@@ -33,16 +33,16 @@ export const useClassmatchTournament = (
     season: ClassmatchSeason;
     sport?: ClassmatchSportId;
   },
-  options?: UseQueryOptions<ClassmatchTournament, AxiosError>
+  options?: UseQueryOptions<ClassmatchSportInfo, AxiosError>
 ) => {
   const { client } = useClient();
 
-  return useQuery<ClassmatchTournament, AxiosError>(
+  return useQuery<ClassmatchSportInfo, AxiosError>(
     ['classmatch', year, season, sport],
     async () =>
       (
-        await client.get('/classmatch/tournament', {
-          params: { year, season, sport },
+        await client.get(`/classmatch/${sport}`, {
+          params: { year, season },
         })
       ).data,
     options
