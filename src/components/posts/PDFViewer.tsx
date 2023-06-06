@@ -20,7 +20,7 @@ import {
 import { useQuery, useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX } from 'react-icons/tb';
 import { AxiosError } from 'axios';
-import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
+import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import { useClient } from '@/modules/client';
@@ -32,6 +32,11 @@ interface PDFViewerProps {
   onClose: () => void;
   attachment: Attachment;
 }
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url
+).toString();
 
 const PDFViewer = React.memo(
   ({ isOpen, onClose, attachment }: PDFViewerProps) => {
@@ -109,7 +114,7 @@ const PDFViewer = React.memo(
               ) : (
                 <Document
                   file={{
-                    data,
+                    data: structuredClone(data),
                   }}
                   onLoadSuccess={(pdf) => {
                     setPageCount(pdf.numPages);

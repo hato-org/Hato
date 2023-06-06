@@ -1,50 +1,26 @@
+import { useMemo } from 'react';
 import { Button, Center, Code, Heading, VStack } from '@chakra-ui/react';
 import { TbLoader, TbRotate } from 'react-icons/tb';
 import { useRouteError } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@/modules/auth';
-import { useClient } from '@/modules/client';
-import { useUser } from '@/hooks/user';
+import { useReport } from '@/hooks/report';
 
 function ErrorFallback() {
   const error = useRouteError() as Error;
   const { logout } = useAuth();
-  const { data: user } = useUser();
-  const { client } = useClient();
 
   console.error(error);
 
-  const { mutate } = useMutation(async () =>
-    client.post('/report', {
-      content: null,
-      embeds: [
-        {
-          title: 'Report',
-          url: `https://hato.cf/`,
-          color: 5814783,
-          fields: [
-            {
-              name: 'Report reason',
-              value: 'Application Error',
-            },
-            {
-              name: 'Error Message',
-              value: error.message,
-            },
-          ],
-          author: {
-            name: user?.name,
-            icon_url: user?.avatar,
-          },
-          footer: {
-            text: user?.email,
-            icon_url: user?.avatar,
-          },
-          timestamp: new Date().toISOString(),
-        },
-      ],
-      attachments: [],
-    })
+  const { mutate } = useReport();
+
+  const report = useMemo<Report>(
+    () => ({
+      type: 'error',
+      title: error.name,
+      description: error.message,
+      url: window.location.toString(),
+    }),
+    [error]
   );
 
   return (
@@ -58,8 +34,8 @@ function ErrorFallback() {
           colorScheme="blue"
           rounded="xl"
           onClick={() => {
-            if (!import.meta.env.DEV) mutate();
-            window.location.reload();
+            if (!import.meta.env.DEV) mutate(report);
+            window.location.assign('/');
           }}
         >
           再読み込み
@@ -68,7 +44,7 @@ function ErrorFallback() {
           leftIcon={<TbLoader />}
           rounded="xl"
           onClick={async () => {
-            if (!import.meta.env.DEV) mutate();
+            if (!import.meta.env.DEV) mutate(report);
             logout();
             const dbs = await window.indexedDB?.databases();
             dbs?.forEach((db) => {
