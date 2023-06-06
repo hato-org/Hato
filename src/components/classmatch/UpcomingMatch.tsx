@@ -193,9 +193,9 @@ const Match = React.memo(
           boxSize={3}
           bg={isPlaying ? 'blue.400' : 'border'}
           shadow="sm"
-          left={-2}
+          left={2}
         />
-        <VStack pl={2} spacing={-1} align="flex-start">
+        <VStack pl={6} spacing={-1} align="flex-start">
           {startAt && (
             <Text textStyle="title" fontSize="xs">
               {format(new Date(startAt), 'MM/dd')}
@@ -211,7 +211,9 @@ const Match = React.memo(
         </VStack>
         <Spacer />
         <VStack align="flex-end" spacing={0}>
-          <Text textStyle="title">{name}</Text>
+          <Text textStyle="title" noOfLines={1}>
+            {name}
+          </Text>
           <Text textStyle="description" fontWeight="bold">
             {location}
           </Text>
