@@ -19,6 +19,7 @@ import {
   Center,
   Spacer,
   Box,
+  Icon,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -131,14 +132,14 @@ function EventDetail() {
                 icon={<TbDots />}
                 isRound
               />
-              <MenuList shadow="lg">
+              <MenuList rounded="xl" shadow="lg">
                 {data?.owner === user.email || user.role === 'admin' ? (
                   <>
                     {user.role === 'admin' && (
                       <>
                         <MenuItem
                           textStyle="title"
-                          icon={<TbFlag />}
+                          icon={<Icon as={TbFlag} />}
                           onClick={reportOnOpen}
                         >
                           報告
@@ -146,16 +147,20 @@ function EventDetail() {
                         <ReportModal
                           isOpen={reportOpen}
                           onClose={reportOnClose}
-                          event={data}
+                          url={window.location.toString()}
                         />
                       </>
                     )}
-                    <MenuItem textStyle="title" icon={<TbEdit />} isDisabled>
+                    <MenuItem
+                      textStyle="title"
+                      icon={<Icon as={TbEdit} boxSize={4} />}
+                      isDisabled
+                    >
                       編集
                     </MenuItem>
                     <MenuItem
                       textStyle="title"
-                      icon={<TbTrash />}
+                      icon={<Icon as={TbTrash} boxSize={4} />}
                       color="red"
                       onClick={deleteOnOpen}
                     >
@@ -168,7 +173,7 @@ function EventDetail() {
                       isCentered
                     >
                       <AlertDialogOverlay />
-                      <AlertDialogContent rounded="xl">
+                      <AlertDialogContent p={2} bg="panel" rounded="xl">
                         <AlertDialogHeader>イベントの削除</AlertDialogHeader>
                         <AlertDialogBody>
                           <Center>
@@ -177,8 +182,9 @@ function EventDetail() {
                             </Text>
                           </Center>
                         </AlertDialogBody>
-                        <AlertDialogFooter>
+                        <AlertDialogFooter w="full" gap={4}>
                           <Button
+                            w="full"
                             variant="ghost"
                             rounded="lg"
                             onClick={deleteOnClose}
@@ -186,7 +192,7 @@ function EventDetail() {
                             キャンセル
                           </Button>
                           <Button
-                            ml={4}
+                            w="full"
                             colorScheme="red"
                             rounded="lg"
                             onClick={() => deleteSubmit()}
@@ -200,13 +206,17 @@ function EventDetail() {
                   </>
                 ) : (
                   <>
-                    <MenuItem icon={<TbFlag />} onClick={reportOnOpen}>
+                    <MenuItem
+                      textStyle="title"
+                      icon={<Icon as={TbFlag} />}
+                      onClick={reportOnOpen}
+                    >
                       報告
                     </MenuItem>
                     <ReportModal
                       isOpen={reportOpen}
                       onClose={reportOnClose}
-                      event={data}
+                      url={window.location.toString()}
                     />
                   </>
                 )}
