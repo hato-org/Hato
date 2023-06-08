@@ -11,7 +11,7 @@
     "test": "vitest run --passWithNoTests",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "yarn lint --fix",
-    "lint:pre-commit": "npx lint-staged",
+    "lint:pre-commit": "lint-staged",
     "format": "prettier --write \"**/*.+(js|json|yml|ts|tsx)\"",
     "prepare": "husky install"
   },

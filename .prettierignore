@@ -3,3 +3,4 @@ eslintrc.json
 public/
 dist/
 dev-dist/
+node_modules/
