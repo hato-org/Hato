@@ -25,7 +25,7 @@ import { jwtAtom } from '@/store/auth';
 
 function Login() {
   const jwt = useRecoilValue(jwtAtom);
-  const { onCopy, hasCopied } = useClipboard(window.origin);
+  const { onCopy, hasCopied } = useClipboard(window.location.toString());
   const [searchParams] = useSearchParams();
   const isEmbedBrowser = useMemo(
     () => /(Instagram|Line)/.test(navigator.userAgent),

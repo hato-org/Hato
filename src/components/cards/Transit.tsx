@@ -56,23 +56,21 @@ export default function Transit() {
           <Icon as={TbChevronRight} boxSize={5} />
         </HStack>
       </LinkBox>
-      <HStack w="100%" p={2}>
-        <VStack align="flex-start" w="100%">
-          <DiaStatus />
-          <Text textStyle="title" fontSize="lg">
-            長野方面
-          </Text>
-          <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
-            <TransitButton transits={data?.nagano} />
-          </Skeleton>
-          <Text textStyle="title" fontSize="lg">
-            上田方面
-          </Text>
-          <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
-            <TransitButton transits={data?.ueda} />
-          </Skeleton>
-        </VStack>
-      </HStack>
+      <VStack p={2} align="flex-start" w="100%">
+        <DiaStatus />
+        <Text textStyle="title" fontSize="lg">
+          長野方面
+        </Text>
+        <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
+          <TransitButton transits={data?.nagano} />
+        </Skeleton>
+        <Text textStyle="title" fontSize="lg">
+          上田方面
+        </Text>
+        <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
+          <TransitButton transits={data?.ueda} />
+        </Skeleton>
+      </VStack>
     </VStack>
   );
 }
