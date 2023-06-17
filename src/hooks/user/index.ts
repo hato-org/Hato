@@ -4,7 +4,6 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useUser = () => {
   const { client } = useClient();
   const [user, setUser] = useRecoilState(userAtom);
@@ -19,6 +18,7 @@ export const useUser = () => {
       return res.user;
     },
     {
+      refetchInterval: 1000 * 60 * 10,
       initialData: user!,
       onSuccess: (newUser) => {
         setUser(newUser);

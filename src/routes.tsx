@@ -105,6 +105,10 @@ const router = createBrowserRouter([
             path: 'theme',
             element: <Setting.Theme />,
           },
+          {
+            path: 'notification',
+            element: <Setting.Notification />,
+          },
         ],
       },
       {

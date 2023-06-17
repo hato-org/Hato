@@ -46,7 +46,11 @@ export default defineConfig(({ mode }) => {
       react(),
       tsConfigPaths(),
       VitePWA({
+        strategies: 'injectManifest',
+        srcDir: 'src/service-worker',
+        filename: 'sw.ts',
         registerType: 'prompt',
+        injectRegister: 'auto',
         workbox: {
           globPatterns: ['**/*.{js,css,html,ico,png,gif,svg,woff,woff2}'],
         },
@@ -83,6 +87,7 @@ export default defineConfig(({ mode }) => {
         },
         devOptions: {
           enabled: true,
+          type: 'module',
         },
       }),
     ],

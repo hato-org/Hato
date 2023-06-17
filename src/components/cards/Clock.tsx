@@ -76,7 +76,7 @@ export default function Clock() {
         )}
       </VStack>
       <Spacer />
-      <HStack onClick={onToggle}>
+      <HStack onClick={onToggle} _hover={{ cursor: 'pointer' }}>
         <Text textStyle="title" fontSize="4xl">
           {format(date, 'HH')}
           <Text

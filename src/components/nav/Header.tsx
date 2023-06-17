@@ -21,6 +21,11 @@ interface HeaderProps extends CenterProps {
   withMenu?: boolean;
 }
 
+onlineManager.setEventListener((setOnline) => () => {
+  window.addEventListener('online', () => setOnline(true));
+  window.addEventListener('offline', () => setOnline(false));
+});
+
 const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
   const border = useColorModeValue('border', 'transparent');
   const offlineBg = useColorModeValue('bg.300', 'bg.700');

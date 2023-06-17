@@ -108,6 +108,13 @@ function Top() {
           href="theme"
         />
       </SettingCategory>
+      <SettingCategory title="通知">
+        <SettingButton
+          label="プッシュ通知"
+          description="プッシュ通知のオン・オフを設定できます。"
+          href="notification"
+        />
+      </SettingCategory>
       <SettingCategory title="開発者向け">
         <SettingButton
           label="APIドキュメント"
@@ -118,13 +125,13 @@ function Top() {
         </SettingButton>
       </SettingCategory>
       <SettingCategory title="その他">
-        <SettingButton
+        {/* <SettingButton
           label="時間割追加リクエスト"
           description="時間割データの追加をリクエストできます。"
           onClick={() => window.open('https://forms.gle/XcmNLT7PJry9iuxy5')}
         >
           <Icon as={TbExternalLink} />
-        </SettingButton>
+        </SettingButton> */}
         <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
