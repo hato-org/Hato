@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
         filename: 'sw.ts',
         registerType: 'prompt',
         injectRegister: 'auto',
-        workbox: {
+        injectManifest: {
           globPatterns: ['**/*.{js,css,html,ico,png,gif,svg,woff,woff2}'],
         },
         manifest: {

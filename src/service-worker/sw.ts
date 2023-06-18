@@ -8,6 +8,10 @@ import { onNotificationClick, onPush } from './push';
 
 declare const self: ServiceWorkerGlobalScope;
 
+self.addEventListener('activate', (event) =>
+  event.waitUntil(self.clients.claim())
+);
+
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
@@ -16,9 +20,9 @@ const entries = self.__WB_MANIFEST;
 if (import.meta.env.DEV)
   entries.push({ url: '/', revision: Math.random().toString() });
 
-precacheAndRoute(entries);
-
 cleanupOutdatedCaches();
+
+precacheAndRoute(entries);
 
 const allowlist = import.meta.env.DEV ? [/^\/$/] : undefined;
 const denylist = [/^\/api\//, /^\/sw.js$/];
