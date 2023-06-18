@@ -3,11 +3,9 @@ import {
   HStack,
   IconButton,
   Heading,
-  Center,
   Spacer,
   Link,
   Icon,
-  Box,
 } from '@chakra-ui/react';
 import { TbExternalLink } from 'react-icons/tb';
 import { Outlet } from 'react-router-dom';
@@ -15,7 +13,7 @@ import Header from '@/components/nav/Header';
 
 function Posts() {
   return (
-    <Box>
+    <>
       <Helmet>
         <title>掲示物 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -37,10 +35,8 @@ function Posts() {
           />
         </HStack>
       </Header>
-      <Center mb={16}>
-        <Outlet />
-      </Center>
-    </Box>
+      <Outlet />
+    </>
   );
 }
 

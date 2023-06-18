@@ -12,25 +12,21 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { onlineManager, useIsFetching } from '@tanstack/react-query';
+import { useIsFetching } from '@tanstack/react-query';
 import { TbCloudOff, TbMenu2 } from 'react-icons/tb';
 import { useSetRecoilState } from 'recoil';
 import { overlayAtom } from '@/store/overlay';
+import { useIsOnline } from '@/hooks/common/online';
 
 interface HeaderProps extends CenterProps {
   withMenu?: boolean;
 }
 
-onlineManager.setEventListener((setOnline) => () => {
-  window.addEventListener('online', () => setOnline(true));
-  window.addEventListener('offline', () => setOnline(false));
-});
-
 const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
   const border = useColorModeValue('border', 'transparent');
   const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
-  const isOnline = onlineManager.isOnline();
+  const isOnline = useIsOnline();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const setOverlay = useSetRecoilState(overlayAtom);
 

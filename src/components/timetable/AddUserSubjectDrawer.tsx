@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Drawer,
@@ -43,6 +43,7 @@ const AddUserSubjectDrawer = React.memo(
       onOpen: suggestOnOpen,
       onClose: suggestOnClose,
     } = useDisclosure();
+    const suggestContainerRef = useRef<HTMLDivElement>(null);
     const [createMode, setCreateMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const { data: user } = useUser();
@@ -68,6 +69,14 @@ const AddUserSubjectDrawer = React.memo(
       search({ name: '.*', meta });
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [suggestIsOpen]);
+
+    useEffect(() => {
+      if (!searchResult?.length)
+        suggestContainerRef.current?.scrollTo({
+          top: 1000000,
+          behavior: 'smooth',
+        });
+    }, [searchResult]);
 
     return (
       <Drawer
@@ -188,6 +197,7 @@ const AddUserSubjectDrawer = React.memo(
             </VStack>
             <Portal>
               <VStack
+                ref={suggestContainerRef}
                 position="fixed"
                 bottom={0}
                 bg="panel"
