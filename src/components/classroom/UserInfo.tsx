@@ -48,7 +48,13 @@ const UserInfo = React.memo(
             <Text textStyle="title">{user?.name?.fullName}</Text>
           )}
         </Skeleton>
-        <Skeleton minH={4} minW={20} rounded="md" isLoaded={!courseLoading}>
+        <Skeleton
+          minH={4}
+          minW={20}
+          rounded="md"
+          isLoaded={!courseLoading}
+          onClick={(e) => e.stopPropagation()}
+        >
           {courseError ? (
             <HStack spacing={1}>
               <Icon as={TbAlertCircle} boxSize={4} color="yellow.400" />
@@ -62,6 +68,7 @@ const UserInfo = React.memo(
               to={`/classroom/course/${course?.id}`}
               color="description"
               fontSize="xs"
+              noOfLines={1}
             >
               {course?.name}
             </Link>

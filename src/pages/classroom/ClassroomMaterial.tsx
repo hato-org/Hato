@@ -2,40 +2,37 @@ import {
   Box,
   Heading,
   HStack,
-  Text,
-  VStack,
   Icon,
-  StackDivider,
-  Spacer,
   IconButton,
   Link,
-  Wrap,
   Skeleton,
-  Fade,
   SkeletonText,
-  Center,
+  Spacer,
+  StackDivider,
+  Text,
+  VStack,
+  Wrap,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import { format } from 'date-fns/esm';
 import { useRecoilState } from 'recoil';
-import { useGCCourseWork } from '@/hooks/classroom/coursework';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
-import { useGCUserInfo } from '@/hooks/classroom/user';
+import { useGCCourseworkMaterial } from '@/hooks/classroom/material';
 import Material from '@/components/classroom/Material';
-import { generateDateFromGCDate } from '@/utils/classroom';
+import { useGCUserInfo } from '@/hooks/classroom/user';
 import Error from '@/components/cards/Error';
 import { GCBookmarkAtom } from '@/store/classroom';
 
-export default function ClassroomCoursework() {
-  const { id, courseworkId } = useParams();
+export default function ClassroomMaterial() {
+  const { id, materialId } = useParams();
   const [bookmarks, setBookmarks] = useRecoilState(GCBookmarkAtom);
-  const { data, isLoading, error } = useGCCourseWork({
+
+  const { data, isLoading, error } = useGCCourseworkMaterial({
     courseId: id,
-    id: courseworkId,
+    id: materialId,
   });
   const { data: userInfo, isLoading: userLoading } = useGCUserInfo(
     data?.creatorUserId
@@ -45,9 +42,9 @@ export default function ClassroomCoursework() {
     (bookmark) =>
       JSON.stringify(bookmark) ===
       JSON.stringify({
-        type: 'courseWork',
+        type: 'courseWorkMaterial',
         courseId: id,
-        id: courseworkId,
+        id: materialId,
       })
   );
 
@@ -60,7 +57,7 @@ export default function ClassroomCoursework() {
         <HStack w="full">
           <BackButton />
           <Heading size="md" py={4}>
-            課題の詳細
+            資料の詳細
           </Heading>
           <Spacer />
           <IconButton
@@ -82,17 +79,17 @@ export default function ClassroomCoursework() {
                       (bookmark) =>
                         JSON.stringify(bookmark) !==
                         JSON.stringify({
-                          type: 'courseWork',
+                          type: 'courseWorkMaterial',
                           courseId: id,
-                          id: courseworkId,
+                          id: materialId,
                         })
                     )
                   : [
                       ...currVal,
                       {
-                        type: 'courseWork',
+                        type: 'courseWorkMaterial',
                         courseId: id ?? '',
-                        id: courseworkId ?? '',
+                        id: materialId ?? '',
                       },
                     ]
               )
@@ -101,7 +98,7 @@ export default function ClassroomCoursework() {
           <IconButton
             aria-label="open in browser"
             as={Link}
-            href={data?.alternateLink}
+            href={data?.alternateLink ?? ''}
             isExternal
             size="lg"
             variant="ghost"
@@ -110,7 +107,6 @@ export default function ClassroomCoursework() {
           />
         </HStack>
       </Header>
-
       {error ? (
         <Error error={error} />
       ) : (
@@ -133,12 +129,14 @@ export default function ClassroomCoursework() {
             </VStack>
           </HStack>
           <SkeletonText
-            noOfLines={2}
-            skeletonHeight={2}
-            spacing={4}
+            w="full"
+            mt={2}
+            noOfLines={3}
+            skeletonHeight={4}
+            spacing={2}
             isLoaded={!isLoading}
           >
-            <Text whiteSpace="pre-wrap" textStyle="description">
+            <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.description}
             </Text>
           </SkeletonText>
@@ -147,42 +145,37 @@ export default function ClassroomCoursework() {
               <Material key={JSON.stringify(material)} {...material} />
             ))}
           </Wrap>
-          <Fade in={!!data} style={{ width: '100%' }}>
-            <StackDivider borderWidth={1} mb={4} />
-            <VStack align="flex-start">
-              <HStack>
-                <Text textStyle="title" fontSize="xl">
-                  期限
-                </Text>
-                <Spacer />
-                <Text>
-                  {data?.dueDate
-                    ? format(
-                        generateDateFromGCDate({
-                          date: data.dueDate,
-                          timeOfDay: data.dueTime,
-                        }),
-                        'MM/dd HH:mm'
-                      )
-                    : 'なし'}
-                </Text>
-              </HStack>
-              {data?.maxPoints && (
-                <HStack>
-                  <Text textStyle="title" fontSize="xl">
-                    満点
-                  </Text>
-                  <Spacer />
-                  <Text>{data.maxPoints}点</Text>
-                </HStack>
-              )}
-              <Center w="full" pt={4}>
-                <Text textStyle="description" fontWeight="bold">
-                  課題の提出はClassroom上で行ってください
-                </Text>
-              </Center>
-            </VStack>
-          </Fade>
+          {/* <Fade in={!!data} style={{ width: '100%' }}>
+						<StackDivider borderWidth={1} mb={4} />
+						<VStack align="flex-start">
+							<HStack>
+								<Text textStyle="title" fontSize="xl">
+									期限
+								</Text>
+								<Spacer />
+								<Text>
+									{data?.dueDate
+										? format(
+												generateDateFromGCDate({
+													date: data.dueDate,
+													timeOfDay: data.dueTime,
+												}),
+												'MM/dd HH:mm'
+											)
+										: 'なし'}
+								</Text>
+							</HStack>
+							{data?.maxPoints && (
+								<HStack>
+									<Text textStyle="title" fontSize="xl">
+										満点
+									</Text>
+									<Spacer />
+									<Text>{data.maxPoints}点</Text>
+								</HStack>
+							)}
+						</VStack>
+					</Fade> */}
         </VStack>
       )}
     </Box>

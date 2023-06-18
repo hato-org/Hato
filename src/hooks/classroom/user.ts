@@ -10,6 +10,7 @@ export const useGCUserInfo = (userId?: string | null) => {
     ['google', 'user', userId],
     async () => (await client.get(`/classroom/user/${userId}`)).data,
     {
+      staleTime: 1000 * 60 * 60 * 24, // 1 day
       retry: false,
       retryOnMount: false,
       enabled: !!userId,
