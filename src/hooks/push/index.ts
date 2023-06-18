@@ -31,6 +31,7 @@ export const usePushSubscribe = () => {
       onError: () => {
         toast({
           title: '有効化に失敗しました',
+          description: 'システムの通知設定を確認してください',
           status: 'error',
         });
       },

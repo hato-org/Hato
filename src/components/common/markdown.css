@@ -595,10 +595,10 @@
   height: 1em;
 }
 
-.changelog ::before {
+/* .changelog ::before {
   display: table;
   content: '';
-}
+} */
 
 .changelog ::after {
   display: table;
