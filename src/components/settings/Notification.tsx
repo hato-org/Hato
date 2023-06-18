@@ -35,6 +35,8 @@ export default function Notification() {
   const { mutate: unsubscribe, isLoading: unsubscribeLoading } =
     usePushUnsubscribe();
 
+  const isPushAvailable = !!pushPermission && pushPermission !== 'denied';
+
   return (
     <MotionCenter
       w="100%"
@@ -62,10 +64,7 @@ export default function Notification() {
                   <Switch
                     size="lg"
                     isDisabled={
-                      subscribeLoading ||
-                      unsubscribeLoading ||
-                      !pushPermission ||
-                      pushPermission === 'denied'
+                      subscribeLoading || unsubscribeLoading || !isPushAvailable
                     }
                     isChecked={!!pushSubscription}
                     onChange={() =>
@@ -77,7 +76,7 @@ export default function Notification() {
             }}
           />
           <Box w="full">
-            <Collapse in={!pushPermission || pushPermission === 'denied'}>
+            <Collapse in={!isPushAvailable}>
               <Alert status="warning" rounded="xl">
                 <VStack w="full" align="flex-start">
                   <HStack>

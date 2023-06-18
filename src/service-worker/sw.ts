@@ -28,7 +28,10 @@ const allowlist = import.meta.env.DEV ? [/^\/$/] : undefined;
 const denylist = [/^\/api\//, /^\/sw.js$/];
 
 registerRoute(
-  new NavigationRoute(createHandlerBoundToURL('/'), { allowlist, denylist })
+  new NavigationRoute(createHandlerBoundToURL('/index.html'), {
+    allowlist,
+    denylist,
+  })
 );
 
 self.addEventListener('push', onPush);
