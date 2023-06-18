@@ -55,9 +55,17 @@ function Info() {
                 <Text as="span" textStyle="link" onClick={onATHSOpen}>
                   「ホーム画面に追加」
                 </Text>
-                すると、
+                と
+                <Text
+                  textStyle="link"
+                  as={RouterLink}
+                  to="/settings/notification"
+                >
+                  プッシュ通知
+                </Text>
+                で、
                 <br />
-                より便利に使えるようになります
+                さらに便利に使えるようになります
               </Text>
             </VStack>
           )}
