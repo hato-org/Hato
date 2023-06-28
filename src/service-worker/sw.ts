@@ -18,7 +18,7 @@ self.addEventListener('message', (event) => {
 
 const entries = self.__WB_MANIFEST;
 if (import.meta.env.DEV)
-  entries.push({ url: '/', revision: Math.random().toString() });
+  entries.push({ url: '/index.html', revision: Math.random().toString() });
 
 cleanupOutdatedCaches();
 
