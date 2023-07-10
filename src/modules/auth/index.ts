@@ -1,10 +1,10 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import axios, { AxiosError } from 'axios';
+import { useSetRecoilState } from 'recoil';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { jwtAtom, userAtom } from '@/store/auth';
 import { unregister } from '@/utils/serviceWorker';
 
@@ -15,7 +15,7 @@ const API_URL = import.meta.env.DEV
 // eslint-disable-next-line import/prefer-default-export
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
-  const [user, setUser] = useRecoilState(userAtom);
+  const setUser = useSetRecoilState(userAtom);
   const [loginLoading, setLoginLoading] = useState(false);
   const setJWT = useSetRecoilState(jwtAtom);
   const toast = useToast({
@@ -121,36 +121,5 @@ export const useAuth = (scopes?: string[]) => {
     navigate('/');
   }, [setUser, setJWT, queryClient, navigate]);
 
-  const update = useMutation<User, AxiosError, Partial<User>>(
-    async (newUser) =>
-      (
-        await axios.post(
-          '/user',
-          {
-            ...newUser,
-            _id: user?._id,
-          },
-          {
-            baseURL: API_URL,
-          }
-        )
-      ).data,
-    {
-      onSuccess: (newUser) => {
-        queryClient.invalidateQueries(['user', 'profile']);
-        queryClient.setQueryData(['user', newUser._id], newUser);
-        setUser(newUser);
-      },
-      onError: (error) => {
-        console.error(error);
-        toast({
-          title: '保存できませんでした',
-          description: error.message,
-          status: 'error',
-        });
-      },
-    }
-  );
-
-  return { loginLoading, login, logout, update };
+  return { loginLoading, login, logout };
 };

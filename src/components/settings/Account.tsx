@@ -34,14 +34,13 @@ import {
   TbExternalLink,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/modules/auth';
 import {
   useClassList,
   useCourseList,
   useGradeList,
   useProfile,
 } from '@/hooks/info';
-import { useUser } from '@/hooks/user';
+import { useUser, useUserMutation } from '@/hooks/user';
 import SettingButton from './Button';
 import { MotionCenter } from '../motion';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
@@ -50,9 +49,7 @@ import SettingCategory from './Category';
 import Error from '../cards/Error';
 
 function Account() {
-  const {
-    update: { mutate: update, isLoading },
-  } = useAuth();
+  const { mutate: update, isLoading } = useUserMutation();
   const { data: user } = useUser();
   const queryClient = useQueryClient();
   const { onCopy, hasCopied } = useClipboard(user.apiKey);
