@@ -76,7 +76,7 @@ export const useAuth = (scopes?: string[]) => {
         status,
         data: { jwt, user: userData },
       } = await axios.post<LoginResponse>(
-        '/user/login',
+        '/auth/login',
         { code },
         { baseURL: API_URL }
       );
