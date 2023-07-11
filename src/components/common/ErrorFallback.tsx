@@ -13,7 +13,7 @@ function ErrorFallback() {
 
   const { mutate } = useReport();
 
-  const report = useMemo<Report>(
+  const report = useMemo<ReportSchema>(
     () => ({
       type: 'error',
       title: error.name,

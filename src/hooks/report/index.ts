@@ -11,7 +11,7 @@ export const useReport = () => {
   });
   const { client } = useClient();
 
-  return useMutation<any, AxiosError, Report>(
+  return useMutation<any, AxiosError, ReportSchema>(
     async (report) => (await client.post('/report', report)).data,
     {
       onSuccess: () => {
