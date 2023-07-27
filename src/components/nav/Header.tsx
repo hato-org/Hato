@@ -17,6 +17,7 @@ import { TbCloudOff, TbMenu2 } from 'react-icons/tb';
 import { useSetRecoilState } from 'recoil';
 import { overlayAtom } from '@/store/overlay';
 import { useIsOnline } from '@/hooks/common/online';
+import StatusBanner from './StatusBanner';
 
 interface HeaderProps extends CenterProps {
   withMenu?: boolean;
@@ -51,6 +52,7 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
       zIndex={10}
       {...rest}
     >
+      <StatusBanner />
       <Box w="100%">
         <Collapse in={!isOnline}>
           <HStack w="100%" justify="center" py={1} bg={offlineBg}>

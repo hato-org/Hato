@@ -17,6 +17,7 @@ import {
   StackDivider,
   Box,
   ButtonGroup,
+  Link,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -204,14 +205,13 @@ function Top() {
         <ButtonGroup rounded="lg" variant="ghost">
           <Button
             leftIcon={<TbBrandGithub />}
-            onClick={() => window.open(import.meta.env.VITE_REPO_URL)}
+            as={Link}
+            isExternal
+            href={import.meta.env.VITE_REPO_URL}
           >
             GitHub
           </Button>
-          <Button
-            leftIcon={<TbActivity />}
-            onClick={() => window.open(import.meta.env.VITE_STATUSPAGE_URL)}
-          >
+          <Button as={RouterLink} to="/status" leftIcon={<TbActivity />}>
             サービス稼働状況
           </Button>
         </ButtonGroup>

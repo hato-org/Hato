@@ -69,7 +69,7 @@ export function SideMenuDrawer() {
     <Portal>
       <Drawer isOpen={overlay.menu} onClose={onClose} placement="left">
         <DrawerOverlay />
-        <DrawerContent bg="panel">
+        <DrawerContent bg="panel" roundedRight="2xl">
           <DrawerCloseButton top={9} right={8} />
           <DrawerBody p={4}>
             <MenuBody />

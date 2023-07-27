@@ -12,6 +12,7 @@ const Events = React.lazy(() => import('./pages/Events'));
 // const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const EventDetail = React.lazy(() => import('./pages/EventDetail'));
 const Home = React.lazy(() => import('./pages/Home'));
+const Status = React.lazy(() => import('./pages/Status'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const Timetable = React.lazy(() => import('./pages/Timetable'));
 const MyTimetable = React.lazy(() => import('./pages/MyTimetable'));
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
             element: <Setting.Notification />,
           },
         ],
+      },
+      {
+        path: 'status',
+        element: <Status />,
       },
       {
         path: 'timetable',
