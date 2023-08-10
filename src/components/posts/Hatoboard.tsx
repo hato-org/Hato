@@ -105,7 +105,7 @@ const Hatoboard = React.memo(() => {
       <ChakraPullToRefresh
         w="100%"
         pt={4}
-        pb={8}
+        pb={24}
         onRefresh={async () => {
           await Promise.all([
             queryClient.invalidateQueries(['posts', 'hatoboard']),

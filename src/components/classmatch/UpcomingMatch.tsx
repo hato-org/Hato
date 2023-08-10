@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -36,6 +36,17 @@ const UpcomingMatch = React.memo(
       class: classNum,
     });
 
+    const upcomingMatches = useMemo(
+      () =>
+        data?.filter(
+          ({ startAt }) =>
+            new Date(startAt ?? '').getTime() -
+              new Date(Date.now() - 1000 * 60 * 30).getTime() >
+            0
+        ),
+      [data]
+    );
+
     if (isLoading) return <Loading />;
     if (error) return <Error error={error} />;
 
@@ -52,26 +63,16 @@ const UpcomingMatch = React.memo(
           defaultClass={user.class}
           direction="row"
         />
-        {data?.length ? (
+        {upcomingMatches?.length ? (
           <Box w="full">
             <Collapse
               startingHeight={(data?.length ?? 0) > 3 ? 220 : 0}
               in={isOpen}
             >
               <VStack w="full" spacing={0}>
-                {data
-                  ?.filter(
-                    ({ startAt }) =>
-                      new Date(startAt ?? '').getTime() -
-                        new Date(Date.now() - 1000 * 60 * 30).getTime() >
-                      0
-                  )
-                  .map((upcoming) => (
-                    <Match
-                      key={upcoming.matchId + upcoming.name}
-                      {...upcoming}
-                    />
-                  ))}
+                {upcomingMatches?.map((upcoming) => (
+                  <Match key={upcoming.matchId + upcoming.name} {...upcoming} />
+                ))}
               </VStack>
             </Collapse>
           </Box>
@@ -82,7 +83,7 @@ const UpcomingMatch = React.memo(
               : '学年・クラスを選択してください'}
           </Text>
         )}
-        {(data?.length ?? 0) > 3 && (
+        {(upcomingMatches?.length ?? 0) > 3 && (
           <Button
             w="full"
             rounded="lg"

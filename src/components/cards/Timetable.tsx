@@ -18,11 +18,12 @@ import TimetableTable from '../timetable/Table';
 import { useUserSchedule, useNotes, useDivision } from '@/hooks/timetable';
 import { useUser } from '@/hooks/user';
 import Error from '../timetable/Error';
+import Loading from '../common/Loading';
 
 function Timetable() {
   const date = new Date();
   const { data: user } = useUser();
-  const { data } = useUserSchedule(
+  const { data, isLoading: userScheduleLoading } = useUserSchedule(
     { id: user.userScheduleId ?? '' },
     { enabled: !!user.userScheduleId }
   );
@@ -64,7 +65,9 @@ function Timetable() {
         </HStack>
       </LinkBox>
       {/* eslint-disable no-nested-ternary */}
-      {user.userScheduleId ? (
+      {isLoading || userScheduleLoading ? (
+        <Loading />
+      ) : user.userScheduleId ? (
         division ? (
           <TimetableTable
             p={2}

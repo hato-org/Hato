@@ -177,7 +177,7 @@ function Timetable() {
                   <ReportModal
                     isOpen={reportOpen}
                     onClose={reportOnClose}
-                    timetable
+                    url={window.location.toString()}
                     placeholder="例：〇年〇組〇〇コース〇週〇時間目が△△ではなく□□です"
                   />
                 </Suspense>

@@ -36,7 +36,7 @@ interface UserSchedule {
     type: Type;
     grade: GradeCode;
     class: ClassCode;
-    course?: string;
+    course?: CourseCode;
   };
 }
 
@@ -51,9 +51,9 @@ interface UserSubject {
   private: boolean;
   meta: {
     type: Type;
-    grade: number;
-    class: number;
-    course?: string;
+    grade: GradeCode;
+    class: ClassCode;
+    course?: CourseCode;
   };
 }
 

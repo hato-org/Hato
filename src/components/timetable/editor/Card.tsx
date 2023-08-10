@@ -21,8 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbPencil, TbX } from 'react-icons/tb';
 import { useSetRecoilState } from 'recoil';
-import { useUser } from '@/hooks/user';
-import { useAuth } from '@/modules/auth';
+import { useUser, useUserMutation } from '@/hooks/user';
 import { overlayAtom } from '@/store/overlay';
 import { useUserSubject } from '@/hooks/timetable';
 import { days } from '@/utils/date';
@@ -32,9 +31,7 @@ const Card = React.memo(
     const { isOpen, onToggle } = useDisclosure();
     const setOverlay = useSetRecoilState(overlayAtom);
     const { data: user } = useUser();
-    const {
-      update: { mutate, isLoading },
-    } = useAuth();
+    const { mutate, isLoading } = useUserMutation();
 
     const isSelected = user.userScheduleId === _id;
 

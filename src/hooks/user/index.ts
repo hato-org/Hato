@@ -1,10 +1,15 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { useToast } from '@chakra-ui/react';
+import {
+  UseQueryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useUser = () => {
   const { client } = useClient();
   const [user, setUser] = useRecoilState(userAtom);
@@ -19,11 +24,45 @@ export const useUser = () => {
       return res.user;
     },
     {
+      refetchInterval: 1000 * 60 * 10,
       initialData: user!,
       onSuccess: (newUser) => {
         setUser(newUser);
       },
       enabled: !!user,
+    }
+  );
+};
+
+export const useUserMutation = () => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  const { client } = useClient();
+  const { data: user } = useUser();
+  const setUser = useSetRecoilState(userAtom);
+
+  return useMutation<User, AxiosError, Partial<User>>(
+    async (newUser) =>
+      (
+        await client.post('/user', {
+          ...newUser,
+          _id: user?._id,
+        })
+      ).data,
+    {
+      onSuccess: (newUser) => {
+        queryClient.invalidateQueries(['user', 'profile']);
+        queryClient.setQueryData(['user', newUser._id], newUser);
+        setUser(newUser);
+      },
+      onError: (error) => {
+        console.error(error);
+        toast({
+          title: '保存できませんでした',
+          description: error.message,
+          status: 'error',
+        });
+      },
     }
   );
 };

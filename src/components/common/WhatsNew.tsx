@@ -23,7 +23,13 @@ export default function WhatsNew() {
   return (
     <Modal isOpen={whatsNew} onClose={onClose} size="xl">
       <ModalOverlay />
-      <ModalContent top={8} shadow="xl" rounded="xl" className="changelog">
+      <ModalContent
+        bg="panel"
+        top={8}
+        shadow="xl"
+        rounded="xl"
+        className="changelog"
+      >
         <ModalCloseButton top={4} right={4} />
         <ModalHeader>リリースノート</ModalHeader>
         <ModalBody rounded="lg" overflow="hidden">

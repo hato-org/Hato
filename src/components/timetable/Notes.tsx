@@ -305,14 +305,16 @@ const NotesMenu = React.memo(
           isRound
           {...rest}
         />
-        <MenuList textStyle="title" shadow="lg">
+        <MenuList textStyle="title" rounded="xl" shadow="lg">
           {note.owner === user.email || user.role === 'admin' ? (
             <>
               {user.role === 'admin' && (
                 <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
                   報告
                   <Portal>
-                    <ReportModal {...{ isOpen, onClose, note }} />
+                    <ReportModal
+                      {...{ isOpen, onClose, url: window.location.toString() }}
+                    />
                   </Portal>
                 </MenuItem>
               )}
@@ -332,7 +334,9 @@ const NotesMenu = React.memo(
             <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
               報告
               <Portal>
-                <ReportModal {...{ isOpen, onClose, note }} />
+                <ReportModal
+                  {...{ isOpen, onClose, url: window.location.toString() }}
+                />
               </Portal>
             </MenuItem>
           )}

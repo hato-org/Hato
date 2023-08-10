@@ -11,7 +11,7 @@
     "test": "vitest run --passWithNoTests",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "yarn lint --fix",
-    "lint:pre-commit": "npx lint-staged",
+    "lint:pre-commit": "lint-staged",
     "format": "prettier --write \"**/*.+(js|json|yml|ts|tsx)\"",
     "prepare": "husky install"
   },
@@ -58,7 +58,11 @@
     "recoil-persist": "^4.2.0",
     "remark-gfm": "^3.0.1",
     "use-debounce": "^9.0.4",
-    "use-seconds": "^1.6.1"
+    "use-seconds": "^1.6.1",
+    "workbox-core": "^7.0.0",
+    "workbox-precaching": "^7.0.0",
+    "workbox-routing": "^7.0.0",
+    "workbox-strategies": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.2.5",

@@ -13,9 +13,9 @@ function UpdatePrompt() {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered(r) {
+    onRegisteredSW(_, r) {
       // eslint-disable-next-line prefer-template
-      console.log('SW Registered: ' + r);
+      console.log('Service Worker has been registered: ' + r);
 
       if (r)
         setInterval(async () => {
@@ -27,7 +27,7 @@ function UpdatePrompt() {
         }, intervalMS);
     },
     onRegisterError(error) {
-      console.log('SW registration error', error);
+      console.error('SW registration error', error);
     },
   });
 
@@ -60,8 +60,8 @@ function UpdatePrompt() {
           rounded="lg"
           colorScheme="blue"
           onClick={() => {
+            updateServiceWorker();
             setOverlay((currVal) => ({ ...currVal, whatsNew: true }));
-            updateServiceWorker(true);
           }}
         >
           再読み込み

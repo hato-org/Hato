@@ -6,6 +6,12 @@ const { persistAtom } = recoilPersist();
 
 export const cards: DashboardCard[] = [
   {
+    id: 'clock',
+    name: '時計・日課',
+    description: '現在日時、現在時刻、今日の日課を表示します。',
+    component: <CardElement.Clock />,
+  },
+  {
     id: 'timetable',
     name: '時間割',
     description: '設定したマイ時間割の今日の日課を表示します。',
@@ -36,6 +42,12 @@ export const cards: DashboardCard[] = [
     name: '理科室割',
     description: '今日の理科室割を表示します。',
     component: <CardElement.Scienceroom />,
+  },
+  {
+    id: 'classmatch',
+    name: 'クラスマッチ',
+    description: 'クラスマッチに関する情報を表示します。',
+    component: <CardElement.Classmatch />,
   },
   // {
   //   id: 'transit',

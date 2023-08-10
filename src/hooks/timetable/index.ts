@@ -172,9 +172,9 @@ export const useTimetable = (
   }: {
     date: Date;
     type: Type;
-    grade: number;
-    class: number;
-    course: Course[];
+    grade: GradeCode;
+    class: ClassCode;
+    course: CourseCode[];
   },
   options?: UseQueryOptions<DaySchedule[], AxiosError>
 ) => {
@@ -212,9 +212,9 @@ export const useDaySchedule = (
     dayOfWeek,
   }: {
     type: Type;
-    grade: number;
-    schoolClass: number;
-    course: Course;
+    grade: GradeCode;
+    schoolClass: ClassCode;
+    course: CourseCode;
     week: Week;
     dayOfWeek: Day;
   },

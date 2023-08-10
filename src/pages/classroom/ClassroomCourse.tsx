@@ -58,7 +58,7 @@ export default function ClassroomCourse() {
           <IconButton
             aria-label="open in browser"
             as={Link}
-            href={data?.alternateLink}
+            href={data?.alternateLink ?? ''}
             variant="ghost"
             size="lg"
             isRound

@@ -90,7 +90,7 @@ const ReportModal = React.memo(
                 rounded="lg"
                 onClick={() =>
                   mutate({
-                    type: reportType,
+                    type: reportType!,
                     title: '報告',
                     description: reportComment,
                     url,

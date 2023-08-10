@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
   HStack,
   Icon,
-  IconButton,
   Input,
-  Portal,
-  Spacer,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Text,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { useDebouncedCallback } from 'use-debounce';
-import { TbArrowLeft, TbPlus, TbX } from 'react-icons/tb';
+import { TbArrowLeft, TbPlus } from 'react-icons/tb';
 import {
   useUserSubjectMutation,
   useUserSubjectSearch,
@@ -38,11 +33,7 @@ const AddUserSubjectDrawer = React.memo(
     meta: UserSchedule['meta'];
     isPrivate: UserSchedule['private'];
   }) => {
-    const {
-      isOpen: suggestIsOpen,
-      onOpen: suggestOnOpen,
-      onClose: suggestOnClose,
-    } = useDisclosure();
+    const suggestContainerRef = useRef<HTMLDivElement>(null);
     const [createMode, setCreateMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const { data: user } = useUser();
@@ -65,35 +56,30 @@ const AddUserSubjectDrawer = React.memo(
     });
 
     useEffect(() => {
-      search({ name: '.*', meta });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [suggestIsOpen]);
+      if (isOpen) search({ name: '.*', meta });
+    }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="bottom"
-        autoFocus={false}
-      >
-        <DrawerOverlay zIndex={1400} />
-        <DrawerContent
+      <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} size="xl">
+        <ModalOverlay zIndex={1400} />
+        <ModalContent
           zIndex={1500}
           bg="panel"
-          roundedTop="xl"
+          rounded="xl"
           pb="env(safe-area-inset-bottom)"
-          onClick={suggestOnClose}
         >
-          <DrawerHeader>時限の追加</DrawerHeader>
-          <DrawerBody>
-            <VStack w="full" align="flex-start">
+          <ModalHeader>時限の追加</ModalHeader>
+          <ModalBody>
+            <VStack w="full" align="flex-start" spacing={4}>
               {createMode ? (
                 <VStack w="full" align="flex-start" spacing={4}>
                   <Button
                     variant="link"
                     colorScheme="blue"
                     leftIcon={<Icon as={TbArrowLeft} />}
-                    onClick={() => setCreateMode(false)}
+                    onClick={() => {
+                      setCreateMode(false);
+                    }}
                   >
                     検索に戻る
                   </Button>
@@ -145,63 +131,21 @@ const AddUserSubjectDrawer = React.memo(
                   />
                 </VStack>
               ) : (
-                [
-                  subject.name ? (
-                    <HStack
-                      w="full"
-                      px={4}
-                      py={2}
-                      border="1px solid"
-                      borderColor="border"
-                      rounded="xl"
-                      overflow="hidden"
-                    >
-                      <VStack spacing={1} w="full" align="flex-start">
-                        <Text textStyle="title">{subject.name}</Text>
-                        <Text textStyle="description">
-                          {subject.description}
-                        </Text>
-                      </VStack>
-                      <Spacer />
-                      <IconButton
-                        aria-label="delete subject selection"
-                        icon={<Icon as={TbX} />}
-                        variant="ghost"
-                        colorScheme="red"
-                        size="sm"
-                        onClick={() => setSubject({})}
-                      />
-                    </HStack>
-                  ) : (
-                    <Input
-                      variant="flushed"
-                      placeholder="教科名（略称でも可）"
-                      textStyle="title"
-                      display={subject.name ? 'none' : 'block'}
-                      onChange={(e) => debounced(e.target.value)}
-                      onFocus={suggestOnOpen}
-                      onClickCapture={(e) => e.stopPropagation()}
-                    />
-                  ),
-                ]
+                <Input
+                  variant="outline"
+                  rounded="lg"
+                  placeholder="教科名で検索（略称でも可）"
+                  textStyle="title"
+                  display={subject.name ? 'none' : 'block'}
+                  onChange={(e) => debounced(e.target.value)}
+                  onClickCapture={(e) => e.stopPropagation()}
+                />
               )}
-            </VStack>
-            <Portal>
               <VStack
-                position="fixed"
-                bottom={0}
-                bg="panel"
-                w="full"
-                h="calc(env(safe-area-inset-bottom) + var(--chakra-sizes-16))"
-                py={3}
-                overflowY="auto"
-                shadow="xl"
-                border="1px solid"
-                borderColor="border"
-                roundedTop="xl"
-                zIndex={2000}
-                display={!createMode && suggestIsOpen ? 'block' : 'none'}
+                ref={suggestContainerRef}
+                display={!createMode ? 'block' : 'none'}
                 onClick={(e) => e.stopPropagation()}
+                w="full"
               >
                 {/* eslint-disable no-nested-ternary */}
                 {searchLoading ? (
@@ -212,55 +156,60 @@ const AddUserSubjectDrawer = React.memo(
                       key={subj._id}
                       {...subj}
                       onSelect={() => {
-                        setSubject(subj);
-                        suggestOnClose();
+                        mutate(subj, {
+                          onSuccess: (res) => {
+                            onClose(res._id);
+                          },
+                        });
                       }}
                     />
                   ))
                 ) : (
-                  <VStack justify="center" minH="full">
-                    <Text color="description" textStyle="title">
-                      候補がありません
-                    </Text>
-                    <Button
-                      variant="ghost"
-                      leftIcon={<Icon as={TbPlus} />}
-                      onClick={() => {
-                        setCreateMode(true);
-                        setSubject((val) => ({ ...val, name: searchQuery }));
-                      }}
-                    >
-                      作成する
-                    </Button>
-                  </VStack>
+                  <Text
+                    py={2}
+                    textAlign="center"
+                    color="description"
+                    textStyle="title"
+                  >
+                    候補がありません
+                  </Text>
                 )}
                 {/* eslint-enable no-nested-ternary */}
               </VStack>
-            </Portal>
-          </DrawerBody>
-          <DrawerFooter>
-            <Button
-              isDisabled={!subject.name}
-              isLoading={isLoading}
-              w="full"
-              colorScheme="blue"
-              rounded="lg"
-              onClick={() => {
-                if (subject.owner && subject.name)
-                  mutate(subject as UserSubject, {
-                    onSuccess: (subj) => {
-                      console.log(subj);
-                      onClose(subj._id);
-                    },
-                  });
-                else onClose(null);
-              }}
-            >
-              追加
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+              {createMode ? (
+                <Button
+                  w="full"
+                  rounded="lg"
+                  colorScheme="blue"
+                  isDisabled={!subject.name}
+                  isLoading={isLoading}
+                  onClick={() =>
+                    mutate(subject as UserSubject, {
+                      onSuccess: (res) => {
+                        onClose(res._id);
+                      },
+                    })
+                  }
+                >
+                  追加
+                </Button>
+              ) : (
+                <Button
+                  w="full"
+                  rounded="lg"
+                  leftIcon={<Icon as={TbPlus} />}
+                  onClick={() => {
+                    setCreateMode(true);
+                    setSubject((val) => ({ ...val, name: searchQuery }));
+                  }}
+                >
+                  作成する
+                </Button>
+              )}
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     );
   }
 );
@@ -280,6 +229,7 @@ const UserSubjectSuggestion = React.memo(
       align="flex-start"
       spacing={0}
       layerStyle="button"
+      rounded="xl"
       onClick={onSelect}
     >
       <HStack w="full" align="flex-end">

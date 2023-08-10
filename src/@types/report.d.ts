@@ -1,4 +1,4 @@
-interface Report {
+interface ReportSchema {
   type?: ReportType;
   title: string;
   description: string;
