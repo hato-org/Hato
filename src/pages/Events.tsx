@@ -93,7 +93,7 @@ function Events() {
           await Promise.all([queryClient.invalidateQueries(['calendar'])]);
         }}
       >
-        <VStack px={4} mb={24}>
+        <VStack px={4} mb={40}>
           {!tutorial.iCal && (
             <Card w="100%">
               <VStack w="100%" position="relative">

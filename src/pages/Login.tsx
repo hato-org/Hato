@@ -14,20 +14,25 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
-import { Link as RouterLink, Navigate } from 'react-router-dom';
+import {
+  Link as RouterLink,
+  Navigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import LoginButton from '@/components/login/LoginButton';
 import { jwtAtom } from '@/store/auth';
 
 function Login() {
   const jwt = useRecoilValue(jwtAtom);
-  const { onCopy, hasCopied } = useClipboard(window.origin);
+  const { onCopy, hasCopied } = useClipboard(window.location.toString());
+  const [searchParams] = useSearchParams();
   const isEmbedBrowser = useMemo(
     () => /(Instagram|Line)/.test(navigator.userAgent),
     []
   );
 
-  if (jwt) return <Navigate to="/" />;
+  if (jwt) return <Navigate to={searchParams.get('return_to') ?? '/'} />;
 
   return (
     <>

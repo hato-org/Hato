@@ -18,6 +18,7 @@ export const useGCCourseInfo = (courseId?: string | null) => {
     ['google', 'course', courseId],
     async () => (await client.get(`/classroom/course/${courseId}`)).data,
     {
+      staleTime: 1000 * 60 * 60 * 24, // 1 day
       enabled: !!courseId,
     }
   );

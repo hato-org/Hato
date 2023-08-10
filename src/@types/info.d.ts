@@ -1,34 +1,40 @@
-type Course = 'lib1' | 'lib2' | 'lib3' | 'sci1' | 'sci2' | 'sci3';
+type Type = 'teacher' | 'hs' | 'jhs';
+
+type CourseCode = 'lib1' | 'lib2' | 'lib3' | 'sci1' | 'sci2' | 'sci3';
 
 type CourseCategory = 'liberal' | 'science';
 
 interface CourseInfo {
   name: string;
-  short_name: string;
-  student_count: number;
+  shortName: string;
+  studentCount: number;
   category: CourseCategory;
-  code: Course;
+  code: CourseCode;
 }
 
 type CourseList = CourseInfo[];
 
+type GradeCode = '1' | '2' | '3';
+
 interface GradeInfo {
   name: string;
-  short_name: string;
+  shortName: string;
   type: Type;
-  grade_num: 1 | 2 | 3;
-  student_count: number;
+  gradeCode: GradeCode;
+  studentCount: number;
 }
 
 type GradeList = GradeInfo[];
 
+type ClassCode = '1' | '2' | '3' | '4' | '5' | '6' | '7' | 'A' | 'B';
+
 interface ClassInfo {
   name: string;
-  short_name: string;
+  shortName: string;
   type: Type;
-  grade_num: 1 | 2 | 3;
-  class_num: number;
-  student_count: number;
+  gradeCode: GradeCode;
+  classCode: ClassCode;
+  studentCount: number;
 }
 
 type ClassList = ClassInfo[];

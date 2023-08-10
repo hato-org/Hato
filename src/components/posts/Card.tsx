@@ -15,8 +15,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns/esm';
 import {
-  TbArrowDownCircle,
   TbChevronRight,
+  TbCircleArrowDown,
   TbFile,
   TbPin,
   TbPinnedOff,
@@ -121,7 +121,7 @@ const Card = React.memo(
             px={2}
             py={4}
             layerStyle="button"
-            onTouchStart={(e) => controls.start(e, { snapToCursor: false })}
+            onPointerDown={(e) => controls.start(e, { snapToCursor: false })}
           >
             <VStack align="flex-start" w="100%" pl={2}>
               <HStack w="100%">
@@ -131,7 +131,7 @@ const Card = React.memo(
                 </Text>
                 <Spacer />
                 {attachmentQueries.every((queryState) => queryState?.data) && (
-                  <Icon as={TbArrowDownCircle} />
+                  <Icon as={TbCircleArrowDown} />
                 )}
                 <Text textStyle="description" fontSize="xs">
                   {format(new Date(createdAt), 'MM/dd')}

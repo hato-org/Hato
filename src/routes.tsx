@@ -12,22 +12,34 @@ const Events = React.lazy(() => import('./pages/Events'));
 // const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const EventDetail = React.lazy(() => import('./pages/EventDetail'));
 const Home = React.lazy(() => import('./pages/Home'));
+const Status = React.lazy(() => import('./pages/Status'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const Timetable = React.lazy(() => import('./pages/Timetable'));
+const MyTimetable = React.lazy(() => import('./pages/MyTimetable'));
 const Posts = React.lazy(() => import('./pages/Posts'));
 const PostDetail = React.lazy(() => import('./pages/PostDetail'));
 const Library = React.lazy(() => import('./pages/Library'));
 const LibrarySearch = React.lazy(() => import('./pages/LibrarySearch'));
 const LibraryBookmarks = React.lazy(() => import('./pages/LibraryBookmarks'));
 const Transit = React.lazy(() => import('./pages/Transit'));
-const Classroom = React.lazy(() => import('./pages/Classroom'));
-const ClassroomCourse = React.lazy(() => import('./pages/ClassroomCourse'));
-const ClassroomCoursework = React.lazy(
-  () => import('./pages/ClassroomCoursework')
+const Classroom = React.lazy(() => import('./pages/classroom/Classroom'));
+const ClassroomCourse = React.lazy(
+  () => import('./pages/classroom/ClassroomCourse')
 );
-const ClassroomMaterial = React.lazy(() => import('./pages/ClassroomMaterial'));
+const ClassroomAnnouncement = React.lazy(
+  () => import('./pages/classroom/ClassroomAnnouncement')
+);
+const ClassroomCoursework = React.lazy(
+  () => import('./pages/classroom/ClassroomCoursework')
+);
+const ClassroomMaterial = React.lazy(
+  () => import('./pages/classroom/ClassroomMaterial')
+);
 const ClassroomBookmarks = React.lazy(
-  () => import('./pages/ClassroomBookmarks')
+  () => import('./pages/classroom/ClassroomBookmarks')
+);
+const Classmatch2023 = React.lazy(
+  () => import('./pages/classmatch/Classmatch2023')
 );
 
 // function Router() {
@@ -101,11 +113,23 @@ const router = createBrowserRouter([
             path: 'theme',
             element: <Setting.Theme />,
           },
+          {
+            path: 'notification',
+            element: <Setting.Notification />,
+          },
         ],
+      },
+      {
+        path: 'status',
+        element: <Status />,
       },
       {
         path: 'timetable',
         element: <Timetable />,
+      },
+      {
+        path: 'timetable/editor',
+        element: <MyTimetable />,
       },
       {
         path: 'events',
@@ -168,12 +192,20 @@ const router = createBrowserRouter([
         element: <ClassroomCourse />,
       },
       {
+        path: 'classroom/course/:id/announcement/:announcementId',
+        element: <ClassroomAnnouncement />,
+      },
+      {
         path: 'classroom/course/:id/courseWork/:courseworkId',
         element: <ClassroomCoursework />,
       },
       {
         path: 'classroom/course/:id/courseWorkMaterial/:materialId',
         element: <ClassroomMaterial />,
+      },
+      {
+        path: 'classmatch/2023',
+        element: <Classmatch2023 />,
       },
     ],
   },

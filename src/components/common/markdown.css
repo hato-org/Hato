@@ -34,7 +34,7 @@
     --color-fg-default: #c9d1d9;
     --color-fg-muted: #8b949e;
     --color-fg-subtle: #484f58;
-    --color-canvas-default: transparent;
+    --color-canvas-default: #0d1117;
     --color-canvas-subtle: #161b22;
     --color-border-default: #30363d;
     --color-border-muted: #21262d;
@@ -82,7 +82,7 @@
     --color-fg-default: #24292f;
     --color-fg-muted: #57606a;
     --color-fg-subtle: #6e7781;
-    --color-canvas-default: transparent;
+    --color-canvas-default: #ffffff;
     --color-canvas-subtle: #f6f8fa;
     --color-border-default: #d0d7de;
     --color-border-muted: hsla(210, 18%, 87%, 1);
@@ -143,6 +143,7 @@
 }
 
 .changelog a {
+  display: inline-block;
   background-color: transparent;
   color: var(--color-accent-fg);
   text-decoration: none;
@@ -160,6 +161,7 @@
 
 .changelog b,
 .changelog strong {
+  display: inline-block;
   font-weight: 600;
 }
 
@@ -202,6 +204,9 @@
 
 .changelog img {
   border-style: none;
+  border-radius: var(--chakra-radii-xl);
+  box-shadow: var(--chakra-shadows-lg);
+  margin: var(--chakra-sizes-8) 0;
   max-width: 100%;
   box-sizing: content-box;
   background-color: var(--color-canvas-default);
@@ -590,10 +595,10 @@
   height: 1em;
 }
 
-.changelog ::before {
+/* .changelog ::before {
   display: table;
   content: '';
-}
+} */
 
 .changelog ::after {
   display: table;

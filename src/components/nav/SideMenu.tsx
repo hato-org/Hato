@@ -27,6 +27,7 @@ import {
   TbFileDescription,
   TbSettings,
   TbLogout,
+  TbTrophy,
 } from 'react-icons/tb';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
@@ -66,7 +67,7 @@ export function SideMenuDrawer() {
     <Portal>
       <Drawer isOpen={overlay.menu} onClose={onClose} placement="left">
         <DrawerOverlay />
-        <DrawerContent bg="panel">
+        <DrawerContent bg="panel" roundedRight="2xl">
           <DrawerCloseButton top={9} right={8} />
           <DrawerBody p={4}>
             <MenuBody />
@@ -138,6 +139,12 @@ function MenuBody() {
       //   label: '交通情報',
       //   href: '/transit',
       // },
+      {
+        type: 'button',
+        icon: <Icon as={TbTrophy} boxSize={7} />,
+        label: 'クラスマッチ',
+        href: '/classmatch/2023',
+      },
       {
         type: 'divider',
       },

@@ -13,12 +13,11 @@ import {
   ModalHeader,
   ModalOverlay,
   ModalBody,
-  UnorderedList,
-  ListItem,
   ModalFooter,
   StackDivider,
   Box,
   ButtonGroup,
+  Link,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -110,6 +109,13 @@ function Top() {
           href="theme"
         />
       </SettingCategory>
+      <SettingCategory title="通知">
+        <SettingButton
+          label="プッシュ通知"
+          description="プッシュ通知のオン・オフを設定できます。"
+          href="notification"
+        />
+      </SettingCategory>
       <SettingCategory title="開発者向け">
         <SettingButton
           label="APIドキュメント"
@@ -120,13 +126,13 @@ function Top() {
         </SettingButton>
       </SettingCategory>
       <SettingCategory title="その他">
-        <SettingButton
+        {/* <SettingButton
           label="時間割追加リクエスト"
           description="時間割データの追加をリクエストできます。"
           onClick={() => window.open('https://forms.gle/XcmNLT7PJry9iuxy5')}
         >
           <Icon as={TbExternalLink} />
-        </SettingButton>
+        </SettingButton> */}
         <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
@@ -136,12 +142,11 @@ function Top() {
                 <ModalHeader>キャッシュを削除しますか？</ModalHeader>
                 <ModalBody>
                   <VStack align="flex-start" w="100%" textStyle="title">
-                    <Text fontSize="lg">以下のキャッシュが削除されます</Text>
-                    <UnorderedList pl={4}>
-                      <ListItem>はとボード投稿</ListItem>
-                      <ListItem>時間割</ListItem>
-                      <ListItem>イベント</ListItem>
-                    </UnorderedList>
+                    <Text w="full" textAlign="center">
+                      現在アプリ内に保存されている
+                      <br />
+                      一時データが削除されます
+                    </Text>
                     {totalCache && (
                       <Box w="100%">
                         <StackDivider />
@@ -151,11 +156,17 @@ function Top() {
                   </VStack>
                 </ModalBody>
                 <ModalFooter>
-                  <HStack>
-                    <Button variant="ghost" rounded="lg" onClick={onClose}>
+                  <HStack w="full" spacing={4}>
+                    <Button
+                      w="full"
+                      variant="ghost"
+                      rounded="lg"
+                      onClick={onClose}
+                    >
                       キャンセル
                     </Button>
                     <Button
+                      w="full"
                       colorScheme="red"
                       rounded="lg"
                       onClick={() => {
@@ -194,14 +205,13 @@ function Top() {
         <ButtonGroup rounded="lg" variant="ghost">
           <Button
             leftIcon={<TbBrandGithub />}
-            onClick={() => window.open(import.meta.env.VITE_REPO_URL)}
+            as={Link}
+            isExternal
+            href={import.meta.env.VITE_REPO_URL}
           >
             GitHub
           </Button>
-          <Button
-            leftIcon={<TbActivity />}
-            onClick={() => window.open(import.meta.env.VITE_STATUSPAGE_URL)}
-          >
+          <Button as={RouterLink} to="/status" leftIcon={<TbActivity />}>
             サービス稼働状況
           </Button>
         </ButtonGroup>

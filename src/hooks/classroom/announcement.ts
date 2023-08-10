@@ -26,7 +26,7 @@ export const useGCAnnouncements = (
 
 export const useGCAnnouncement = (
   { courseId, id }: { courseId?: string; id?: string },
-  options: UseQueryOptions<classroom_v1.Schema$Announcement, AxiosError>
+  options?: UseQueryOptions<classroom_v1.Schema$Announcement, AxiosError>
 ) => {
   const { client } = useClient();
 

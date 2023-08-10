@@ -12,7 +12,7 @@ import {
   SkeletonText,
 } from '@chakra-ui/react';
 import { format, isThisYear } from 'date-fns/esm';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   TbAlbum,
   TbCheckupList,
@@ -40,6 +40,7 @@ const Post = React.memo(
     materials,
     creatorUserId,
   }: GCTimeline) => {
+    const navigate = useNavigate();
     const iconColor = useStringHSLColor(window.btoa(courseId ?? ''));
     const icon = useMemo(() => {
       switch (type) {
@@ -72,8 +73,12 @@ const Post = React.memo(
         <VStack p={2} spacing={4} align="flex-start" w="full" userSelect="text">
           <HStack
             w="full"
-            as={type !== 'announcement' ? RouterLink : undefined}
-            to={`/classroom/course/${courseId}/${type}/${id}`}
+            onClick={() =>
+              navigate(`/classroom/course/${courseId}/${type}/${id}`)
+            }
+            _hover={{
+              cursor: 'pointer',
+            }}
           >
             <HStack spacing={4} align="center">
               <Tooltip label={typeText} fontSize="md" openDelay={300}>
@@ -88,7 +93,7 @@ const Post = React.memo(
                 isThisYear(new Date(updateTime ?? 0)) ? 'MM/dd' : 'yyyy/MM/dd'
               )}
             </Text>
-            {type !== 'announcement' && <Icon as={TbChevronRight} />}
+            <Icon as={TbChevronRight} />
           </HStack>
           {title && <Text textStyle="title">{title}</Text>}
           {text && (
@@ -99,7 +104,7 @@ const Post = React.memo(
           {type === 'announcement' && materials?.length && (
             <Wrap>
               {materials?.map((material) => (
-                <Material {...material} />
+                <Material key={JSON.stringify(material)} {...material} />
               ))}
             </Wrap>
           )}

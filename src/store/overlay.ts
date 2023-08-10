@@ -7,6 +7,12 @@ interface Overlay {
   menu: boolean;
   cardOrder: boolean;
   whatsNew: boolean;
+  userScheduleEditor: string | false;
+  userSubjectEditor: string | false;
+  divisionEditor: Date | false;
+  classmatchTournament:
+    | { year: number; season: ClassmatchSeason; sport: ClassmatchSportId }
+    | undefined;
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -16,6 +22,10 @@ export const overlayAtom = atom<Overlay>({
     menu: false,
     cardOrder: false,
     whatsNew: false,
+    userScheduleEditor: false,
+    userSubjectEditor: false,
+    divisionEditor: false,
+    classmatchTournament: undefined,
   },
   effects: [persistAtom],
 });

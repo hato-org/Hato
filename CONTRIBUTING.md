@@ -22,13 +22,16 @@
 - [`TanStack/query`](https://tanstack.com/query/v4) - Asynchronous state management library (Mainly used for data fetching)
 - [`facebookexperimental/recoil`](https://recoiljs.org/) - State management library
 
+## Other tools
+
+- [`ESLint`](https://eslint.org/) - Linter, See [`.eslintrc.json`](https://github.com/Hato-org/Hato/blob/master/.eslintrc.json)
+- [`Prettier`](https://prettier.io/) - Code Formatter, See [`.prettierrc`](https://github.com/Hato-org/Hato/blob/master/.prettierrc)
+- [`okonet/lint-staged`](https://github.com/okonet/lint-staged) / [`Husky`](https://typicode.github.io/husky/) - Pre-commit linter runner
+
 ## Dev
 
-```bash
-yarn install
-yarn dev
-yarn dev --host # Preview from other devices
-```
+1. `yarn install`
+1. `yarn dev` or `yarn dev --host`
 
 ## Build
 
@@ -38,6 +41,8 @@ yarn build
 
 ## Links
 
+- [Demo page](https://demo.hato.cf/)
+- [Staging page](https://staging.hato.cf/)
 - [Project board](https://github.com/orgs/Hato-org/projects/1)
 
 ## Reference

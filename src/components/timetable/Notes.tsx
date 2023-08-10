@@ -40,8 +40,8 @@ import { useNotes } from '@/hooks/timetable';
 interface NotesProps extends StackProps {
   date: Date;
   type: Type;
-  grade: number;
-  schoolClass: number;
+  grade: GradeCode;
+  schoolClass: ClassCode;
 }
 
 const Notes = React.memo(
@@ -66,8 +66,8 @@ const Notes = React.memo(
             note.target?.some(
               (classInfo) =>
                 classInfo.type === type &&
-                classInfo.grade_num === grade &&
-                classInfo.class_num === schoolClass
+                classInfo.gradeCode === grade &&
+                classInfo.classCode === schoolClass
             ) || note.owner === user.email
         ).length ? (
           <VStack w="100%" align="flex-start">
@@ -78,8 +78,8 @@ const Notes = React.memo(
                     note.target?.some(
                       (classInfo) =>
                         classInfo.type === user.type &&
-                        classInfo.grade_num === user.grade &&
-                        classInfo.class_num === user.class
+                        classInfo.gradeCode === user.grade &&
+                        classInfo.classCode === user.class
                     ) && note.owner !== user.email
                 )
                 .map((note) => (
@@ -264,10 +264,10 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                   size="sm"
                   key={
                     targetClass.type +
-                    targetClass.grade_num +
-                    targetClass.class_num
+                    targetClass.gradeCode +
+                    targetClass.classCode
                   }
-                >{`${targetClass.grade_num}年${targetClass.name}`}</Tag>
+                >{`${targetClass.gradeCode}年${targetClass.name}`}</Tag>
               ))}
             </Wrap>
           )}
@@ -305,14 +305,16 @@ const NotesMenu = React.memo(
           isRound
           {...rest}
         />
-        <MenuList textStyle="title" shadow="lg">
+        <MenuList textStyle="title" rounded="xl" shadow="lg">
           {note.owner === user.email || user.role === 'admin' ? (
             <>
               {user.role === 'admin' && (
                 <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
                   報告
                   <Portal>
-                    <ReportModal {...{ isOpen, onClose, note }} />
+                    <ReportModal
+                      {...{ isOpen, onClose, url: window.location.toString() }}
+                    />
                   </Portal>
                 </MenuItem>
               )}
@@ -332,7 +334,9 @@ const NotesMenu = React.memo(
             <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
               報告
               <Portal>
-                <ReportModal {...{ isOpen, onClose, note }} />
+                <ReportModal
+                  {...{ isOpen, onClose, url: window.location.toString() }}
+                />
               </Portal>
             </MenuItem>
           )}

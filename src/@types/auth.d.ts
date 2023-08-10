@@ -5,9 +5,10 @@ interface User {
   email: string;
   name: string;
   type: Type;
-  grade: number;
-  class: number;
-  course: Course;
+  grade: GradeCode;
+  class: ClassCode;
+  course: CourseCode;
+  userScheduleId?: string | null;
   apiKey: string;
   contributionCount: number;
   createdAt: string;
@@ -21,5 +22,3 @@ interface LoginResponse {
 interface GoogleCredentialResponse {
   credential: string;
 }
-
-type Type = 'hs' | 'jhs';

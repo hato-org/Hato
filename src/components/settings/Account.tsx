@@ -34,14 +34,13 @@ import {
   TbExternalLink,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '@/modules/auth';
 import {
   useClassList,
   useCourseList,
   useGradeList,
   useProfile,
 } from '@/hooks/info';
-import { useUser } from '@/hooks/user';
+import { useUser, useUserMutation } from '@/hooks/user';
 import SettingButton from './Button';
 import { MotionCenter } from '../motion';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
@@ -50,9 +49,7 @@ import SettingCategory from './Category';
 import Error from '../cards/Error';
 
 function Account() {
-  const {
-    update: { mutate: update, isLoading },
-  } = useAuth();
+  const { mutate: update, isLoading } = useUserMutation();
   const { data: user } = useUser();
   const queryClient = useQueryClient();
   const { onCopy, hasCopied } = useClipboard(user.apiKey);
@@ -93,7 +90,7 @@ function Account() {
   const list = [
     {
       label: 'アカウント名',
-      description: 'Hato上で表示されるアカウント名。',
+      description: 'Hato上でのアカウント名。',
       onClick: onUsernameOpen,
       children: (
         <>
@@ -173,8 +170,8 @@ function Account() {
                 <HStack py={2} pl={4} justify="flex-end">
                   <Text textStyle="title">
                     {gradeList?.find(
-                      ({ type, grade_num }) =>
-                        type === user?.type && grade_num === user?.grade
+                      ({ type, gradeCode }) =>
+                        type === user.type && gradeCode === user.grade
                     )?.name ?? '未設定'}
                   </Text>
                   <Icon as={TbChevronDown} />
@@ -183,10 +180,10 @@ function Account() {
             )}
           </Skeleton>
           <MenuList shadow="lg" rounded="xl" py={2}>
-            {gradeList?.map(({ name, type, grade_num }) => (
+            {gradeList?.map(({ name, type, gradeCode }) => (
               <MenuItem
                 onClick={() => {
-                  update({ type, grade: grade_num });
+                  update({ type, grade: gradeCode });
                 }}
                 key={name}
                 fontWeight="bold"
@@ -210,16 +207,18 @@ function Account() {
         <Menu>
           <Skeleton isLoaded={!classIsLoading} rounded="lg">
             {classError ? (
-              <HStack py={2}>
+              <HStack py={2} align="center">
                 <Icon as={TbAlertCircle} color="red.500" />
-                <Text textStyle="title">エラー</Text>
+                <Text textStyle="title">
+                  {user.grade ? 'エラー' : '学年を選択'}
+                </Text>
               </HStack>
             ) : (
               <MenuButton rounded="lg" w="100%">
                 <HStack rounded="xl" py={2} pl={4} justify="flex-end">
                   <Text textStyle="title">
                     {classList?.find(
-                      ({ class_num }) => class_num === user?.class
+                      ({ classCode }) => classCode === user.class
                     )?.name ?? '未設定'}
                   </Text>
                   <Icon as={TbChevronDown} />
@@ -228,10 +227,10 @@ function Account() {
             )}
           </Skeleton>
           <MenuList shadow="lg" rounded="xl">
-            {classList?.map(({ class_num, name }) => (
+            {classList?.map(({ classCode, name }) => (
               <MenuItem
                 onClick={() => {
-                  update({ class: class_num });
+                  update({ class: classCode });
                 }}
                 key={name}
                 fontWeight="bold"
@@ -295,7 +294,7 @@ function Account() {
     () => [
       {
         label: 'APIキー',
-        description: 'APIにアクセスする際に必要なキーです。',
+        description: 'Hato APIのAPIキーです。',
         children: (
           <HStack
             onClick={() => {
@@ -312,7 +311,7 @@ function Account() {
               noOfLines={1}
               textStyle="title"
             >
-              {user.apiKey.slice(0, 4).padEnd(user.apiKey.length, '*')}
+              {user.apiKey.slice(0, 4)}...
             </Text>
             <Icon
               transition="all .2s ease"

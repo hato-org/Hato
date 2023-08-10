@@ -142,8 +142,8 @@ const Calendar = React.memo(({ year, month, ...rest }: CalendarProps) => {
                     flex={1}
                     minW={0}
                     h={{ base: 24, md: 32 }}
-                    // h="100%"
-                    bg={isToday(day) ? 'hover' : ''}
+                    rounded="md"
+                    bg={isToday(day) ? 'active' : ''}
                   >
                     <Text
                       color={

@@ -34,7 +34,7 @@ const theme = extendTheme({
       },
       description: {
         default: 'gray.500',
-        _dark: 'gray.300',
+        _dark: 'gray.400',
       },
       bg: {
         default: 'white',
@@ -63,6 +63,22 @@ const theme = extendTheme({
       active: {
         default: 'blackAlpha.200',
         _dark: 'whiteAlpha.200',
+      },
+      success: {
+        default: 'green.400',
+        _dark: 'green.500',
+      },
+      warning: {
+        default: 'yellow.400',
+        _dark: 'yellow.500',
+      },
+      error: {
+        default: 'red.400',
+        _dark: 'red.500',
+      },
+      invalid: {
+        default: 'red.100',
+        _dark: 'red.800',
       },
       accent: {
         default: 'blue.50',

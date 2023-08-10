@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   HStack,
@@ -24,17 +24,12 @@ import { ja } from 'date-fns/locale';
 interface WeekDayPickerProps {
   onWeekSelect: (week: Week) => void;
   onDaySelect: (day: Day) => void;
-  week?: Week;
-  day?: Day;
+  week: Week;
+  day: Day;
 }
 
 const WeekDayPicker = React.memo(
-  ({
-    onWeekSelect,
-    onDaySelect,
-    week: defaultWeek,
-    day: defaultDay,
-  }: WeekDayPickerProps) => {
+  ({ onWeekSelect, onDaySelect, week, day }: WeekDayPickerProps) => {
     const weekDays = useMemo(
       () =>
         eachDayOfInterval({
@@ -43,9 +38,6 @@ const WeekDayPicker = React.memo(
         }),
       []
     );
-
-    const [week, setWeek] = useState<Week>(defaultWeek ?? 'A');
-    const [day, setDay] = useState<Day>(defaultDay ?? 0);
 
     return (
       <HStack w="100%">
@@ -64,23 +56,11 @@ const WeekDayPicker = React.memo(
                 <Icon as={TbChevronDown} />
               </HStack>
             </MenuButton>
-            <MenuList shadow="xl">
-              <MenuItem
-                textStyle="title"
-                onClick={() => {
-                  setWeek('A');
-                  onWeekSelect('A');
-                }}
-              >
+            <MenuList shadow="xl" rounded="xl">
+              <MenuItem textStyle="title" onClick={() => onWeekSelect('A')}>
                 A週
               </MenuItem>
-              <MenuItem
-                textStyle="title"
-                onClick={() => {
-                  setWeek('B');
-                  onWeekSelect('B');
-                }}
-              >
+              <MenuItem textStyle="title" onClick={() => onWeekSelect('B')}>
                 B週
               </MenuItem>
             </MenuList>
@@ -105,15 +85,12 @@ const WeekDayPicker = React.memo(
                 <Icon as={TbChevronDown} />
               </HStack>
             </MenuButton>
-            <MenuList shadow="xl">
+            <MenuList shadow="xl" rounded="xl">
               {weekDays.map((weekDay) => (
                 <MenuItem
                   key={weekDay.toString()}
                   textStyle="title"
-                  onClick={() => {
-                    setDay(getDay(weekDay));
-                    onDaySelect(getDay(weekDay));
-                  }}
+                  onClick={() => onDaySelect(getDay(weekDay))}
                 >
                   {format(weekDay, 'EEEE', { locale: ja })}
                 </MenuItem>

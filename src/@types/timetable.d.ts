@@ -20,11 +20,56 @@ interface DefaultPeriod extends Period {
   endAt: string;
 }
 
-interface CurrentTimetable {
-  timetable: SubjectInfo[];
-  period: number;
-  week: Week;
-  course: CourseInfo;
+interface UserSchedule {
+  _id?: string;
+  title: string;
+  description?: string;
+  owner: string;
+  private: boolean;
+  schedules: {
+    [week in 'A' | 'B']: {
+      subjectId: string | null;
+      text?: string;
+    }[][];
+  };
+  meta: {
+    type: Type;
+    grade: GradeCode;
+    class: ClassCode;
+    course?: CourseCode;
+  };
+}
+
+interface UserSubject {
+  _id?: string;
+  owner: string;
+  name: string;
+  short_name?: string;
+  description?: string;
+  teacher?: string;
+  location?: string;
+  private: boolean;
+  meta: {
+    type: Type;
+    grade: GradeCode;
+    class: ClassCode;
+    course?: CourseCode;
+  };
+}
+
+interface UserLocation {
+  _id: string;
+  owner: string;
+  name: string;
+  subname?: string;
+  description?: string;
+}
+
+interface Division {
+  date: Date;
+  week: 'A' | 'B';
+  day: Day;
+  irregular: boolean;
 }
 
 interface DaySchedule {
