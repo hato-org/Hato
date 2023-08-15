@@ -8,7 +8,6 @@ interface User {
   grade: GradeCode;
   class: ClassCode;
   course: CourseCode;
-  userScheduleId?: string | null;
   apiKey: string;
   contributionCount: number;
   createdAt: string;
