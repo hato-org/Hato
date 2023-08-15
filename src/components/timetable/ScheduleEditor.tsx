@@ -55,7 +55,7 @@ import { useSchedule, useSchedulePlaceholder } from '@/hooks/timetable';
 
 interface GradeSchedule {
   type: Type;
-  grade: number;
+  grade: GradeCode;
   timetable: {
     index: number;
     startAt: string;
@@ -328,7 +328,7 @@ const BatchSchedule = React.memo(
       onScheduleChange(
         gradeList?.map((gradeInfo) => ({
           type: gradeInfo.type,
-          grade: gradeInfo.grade_num,
+          grade: gradeInfo.gradeCode,
           timetable: periods,
         }))!
       );
@@ -464,7 +464,7 @@ const IndividualSchedule = React.memo(
       setSchedule(
         gradeList.map((gradeInfo) => ({
           type: gradeInfo.type,
-          grade: gradeInfo.grade_num,
+          grade: gradeInfo.gradeCode,
           timetable: [...Array(6).keys()].map((i) => ({
             index: i + 1,
             startAt: placeholder[i].startAt,
@@ -484,7 +484,7 @@ const IndividualSchedule = React.memo(
           const gradeInfo = gradeList?.find(
             (gInfo) =>
               gInfo.type === gradeSchedule.type &&
-              gInfo.grade_num === gradeSchedule.grade
+              gInfo.gradeCode === gradeSchedule.grade
           );
 
           const onDragEnd = (result: DropResult) => {

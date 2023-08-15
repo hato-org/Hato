@@ -63,7 +63,7 @@ interface Schedule {
   day: Day;
   schedule: {
     type: Type;
-    grade: number;
+    grade: GradeCode;
     timetable: {
       index: number;
       startAt: string;

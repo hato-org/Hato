@@ -116,11 +116,11 @@ function Timetable() {
 
   const onGradeSelect = useCallback((gradeInfo: GradeInfo) => {
     setType(gradeInfo.type);
-    setGrade(gradeInfo.grade_num);
+    setGrade(gradeInfo.gradeCode);
   }, []);
 
   const onClassSelect = useCallback((classInfo: ClassInfo) => {
-    setClass(classInfo.class_num);
+    setClass(classInfo.classCode);
   }, []);
 
   const onTableTouchStart = useCallback(() => setTableFocus(true), []);
@@ -208,6 +208,7 @@ function Timetable() {
                 px={2}
               />
               <GradeClassPicker
+                direction="row"
                 onGradeSelect={onGradeSelect}
                 onClassSelect={onClassSelect}
                 px={2}
