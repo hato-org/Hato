@@ -63,9 +63,7 @@ export default function Notification() {
                   )}
                   <Switch
                     size="lg"
-                    isDisabled={
-                      subscribeLoading || unsubscribeLoading || !isPushAvailable
-                    }
+                    isDisabled
                     isChecked={!!pushSubscription}
                     onChange={() =>
                       pushSubscription ? unsubscribe() : subscribe()
@@ -103,6 +101,10 @@ export default function Notification() {
               </Alert>
             </Collapse>
           </Box>
+          <Alert rounded="xl" status="warning">
+            <AlertIcon />
+            <AlertTitle>デモ版ではご利用になれません。</AlertTitle>
+          </Alert>
           <Suspense fallback={<Loading />}>
             <Box w="full">
               <Collapse in={!!pushSubscription}>

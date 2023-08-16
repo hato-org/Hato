@@ -12,11 +12,10 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight, TbPoint } from 'react-icons/tb';
-import { format, setDay, startOfDay } from 'date-fns/esm';
+import { format, setDay } from 'date-fns/esm';
 import { ja } from 'date-fns/locale';
 import TimetableTable from '../timetable/Table';
 import { useTimetable, useNotes } from '@/hooks/timetable';
-import Transit from './Transit';
 import { useUser } from '@/hooks/user';
 
 function Timetable() {
@@ -31,11 +30,11 @@ function Timetable() {
   });
   const { data: notes } = useNotes({ date });
 
-  if (
-    data &&
-    new Date(data?.[0].timetable.at(-1)?.endAt ?? startOfDay(date)) < date
-  )
-    return <Transit />;
+  // if (
+  //   data &&
+  //   new Date(data?.[0].timetable.at(-1)?.endAt ?? startOfDay(date)) < date
+  // )
+  //   return <Transit />;
 
   return (
     <VStack w="100%" spacing={4}>

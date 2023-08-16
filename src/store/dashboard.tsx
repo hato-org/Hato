@@ -17,13 +17,13 @@ export const cards: DashboardCard[] = [
     description: '設定したマイ時間割の今日の日課を表示します。',
     component: <CardElement.Timetable />,
   },
-  {
-    id: 'transit',
-    name: '交通情報',
-    description:
-      '周辺路線の運転状況・屋代高校前駅から発車する\n直近3本の列車を表示します。',
-    component: <CardElement.Transit />,
-  },
+  // {
+  //   id: 'transit',
+  //   name: '交通情報',
+  //   description:
+  //     '周辺路線の運転状況・屋代高校前駅から発車する\n直近3本の列車を表示します。',
+  //   component: <CardElement.Transit />,
+  // },
   {
     id: 'events',
     name: '今日の予定',
