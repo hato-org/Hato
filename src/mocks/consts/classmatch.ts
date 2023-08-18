@@ -15,7 +15,21 @@ export const sports = [
   },
 ];
 
-export const streams = [];
+export const streams = [
+  {
+    type: 'instagram',
+    name: '一体ライブカメラ（Facebook）',
+    url: 'https://www.instagram.com/facebook/',
+  },
+  {
+    type: 'youtube',
+    url: 'https://youtube.com/shorts/lHqLW06dXps?feature=share',
+  },
+  {
+    type: 'youtube',
+    url: 'https://youtube.com/shorts/lSddn6-VHHY?feature=share',
+  },
+];
 
 export const getUpcomingMatch = () =>
   Array.from({ length: random([4, 6, 8]) })
