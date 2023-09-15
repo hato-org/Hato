@@ -66,6 +66,15 @@ export const useClassmatchLiveStreams = ({
   );
 };
 
+export const useClassmatchHistory = () => {
+  const { client } = useClient();
+
+  return useQuery<ClassmatchHistory[], AxiosError>(
+    ['classmatch', 'history'],
+    async () => (await client.get('/classmatch/history')).data
+  );
+};
+
 export const useClassmatchUpcomingList = ({
   year,
   season,

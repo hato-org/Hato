@@ -38,6 +38,7 @@ const UpcomingMatch = React.memo(
 
     const upcomingMatches = useMemo(
       () =>
+        // extract matches scheduled in the future or started in the last 30 mins
         data?.filter(
           ({ startAt }) =>
             new Date(startAt ?? '').getTime() -

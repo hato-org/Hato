@@ -80,7 +80,7 @@ export function SideMenuDrawer() {
   );
 }
 
-function MenuBody() {
+const MenuBody = React.memo(() => {
   const { logout } = useAuth();
   const location = useLocation();
   const breakPoint = useBreakpointValue({ base: 0, md: 1, lg: 2 }) ?? 0;
@@ -245,4 +245,4 @@ function MenuBody() {
       <Account />
     </VStack>
   );
-}
+});
