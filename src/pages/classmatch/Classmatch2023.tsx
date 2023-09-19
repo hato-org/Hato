@@ -1,16 +1,20 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   HStack,
   Heading,
+  Icon,
   SimpleGrid,
+  Spacer,
+  StackDivider,
   Text,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import BackButton from '@/components/layout/BackButton';
+import { TbChevronRight } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
 import Card from '@/components/layout/Card';
 import TournamentModal from '@/components/classmatch/TournamentModal';
@@ -25,16 +29,39 @@ import UpcomingMatch from '@/components/classmatch/UpcomingMatch';
 import Info from '@/components/cards/Info';
 import Error from '@/components/cards/Error';
 import Loading from '@/components/common/Loading';
+import HistoryModal from '@/components/classmatch/HistoryModal';
 
 const year = 2023;
 
 export default function Classmatch2023() {
   const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-  const season = useMemo(
-    () => (searchParams.get('season') as ClassmatchSeason) ?? 'spring',
-    [searchParams]
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [season, setSeason] = useState<ClassmatchSeason>(
+    searchParams.get('season') ?? new Date().getMonth() > 6
+      ? 'autumn'
+      : 'spring'
   );
+
+  useEffect(() => {
+    searchParams.set('season', season);
+    setSearchParams(searchParams);
+    //  eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [season]);
+
+  const onSeasonSelected = useCallback(
+    ({
+      // year: newYear,
+      season: newSeason,
+    }: {
+      year: number;
+      season: ClassmatchSeason;
+    }) => {
+      setSeason(newSeason);
+    },
+    []
+  );
+
   const {
     data: sports,
     isLoading: sportsLoading,
@@ -57,22 +84,49 @@ export default function Classmatch2023() {
       <Helmet>
         <title>クラスマッチ - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
-      <Header>
+      <Header withMenu>
         <HStack w="100%">
-          <BackButton />
           <Heading size="md" ml={2} py={4}>
             クラスマッチ
           </Heading>
         </HStack>
       </Header>
+      <HistoryModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onSelected={onSeasonSelected}
+      />
       <TournamentModal year={year} season={season} />
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries(['classmatch']);
+          await queryClient.invalidateQueries(['classmatch', year, season]);
+          await queryClient.invalidateQueries(['classmatch', 'history']);
         }}
       >
         <VStack w="full" minH="100vh" p={4} mb={24} spacing={8}>
           <Info />
+          <Card
+            w="full"
+            onClick={onOpen}
+            layerStyle="button"
+            _hover={{ cursor: 'pointer' }}
+          >
+            <HStack spacing={4}>
+              <StackDivider
+                rounded="full"
+                borderWidth={2}
+                borderColor={season === 'spring' ? 'pink.300' : 'orange.500'}
+              />
+              <VStack spacing={0}>
+                <Text fontSize="3xl" fontWeight="bold">
+                  {year} {season === 'spring' ? '春' : '秋'}
+                </Text>
+                <Text textStyle="description">以前の結果を見る</Text>
+              </VStack>
+              <Spacer />
+              <Icon as={TbChevronRight} boxSize={6} />
+            </HStack>
+          </Card>
           <Card w="full">
             <VStack align="flex-start" w="full" p={2} spacing={4}>
               <Heading size="md">今後の試合</Heading>

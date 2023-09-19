@@ -9,7 +9,6 @@ import {
   ModalOverlay,
   VStack,
   Image,
-  Box,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
@@ -29,12 +28,12 @@ const TournamentModal = React.memo(
 
     const { data, isLoading, error } = useClassmatchSportInfo(
       { year, season, sport: classmatchTournament?.sport },
-      { enabled: !!classmatchTournament }
+      { enabled: !!classmatchTournament },
     );
 
     const { data: sports } = useClassmatchSports(
       { year, season },
-      { enabled: !!classmatchTournament }
+      { enabled: !!classmatchTournament },
     );
 
     return (
@@ -56,7 +55,7 @@ const TournamentModal = React.memo(
               sports?.find(
                 ({ id }) =>
                   id ===
-                  (classmatchTournament ? classmatchTournament.sport : '')
+                  (classmatchTournament ? classmatchTournament.sport : ''),
               )?.name
             }
           </ModalHeader>
@@ -68,12 +67,12 @@ const TournamentModal = React.memo(
               <Error error={error} />
             ) : (
               <VStack spacing={0}>
-                <Box p={4}>
-                  <Image
-                    src={`/classmatch/${classmatchTournament?.year}/${data.map}${darkSuffix}.png`}
-                    rounded="xl"
-                  />
-                </Box>
+                <Image
+                  w="full"
+                  aspectRatio="4 / 3"
+                  src={`/classmatch/${classmatchTournament?.year}/${data.map}${darkSuffix}.png`}
+                  rounded="xl"
+                />
                 <Tournament {...data.tournament} />
               </VStack>
             )}
@@ -83,7 +82,7 @@ const TournamentModal = React.memo(
         </ModalContent>
       </Modal>
     );
-  }
+  },
 );
 
 export default TournamentModal;

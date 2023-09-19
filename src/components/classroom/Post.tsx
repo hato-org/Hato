@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   TbAlbum,
   TbCheckupList,
-  TbQuestionCircle,
+  TbHelpCircle,
   TbChevronRight,
   TbMessage,
 } from 'react-icons/tb';
@@ -51,7 +51,7 @@ const Post = React.memo(
         case 'courseWorkMaterial':
           return TbAlbum;
         default:
-          return TbQuestionCircle;
+          return TbHelpCircle;
       }
     }, [type]);
 

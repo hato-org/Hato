@@ -6,7 +6,13 @@ type ClassmatchSportId =
   | 'volleyballf'
   | 'softball'
   | 'tennis'
-  | 'tabletennis';
+  | 'tabletennis'
+  | 'football'
+  | 'handball'
+  | 'handballf'
+  | 'badminton'
+  | 'basketball'
+  | 'basketballf';
 
 interface ClassmatchSport {
   id: ClassmatchSportId;
@@ -67,6 +73,13 @@ interface ClassmatchLiveStream {
   type: 'youtube' | 'instagram';
   name: string;
   url: string;
+}
+
+interface ClassmatchHistory {
+  year: number;
+  season: ClassmatchSeason;
+  startAt: string;
+  endAt: string;
 }
 
 interface ClassmatchTournamentEditHistory {
