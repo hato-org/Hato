@@ -14,8 +14,6 @@ import {
   ModalOverlay,
   ModalBody,
   ModalFooter,
-  StackDivider,
-  Box,
   ButtonGroup,
   Link,
 } from '@chakra-ui/react';
@@ -26,7 +24,7 @@ import {
   TbChevronRight,
   TbExternalLink,
 } from 'react-icons/tb';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
 import { useSetRecoilState } from 'recoil';
 import { useAuth } from '@/modules/auth';
@@ -48,19 +46,6 @@ function Top() {
   const onWhatsNewOpen = useCallback(() => {
     setOverlay((currVal) => ({ ...currVal, whatsNew: true }));
   }, [setOverlay]);
-
-  const { data: totalCache, refetch } = useQuery(
-    ['storage'],
-    async () => {
-      const { usage } = await navigator.storage.estimate();
-      return usage ? (usage / 1024 / 1024).toFixed(2) : 0;
-    },
-    {
-      staleTime: 0,
-      cacheTime: 0,
-      retry: false,
-    }
-  );
 
   return (
     <MotionVStack
@@ -126,13 +111,6 @@ function Top() {
         </SettingButton>
       </SettingCategory>
       <SettingCategory title="その他">
-        {/* <SettingButton
-          label="時間割追加リクエスト"
-          description="時間割データの追加をリクエストできます。"
-          onClick={() => window.open('https://forms.gle/XcmNLT7PJry9iuxy5')}
-        >
-          <Icon as={TbExternalLink} />
-        </SettingButton> */}
         <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
@@ -147,12 +125,6 @@ function Top() {
                       <br />
                       一時データが削除されます
                     </Text>
-                    {totalCache && (
-                      <Box w="100%">
-                        <StackDivider />
-                        <Text fontSize="lg">合計 {totalCache} MB</Text>
-                      </Box>
-                    )}
                   </VStack>
                 </ModalBody>
                 <ModalFooter>
@@ -177,7 +149,6 @@ function Top() {
                           pin: false,
                         });
                         queryClient.clear();
-                        refetch();
                         onClose();
                       }}
                     >
@@ -187,7 +158,6 @@ function Top() {
                 </ModalFooter>
               </ModalContent>
             </Modal>
-            {totalCache && <Text>{totalCache} MB</Text>}
             <Icon as={TbChevronRight} />
           </>
         </SettingButton>

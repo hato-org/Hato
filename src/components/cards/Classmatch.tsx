@@ -12,6 +12,7 @@ import UpcomingMatch from '../classmatch/UpcomingMatch';
 
 export default function Classmatch() {
   const date = new Date();
+  const season = date.getMonth() > 6 ? 'autumn' : 'spring';
 
   return (
     <VStack w="full" spacing={4} align="flex-start">
@@ -29,7 +30,7 @@ export default function Classmatch() {
         </HStack>
       </LinkBox>
       <VStack w="full" p={2}>
-        <UpcomingMatch year={date.getFullYear()} season="spring" />
+        <UpcomingMatch year={date.getFullYear()} season={season} />
       </VStack>
     </VStack>
   );

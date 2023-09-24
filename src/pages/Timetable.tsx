@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  lazy,
-  Suspense,
-} from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import {
   Center,
   Heading,
@@ -34,7 +27,6 @@ import {
   TbChevronRight,
 } from 'react-icons/tb';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 import Header from '@/components/nav/Header';
 import DateSwitcher from '@/components/timetable/DateSwitcher';
 import TimetableTable from '@/components/timetable/Table';
@@ -45,12 +37,12 @@ import Loading from '@/components/common/Loading';
 import { useUser } from '@/hooks/user';
 import { useDivision, useUserSchedule } from '@/hooks/timetable';
 import Error from '@/components/timetable/Error';
-import { overlayAtom } from '@/store/overlay';
+import DivisionEditor from '@/components/timetable/DivisionEditor';
 
 const ReportModal = lazy(() => import('@/components/common/ReportModal'));
 const Notes = lazy(() => import('@/components/timetable/Notes'));
 const AddNoteDrawer = lazy(
-  () => import('@/components/timetable/AddNoteDrawer')
+  () => import('@/components/timetable/AddNoteDrawer'),
 );
 
 function Timetable() {
@@ -59,81 +51,42 @@ function Timetable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
+    isOpen: isDivisionEditorOpen,
+    onOpen: onDivisionEditorOpen,
+    onClose: onDivisionEditorClose,
+  } = useDisclosure();
+  const {
     isOpen: reportOpen,
     onOpen: reportOnOpen,
     onClose: reportOnClose,
   } = useDisclosure();
-  const setOverlay = useSetRecoilState(overlayAtom);
   const [tableFocus, setTableFocus] = useState(false);
 
   const popoverRef = useRef(null);
 
-  const [date, setDate] = useState(new Date());
+  const year = Number(searchParams.get('y'));
+  const month = Number(searchParams.get('m'));
+  const day = Number(searchParams.get('d'));
+
+  const [date, setDate] = useState(
+    new Date(year && month && day ? `${year}-${month}-${day}` : Date.now()),
+  );
 
   const { data: division } = useDivision({ date });
   const { data: userSchedule } = useUserSchedule(
     { id: user.userScheduleId ?? '' },
-    { enabled: !!user.userScheduleId }
+    { enabled: !!user.userScheduleId },
   );
-
-  const onPrevDay = useCallback(() => {
-    const prevDate = subDays(date, 1);
-    searchParams.set('y', String(prevDate.getFullYear()));
-    searchParams.set('m', String(prevDate.getMonth() + 1));
-    searchParams.set('d', String(prevDate.getDate()));
-    setSearchParams(searchParams, { replace: true });
-    setDate(prevDate);
-  }, [date, searchParams, setSearchParams]);
-
-  const onNextDay = useCallback(() => {
-    const nextDate = addDays(date, 1);
-    searchParams.set('y', String(nextDate.getFullYear()));
-    searchParams.set('m', String(nextDate.getMonth() + 1));
-    searchParams.set('d', String(nextDate.getDate()));
-    setSearchParams(searchParams, { replace: true });
-    setDate(nextDate);
-  }, [date, searchParams, setSearchParams]);
-
-  const onSelectDay = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newDate = new Date(e.target.value);
-      searchParams.set('y', String(newDate.getFullYear()));
-      searchParams.set('m', String(newDate.getMonth() + 1));
-      searchParams.set('d', String(newDate.getDate()));
-      setSearchParams(searchParams, { replace: true });
-      setDate(newDate);
-    },
-    [searchParams, setSearchParams]
-  );
-
-  const onTableTouchStart = useCallback(() => setTableFocus(true), []);
-  const onTableTouchEnd = useCallback(() => setTableFocus(false), []);
 
   useEffect(() => {
-    if (
-      searchParams.has('y') &&
-      searchParams.has('m') &&
-      searchParams.has('d')
-    ) {
-      setDate(
-        new Date(
-          Number(searchParams.get('y')),
-          Number(searchParams.get('m')) - 1,
-          Number(searchParams.get('d'))
-        )
-      );
-    } else {
-      searchParams.set('y', String(date.getFullYear()));
-      searchParams.set('m', String(date.getMonth() + 1));
-      searchParams.set('d', String(date.getDate()));
-      setSearchParams(searchParams, {
-        replace: true,
-      });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    searchParams.set('y', date.getFullYear().toString());
+    searchParams.set('m', (date.getMonth() + 1).toString());
+    searchParams.set('d', date.getDate().toString());
+    setSearchParams(searchParams, { replace: true });
+  }, [date]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Box>
+    <>
       <Helmet>
         <title>時間割 - {import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
@@ -153,16 +106,11 @@ function Timetable() {
                 icon={<TbDots />}
                 isRound
               />
-              <MenuList shadow="lg">
+              <MenuList shadow="lg" rounded="xl">
                 <MenuItem
                   textStyle="title"
                   icon={<TbPencil />}
-                  onClick={() =>
-                    setOverlay((currVal) => ({
-                      ...currVal,
-                      divisionEditor: date,
-                    }))
-                  }
+                  onClick={onDivisionEditorOpen}
                 >
                   日課を編集
                 </MenuItem>
@@ -196,9 +144,11 @@ function Timetable() {
           <VStack w="100%" px={4} spacing={8}>
             <VStack w="100%">
               <DateSwitcher
-                onPrev={onPrevDay}
-                onNext={onNextDay}
-                onSelect={onSelectDay}
+                onPrev={() => setDate(subDays(date, 1))}
+                onNext={() => setDate(addDays(date, 1))}
+                onSelect={(e) => {
+                  if (e.target.valueAsDate) setDate(e.target.valueAsDate);
+                }}
                 date={date}
                 px={2}
               />
@@ -233,13 +183,16 @@ function Timetable() {
                         schedules={userSchedule?.schedules}
                         week={division?.week}
                         day={division?.day}
-                        onTouchStart={onTableTouchStart}
-                        onTouchEnd={onTableTouchEnd}
+                        onTouchStart={() => setTableFocus(true)}
+                        onTouchEnd={() => setTableFocus(false)}
                         overflowX="auto"
                         portalContainerRef={popoverRef}
                       />
                     ) : (
-                      <Error type="divisionNotSet" date={date} />
+                      <Error
+                        type="divisionNotSet"
+                        onOpen={onDivisionEditorOpen}
+                      />
                     )
                   ) : (
                     <Error type="userScheduleNotSet" />
@@ -284,15 +237,20 @@ function Timetable() {
                 </HStack>
                 <ScienceRoomTableTable
                   date={date}
-                  onTouchStart={onTableTouchStart}
-                  onTouchEnd={onTableTouchEnd}
+                  onTouchStart={() => setTableFocus(true)}
+                  onTouchEnd={() => setTableFocus(false)}
                 />
               </VStack>
             </Card>
           </VStack>
         </Center>
       </ChakraPullToRefresh>
-    </Box>
+      <DivisionEditor
+        date={date}
+        isOpen={isDivisionEditorOpen}
+        onClose={onDivisionEditorClose}
+      />
+    </>
   );
 }
 

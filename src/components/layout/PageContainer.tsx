@@ -6,7 +6,6 @@ import WhatsNew from '../common/WhatsNew';
 import AddCardDrawer from '../dashboard/AddCardDrawer';
 import BottomNavbar from '../nav/BottomNavbar';
 import SideMenu from '../nav/SideMenu';
-import DivisionEditor from '../timetable/DivisionEditor';
 import Tutorial from '../tutorial';
 
 export default function PageContainer({ children }: { children: JSX.Element }) {
@@ -17,7 +16,6 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
         <Tutorial />
         <WhatsNew />
         <AddCardDrawer />
-        <DivisionEditor />
         <Show below="md">
           <BottomNavbar />
         </Show>

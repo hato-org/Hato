@@ -1,22 +1,18 @@
 import { Button, Center, Icon, Text, VStack } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { overlayAtom } from '@/store/overlay';
 
 type ErrorProps =
   | {
       type: 'userScheduleNotSet';
-      date?: never;
+      onOpen?: never;
     }
   | {
       type: 'divisionNotSet';
-      date: Date;
+      onOpen: () => void;
     };
 
-function Error({ type, date }: ErrorProps) {
-  const setOverlay = useSetRecoilState(overlayAtom);
-
+function Error({ type, onOpen }: ErrorProps) {
   switch (type) {
     case 'divisionNotSet':
       return (
@@ -24,13 +20,7 @@ function Error({ type, date }: ErrorProps) {
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
             <Text textStyle="title">まだ日課が設定されていません。</Text>
-            <Button
-              rounded="lg"
-              colorScheme="blue"
-              onClick={() =>
-                setOverlay((currVal) => ({ ...currVal, divisionEditor: date }))
-              }
-            >
+            <Button rounded="lg" colorScheme="blue" onClick={onOpen}>
               設定する
             </Button>
           </VStack>
