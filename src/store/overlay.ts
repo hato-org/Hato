@@ -9,7 +9,6 @@ interface Overlay {
   whatsNew: boolean;
   userScheduleEditor: string | false;
   userSubjectEditor: string | false;
-  divisionEditor: Date | false;
   classmatchTournament:
     | { year: number; season: ClassmatchSeason; sport: ClassmatchSportId }
     | undefined;
@@ -24,7 +23,6 @@ export const overlayAtom = atom<Overlay>({
     whatsNew: false,
     userScheduleEditor: false,
     userSubjectEditor: false,
-    divisionEditor: false,
     classmatchTournament: undefined,
   },
   effects: [persistAtom],

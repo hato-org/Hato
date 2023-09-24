@@ -19,7 +19,7 @@ function PostDetail() {
   const { id } = useParams();
   const [pinned, setPinned] = useRecoilState(pinnedPostAtom);
 
-  const isPinned = pinned.includes(id);
+  const isPinned = pinned.includes(id ?? '');
 
   return (
     <Box>
@@ -50,7 +50,7 @@ function PostDetail() {
               setPinned((currVal) =>
                 isPinned
                   ? currVal.filter((postId) => postId !== id)
-                  : [...currVal, id]
+                  : [...currVal, id],
               )
             }
           />

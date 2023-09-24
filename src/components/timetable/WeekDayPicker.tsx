@@ -24,8 +24,8 @@ import { ja } from 'date-fns/locale';
 interface WeekDayPickerProps {
   onWeekSelect: (week: Week) => void;
   onDaySelect: (day: Day) => void;
-  week: Week;
-  day: Day;
+  week?: Week;
+  day?: Day;
 }
 
 const WeekDayPicker = React.memo(
@@ -36,7 +36,7 @@ const WeekDayPicker = React.memo(
           start: startOfWeek(new Date()),
           end: endOfWeek(new Date()),
         }),
-      []
+      [],
     );
 
     return (
@@ -48,10 +48,10 @@ const WeekDayPicker = React.memo(
               rounded="lg"
               layerStyle="button"
               textStyle="title"
-              borderColor="border"
+              borderColor={week ? 'border' : 'invalid'}
             >
               <HStack w="100%" px={4} py={2}>
-                <Text>{week}週</Text>
+                <Text>{week ? `${week}週` : '未設定'}</Text>
                 <Spacer />
                 <Icon as={TbChevronDown} />
               </HStack>
@@ -73,13 +73,15 @@ const WeekDayPicker = React.memo(
               rounded="lg"
               layerStyle="button"
               textStyle="title"
-              borderColor="border"
+              borderColor={day !== undefined ? 'border' : 'invalid'}
             >
               <HStack w="100%" px={4} py={2}>
                 <Text>
-                  {format(addDays(startOfWeek(new Date()), day), 'EEEE', {
-                    locale: ja,
-                  })}
+                  {day !== undefined
+                    ? format(addDays(startOfWeek(new Date()), day), 'EEEE', {
+                        locale: ja,
+                      })
+                    : '未設定'}
                 </Text>
                 <Spacer />
                 <Icon as={TbChevronDown} />
@@ -100,7 +102,7 @@ const WeekDayPicker = React.memo(
         </Box>
       </HStack>
     );
-  }
+  },
 );
 
 export default WeekDayPicker;

@@ -19,7 +19,7 @@ const Material = React.memo(
           layerStyle="button"
           as={Link}
           isExternal
-          href={driveFile.driveFile?.alternateLink}
+          href={driveFile.driveFile?.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
           <TagLeftIcon as={TbBrandGoogleDrive} />
@@ -38,7 +38,7 @@ const Material = React.memo(
           layerStyle="button"
           as={Link}
           isExternal
-          href={youtubeVideo.alternateLink}
+          href={youtubeVideo.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
           <TagLeftIcon as={TbBrandYoutube} />
@@ -57,7 +57,7 @@ const Material = React.memo(
           layerStyle="button"
           as={Link}
           isExternal
-          href={link.url}
+          href={link.url ?? ''}
           _hover={{ textDecor: 'none' }}
         >
           <TagLeftIcon as={TbLink} />
@@ -77,7 +77,7 @@ const Material = React.memo(
           layerStyle="button"
           as={Link}
           isExternal
-          href={form.formUrl}
+          href={form.formUrl ?? ''}
           _hover={{ textDecor: 'none' }}
         >
           <TagLeftIcon as={TbReport} />
@@ -89,7 +89,7 @@ const Material = React.memo(
     }
 
     return null;
-  }
+  },
 );
 
 export default Material;

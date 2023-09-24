@@ -1,5 +1,4 @@
 import {
-  As,
   HStack,
   Icon,
   Spacer,
@@ -8,10 +7,11 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import { IconType } from 'react-icons';
 import { TbChevronRight } from 'react-icons/tb';
 
 interface PostCategoryButtonProps extends StackProps {
-  icon: As<any>;
+  icon: IconType;
   label: string;
   description: string;
   href: string;
