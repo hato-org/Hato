@@ -1,5 +1,12 @@
-import { useMemo } from 'react';
-import { Button, Center, Code, Heading, VStack } from '@chakra-ui/react';
+import { useMemo, useState } from 'react';
+import {
+  Button,
+  Center,
+  Checkbox,
+  Code,
+  Heading,
+  VStack,
+} from '@chakra-ui/react';
 import { TbLoader, TbRotate } from 'react-icons/tb';
 import { useRouteError } from 'react-router-dom';
 import { useAuth } from '@/modules/auth';
@@ -8,6 +15,7 @@ import { useReport } from '@/hooks/report';
 function ErrorFallback() {
   const error = useRouteError() as Error;
   const { logout } = useAuth();
+  const [sendReport, setSendReport] = useState(true);
 
   console.error(error);
 
@@ -17,24 +25,34 @@ function ErrorFallback() {
     () => ({
       type: 'error',
       title: error.name,
-      description: error.message,
+      description: error.stack ?? error.message,
       url: window.location.toString(),
     }),
-    [error]
+    [error],
   );
 
   return (
     // @ts-ignore
-    <Center h={[['100vh', '100dvh']]} p={8}>
-      <VStack spacing={4} userSelect="text">
+    <Center w="full" h={[['100vh', '100dvh']]} p={8}>
+      <VStack w="full" spacing={4} userSelect="text">
         <Heading>エラーが発生しました</Heading>
         <Code rounded="md">{error.message}</Code>
+        <Code
+          maxW="full"
+          p={2}
+          overflowX="auto"
+          rounded="lg"
+          fontSize="xs"
+          whiteSpace="pre"
+        >
+          {error.stack}
+        </Code>
         <Button
           leftIcon={<TbRotate />}
           colorScheme="blue"
           rounded="xl"
           onClick={() => {
-            if (!import.meta.env.DEV) mutate(report);
+            if (!import.meta.env.DEV && sendReport) mutate(report);
             window.location.assign('/');
           }}
         >
@@ -44,7 +62,7 @@ function ErrorFallback() {
           leftIcon={<TbLoader />}
           rounded="xl"
           onClick={async () => {
-            if (!import.meta.env.DEV) mutate(report);
+            if (!import.meta.env.DEV && sendReport) mutate(report);
             logout();
             const dbs = await window.indexedDB?.databases();
             dbs?.forEach((db) => {
@@ -56,6 +74,13 @@ function ErrorFallback() {
         >
           ログアウト・キャッシュ削除
         </Button>
+        <Checkbox
+          isChecked={sendReport}
+          onChange={(e) => setSendReport(e.target.checked)}
+          textStyle="title"
+        >
+          エラーレポートを送信する
+        </Checkbox>
       </VStack>
     </Center>
   );

@@ -10,7 +10,7 @@ import { useClient } from '@/modules/client';
 
 export const useClassmatchSports = (
   { year, season }: { year: number; season: ClassmatchSeason },
-  options?: UseQueryOptions<ClassmatchSport[], AxiosError>
+  options?: UseQueryOptions<ClassmatchSport[], AxiosError>,
 ) => {
   const { client } = useClient();
 
@@ -19,7 +19,7 @@ export const useClassmatchSports = (
     async () =>
       (await client.get('/classmatch/sports', { params: { year, season } }))
         .data,
-    options
+    options,
   );
 };
 
@@ -33,7 +33,7 @@ export const useClassmatchSportInfo = (
     season: ClassmatchSeason;
     sport?: ClassmatchSportId;
   },
-  options?: UseQueryOptions<ClassmatchSportInfo, AxiosError>
+  options?: UseQueryOptions<ClassmatchSportInfo, AxiosError>,
 ) => {
   const { client } = useClient();
 
@@ -45,7 +45,7 @@ export const useClassmatchSportInfo = (
           params: { year, season },
         })
       ).data,
-    options
+    options,
   );
 };
 
@@ -62,7 +62,7 @@ export const useClassmatchLiveStreams = ({
     ['classmatch', year, season, 'livestreams'],
     async () =>
       (await client.get('/classmatch/streams', { params: { year, season } }))
-        .data
+        .data,
   );
 };
 
@@ -71,7 +71,7 @@ export const useClassmatchHistory = () => {
 
   return useQuery<ClassmatchHistory[], AxiosError>(
     ['classmatch', 'history'],
-    async () => (await client.get('/classmatch/history')).data
+    async () => (await client.get('/classmatch/history')).data,
   );
 };
 
@@ -91,7 +91,7 @@ export const useClassmatchUpcomingList = ({
   const { client } = useClient();
 
   return useQuery<ClassmatchTournamentUpcoming[], AxiosError>(
-    ['classmatch', 'upcoming', year, season, type, grade, classNum],
+    ['classmatch', year, season, 'upcoming', type, grade, classNum],
     async () =>
       (
         await client.get('/classmatch/tournament/upcoming', {
@@ -100,7 +100,7 @@ export const useClassmatchUpcomingList = ({
       ).data,
     {
       enabled: !!(year && season && type && grade && classNum),
-    }
+    },
   );
 };
 
@@ -149,6 +149,6 @@ export const useClassmatchMutation = ({
           status: 'error',
         });
       },
-    }
+    },
   );
 };

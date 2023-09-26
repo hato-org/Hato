@@ -1,4 +1,9 @@
-type WebPushServiceId = 'timetable' | 'event' | 'hatoboard' | 'transit';
+type WebPushServiceId =
+  | 'timetable'
+  | 'event'
+  | 'hatoboard'
+  | 'transit'
+  | 'classmatch';
 
 interface PushPayload {
   timestamp: number;
