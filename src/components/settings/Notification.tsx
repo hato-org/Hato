@@ -88,7 +88,7 @@ export default function Notification() {
                   </AlertDescription>
                   <UnorderedList spacing={2}>
                     {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
-                      navigator.userAgent
+                      navigator.userAgent,
                     ) && (
                       <ListItem textStyle="title">
                         iOSをアップデートする（16.4+）
@@ -135,8 +135,12 @@ function NotificationDetail() {
         id: 'transit',
         label: '交通情報',
       },
+      {
+        id: 'classmatch',
+        label: 'クラスマッチ',
+      },
     ],
-    []
+    [],
   );
 
   return (
@@ -164,7 +168,7 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
             : settings?.notification.push.filter((i) => i !== serviceId) ?? [],
       },
     }),
-    [settings]
+    [settings],
   );
 
   return (
