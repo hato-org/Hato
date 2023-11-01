@@ -69,7 +69,7 @@ function Timetable() {
   const day = Number(searchParams.get('d'));
 
   const [date, setDate] = useState(
-    new Date(year && month && day ? `${year}-${month}-${day}` : Date.now()),
+    year && month && day ? new Date(year, month - 1, day) : new Date(),
   );
 
   const { data: division } = useDivision({ date });
