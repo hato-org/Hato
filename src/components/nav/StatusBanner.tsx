@@ -18,11 +18,11 @@ export default function StatusBanner() {
   const isInMaintenance = statusInfo?.some(
     ({ startAt, endAt }) =>
       new Date(startAt).getTime() < Date.now() &&
-      Date.now() < new Date(endAt).getTime()
+      Date.now() < new Date(endAt).getTime(),
   );
   const isDown = useMemo(
     () => status?.status.some(({ ok }) => !ok) && !isInMaintenance,
-    [status, isInMaintenance]
+    [status, isInMaintenance],
   );
 
   return (
@@ -86,7 +86,7 @@ export default function StatusBanner() {
       </Box>
       <Box w="full">
         <Collapse in={!isOnline}>
-          <HStack w="full" justify="center" py={1} bg="gray.400" color="white">
+          <HStack w="full" justify="center" py={1} bg="bg.500" color="white">
             <Icon as={TbCloudOff} boxSize={6} />
             <Text textStyle="title" color="inherit">
               オフライン
