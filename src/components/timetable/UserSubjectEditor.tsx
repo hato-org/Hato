@@ -19,10 +19,11 @@ import {
   PopoverTrigger,
   Text,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { TbTrash } from 'react-icons/tb';
-import { useUserSubject, useUserSubjectMutation } from '@/hooks/timetable';
-import { useUser } from '@/hooks/user';
+import { useUserSubject, useUserSubjectMutation } from '@/services/timetable';
+import { useUser } from '@/services/user';
 
 export default function UserSubjectEditor({
   isOpen,
@@ -35,12 +36,12 @@ export default function UserSubjectEditor({
   onDelete: () => void;
   subjectId?: string | null;
 }) {
+  const toast = useToast({
+    position: 'top-right',
+  });
   const { data: user } = useUser();
 
-  const { data } = useUserSubject(
-    { id: subjectId ?? '' },
-    { enabled: !!subjectId }
-  );
+  const { data } = useUserSubject(subjectId ?? '', { enabled: !!subjectId });
 
   const { mutate } = useUserSubjectMutation();
 
@@ -56,7 +57,16 @@ export default function UserSubjectEditor({
     <Drawer
       isOpen={isOpen}
       onClose={() => {
-        if (subject.name && subject.owner) mutate(subject as UserSubject);
+        if (subject.name && subject.owner)
+          mutate(subject as UserSubject, {
+            onError: (error) => {
+              toast({
+                status: 'error',
+                title: 'エラーが発生しました',
+                description: error.message,
+              });
+            },
+          });
         onClose();
       }}
       placement="bottom"

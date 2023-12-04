@@ -59,7 +59,7 @@ function Dashboard() {
 
       setCardOrder(newCardOrder);
     },
-    [cardOrder, setCardOrder]
+    [cardOrder, setCardOrder],
   );
 
   return (
@@ -113,10 +113,7 @@ function Dashboard() {
         isPullable={!editMode}
         onRefresh={async () => {
           await Promise.all([
-            queryClient.invalidateQueries(['timetable']),
-            queryClient.invalidateQueries(['calendar']),
-            queryClient.invalidateQueries(['posts']),
-            queryClient.invalidateQueries(['transit']),
+            queryClient.invalidateQueries({ type: 'active' }),
           ]);
         }}
       >
@@ -229,7 +226,7 @@ function DraggableCard({
               transform="scale(1.5)"
               onClick={() =>
                 setCardOrder((currVal) =>
-                  currVal.filter((cardId) => cardId !== card.id)
+                  currVal.filter((cardId) => cardId !== card.id),
                 )
               }
             />

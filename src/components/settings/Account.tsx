@@ -39,8 +39,8 @@ import {
   useCourseList,
   useGradeList,
   useProfile,
-} from '@/hooks/info';
-import { useUser, useUserMutation } from '@/hooks/user';
+} from '@/services/info';
+import { useUser, useUserMutation } from '@/services/user';
 import SettingButton from './Button';
 import { MotionCenter } from '../motion';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
@@ -49,7 +49,7 @@ import SettingCategory from './Category';
 import Error from '../cards/Error';
 
 function Account() {
-  const { mutate: update, isLoading } = useUserMutation();
+  const { mutate: update, isPending } = useUserMutation();
   const { data: user } = useUser();
   const queryClient = useQueryClient();
   const { onCopy, hasCopied } = useClipboard(user.apiKey);
@@ -59,24 +59,24 @@ function Account() {
 
   const {
     data: profile,
-    isLoading: isProfileLoading,
+    isPending: isProfileLoading,
     error: profileError,
   } = useProfile();
 
   const {
     data: gradeList,
     error: gradeError,
-    isLoading: gradeIsLoading,
+    isPending: isGradePending,
   } = useGradeList();
   const {
     data: classList,
     error: classError,
-    isLoading: classIsLoading,
+    isPending: isClassPending,
   } = useClassList({ type: user?.type, grade: user?.grade });
   const {
     data: courseList,
     error: courseError,
-    isLoading: courseIsLoading,
+    isPending: isCoursePending,
   } = useCourseList({ type: user?.type, grade: user?.grade });
 
   const {
@@ -139,7 +139,7 @@ function Account() {
                       : () => {}
                   }
                   rounded="lg"
-                  isLoading={isLoading}
+                  isLoading={isPending}
                 >
                   変更する
                 </Button>
@@ -159,7 +159,7 @@ function Account() {
         //   ))}
         // </Select>
         <Menu>
-          <Skeleton isLoaded={!gradeIsLoading} rounded="lg">
+          <Skeleton isLoaded={!isGradePending} rounded="lg">
             {gradeError ? (
               <HStack py={2}>
                 <Icon as={TbAlertCircle} color="red.500" />
@@ -171,7 +171,7 @@ function Account() {
                   <Text textStyle="title">
                     {gradeList?.find(
                       ({ type, gradeCode }) =>
-                        type === user.type && gradeCode === user.grade
+                        type === user.type && gradeCode === user.grade,
                     )?.name ?? '未設定'}
                   </Text>
                   <Icon as={TbChevronDown} />
@@ -205,7 +205,7 @@ function Account() {
         //   ))}
         // </Select>
         <Menu>
-          <Skeleton isLoaded={!classIsLoading} rounded="lg">
+          <Skeleton isLoaded={!isClassPending} rounded="lg">
             {classError ? (
               <HStack py={2} align="center">
                 <Icon as={TbAlertCircle} color="red.500" />
@@ -218,7 +218,7 @@ function Account() {
                 <HStack rounded="xl" py={2} pl={4} justify="flex-end">
                   <Text textStyle="title">
                     {classList?.find(
-                      ({ classCode }) => classCode === user.class
+                      ({ classCode }) => classCode === user.class,
                     )?.name ?? '未設定'}
                   </Text>
                   <Icon as={TbChevronDown} />
@@ -248,7 +248,7 @@ function Account() {
           description: '自分が所属しているコース。',
           children: (
             <Menu>
-              <Skeleton isLoaded={!courseIsLoading} rounded="lg">
+              <Skeleton isLoaded={!isCoursePending} rounded="lg">
                 {courseError ? (
                   <HStack py={2}>
                     <Icon as={TbAlertCircle} color="red.500" />
@@ -285,9 +285,9 @@ function Account() {
       : undefined,
   ].filter(
     (
-      settingsButton
+      settingsButton,
     ): settingsButton is Exclude<typeof settingsButton, undefined> =>
-      !!settingsButton
+      !!settingsButton,
   );
 
   const listForDevs = useMemo(
@@ -322,7 +322,7 @@ function Account() {
         ),
       },
     ],
-    [toast, user, onCopy, hasCopied]
+    [toast, user, onCopy, hasCopied],
   );
 
   return (
@@ -342,7 +342,9 @@ function Account() {
         w="100%"
         pb={16}
         onRefresh={async () => {
-          await Promise.all([queryClient.invalidateQueries(['user'])]);
+          await Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['user'] }),
+          ]);
         }}
         refreshingContent={<Loading />}
         pullingContent={

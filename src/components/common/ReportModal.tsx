@@ -14,7 +14,7 @@ import {
   ModalProps,
 } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
-import { useReport } from '@/hooks/report';
+import { useReport } from '@/services/report';
 
 interface ReportModalProps extends Omit<ModalProps, 'children'> {
   placeholder?: string;
@@ -41,10 +41,10 @@ const ReportModal = React.memo(
           value: 'other',
         },
       ],
-      []
+      [],
     );
 
-    const { mutate, isLoading: reportLoading } = useReport();
+    const { mutate, isPending: reportPending } = useReport();
 
     return (
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -96,7 +96,7 @@ const ReportModal = React.memo(
                     url,
                   })
                 }
-                isLoading={reportLoading}
+                isLoading={reportPending}
                 isDisabled={
                   !reportType || (reportType === 'other' && !reportComment)
                 }
@@ -108,7 +108,7 @@ const ReportModal = React.memo(
         </ModalContent>
       </Modal>
     );
-  }
+  },
 );
 
 export default ReportModal;

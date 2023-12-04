@@ -24,13 +24,11 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { format, startOfDay } from 'date-fns/esm';
+import { format } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
-import { AxiosError } from 'axios';
-import { useClient } from '@/modules/client';
-import { useGradeList, useAllClassList } from '@/hooks/info';
-import { useUser } from '@/hooks/user';
+import { useGradeList, useAllClassList } from '@/services/info';
+import { useAddNoteMutation } from '@/services/timetable';
+import { useUser } from '@/services/user';
 
 interface AddNoteDrawerProps {
   isOpen: boolean;
@@ -45,55 +43,15 @@ const AddNoteDrawer = React.memo(
       variant: 'left-accent',
     });
     const { data: user } = useUser();
-    const { client } = useClient();
-    const queryClient = useQueryClient();
     const [message, setMessage] = useState('');
     const { data: gradeList } = useGradeList({ enabled: isOpen });
     const classListQueries = useAllClassList({ enabled: isOpen });
     const classListList = classListQueries.flatMap((classInfoQuery) =>
-      classInfoQuery.data ? [classInfoQuery.data] : []
+      classInfoQuery.data ? [classInfoQuery.data] : [],
     );
     const [targetClass, setTargetClass] = useState<ClassInfo[]>([]);
 
-    const { mutate } = useMutation<Note, AxiosError>(
-      async () =>
-        (
-          await client.post('/timetable/note', {
-            date: startOfDay(date),
-            target: targetClass,
-            message,
-            owner: user.email,
-          })
-        ).data,
-      {
-        onSuccess: (note) => {
-          toast({
-            status: 'success',
-            title: '追加しました。',
-          });
-          queryClient.setQueryData<Note[]>(
-            [
-              'timetable',
-              'note',
-              {
-                year: date.getFullYear(),
-                month: date.getMonth() + 1,
-                day: date.getDate(),
-              },
-            ],
-            (oldNotes) => [...(oldNotes ?? []), note]
-          );
-          onClose();
-        },
-        onError: (error) => {
-          toast({
-            status: 'error',
-            title: '追加に失敗しました。',
-            description: error.message,
-          });
-        },
-      }
-    );
+    const { mutate, isPending } = useAddNoteMutation();
 
     return (
       <Drawer
@@ -146,7 +104,7 @@ const AddNoteDrawer = React.memo(
                         const classList = classListList.find(
                           (clList) =>
                             clList[0].type === grade.type &&
-                            clList[0].gradeCode === grade.gradeCode
+                            clList[0].gradeCode === grade.gradeCode,
                         );
                         const allChecked = classList?.every((classInfo) =>
                           targetClass.some(
@@ -154,8 +112,8 @@ const AddNoteDrawer = React.memo(
                               targetClassInfo.type === classInfo.type &&
                               targetClassInfo.gradeCode ===
                                 classInfo.gradeCode &&
-                              targetClassInfo.classCode === classInfo.classCode
-                          )
+                              targetClassInfo.classCode === classInfo.classCode,
+                          ),
                         );
                         const isIndeterminate =
                           classList?.some((classInfo) =>
@@ -165,8 +123,8 @@ const AddNoteDrawer = React.memo(
                                 targetClassInfo.gradeCode ===
                                   classInfo.gradeCode &&
                                 targetClassInfo.classCode ===
-                                  classInfo.classCode
-                            )
+                                  classInfo.classCode,
+                            ),
                           ) && !allChecked;
 
                         return (
@@ -194,8 +152,8 @@ const AddNoteDrawer = React.memo(
                                                 newTargetClassInfo.gradeCode ===
                                                   classInfo.gradeCode &&
                                                 newTargetClassInfo.classCode ===
-                                                  classInfo.classCode
-                                            )
+                                                  classInfo.classCode,
+                                            ),
                                         );
                                       })
                                 }
@@ -218,7 +176,7 @@ const AddNoteDrawer = React.memo(
                                           targetClassInfo.gradeCode ===
                                             classInfo.gradeCode &&
                                           targetClassInfo.classCode ===
-                                            classInfo.classCode
+                                            classInfo.classCode,
                                       )}
                                       onChange={(e) =>
                                         e.target.checked
@@ -239,7 +197,7 @@ const AddNoteDrawer = React.memo(
                                                       classInfo.gradeCode &&
                                                     newTargetClassInfo.classCode ===
                                                       classInfo.classCode
-                                                  )
+                                                  ),
                                               );
                                             })
                                       }
@@ -284,8 +242,34 @@ const AddNoteDrawer = React.memo(
               w="100%"
               colorScheme="blue"
               rounded="lg"
-              onClick={() => mutate()}
+              onClick={() =>
+                mutate(
+                  {
+                    date,
+                    owner: user.email,
+                    message,
+                    target: targetClass,
+                  },
+                  {
+                    onSuccess: () => {
+                      toast({
+                        status: 'success',
+                        title: '追加しました。',
+                      });
+                      onClose();
+                    },
+                    onError: (error) => {
+                      toast({
+                        status: 'error',
+                        title: '追加に失敗しました。',
+                        description: error.message,
+                      });
+                    },
+                  },
+                )
+              }
               isDisabled={!date || !message || !targetClass.length}
+              isLoading={isPending}
             >
               追加
             </Button>
@@ -293,7 +277,7 @@ const AddNoteDrawer = React.memo(
         </DrawerContent>
       </Drawer>
     );
-  }
+  },
 );
 
 export default AddNoteDrawer;

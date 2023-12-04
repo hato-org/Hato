@@ -15,6 +15,7 @@ import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
+import { addMonths, subMonths } from 'date-fns/esm';
 import Header from '@/components/nav/Header';
 import Calendar from '@/components/calendar/Calendar';
 import FloatButton from '@/components/layout/FloatButton';
@@ -29,34 +30,21 @@ function Events() {
   const setTutorialModal = useSetRecoilState(tutorialModalAtom);
   const onHelpOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, events: true })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
   const onIcalOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, iCal: true })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
   const [searchParams, setSearchParams] = useSearchParams();
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
-  const [date, setDate] = useState(new Date());
-
   const year = useMemo(() => Number(searchParams.get('y')), [searchParams]);
   const month = useMemo(() => Number(searchParams.get('m')), [searchParams]);
+  const [date, setDate] = useState(
+    year && month ? new Date(year, month - 1, 1) : new Date(),
+  );
 
   useEffect(() => {
-    if (searchParams.has('y') && searchParams.has('m')) {
-      setDate(
-        new Date(
-          Number(searchParams.get('y')),
-          Number(searchParams.get('m')) - 1
-        )
-      );
-    } else {
-      searchParams.set('y', String(date.getFullYear()));
-      searchParams.set('m', String(date.getMonth() + 1));
-      setSearchParams(searchParams, {
-        replace: true,
-      });
-    }
     if (!tutorial.events) {
       onHelpOpen();
       setTutorial((oldVal) => ({
@@ -65,6 +53,13 @@ function Events() {
       }));
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    searchParams.set('y', date.getFullYear().toString());
+    searchParams.set('m', (date.getMonth() + 1).toString());
+    searchParams.set('d', date.getDate().toString());
+    setSearchParams(searchParams, { replace: true });
+  }, [date]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>
@@ -90,7 +85,9 @@ function Events() {
       <ChakraPullToRefresh
         w="100%"
         onRefresh={async () => {
-          await Promise.all([queryClient.invalidateQueries(['calendar'])]);
+          await Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['calendar'] }),
+          ]);
         }}
       >
         <VStack px={4} mb={40}>
@@ -118,7 +115,12 @@ function Events() {
               </VStack>
             </Card>
           )}
-          <Calendar year={year} month={month} />
+          <Calendar
+            year={year}
+            month={month}
+            onPrevMonth={() => setDate((prev) => subMonths(prev, 1))}
+            onNextMonth={() => setDate((prev) => addMonths(prev, 1))}
+          />
         </VStack>
       </ChakraPullToRefresh>
       <FloatButton

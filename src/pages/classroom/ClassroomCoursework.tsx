@@ -21,10 +21,9 @@ import { TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { format } from 'date-fns/esm';
 import { useRecoilState } from 'recoil';
-import { useGCCourseWork } from '@/hooks/classroom/coursework';
+import { useGCCourseWork, useGCUserInfo } from '@/services/classroom';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
-import { useGCUserInfo } from '@/hooks/classroom/user';
 import Material from '@/components/classroom/Material';
 import { generateDateFromGCDate } from '@/utils/classroom';
 import Error from '@/components/cards/Error';
@@ -33,12 +32,12 @@ import { GCBookmarkAtom } from '@/store/classroom';
 export default function ClassroomCoursework() {
   const { id, courseworkId } = useParams();
   const [bookmarks, setBookmarks] = useRecoilState(GCBookmarkAtom);
-  const { data, isLoading, error } = useGCCourseWork({
+  const { data, isPending, error } = useGCCourseWork({
     courseId: id,
     id: courseworkId,
   });
-  const { data: userInfo, isLoading: userLoading } = useGCUserInfo(
-    data?.creatorUserId
+  const { data: userInfo, isPending: isUserPending } = useGCUserInfo(
+    data?.creatorUserId,
   );
 
   const isBookmarked = bookmarks.some(
@@ -48,7 +47,7 @@ export default function ClassroomCoursework() {
         type: 'courseWork',
         courseId: id,
         id: courseworkId,
-      })
+      }),
   );
 
   return (
@@ -85,7 +84,7 @@ export default function ClassroomCoursework() {
                           type: 'courseWork',
                           courseId: id,
                           id: courseworkId,
-                        })
+                        }),
                     )
                   : [
                       ...currVal,
@@ -94,7 +93,7 @@ export default function ClassroomCoursework() {
                         courseId: id ?? '',
                         id: courseworkId ?? '',
                       },
-                    ]
+                    ],
               )
             }
           />
@@ -122,12 +121,17 @@ export default function ClassroomCoursework() {
               borderColor="blue.400"
             />
             <VStack w="full" align="flex-start" spacing={1}>
-              <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!isLoading}>
+              <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!isPending}>
                 <Text textStyle="title" fontSize="2xl">
                   {data?.title}
                 </Text>
               </Skeleton>
-              <Skeleton minH={6} minW={20} rounded="md" isLoaded={!userLoading}>
+              <Skeleton
+                minH={6}
+                minW={20}
+                rounded="md"
+                isLoaded={!isUserPending}
+              >
                 <Text textStyle="description">{userInfo?.name?.fullName}</Text>
               </Skeleton>
             </VStack>
@@ -138,7 +142,7 @@ export default function ClassroomCoursework() {
             noOfLines={3}
             skeletonHeight={4}
             spacing={2}
-            isLoaded={!isLoading}
+            isLoaded={!isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.description}
@@ -164,7 +168,7 @@ export default function ClassroomCoursework() {
                           date: data.dueDate,
                           timeOfDay: data.dueTime,
                         }),
-                        'MM/dd HH:mm'
+                        'MM/dd HH:mm',
                       )
                     : 'なし'}
                 </Text>

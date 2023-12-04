@@ -22,22 +22,19 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosError, AxiosResponse } from 'axios';
 import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
-import { eachMonthOfInterval } from 'date-fns/esm';
 import Header from '@/components/nav/Header';
-import { useClient } from '@/modules/client';
 import Error from '@/components/cards/Error';
 import Event from '@/components/calendar/Event';
 import BackButton from '@/components/layout/BackButton';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import ReportModal from '@/components/common/ReportModal';
+import { useEvent, useEventMutation } from '@/services/calendar';
 
 function EventDetail() {
-  const { id } = useParams();
+  const { id = '' } = useParams();
   const navigate = useNavigate();
   const toast = useToast({
     position: 'top-right',
@@ -57,54 +54,9 @@ function EventDetail() {
   const cancelRef = useRef<any>();
 
   const { data: user } = useUser();
-  const { client } = useClient();
-  const queryClient = useQueryClient();
 
-  const { data, error } = useQuery<Event, AxiosError>(
-    ['calendar', 'event', id],
-    async () => (await client.get(`/calendar/event/${id}`)).data
-  );
-
-  const { mutate: deleteSubmit, isLoading: deleteLoading } = useMutation<
-    AxiosResponse<any>,
-    AxiosError
-  >(() => client.delete(`/calendar/event/${data?._id}`), {
-    onSuccess: () => {
-      toast({
-        title: 'イベントを削除しました。',
-        status: 'success',
-      });
-      queryClient.removeQueries(['calendar', 'event', data?._id]);
-
-      const monthRange = eachMonthOfInterval({
-        start: new Date(data?.startAt ?? Date.now()),
-        end: new Date(data?.endAt ?? Date.now()),
-      });
-
-      monthRange.forEach((month) => {
-        queryClient.setQueryData<Event[]>(
-          [
-            'calendar',
-            'events',
-            { month: month.getMonth() + 1, year: month.getFullYear() },
-          ],
-          (oldEvents) =>
-            oldEvents?.filter((oldEvent) => oldEvent._id !== data?._id)
-        );
-      });
-
-      deleteOnClose();
-      navigate(-1);
-    },
-    onError: (mutationError) => {
-      toast({
-        title: 'イベントの削除に失敗しました。',
-        description: mutationError.message,
-        status: 'error',
-      });
-      deleteOnClose();
-    },
-  });
+  const { data, error } = useEvent(id);
+  const { mutate, isPending } = useEventMutation();
 
   if (error) return <Error error={error} />;
 
@@ -195,8 +147,30 @@ function EventDetail() {
                             w="full"
                             colorScheme="red"
                             rounded="lg"
-                            onClick={() => deleteSubmit()}
-                            isLoading={deleteLoading}
+                            onClick={() =>
+                              mutate(
+                                { action: 'delete', id },
+                                {
+                                  onSuccess: () => {
+                                    toast({
+                                      title: 'イベントを削除しました。',
+                                      status: 'success',
+                                    });
+                                    deleteOnClose();
+                                    navigate(-1);
+                                  },
+                                  onError: (e) => {
+                                    toast({
+                                      title: 'イベントの削除に失敗しました。',
+                                      description: e.message,
+                                      status: 'error',
+                                    });
+                                    deleteOnClose();
+                                  },
+                                },
+                              )
+                            }
+                            isLoading={isPending}
                           >
                             削除
                           </Button>

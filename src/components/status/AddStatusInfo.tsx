@@ -19,12 +19,12 @@ import { format } from 'date-fns/esm';
 import {
   useHatoStatusMaintenanceMutation,
   useHatoStatusServerList,
-} from '@/hooks/status';
+} from '@/services/status';
 
 const AddStatusInfo = React.memo(
   ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const { data } = useHatoStatusServerList();
-    const { mutate, isLoading } = useHatoStatusMaintenanceMutation();
+    const { mutate, isPending } = useHatoStatusMaintenanceMutation();
     const [statusInfo, setStatusInfo] = useState<StatusMaintenance>({
       type: 'maintenance',
       title: '',
@@ -129,7 +129,7 @@ const AddStatusInfo = React.memo(
               rounded="lg"
               colorScheme="blue"
               onClick={() => mutate(statusInfo, { onSuccess: onClose })}
-              isLoading={isLoading}
+              isLoading={isPending}
               isDisabled={
                 !statusInfo.title ||
                 !statusInfo.description ||
@@ -144,7 +144,7 @@ const AddStatusInfo = React.memo(
         </ModalContent>
       </Modal>
     );
-  }
+  },
 );
 
 export default AddStatusInfo;

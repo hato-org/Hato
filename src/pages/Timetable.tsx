@@ -34,8 +34,8 @@ import ScienceRoomTableTable from '@/components/scienceroom/Table';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import Loading from '@/components/common/Loading';
-import { useUser } from '@/hooks/user';
-import { useDivision, useUserSchedule } from '@/hooks/timetable';
+import { useUser } from '@/services/user';
+import { useDivision, useUserSchedule } from '@/services/timetable';
 import Error from '@/components/timetable/Error';
 import DivisionEditor from '@/components/timetable/DivisionEditor';
 
@@ -73,10 +73,9 @@ function Timetable() {
   );
 
   const { data: division } = useDivision({ date });
-  const { data: userSchedule } = useUserSchedule(
-    { id: user.userScheduleId ?? '' },
-    { enabled: !!user.userScheduleId },
-  );
+  const { data: userSchedule } = useUserSchedule(user.userScheduleId ?? '', {
+    enabled: !!user.userScheduleId,
+  });
 
   useEffect(() => {
     searchParams.set('y', date.getFullYear().toString());
@@ -137,7 +136,7 @@ function Timetable() {
       <ChakraPullToRefresh
         isPullable={!tableFocus}
         onRefresh={async () => {
-          await queryClient.invalidateQueries(['timetable']);
+          await queryClient.invalidateQueries({ queryKey: ['timetable'] });
         }}
       >
         <Center w="100%" mb={32} ref={popoverRef}>

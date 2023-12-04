@@ -20,9 +20,8 @@ import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
-import { useGCCourseworkMaterial } from '@/hooks/classroom/material';
+import { useGCCourseworkMaterial, useGCUserInfo } from '@/services/classroom';
 import Material from '@/components/classroom/Material';
-import { useGCUserInfo } from '@/hooks/classroom/user';
 import Error from '@/components/cards/Error';
 import { GCBookmarkAtom } from '@/store/classroom';
 
@@ -35,7 +34,7 @@ export default function ClassroomMaterial() {
     id: materialId,
   });
   const { data: userInfo, isLoading: userLoading } = useGCUserInfo(
-    data?.creatorUserId
+    data?.creatorUserId,
   );
 
   const isBookmarked = bookmarks.some(
@@ -45,7 +44,7 @@ export default function ClassroomMaterial() {
         type: 'courseWorkMaterial',
         courseId: id,
         id: materialId,
-      })
+      }),
   );
 
   return (
@@ -82,7 +81,7 @@ export default function ClassroomMaterial() {
                           type: 'courseWorkMaterial',
                           courseId: id,
                           id: materialId,
-                        })
+                        }),
                     )
                   : [
                       ...currVal,
@@ -91,7 +90,7 @@ export default function ClassroomMaterial() {
                         courseId: id ?? '',
                         id: materialId ?? '',
                       },
-                    ]
+                    ],
               )
             }
           />

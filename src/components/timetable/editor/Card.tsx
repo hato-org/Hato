@@ -21,9 +21,9 @@ import {
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbPencil, TbX } from 'react-icons/tb';
 import { useSetRecoilState } from 'recoil';
-import { useUser, useUserMutation } from '@/hooks/user';
+import { useUser, useUserMutation } from '@/services/user';
 import { overlayAtom } from '@/store/overlay';
-import { useUserSubject } from '@/hooks/timetable';
+import { useUserSubject } from '@/services/timetable';
 import { days } from '@/utils/date';
 
 const Card = React.memo(
@@ -31,7 +31,7 @@ const Card = React.memo(
     const { isOpen, onToggle } = useDisclosure();
     const setOverlay = useSetRecoilState(overlayAtom);
     const { data: user } = useUser();
-    const { mutate, isLoading } = useUserMutation();
+    const { mutate, isPending } = useUserMutation();
 
     const isSelected = user.userScheduleId === _id;
 
@@ -90,7 +90,7 @@ const Card = React.memo(
                   <Tbody>
                     {Array.from({
                       length: Math.max(
-                        ...schedules.A.map((daySchedule) => daySchedule.length)
+                        ...schedules.A.map((daySchedule) => daySchedule.length),
                       ),
                     }).map((_, index) => (
                       <Tr>
@@ -120,7 +120,7 @@ const Card = React.memo(
                   <Tbody>
                     {Array.from({
                       length: Math.max(
-                        ...schedules.B.map((daySchedule) => daySchedule.length)
+                        ...schedules.B.map((daySchedule) => daySchedule.length),
                       ),
                     }).map((_, index) => (
                       <Tr>
@@ -159,7 +159,7 @@ const Card = React.memo(
                   onClick={() =>
                     mutate({ userScheduleId: isSelected ? null : _id })
                   }
-                  isLoading={isLoading}
+                  isLoading={isPending}
                 >
                   {isSelected ? '使用をやめる' : '使用する'}
                 </Button>
@@ -169,22 +169,19 @@ const Card = React.memo(
         </Box>
       </VStack>
     );
-  }
+  },
 );
 
 const TablePeriod = React.memo(
   ({ subjectId }: { subjectId: string | null }) => {
-    const { data } = useUserSubject(
-      { id: subjectId ?? '' },
-      { enabled: !!subjectId }
-    );
+    const { data } = useUserSubject(subjectId ?? '', { enabled: !!subjectId });
 
     return (
       <Td textStyle="title" fontSize="lg">
         {data?.short_name ?? data?.name ?? '-'}
       </Td>
     );
-  }
+  },
 );
 
 export default Card;

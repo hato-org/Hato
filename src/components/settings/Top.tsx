@@ -28,7 +28,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
 import { useSetRecoilState } from 'recoil';
 import { useAuth } from '@/modules/auth';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import { tutorialAtom } from '@/store/tutorial';
 import { MotionVStack } from '../motion';
 import SettingButton from './Button';

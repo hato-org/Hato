@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { Virtuoso } from 'react-virtuoso';
 import BookInfo from './BookInfo';
 import { libraryBookmarkAtom } from '@/store/library';
-import { useBookInfo } from '@/hooks/library';
+import { useBookInfoByISDN } from '@/services/library';
 import Error from '../cards/Error';
 
 export default function Bookmarks() {
@@ -32,11 +32,11 @@ export default function Bookmarks() {
 }
 
 function BookInfoAsync({ isbn }: { isbn: string }) {
-  const { data, isLoading, error, isError } = useBookInfo(isbn);
+  const { data, status, error } = useBookInfoByISDN(isbn);
 
-  if (isError) return <Error error={error} />;
+  if (status === 'error') return <Error error={error} />;
 
-  return isLoading ? (
+  return status === 'pending' ? (
     <HStack p={2} pr={4} w="100%" spacing={4}>
       <Skeleton boxSize={16} rounded="lg" />
       <VStack align="flex-start" spacing={2}>

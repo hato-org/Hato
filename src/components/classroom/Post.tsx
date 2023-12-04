@@ -25,9 +25,11 @@ import Material from './Material';
 import { GCTimeline } from '@/@types/classroom';
 import { useStringHSLColor } from '@/hooks/common/color';
 import UserInfo from './UserInfo';
-import { useGCAnnouncement } from '@/hooks/classroom/announcement';
-import { useGCCourseWork } from '@/hooks/classroom/coursework';
-import { useGCCourseworkMaterial } from '@/hooks/classroom/material';
+import {
+  useGCAnnouncement,
+  useGCCourseWork,
+  useGCCourseworkMaterial,
+} from '@/services/classroom';
 
 const Post = React.memo(
   ({
@@ -90,7 +92,7 @@ const Post = React.memo(
             <Text textStyle="description">
               {format(
                 new Date(updateTime ?? 0),
-                isThisYear(new Date(updateTime ?? 0)) ? 'MM/dd' : 'yyyy/MM/dd'
+                isThisYear(new Date(updateTime ?? 0)) ? 'MM/dd' : 'yyyy/MM/dd',
               )}
             </Text>
             <Icon as={TbChevronRight} />
@@ -111,7 +113,7 @@ const Post = React.memo(
         </VStack>
       </Card>
     );
-  }
+  },
 );
 
 export const AsyncPost = React.memo(
@@ -124,22 +126,22 @@ export const AsyncPost = React.memo(
     courseId?: string;
     id?: string;
   }) => {
-    const { data: announcement, isLoading: announcementLoading } =
+    const { data: announcement, isPending: announcementPending } =
       useGCAnnouncement({ courseId, id }, { enabled: type === 'announcement' });
-    const { data: courseWork, isLoading: courseWorkLoading } = useGCCourseWork(
+    const { data: courseWork, isPending: courseWorkPending } = useGCCourseWork(
       { courseId, id },
-      { enabled: type === 'courseWork' }
+      { enabled: type === 'courseWork' },
     );
-    const { data: courseWorkMaterial, isLoading: courseWorkMaterialLoading } =
+    const { data: courseWorkMaterial, isPending: courseWorkMaterialPending } =
       useGCCourseworkMaterial(
         { courseId, id },
-        { enabled: type === 'courseWorkMaterial' }
+        { enabled: type === 'courseWorkMaterial' },
       );
 
     if (
-      (type === 'announcement' && announcementLoading) ||
-      (type === 'courseWork' && courseWorkLoading) ||
-      (type === 'courseWorkMaterial' && courseWorkMaterialLoading)
+      (type === 'announcement' && announcementPending) ||
+      (type === 'courseWork' && courseWorkPending) ||
+      (type === 'courseWorkMaterial' && courseWorkMaterialPending)
     )
       return <PostPlaceholder />;
 
@@ -157,7 +159,7 @@ export const AsyncPost = React.memo(
     })();
 
     return <Post {...post} />;
-  }
+  },
 );
 
 function PostPlaceholder() {

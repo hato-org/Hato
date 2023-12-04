@@ -16,8 +16,8 @@ import { TbChevronRight, TbPoint } from 'react-icons/tb';
 import { format, setDay } from 'date-fns/esm';
 import { ja } from 'date-fns/locale';
 import TimetableTable from '../timetable/Table';
-import { useUserSchedule, useNotes, useDivision } from '@/hooks/timetable';
-import { useUser } from '@/hooks/user';
+import { useUserSchedule, useNotes, useDivision } from '@/services/timetable';
+import { useUser } from '@/services/user';
 import Error from '../timetable/Error';
 import Loading from '../common/Loading';
 import DivisionEditor from '../timetable/DivisionEditor';
@@ -26,12 +26,16 @@ function Timetable() {
   const date = new Date();
   const { data: user } = useUser();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { data, isLoading: userScheduleLoading } = useUserSchedule(
-    { id: user.userScheduleId ?? '' },
+  const { data, isPending: userSchedulePending } = useUserSchedule(
+    user.userScheduleId ?? '',
     { enabled: !!user.userScheduleId },
   );
-  const { data: division, isLoading, error } = useDivision({ date });
-  const { data: notes } = useNotes({ date });
+  const { data: division, isPending, error } = useDivision({ date });
+  const { data: notes } = useNotes({
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  });
 
   return (
     <>
@@ -52,7 +56,7 @@ function Timetable() {
                 </Flex>
               </Tooltip>
             )}
-            <Skeleton rounded="md" isLoaded={!isLoading}>
+            <Skeleton rounded="md" isLoaded={!isPending}>
               <Text textStyle="title" color="description">
                 {division
                   ? `${division.week}週 ${format(
@@ -68,8 +72,7 @@ function Timetable() {
             <Icon as={TbChevronRight} boxSize={5} />
           </HStack>
         </LinkBox>
-        {/* eslint-disable no-nested-ternary */}
-        {isLoading || userScheduleLoading ? (
+        {isPending || userSchedulePending ? (
           <Loading />
         ) : user.userScheduleId ? (
           division ? (
@@ -78,7 +81,7 @@ function Timetable() {
               week={division?.week}
               day={division?.day}
               schedules={data?.schedules}
-              isLoading={isLoading}
+              isLoading={isPending}
               error={error}
             />
           ) : (

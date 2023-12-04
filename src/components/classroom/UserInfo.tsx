@@ -10,8 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router-dom';
-import { useGCUserInfo } from '@/hooks/classroom/user';
-import { useGCCourseInfo } from '@/hooks/classroom/course';
+import { useGCUserInfo, useGCCourseInfo } from '@/services/classroom';
 
 const UserInfo = React.memo(
   ({
@@ -23,18 +22,18 @@ const UserInfo = React.memo(
   }) => {
     const {
       data: course,
-      isLoading: courseLoading,
+      isPending: isCoursePending,
       isError: courseError,
     } = useGCCourseInfo(courseId);
     const {
       data: user,
-      isLoading: userLoading,
+      isLoading: isUserPending,
       isError: userError,
     } = useGCUserInfo(userId);
 
     return (
       <VStack spacing={0} align="flex-start">
-        <Skeleton minH={6} minW={32} rounded="md" isLoaded={!userLoading}>
+        <Skeleton minH={6} minW={32} rounded="md" isLoaded={!isUserPending}>
           {userError ? (
             <Tooltip label="権限の問題により、教師以外のユーザー情報は取得できません">
               <HStack spacing={1}>
@@ -52,7 +51,7 @@ const UserInfo = React.memo(
           minH={4}
           minW={20}
           rounded="md"
-          isLoaded={!courseLoading}
+          isLoaded={!isCoursePending}
           onClick={(e) => e.stopPropagation()}
         >
           {courseError ? (
@@ -76,7 +75,7 @@ const UserInfo = React.memo(
         </Skeleton>
       </VStack>
     );
-  }
+  },
 );
 
 export default UserInfo;

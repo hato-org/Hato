@@ -11,72 +11,69 @@ import {
   Image,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
 import {
   useClassmatchSportInfo,
   useClassmatchSports,
-} from '@/hooks/classmatch';
-import { overlayAtom } from '@/store/overlay';
+} from '@/services/classmatch';
 import Tournament from './Tournament';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
 
 const TournamentModal = React.memo(
-  ({ year, season }: { year: number; season: ClassmatchSeason }) => {
+  ({
+    isOpen,
+    onClose,
+    year,
+    season,
+    sport,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+    year: number;
+    season: ClassmatchSeason;
+    sport: ClassmatchSportId;
+  }) => {
     const darkSuffix = useColorModeValue('', '_dark');
-    const [{ classmatchTournament }, setOverlay] = useRecoilState(overlayAtom);
 
-    const { data, isLoading, error } = useClassmatchSportInfo(
-      { year, season, sport: classmatchTournament?.sport },
-      { enabled: !!classmatchTournament },
+    const { data, status, error } = useClassmatchSportInfo(
+      { year, season, sport },
+      { enabled: isOpen },
     );
 
     const { data: sports } = useClassmatchSports(
       { year, season },
-      { enabled: !!classmatchTournament },
+      { enabled: isOpen },
     );
 
     return (
-      <Modal
-        isOpen={!!classmatchTournament}
-        onClose={() =>
-          setOverlay((currVal) => ({
-            ...currVal,
-            classmatchTournament: undefined,
-          }))
-        }
-        size="xl"
-      >
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent overflow="hidden" bg="panel" rounded="xl">
           <ModalCloseButton top={4} right={4} size="lg" />
           <ModalHeader>
-            {
-              sports?.find(
-                ({ id }) =>
-                  id ===
-                  (classmatchTournament ? classmatchTournament.sport : ''),
-              )?.name
-            }
+            {sports?.find(({ id }) => id === sport)?.name}
           </ModalHeader>
           <ModalBody>
-            {/* eslint-disable no-nested-ternary */}
-            {isLoading ? (
+            {status === 'pending' ? (
               <Loading />
-            ) : error ? (
+            ) : status === 'error' ? (
               <Error error={error} />
             ) : (
               <VStack spacing={0}>
                 <Image
                   w="full"
                   aspectRatio="4 / 3"
-                  src={`/classmatch/${classmatchTournament?.year}/${data.map}${darkSuffix}.png`}
+                  src={`/classmatch/${year}/${data.map}${darkSuffix}.png`}
                   rounded="xl"
                 />
-                <Tournament {...data.tournament} />
+                <Tournament
+                  year={year}
+                  season={season}
+                  sport={sport}
+                  {...data.tournament}
+                />
               </VStack>
             )}
-            {/* eslint-enable no-nested-ternary */}
           </ModalBody>
           <ModalFooter />
         </ModalContent>

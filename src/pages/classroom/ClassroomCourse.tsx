@@ -18,8 +18,7 @@ import BackButton from '@/components/layout/BackButton';
 import Header from '@/components/nav/Header';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import CourseHeader from '@/components/classroom/CourseHeader';
-import { useGCCourseInfo } from '@/hooks/classroom/course';
-import { useGCCourseTimeline } from '@/hooks/classroom/timeline';
+import { useGCCourseInfo, useGCCourseTimeline } from '@/services/classroom';
 import Post from '@/components/classroom/Post';
 import Footer from '@/components/classroom/LoadingFooter';
 import { GCScrollIndexAtomFamily } from '@/store/classroom';
@@ -38,7 +37,7 @@ export default function ClassroomCourse() {
     fetchNextPage,
   } = useGCCourseTimeline(id);
   const [scrollIndex, setScrollIndex] = useRecoilState(
-    GCScrollIndexAtomFamily(id)
+    GCScrollIndexAtomFamily(id),
   );
 
   return (
@@ -71,7 +70,9 @@ export default function ClassroomCourse() {
         w="full"
         minH="100vh"
         onRefresh={async () => {
-          await queryClient.resetQueries(['google', id, 'timeline']);
+          await queryClient.resetQueries({
+            queryKey: ['google', id, 'timeline'],
+          });
         }}
       >
         <VStack p={4} mb={24}>

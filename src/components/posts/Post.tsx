@@ -11,30 +11,25 @@ import {
   TagLabel,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns/esm';
 import { TbClock, TbFile, TbPaperclip, TbTag } from 'react-icons/tb';
-import { useClient } from '@/modules/client';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
+import { usePost } from '@/services/posts';
 
 const PDFViewer = lazy(() => import('./PDFViewer'));
 
 function Post({ id }: { id: string }) {
-  const { client } = useClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedAttachment, setSelectedAttachment] = useState('');
   const queryClient = useQueryClient();
 
-  const { data, error, isLoading } = useQuery<Post, AxiosError>(
-    ['post', id],
-    async () => (await client.get(`/post/${id}`)).data
-  );
+  const { data, error, status } = usePost(id);
 
-  if (isLoading) return <Loading />;
-  if (error) return <Error error={error} />;
+  if (status === 'pending') return <Loading />;
+  if (status === 'error') return <Error error={error} />;
 
   return (
     <ChakraPullToRefresh
@@ -43,9 +38,11 @@ function Post({ id }: { id: string }) {
       mb={16}
       onRefresh={async () => {
         await Promise.all([
-          queryClient.invalidateQueries(['post', id]),
+          queryClient.invalidateQueries({ queryKey: ['post', id] }),
           ...data.attachments.map((attachment) =>
-            queryClient.invalidateQueries(['post', 'attachment', attachment.id])
+            queryClient.invalidateQueries({
+              queryKey: ['post', 'attachment', attachment.id],
+            }),
           ),
         ]);
       }}

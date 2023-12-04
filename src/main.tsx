@@ -23,7 +23,6 @@ const queryClient = new QueryClient({
       refetchOnMount: true,
       refetchOnWindowFocus: false,
       refetchOnReconnect: true,
-      keepPreviousData: true,
       retry: 1,
       staleTime: 1000 * 60 * 5, // Stale time (5 mins)
     },
@@ -53,5 +52,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </GoogleOAuthProvider>
       </HelmetProvider>
     </ChakraProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

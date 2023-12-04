@@ -14,16 +14,17 @@ import { Link as RouterLink } from 'react-router-dom';
 import Loading from '../common/Loading';
 import Card from '../posts/Card';
 import Error from './Error';
-import { useHatoboard, usePinnedPosts } from '@/hooks/posts';
+import { usePinnedPosts } from '@/hooks/posts';
+import { useHatoboard } from '@/services/posts';
 import { tutorialModalAtom } from '@/store/tutorial';
 
 function Hatoboard() {
   const setTutorialModal = useSetRecoilState(tutorialModalAtom);
   const onPinOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, pin: true })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
-  const { data, isLoading, isError, error } = useHatoboard();
+  const { data, status, error } = useHatoboard();
   const pinnedPosts = usePinnedPosts(data);
   const [isLimited, setIsLimited] = useState(true);
 
@@ -36,10 +37,9 @@ function Hatoboard() {
         <Spacer />
         <Icon as={TbChevronRight} w={5} h={5} />
       </HStack>
-      {/* eslint-disable no-nested-ternary */}
-      {isLoading ? (
+      {status === 'pending' ? (
         <Loading />
-      ) : isError ? (
+      ) : status === 'error' ? (
         <Error error={error} />
       ) : (
         <VStack w="100%" align="flex-start" spacing={4}>
@@ -80,7 +80,6 @@ function Hatoboard() {
           )}
         </VStack>
       )}
-      {/* eslint-enable no-nested-ternary */}
     </VStack>
   );
 }

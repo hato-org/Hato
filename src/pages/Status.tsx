@@ -14,12 +14,12 @@ import { TbPlus } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/nav/Header';
 import Card from '@/components/layout/Card';
-import { useHatoStatus, useHatoStatusMaintenance } from '@/hooks/status';
+import { useHatoStatus, useHatoStatusMaintenance } from '@/services/status';
 import ServerStatusList from '@/components/status/ServerStatusList';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import StatusInfoList from '@/components/status/StatusInfoList';
 import AddStatusInfo from '@/components/status/AddStatusInfo';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 
 function Status() {
   const queryClient = useQueryClient();
@@ -42,7 +42,7 @@ function Status() {
       </Header>
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries(['status']);
+          await queryClient.invalidateQueries({ queryKey: ['status'] });
         }}
       >
         <VStack w="full" p={4} spacing={8}>

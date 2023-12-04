@@ -7,7 +7,7 @@ import {
   TbCloudOff,
   TbTool,
 } from 'react-icons/tb';
-import { useHatoStatus, useHatoStatusMaintenance } from '@/hooks/status';
+import { useHatoStatus, useHatoStatusMaintenance } from '@/services/status';
 import { useIsOnline } from '@/hooks/common/online';
 
 export default function StatusBanner() {

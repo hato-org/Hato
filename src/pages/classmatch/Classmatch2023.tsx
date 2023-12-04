@@ -17,11 +17,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { TbChevronRight } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
 import Card from '@/components/layout/Card';
-import TournamentModal from '@/components/classmatch/TournamentModal';
 import {
   useClassmatchLiveStreams,
   useClassmatchSports,
-} from '@/hooks/classmatch';
+} from '@/services/classmatch';
 import SportButton from '@/components/classmatch/SportButton';
 import LiveStream from '@/components/classmatch/LiveStream';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
@@ -40,7 +39,7 @@ export default function Classmatch2023() {
   const [season, setSeason] = useState<ClassmatchSeason>(
     searchParams.get('season') ?? new Date().getMonth() > 6
       ? 'autumn'
-      : 'spring'
+      : 'spring',
   );
 
   useEffect(() => {
@@ -59,12 +58,12 @@ export default function Classmatch2023() {
     }) => {
       setSeason(newSeason);
     },
-    []
+    [],
   );
 
   const {
     data: sports,
-    isLoading: sportsLoading,
+    status: sportsStatus,
     error: sportsError,
   } = useClassmatchSports({
     year,
@@ -72,7 +71,7 @@ export default function Classmatch2023() {
   });
   const {
     data: streams,
-    isLoading: streamsLoading,
+    status: streamsStatus,
     error: streamsError,
   } = useClassmatchLiveStreams({
     year,
@@ -96,11 +95,14 @@ export default function Classmatch2023() {
         onClose={onClose}
         onSelected={onSeasonSelected}
       />
-      <TournamentModal year={year} season={season} />
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries(['classmatch', year, season]);
-          await queryClient.invalidateQueries(['classmatch', 'history']);
+          await queryClient.invalidateQueries({
+            queryKey: ['classmatch', year, season],
+          });
+          await queryClient.invalidateQueries({
+            queryKey: ['classmatch', 'history'],
+          });
         }}
       >
         <VStack w="full" minH="100vh" p={4} mb={24} spacing={8}>
@@ -136,10 +138,9 @@ export default function Classmatch2023() {
           <Card w="full">
             <VStack align="flex-start" w="full" p={2} spacing={4}>
               <Heading size="md">トーナメント表・会場図</Heading>
-              {/* eslint-disable no-nested-ternary */}
-              {sportsError ? (
+              {sportsStatus === 'error' ? (
                 <Error error={sportsError} />
-              ) : sportsLoading ? (
+              ) : sportsStatus === 'pending' ? (
                 <Loading />
               ) : (
                 <SimpleGrid w="full" columns={2} gap={4} placeContent="center">
@@ -149,20 +150,19 @@ export default function Classmatch2023() {
                       {...sport}
                       year={year}
                       season={season}
+                      sport={sport.id}
                     />
                   ))}
                 </SimpleGrid>
               )}
-              {/* eslint-enable no-nested-ternary */}
             </VStack>
           </Card>
           <Card w="full">
             <VStack align="flex-start" w="full" p={2} spacing={8}>
               <Heading size="md">ライブ配信</Heading>
-              {/* eslint-disable no-nested-ternary */}
-              {streamsError ? (
+              {streamsStatus === 'error' ? (
                 <Error error={streamsError} />
-              ) : streamsLoading ? (
+              ) : streamsStatus === 'pending' ? (
                 <Loading />
               ) : streams.length ? (
                 streams.map((stream) => (
@@ -178,7 +178,6 @@ export default function Classmatch2023() {
                   予定されているライブ配信はありません
                 </Text>
               )}
-              {/* eslint-enable no-nested-ternary */}
             </VStack>
           </Card>
         </VStack>

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { TbUser } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router-dom';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 
 function Account({ ...rest }: FlexProps) {
   const { data: user } = useUser();

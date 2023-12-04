@@ -20,27 +20,29 @@ import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
-import { useGCUserInfo } from '@/hooks/classroom/user';
+import {
+  useGCUserInfo,
+  useGCAnnouncement,
+  useGCCourseInfo,
+} from '@/services/classroom';
 import Material from '@/components/classroom/Material';
 import Error from '@/components/cards/Error';
 import { GCBookmarkAtom } from '@/store/classroom';
-import { useGCAnnouncement } from '@/hooks/classroom/announcement';
-import { useGCCourseInfo } from '@/hooks/classroom/course';
 
 export default function ClassroomAnnouncement() {
   const { id, announcementId } = useParams();
   const [bookmarks, setBookmarks] = useRecoilState(GCBookmarkAtom);
-  const { data, isLoading, error } = useGCAnnouncement({
+  const { data, isPending, error } = useGCAnnouncement({
     courseId: id,
     id: announcementId,
   });
   const {
     data: userInfo,
-    isLoading: userLoading,
+    isPending: isUserPending,
     error: userError,
   } = useGCUserInfo(data?.creatorUserId);
 
-  const { data: courseInfo, isLoading: courseLoading } = useGCCourseInfo(id);
+  const { data: courseInfo, isPending: isCoursePending } = useGCCourseInfo(id);
 
   const isBookmarked = bookmarks.some(
     (bookmark) =>
@@ -49,7 +51,7 @@ export default function ClassroomAnnouncement() {
         type: 'announcement',
         courseId: id,
         id: announcementId,
-      })
+      }),
   );
 
   return (
@@ -86,7 +88,7 @@ export default function ClassroomAnnouncement() {
                           type: 'announcement',
                           courseId: id,
                           id: announcementId,
-                        })
+                        }),
                     )
                   : [
                       ...currVal,
@@ -95,7 +97,7 @@ export default function ClassroomAnnouncement() {
                         courseId: id ?? '',
                         id: announcementId ?? '',
                       },
-                    ]
+                    ],
               )
             }
           />
@@ -130,7 +132,12 @@ export default function ClassroomAnnouncement() {
               borderColor="blue.400"
             />
             <VStack w="full" align="flex-start" spacing={1}>
-              <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!userLoading}>
+              <Skeleton
+                minH={8}
+                minW={40}
+                rounded="lg"
+                isLoaded={!isUserPending}
+              >
                 {userError ? (
                   <HStack>
                     <Icon
@@ -152,7 +159,7 @@ export default function ClassroomAnnouncement() {
                 minH={6}
                 minW={20}
                 rounded="md"
-                isLoaded={!courseLoading}
+                isLoaded={!isCoursePending}
               >
                 <Link
                   as={RouterLink}
@@ -170,7 +177,7 @@ export default function ClassroomAnnouncement() {
             noOfLines={3}
             skeletonHeight={4}
             spacing={2}
-            isLoaded={!isLoading}
+            isLoaded={!isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.text}

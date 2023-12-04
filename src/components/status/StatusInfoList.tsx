@@ -16,7 +16,7 @@ import {
 import { format } from 'date-fns/esm';
 import { ja } from 'date-fns/esm/locale';
 import { TbChevronDown, TbChevronRight } from 'react-icons/tb';
-import { useHatoStatusServerList } from '@/hooks/status';
+import { useHatoStatusServerList } from '@/services/status';
 
 const StatusInfoList = React.memo(
   ({ statusInfo }: { statusInfo?: StatusMaintenance[] }) =>
@@ -36,7 +36,7 @@ const StatusInfoList = React.memo(
       >
         メンテナンス情報はありません
       </Text>
-    )
+    ),
 );
 
 const StatusInfo = React.memo(
@@ -113,7 +113,7 @@ const StatusInfo = React.memo(
         </Box>
       </VStack>
     );
-  }
+  },
 );
 
 export default StatusInfoList;

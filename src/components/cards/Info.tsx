@@ -3,7 +3,7 @@ import { Center, VStack, Icon, Text, IconButton } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbBulb, TbInfoCircle, TbX } from 'react-icons/tb';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import Card from '../layout/Card';
 import { tutorialAtom, tutorialModalAtom } from '@/store/tutorial';
 
@@ -12,14 +12,13 @@ function Info() {
   const setTutorialModal = useSetRecoilState(tutorialModalAtom);
   const onATHSOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, ATHS: true })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
   const isInfoSet = user.grade && user.class;
   const isPWA = window.matchMedia('(display-mode: standalone)').matches;
   const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  if (isInfoSet && (isPWA || tutorial.ATHS)) return <></>;
+  if (isInfoSet && (isPWA || tutorial.ATHS)) return null;
 
   return (
     <Card w={{ base: '100%' }} border="1px solid" borderColor="border">

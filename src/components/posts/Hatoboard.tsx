@@ -9,7 +9,7 @@ import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import Card from './Card';
 import { pinnedPostAtom, postsScrollIndexAtom } from '@/store/posts';
-import { useHatoboard } from '@/hooks/posts';
+import { useHatoboard } from '@/services/posts';
 
 const Hatoboard = React.memo(() => {
   const queryClient = useQueryClient();
@@ -17,32 +17,32 @@ const Hatoboard = React.memo(() => {
   const [startIndex, setStartIndex] = useRecoilState(postsScrollIndexAtom);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data, error, isLoading } = useHatoboard();
+  const { data, error, status } = useHatoboard();
 
   const pinnedPosts = useMemo(
     () =>
       data?.filter((post) => pinned.some((postId) => post._id === postId)) ??
       [],
-    [pinned, data]
+    [pinned, data],
   );
 
   const unpinnedPosts = useMemo(
     () =>
       data?.filter((post) => pinned.every((postId) => post._id !== postId)) ??
       [],
-    [pinned, data]
+    [pinned, data],
   );
 
   const privatePosts = useMemo(
     () =>
       data?.filter((post) => post.tags.some((tag) => tag.value === 'private')),
-    [data]
+    [data],
   );
 
   const publicPosts = useMemo(
     () =>
       data?.filter((post) => post.tags.some((tag) => tag.value === 'public')),
-    [data]
+    [data],
   );
 
   useEffect(() => {
@@ -53,13 +53,13 @@ const Hatoboard = React.memo(() => {
         },
         {
           replace: true,
-        }
+        },
       );
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (isLoading) return <Loading />;
-  if (error) return <CardElement.Error error={error} />;
+  if (status === 'pending') return <Loading />;
+  if (status === 'error') return <CardElement.Error error={error} />;
 
   return (
     <Tabs
@@ -108,7 +108,7 @@ const Hatoboard = React.memo(() => {
         pb={24}
         onRefresh={async () => {
           await Promise.all([
-            queryClient.invalidateQueries(['posts', 'hatoboard']),
+            queryClient.invalidateQueries({ queryKey: ['posts', 'hatoboard'] }),
           ]);
         }}
       >

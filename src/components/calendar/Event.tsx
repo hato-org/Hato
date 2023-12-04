@@ -7,29 +7,22 @@ import {
   Tag,
   Wrap,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbChevronRight, TbMapPin, TbTag, TbWorld } from 'react-icons/tb';
-import { useClient } from '@/modules/client';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
+import { useEvent } from '@/services/calendar';
 
 function Event({ id }: { id: string }) {
-  const { client } = useClient();
+  const { data, status, error } = useEvent(id);
 
-  const { data, isLoading, error } = useQuery<Event, AxiosError>(
-    ['calendar', 'event', id],
-    async () => (await client.get(`/calendar/event/${id}`)).data
-  );
-
-  if (isLoading) return <Loading />;
-  if (error) return <Error error={error} />;
+  if (status === 'pending') return <Loading />;
+  if (status === 'error') return <Error error={error} />;
 
   return (
     <VStack w="100%" spacing={4} p={8}>
-      <Heading>{data?.title}</Heading>
+      <Heading>{data.title}</Heading>
       <Text textStyle="description">{data.description}</Text>
       <HStack spacing={4}>
         <VStack align="flex-start" spacing={-1}>

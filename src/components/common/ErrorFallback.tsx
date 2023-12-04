@@ -10,7 +10,7 @@ import {
 import { TbLoader, TbRotate } from 'react-icons/tb';
 import { useRouteError } from 'react-router-dom';
 import { useAuth } from '@/modules/auth';
-import { useReport } from '@/hooks/report';
+import { useReport } from '@/services/report';
 
 function ErrorFallback() {
   const error = useRouteError() as Error;

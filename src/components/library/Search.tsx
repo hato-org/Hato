@@ -20,24 +20,37 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Virtuoso } from 'react-virtuoso';
 import { TbMoodSad } from 'react-icons/tb';
 import { librarySearchAtom } from '@/store/library';
 import Card from '../layout/Card';
-import { useLibrarySearch } from '@/hooks/library';
+import { useLibrarySearch } from '@/services/library';
 import BookInfo from './BookInfo';
 import Loading from '../common/Loading';
 
 export default function Search() {
-  const [searchParams] = useSearchParams();
+  const { free, ...params } = useRecoilValue(librarySearchAtom);
+  const [searchParams, setSearchParams] = useSearchParams();
   const setParams = useSetRecoilState(librarySearchAtom);
-  const { mutate, data, isLoading } = useLibrarySearch();
+  const { mutate, data, isPending } = useLibrarySearch({
+    onMutate: (type) => {
+      [...searchParams.keys()].forEach((key) => searchParams.delete(key));
+      if (type === 'free') {
+        searchParams.set('free', free ?? '');
+      } else {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value) searchParams.set(key, String(value));
+        });
+      }
+      setSearchParams(searchParams, { replace: true });
+    },
+  });
   const defaultIndex =
     [...searchParams.entries()].length && !searchParams.has('free') ? 1 : 0;
   const category: ['free', 'detail'] = useMemo(() => ['free', 'detail'], []);
   const [selected, setSelected] = useState<'free' | 'detail'>(
-    category[defaultIndex]
+    category[defaultIndex],
   );
 
   useEffect(() => {
@@ -87,15 +100,15 @@ export default function Search() {
               w="100%"
               colorScheme="blue"
               rounded="lg"
-              onClick={() => mutate(selected)}
-              isLoading={isLoading}
+              onClick={() => mutate(selected, {})}
+              isLoading={isPending}
             >
               検索
             </Button>
           </Box>
         </VStack>
       </Card>
-      <SearchResult result={data} isLoading={isLoading} />
+      <SearchResult result={data} isLoading={isPending} />
     </VStack>
   );
 }
@@ -168,7 +181,7 @@ const SearchResult = React.memo(
         {/* eslint-enable no-nested-ternary */}
       </Collapse>
     </Box>
-  )
+  ),
 );
 
 function FreeSearch({ onSubmit }: { onSubmit: () => void }) {

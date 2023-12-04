@@ -20,14 +20,14 @@ import {
   TbExternalLink,
 } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
-import { useGCTimeline } from '@/hooks/classroom/timeline';
 import Error from '@/components/cards/Error';
 import Post from '@/components/classroom/Post';
 import Footer from '@/components/classroom/LoadingFooter';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Loading from '@/components/common/Loading';
 import { GCScrollIndexAtomFamily } from '@/store/classroom';
-import { useUser } from '@/hooks/user';
+import { useGCTimeline } from '@/services/classroom';
+import { useUser } from '@/services/user';
 import LoginButton from '@/components/login/LoginButton';
 
 const scopes = [
@@ -43,7 +43,7 @@ export default function Classroom() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
   const [scrollIndex, setScrollIndex] = useRecoilState(
-    GCScrollIndexAtomFamily('user')
+    GCScrollIndexAtomFamily('user'),
   );
   const {
     data: timeline,
@@ -109,7 +109,7 @@ export default function Classroom() {
         pb={16}
         onRefresh={async () =>
           // queryClient.invalidateQueries(['google', 'timeline'])
-          queryClient.resetQueries(['google', 'timeline'])
+          queryClient.resetQueries({ queryKey: ['google', 'timeline'] })
         }
       >
         <Box px={4}>

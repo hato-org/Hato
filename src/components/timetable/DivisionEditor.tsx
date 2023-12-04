@@ -17,14 +17,11 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { format, startOfDay } from 'date-fns/esm';
 import { ja } from 'date-fns/locale';
 import { TbX } from 'react-icons/tb';
-import { AxiosError } from 'axios';
-import { useClient } from '@/modules/client';
 import WeekDayPicker from './WeekDayPicker';
-import { useDivision } from '@/hooks/timetable';
+import { useDivision, useDivisionMutation } from '@/services/timetable';
 
 interface DivisionEditorProps {
   date: Date;
@@ -34,8 +31,6 @@ interface DivisionEditorProps {
 
 const DivisionEditor = React.memo(
   ({ date, isOpen, onClose }: DivisionEditorProps) => {
-    const { client } = useClient();
-    const queryClient = useQueryClient();
     const toast = useToast({
       position: 'top-right',
       duration: 1000,
@@ -50,37 +45,7 @@ const DivisionEditor = React.memo(
 
     const { data: currentDivision } = useDivision({ date });
 
-    const { mutate, isLoading } = useMutation<Division, AxiosError>(
-      async () => (await client.post('/timetable/division', division)).data,
-      {
-        onSuccess: (newDivision) => {
-          queryClient.setQueryData(
-            [
-              'timetable',
-              'division',
-              {
-                year: date.getFullYear(),
-                month: date.getMonth() + 1,
-                day: date.getDate(),
-              },
-            ],
-            newDivision,
-          );
-          onClose();
-          toast({
-            title: '更新しました。',
-            status: 'success',
-          });
-        },
-        onError: (error) => {
-          toast({
-            title: '更新に失敗しました。',
-            description: error.message,
-            status: 'error',
-          });
-        },
-      },
-    );
+    const { mutate, isPending } = useDivisionMutation();
 
     useEffect(() => {
       setDivision({
@@ -144,11 +109,42 @@ const DivisionEditor = React.memo(
               w="100%"
               colorScheme="blue"
               rounded="lg"
-              onClick={() => mutate()}
+              onClick={() => {
+                if (
+                  division.date &&
+                  division.week &&
+                  division.day !== undefined &&
+                  division.irregular !== undefined
+                )
+                  mutate(
+                    {
+                      date: division.date,
+                      week: division.week,
+                      day: division.day,
+                      irregular: division.irregular,
+                    },
+                    {
+                      onSuccess: () => {
+                        onClose();
+                        toast({
+                          title: '更新しました。',
+                          status: 'success',
+                        });
+                      },
+                      onError: (error) => {
+                        toast({
+                          title: '更新に失敗しました。',
+                          description: error.message,
+                          status: 'error',
+                        });
+                      },
+                    },
+                  );
+              }}
               isDisabled={
                 !(division.date && division.week && division.day !== undefined)
               }
-              isLoading={isLoading}
+              isLoading={isPending}
             >
               更新
             </Button>
