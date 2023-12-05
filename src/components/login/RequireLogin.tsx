@@ -4,7 +4,7 @@ import {
   ScrollRestoration,
   useLocation,
 } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import usePageTracking from '@/hooks/common/ga4';
 import PageContainer from '../layout/PageContainer';
 import { jwtAtom } from '@/store/auth';
@@ -12,7 +12,7 @@ import { jwtAtom } from '@/store/auth';
 function RequireLogin() {
   usePageTracking();
   const location = useLocation();
-  const jwt = useRecoilValue(jwtAtom);
+  const jwt = useAtomValue(jwtAtom);
 
   if (jwt)
     return (

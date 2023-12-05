@@ -18,7 +18,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { format, isSameDay } from 'date-fns';
 import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { AsyncSelect } from 'chakra-react-select';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
@@ -33,7 +33,7 @@ interface UpcomingEventsProps {
 
 function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const [tags, setTags] = useRecoilState(tagsAtom);
+  const [tags, setTags] = useAtom(tagsAtom);
 
   const { data, status, error } = useEvents({ year, month, day });
   const {

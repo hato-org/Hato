@@ -38,7 +38,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import {
   TbChevronDown,
   TbExclamationCircle,
@@ -68,7 +68,7 @@ export default function UserScheduleEditor() {
     duration: 1000,
   });
   const { data: user } = useUser();
-  const [overlay, setOverlay] = useRecoilState(overlayAtom);
+  const [overlay, setOverlay] = useAtom(overlayAtom);
 
   const initialSchedule = useMemo(
     () => ({

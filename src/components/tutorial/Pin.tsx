@@ -9,14 +9,14 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
 export default function Pin() {
-  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const [tutorialModal, setTutorialModal] = useAtom(tutorialModalAtom);
   const onClose = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, pin: false })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
 
   return (

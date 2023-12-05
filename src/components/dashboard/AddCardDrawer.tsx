@@ -14,22 +14,22 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { TbPlus } from 'react-icons/tb';
 import Card from '../layout/Card';
 import { cards, cardOrderAtom } from '@/store/dashboard';
 import { overlayAtom } from '@/store/overlay';
 
 const AddCardDrawer = React.memo(() => {
-  const [overlay, setOverlay] = useRecoilState(overlayAtom);
-  const [cardOrder, setCardOrder] = useRecoilState(cardOrderAtom);
+  const [overlay, setOverlay] = useAtom(overlayAtom);
+  const [cardOrder, setCardOrder] = useAtom(cardOrderAtom);
   const [selectedCard, setSelectedCard] = useState('');
 
   const unlistedCards = cards.filter((card) => !cardOrder.includes(card.id));
 
   const onClose = useCallback(
     () => setOverlay((currVal) => ({ ...currVal, cardOrder: false })),
-    [setOverlay]
+    [setOverlay],
   );
 
   return (

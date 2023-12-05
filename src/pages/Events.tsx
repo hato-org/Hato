@@ -13,7 +13,7 @@ import {
 import { TbInfoCircle, TbPlus, TbX, TbBulb } from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useAtom, useSetAtom } from 'jotai';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, subMonths } from 'date-fns/esm';
 import Header from '@/components/nav/Header';
@@ -27,7 +27,7 @@ import Card from '@/components/layout/Card';
 function Events() {
   const queryClient = useQueryClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const setTutorialModal = useSetRecoilState(tutorialModalAtom);
+  const setTutorialModal = useSetAtom(tutorialModalAtom);
   const onHelpOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, events: true })),
     [setTutorialModal],
@@ -37,7 +37,7 @@ function Events() {
     [setTutorialModal],
   );
   const [searchParams, setSearchParams] = useSearchParams();
-  const [tutorial, setTutorial] = useRecoilState(tutorialAtom);
+  const [tutorial, setTutorial] = useAtom(tutorialAtom);
   const year = useMemo(() => Number(searchParams.get('y')), [searchParams]);
   const month = useMemo(() => Number(searchParams.get('m')), [searchParams]);
   const [date, setDate] = useState(

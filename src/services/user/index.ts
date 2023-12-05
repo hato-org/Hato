@@ -4,14 +4,14 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useAtom, useSetAtom } from 'jotai';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
 
 export const useUser = () => {
   const { client } = useClient();
-  const [user, setUser] = useRecoilState(userAtom);
-  const setJWT = useSetRecoilState(jwtAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const setJWT = useSetAtom(jwtAtom);
 
   return useQuery({
     queryKey: ['user', user?._id],
@@ -31,7 +31,7 @@ export const useUserMutation = () => {
   const queryClient = useQueryClient();
   const { client } = useClient();
   const { data: user } = useUser();
-  const setUser = useSetRecoilState(userAtom);
+  const setUser = useSetAtom(userAtom);
 
   return useMutation({
     mutationFn: async (newUser: Partial<User>) =>

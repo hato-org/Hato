@@ -9,7 +9,7 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { TbPin, TbPinFilled } from 'react-icons/tb';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
 import Post from '@/components/posts/Post';
@@ -17,7 +17,7 @@ import { pinnedPostAtom } from '@/store/posts';
 
 function PostDetail() {
   const { id } = useParams();
-  const [pinned, setPinned] = useRecoilState(pinnedPostAtom);
+  const [pinned, setPinned] = useAtom(pinnedPostAtom);
 
   const isPinned = pinned.includes(id ?? '');
 

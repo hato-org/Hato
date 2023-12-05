@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useAtom, useSetAtom } from 'jotai';
 import { useClient } from '@/modules/client';
 import { useUser } from '../user';
 import { settingsAtom } from '@/store/settings';
@@ -7,7 +7,7 @@ import { settingsAtom } from '@/store/settings';
 export const useSettings = () => {
   const { data: user } = useUser();
   const { client } = useClient();
-  const [settings, setSettings] = useRecoilState(settingsAtom);
+  const [settings, setSettings] = useAtom(settingsAtom);
 
   return useQuery({
     queryKey: ['settings', user._id],
@@ -26,7 +26,7 @@ export const useSettingsMutation = () => {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
   const { client } = useClient();
-  const setSettings = useSetRecoilState(settingsAtom);
+  const setSettings = useSetAtom(settingsAtom);
 
   return useMutation({
     mutationFn: async (settings: Partial<Settings>) =>

@@ -17,7 +17,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { TbExclamationCircle, TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
 import {
@@ -31,7 +31,7 @@ import { GCBookmarkAtom } from '@/store/classroom';
 
 export default function ClassroomAnnouncement() {
   const { id, announcementId } = useParams();
-  const [bookmarks, setBookmarks] = useRecoilState(GCBookmarkAtom);
+  const [bookmarks, setBookmarks] = useAtom(GCBookmarkAtom);
   const { data, isPending, error } = useGCAnnouncement({
     courseId: id,
     id: announcementId,

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbPlus } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
@@ -26,7 +26,7 @@ import Error from '@/components/cards/Error';
 function MyTimetable() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const setOverlay = useSetRecoilState(overlayAtom);
+  const setOverlay = useSetAtom(overlayAtom);
 
   const { data, isPending, error } = useMyUserSchedules();
 

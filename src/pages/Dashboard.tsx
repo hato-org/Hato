@@ -20,7 +20,7 @@ import {
   Droppable,
   DropResult,
 } from '@hello-pangea/dnd';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useAtom, useSetAtom } from 'jotai';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import CardElement from '@/components/cards';
@@ -46,9 +46,9 @@ function Dashboard() {
   //     : 'こんばんは';
 
   const queryClient = useQueryClient();
-  const [editMode, setEditMode] = useRecoilState(dashboardEditModeAtom);
-  const setOverlay = useSetRecoilState(overlayAtom);
-  const [cardOrder, setCardOrder] = useRecoilState(cardOrderAtom);
+  const [editMode, setEditMode] = useAtom(dashboardEditModeAtom);
+  const setOverlay = useSetAtom(overlayAtom);
+  const [cardOrder, setCardOrder] = useAtom(cardOrderAtom);
 
   const onDragEnd = useCallback(
     (result: DropResult) => {
@@ -192,7 +192,7 @@ function DraggableCard({
   card?: DashboardCard;
   index: number;
 }) {
-  const setCardOrder = useSetRecoilState(cardOrderAtom);
+  const setCardOrder = useSetAtom(cardOrderAtom);
 
   if (!card) return null;
   return (

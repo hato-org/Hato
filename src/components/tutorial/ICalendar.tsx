@@ -26,13 +26,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbCopy, TbExternalLink } from 'react-icons/tb';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { useUser } from '@/services/user';
 import { tutorialModalAtom } from '@/store/tutorial';
 
 export default function ICalendar() {
   const { data: user } = useUser();
-  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const [tutorialModal, setTutorialModal] = useAtom(tutorialModalAtom);
   const iCalLink = useMemo(
     () =>
       `${import.meta.env.VITE_API_URL}/calendar/ical/events.ics?key=${

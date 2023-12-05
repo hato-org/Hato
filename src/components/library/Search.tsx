@@ -20,7 +20,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Virtuoso } from 'react-virtuoso';
 import { TbMoodSad } from 'react-icons/tb';
 import { librarySearchAtom } from '@/store/library';
@@ -30,9 +30,9 @@ import BookInfo from './BookInfo';
 import Loading from '../common/Loading';
 
 export default function Search() {
-  const { free, ...params } = useRecoilValue(librarySearchAtom);
+  const { free, ...params } = useAtomValue(librarySearchAtom);
   const [searchParams, setSearchParams] = useSearchParams();
-  const setParams = useSetRecoilState(librarySearchAtom);
+  const setParams = useSetAtom(librarySearchAtom);
   const { mutate, data, isPending } = useLibrarySearch({
     onMutate: (type) => {
       [...searchParams.keys()].forEach((key) => searchParams.delete(key));
@@ -185,7 +185,7 @@ const SearchResult = React.memo(
 );
 
 function FreeSearch({ onSubmit }: { onSubmit: () => void }) {
-  const [params, setParams] = useRecoilState(librarySearchAtom);
+  const [params, setParams] = useAtom(librarySearchAtom);
 
   return (
     <form
@@ -209,7 +209,7 @@ function FreeSearch({ onSubmit }: { onSubmit: () => void }) {
 }
 
 function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
-  const [params, setParams] = useRecoilState(librarySearchAtom);
+  const [params, setParams] = useAtom(librarySearchAtom);
 
   return (
     <form

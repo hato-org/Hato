@@ -1,13 +1,13 @@
 import { VStack, Text, Button, Slide, IconButton } from '@chakra-ui/react';
 import { TbX } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import { overlayAtom } from '@/store/overlay';
 
 const intervalMS = 1000 * 60 * 1; // 1 min
 
 function UpdatePrompt() {
-  const setOverlay = useSetRecoilState(overlayAtom);
+  const setOverlay = useSetAtom(overlayAtom);
   const {
     // offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],

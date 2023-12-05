@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { jwtAtom } from '@/store/auth';
 
 const API_URL = import.meta.env.DEV
@@ -9,7 +9,7 @@ const API_URL = import.meta.env.DEV
 
 // eslint-disable-next-line import/prefer-default-export
 export const useClient = () => {
-  const jwt = useRecoilValue(jwtAtom);
+  const jwt = useAtomValue(jwtAtom);
 
   const client = useMemo(
     () =>
@@ -21,7 +21,7 @@ export const useClient = () => {
         timeout: 1000 * 15,
         timeoutErrorMessage: 'Timeout exceeded',
       }),
-    [jwt]
+    [jwt],
   );
 
   return {

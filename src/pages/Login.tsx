@@ -19,17 +19,17 @@ import {
   Navigate,
   useSearchParams,
 } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import LoginButton from '@/components/login/LoginButton';
 import { jwtAtom } from '@/store/auth';
 
 function Login() {
-  const jwt = useRecoilValue(jwtAtom);
+  const jwt = useAtomValue(jwtAtom);
   const { onCopy, hasCopied } = useClipboard(window.location.toString());
   const [searchParams] = useSearchParams();
   const isEmbedBrowser = useMemo(
     () => /(Instagram|Line)/.test(navigator.userAgent),
-    []
+    [],
   );
 
   if (jwt) return <Navigate to={searchParams.get('return_to') ?? '/'} />;

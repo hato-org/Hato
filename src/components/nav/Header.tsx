@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbMenu2 } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { overlayAtom } from '@/store/overlay';
 import StatusBanner from './StatusBanner';
 
@@ -25,7 +25,7 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
   const border = useColorModeValue('border', 'transparent');
   const isFetching = useIsFetching();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const setOverlay = useSetRecoilState(overlayAtom);
+  const setOverlay = useSetAtom(overlayAtom);
 
   const onMenuOpen = useCallback(
     () => setOverlay((currVal) => ({ ...currVal, menu: true })),

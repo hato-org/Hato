@@ -17,14 +17,14 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
 export default function Events() {
-  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const [tutorialModal, setTutorialModal] = useAtom(tutorialModalAtom);
   const onClose = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, events: false })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
 
   return (

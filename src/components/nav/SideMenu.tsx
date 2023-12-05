@@ -33,7 +33,7 @@ import {
 import { MdOutlineTrain } from 'react-icons/md';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { overlayAtom } from '@/store/overlay';
 import { useAuth } from '@/modules/auth';
 import Account from '../login/Account';
@@ -55,10 +55,10 @@ export default function SideMenu() {
 
 export function SideMenuDrawer() {
   const location = useLocation();
-  const [overlay, setOverlay] = useRecoilState(overlayAtom);
+  const [overlay, setOverlay] = useAtom(overlayAtom);
   const onClose = useCallback(
     () => setOverlay((currVal) => ({ ...currVal, menu: false })),
-    [setOverlay]
+    [setOverlay],
   );
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const MenuBody = React.memo(() => {
         color: 'red.500',
       },
     ],
-    [logout]
+    [logout],
   );
 
   return (
@@ -238,7 +238,7 @@ const MenuBody = React.memo(() => {
                 {menuItem.label}
               </Text>
             </HStack>
-          )
+          ),
         /* eslint-enable no-nested-ternary */
       )}
       <Spacer />

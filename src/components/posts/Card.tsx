@@ -22,7 +22,7 @@ import {
   TbPinnedOff,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import {
   PanInfo,
   useDragControls,
@@ -47,12 +47,12 @@ const Card = React.memo(
     const x = useMotionValue(0);
     const pinWidth = useTransform(x, [0, 64, 1000], [32, 64, 1000]);
 
-    const [pinned, setPinned] = useRecoilState(pinnedPostAtom);
+    const [pinned, setPinned] = useAtom(pinnedPostAtom);
     const [pin, setPin] = useState(false);
     const isPinned = pinned.some((postId) => postId === _id);
 
     const attachmentQueries = attachments.map((attachment) =>
-      queryClient.getQueryState(['post', 'attachment', attachment.id])
+      queryClient.getQueryState(['post', 'attachment', attachment.id]),
     );
 
     return (
@@ -96,7 +96,7 @@ const Card = React.memo(
           dragListener={false}
           onDrag={(
             event: MouseEvent | TouchEvent | PointerEvent,
-            info: PanInfo
+            info: PanInfo,
           ) => {
             setPin(info.offset.x > 160);
           }}
@@ -105,7 +105,7 @@ const Card = React.memo(
               setPinned((oldPinned) =>
                 isPinned
                   ? oldPinned.filter((postId) => postId !== _id)
-                  : [...oldPinned, _id]
+                  : [...oldPinned, _id],
               );
           }}
           style={{
@@ -153,7 +153,7 @@ const Card = React.memo(
         </MotionFlex>
       </Flex>
     );
-  }
+  },
 );
 
 export default Card;

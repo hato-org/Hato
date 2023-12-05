@@ -20,7 +20,7 @@ import { useParams } from 'react-router-dom';
 import { TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { format } from 'date-fns/esm';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { useGCCourseWork, useGCUserInfo } from '@/services/classroom';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
@@ -31,7 +31,7 @@ import { GCBookmarkAtom } from '@/store/classroom';
 
 export default function ClassroomCoursework() {
   const { id, courseworkId } = useParams();
-  const [bookmarks, setBookmarks] = useRecoilState(GCBookmarkAtom);
+  const [bookmarks, setBookmarks] = useAtom(GCBookmarkAtom);
   const { data, isPending, error } = useGCCourseWork({
     courseId: id,
     id: courseworkId,

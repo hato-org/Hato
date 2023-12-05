@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import {
   UseMutationOptions,
   UseQueryOptions,
@@ -73,7 +73,7 @@ export const useLibrarySearch = (
     'free' | 'detail'
   >,
 ) => {
-  const { free, ...params } = useRecoilValue(librarySearchAtom);
+  const { free, ...params } = useAtomValue(librarySearchAtom);
 
   return useMutation<LibrarySearchResponse, AxiosError, 'free' | 'detail'>({
     ...options,

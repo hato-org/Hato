@@ -1,7 +1,3 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
-// eslint-disable-next-line import/prefer-default-export
-export const tagsAtom = atom<Tag[]>({
-  key: 'hato.tags',
-  default: [],
-});
+export const tagsAtom = atom<Tag[]>([]);

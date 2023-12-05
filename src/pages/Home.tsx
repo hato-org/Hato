@@ -1,11 +1,11 @@
 import { Button, Center, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink, Navigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { jwtAtom } from '@/store/auth';
 
 function Home() {
-  const jwt = useRecoilValue(jwtAtom);
+  const jwt = useAtomValue(jwtAtom);
 
   if (jwt) return <Navigate to="/dashboard" replace />;
 

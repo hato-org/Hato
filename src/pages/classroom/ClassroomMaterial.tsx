@@ -17,7 +17,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
 import { useGCCourseworkMaterial, useGCUserInfo } from '@/services/classroom';
@@ -27,7 +27,7 @@ import { GCBookmarkAtom } from '@/store/classroom';
 
 export default function ClassroomMaterial() {
   const { id, materialId } = useParams();
-  const [bookmarks, setBookmarks] = useRecoilState(GCBookmarkAtom);
+  const [bookmarks, setBookmarks] = useAtom(GCBookmarkAtom);
 
   const { data, isLoading, error } = useGCCourseworkMaterial({
     courseId: id,

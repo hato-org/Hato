@@ -10,7 +10,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { TbCheck, TbX } from 'react-icons/tb';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { useUserInfo } from '@/services/user';
 import Loading from '../common/Loading';
 import { useReport } from '@/services/report';
@@ -30,7 +30,7 @@ export default function MetaReporter({
     position: 'top-right',
     duration: 1500,
   });
-  const { classmatchTournament } = useRecoilValue(overlayAtom);
+  const { classmatchTournament } = useAtomValue(overlayAtom);
   const [description, setDescription] = useState('');
   const { data, status, error } = useUserInfo(history?.at(-1)?.userId!, {
     enabled: !!history?.at(-1),

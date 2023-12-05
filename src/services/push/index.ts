@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useRecoilRefresher_UNSTABLE, useRecoilValue } from 'recoil';
+import { useSetAtom, useAtomValue } from 'jotai';
 import {
   pushSubscriptionSelector,
   serviceWorkerSelector,
@@ -8,10 +8,8 @@ import { useClient } from '@/modules/client';
 
 export const usePushSubscribe = () => {
   const { client } = useClient();
-  const serviceWorker = useRecoilValue(serviceWorkerSelector);
-  const refreshPushSubscription = useRecoilRefresher_UNSTABLE(
-    pushSubscriptionSelector,
-  );
+  const serviceWorker = useAtomValue(serviceWorkerSelector);
+  const refreshPushSubscription = useSetAtom(pushSubscriptionSelector);
 
   return useMutation({
     mutationFn: async () => {
@@ -30,10 +28,8 @@ export const usePushSubscribe = () => {
 
 export const usePushUnsubscribe = () => {
   const { client } = useClient();
-  const serviceWorker = useRecoilValue(serviceWorkerSelector);
-  const refreshPushSubscription = useRecoilRefresher_UNSTABLE(
-    pushSubscriptionSelector,
-  );
+  const serviceWorker = useAtomValue(serviceWorkerSelector);
+  const refreshPushSubscription = useSetAtom(pushSubscriptionSelector);
 
   return useMutation({
     mutationFn: async () => {

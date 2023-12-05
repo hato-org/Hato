@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Box,
   Heading,
@@ -11,8 +12,8 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Virtuoso } from 'react-virtuoso';
-import { useRecoilState } from 'recoil';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
+import { useAtom } from 'jotai';
 import { TbExternalLink } from 'react-icons/tb';
 import BackButton from '@/components/layout/BackButton';
 import Header from '@/components/nav/Header';
@@ -36,9 +37,8 @@ export default function ClassroomCourse() {
     isFetchingNextPage,
     fetchNextPage,
   } = useGCCourseTimeline(id);
-  const [scrollIndex, setScrollIndex] = useRecoilState(
-    GCScrollIndexAtomFamily(id),
-  );
+  const scrollRef = useRef<VirtuosoHandle>(null);
+  const [scrollState, setScrollState] = useAtom(GCScrollIndexAtomFamily(id));
 
   return (
     <Box>
@@ -84,6 +84,7 @@ export default function ClassroomCourse() {
             <Error error={error} />
           ) : (
             <Virtuoso
+              ref={scrollRef}
               style={{ height: '100%', width: '100%' }}
               context={{ loadMore: null, loading: isFetchingNextPage }}
               data={timeline?.pages.flat()}
@@ -92,8 +93,10 @@ export default function ClassroomCourse() {
                   <Post {...post} />
                 </Box>
               )}
-              rangeChanged={(range) => setScrollIndex(range.startIndex)}
-              initialTopMostItemIndex={scrollIndex}
+              itemsRendered={() =>
+                scrollRef.current?.getState((state) => setScrollState(state))
+              }
+              restoreStateFrom={scrollState}
               endReached={async () => {
                 await fetchNextPage();
               }}

@@ -20,7 +20,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbPencil, TbX } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { useUser, useUserMutation } from '@/services/user';
 import { overlayAtom } from '@/store/overlay';
 import { useUserSubject } from '@/services/timetable';
@@ -29,7 +29,7 @@ import { days } from '@/utils/date';
 const Card = React.memo(
   ({ _id, title, description, schedules }: UserSchedule) => {
     const { isOpen, onToggle } = useDisclosure();
-    const setOverlay = useSetRecoilState(overlayAtom);
+    const setOverlay = useSetAtom(overlayAtom);
     const { data: user } = useUser();
     const { mutate, isPending } = useUserMutation();
 

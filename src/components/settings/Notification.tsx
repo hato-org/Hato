@@ -15,7 +15,7 @@ import {
   VStack,
   useToast,
 } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { TbExclamationCircle } from 'react-icons/tb';
 import { MotionCenter } from '../motion';
 import SettingCategory from './Category';
@@ -31,8 +31,8 @@ import { useSettings, useSettingsMutation } from '@/services/settings';
 export default function Notification() {
   const toast = useToast({ position: 'top-right', duration: 1500 });
 
-  const pushSubscription = useRecoilValue(pushSubscriptionSelector);
-  const pushPermission = useRecoilValue(pushPermissionSelector);
+  const pushSubscription = useAtomValue(pushSubscriptionSelector);
+  const pushPermission = useAtomValue(pushPermissionSelector);
 
   const { mutate: subscribe, isPending: subscribePending } = usePushSubscribe();
   const { mutate: unsubscribe, isPending: unsubscribePending } =

@@ -1,5 +1,5 @@
 import { Box, Center, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { Virtuoso } from 'react-virtuoso';
 import BookInfo from './BookInfo';
 import { libraryBookmarkAtom } from '@/store/library';
@@ -7,7 +7,7 @@ import { useBookInfoByISDN } from '@/services/library';
 import Error from '../cards/Error';
 
 export default function Bookmarks() {
-  const bookmarks = useRecoilValue(libraryBookmarkAtom);
+  const bookmarks = useAtomValue(libraryBookmarkAtom);
 
   return (
     <Center w="100%" pt={2} px={4} mb={24}>

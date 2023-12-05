@@ -18,7 +18,7 @@ import {
 import { motion } from 'framer-motion';
 import { TbChevronDown, TbBook, TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { generateISBN13 } from '@/modules/library';
 import { libraryBookmarkAtom } from '@/store/library';
 import { useBookInfoById } from '@/services/library';
@@ -35,7 +35,7 @@ const BookInfo = React.memo(
     url,
     source,
   }: Book) => {
-    const [bookmarks, setBookmarks] = useRecoilState(libraryBookmarkAtom);
+    const [bookmarks, setBookmarks] = useAtom(libraryBookmarkAtom);
     const { isOpen, onToggle } = useDisclosure();
     const bgBrightness = useColorModeValue('100%', '40%');
     const bgOpacity = useColorModeValue(0.3, 0.9);

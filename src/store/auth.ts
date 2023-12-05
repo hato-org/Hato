@@ -1,16 +1,15 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import { atomWithStorage } from 'jotai/utils';
 
-const { persistAtom } = recoilPersist();
+export const jwtAtom = atomWithStorage<string | null>(
+  'hato.auth',
+  null,
+  undefined,
+  { getOnInit: true },
+);
 
-export const jwtAtom = atom<string | null>({
-  key: 'hato.auth',
-  default: null,
-  effects: [persistAtom],
-});
-
-export const userAtom = atom<User | null>({
-  key: 'hato.user',
-  default: null,
-  effects: [persistAtom],
-});
+export const userAtom = atomWithStorage<User | null>(
+  'hato.user',
+  null,
+  undefined,
+  { getOnInit: true },
+);

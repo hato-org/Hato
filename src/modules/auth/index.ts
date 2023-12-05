@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -15,9 +15,9 @@ const API_URL = import.meta.env.DEV
 // eslint-disable-next-line import/prefer-default-export
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
-  const setUser = useSetRecoilState(userAtom);
+  const setUser = useSetAtom(userAtom);
   const [loginLoading, setLoginLoading] = useState(false);
-  const setJWT = useSetRecoilState(jwtAtom);
+  const setJWT = useSetAtom(jwtAtom);
   const toast = useToast({
     position: 'top-right',
     variant: 'left-accent',

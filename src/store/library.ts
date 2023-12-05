@@ -1,24 +1,18 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
-
-const { persistAtom } = recoilPersist();
+import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 export const librarySearchAtom = atom<LibrarySearchParams>({
-  key: 'hato.library.search',
-  default: {
-    free: '',
-    title: '',
-    author: '',
-    publisher: '',
-    ndc: '',
-    year_start: '',
-    year_end: '',
-    isbn: '',
-  },
+  free: '',
+  title: '',
+  author: '',
+  publisher: '',
+  ndc: '',
+  year_start: '',
+  year_end: '',
+  isbn: '',
 });
 
-export const libraryBookmarkAtom = atom<string[]>({
-  key: 'hato.library.bookmarks',
-  default: [],
-  effects: [persistAtom],
-});
+export const libraryBookmarkAtom = atomWithStorage<string[]>(
+  'hato.library.bookmarks',
+  [],
+);

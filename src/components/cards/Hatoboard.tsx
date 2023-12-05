@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbChevronDown, TbChevronRight } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { Link as RouterLink } from 'react-router-dom';
 import Loading from '../common/Loading';
 import Card from '../posts/Card';
@@ -19,7 +19,7 @@ import { useHatoboard } from '@/services/posts';
 import { tutorialModalAtom } from '@/store/tutorial';
 
 function Hatoboard() {
-  const setTutorialModal = useSetRecoilState(tutorialModalAtom);
+  const setTutorialModal = useSetAtom(tutorialModalAtom);
   const onPinOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, pin: true })),
     [setTutorialModal],

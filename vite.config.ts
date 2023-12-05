@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm';
 
 const gitCommitHash = execSync('git describe --always').toString();
 const gitCommitTimestamp = execSync(
-  `git show -s --format=%cD ${gitCommitHash}`
+  `git show -s --format=%cD ${gitCommitHash}`,
 ).toString();
 
 // https://vitejs.dev/config/
@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => {
           remarkPlugins: [remarkGfm],
         }),
       },
-      react(),
+      react({ plugins: [['@swc-jotai/debug-label', {}]] }),
       tsConfigPaths(),
       VitePWA({
         strategies: 'injectManifest',
