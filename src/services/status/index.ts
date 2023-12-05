@@ -7,18 +7,19 @@ const STATUS_API_URL = import.meta.env.VITE_STATUS_API_URL;
 export const useHatoStatus = () =>
   useQuery({
     queryKey: ['status'],
-    queryFn: async () =>
-      (await axios.get<Status>('/', { baseURL: STATUS_API_URL })).data,
+    queryFn: async ({ signal }) =>
+      (await axios.get<Status>('/', { baseURL: STATUS_API_URL, signal })).data,
     refetchInterval: 1000 * 60 * 2,
   });
 
 export const useHatoStatusMaintenance = () =>
   useQuery({
     queryKey: ['status', 'maintenance'],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await axios.get<StatusMaintenance[]>('/info', {
           baseURL: STATUS_API_URL,
+          signal,
         })
       ).data,
   });
@@ -48,11 +49,12 @@ export const useHatoStatusMaintenanceMutation = () => {
 export const useHatoStatusHistory = ({ id }: { id: string }) =>
   useInfiniteQuery({
     queryKey: ['status', 'history', id],
-    queryFn: async ({ pageParam = 1 }) =>
+    queryFn: async ({ pageParam = 1, signal }) =>
       (
         await axios.get<StatusHistory[]>('/history', {
           baseURL: STATUS_API_URL,
           params: { id, page: pageParam },
+          signal,
         })
       ).data,
     initialPageParam: 1,
@@ -65,10 +67,11 @@ export const useHatoStatusHistory = ({ id }: { id: string }) =>
 export const useHatoStatusServerList = () =>
   useQuery({
     queryKey: ['status', 'servers'],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await axios.get<Pick<StatusServer, 'id' | 'name'>[]>('/servers', {
           baseURL: STATUS_API_URL,
+          signal,
         })
       ).data,
   });

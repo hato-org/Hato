@@ -16,12 +16,13 @@ export const useBookInfoById = (
   useQuery({
     ...options,
     queryKey: ['library', 'book', id, 'detail'],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await axios.get<DetailedBook>(
           `https://private.calil.jp/bib/gk-2004103-auf08/${convertToLocalId(
             id,
           )}.json`,
+          { signal },
         )
       ).data,
   });
@@ -29,14 +30,14 @@ export const useBookInfoById = (
 export const useBookInfoByISDN = (isbn: string) =>
   useQuery({
     queryKey: ['library', 'book', isbn],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       const books = [];
       let running;
       let version = 1;
       const res = (
         await axios.get<LibrarySearchResponse>(
           'https://unitrad.calil.jp/v1/search',
-          { params: { isbn, region: 'gk-2004103-auf08' } },
+          { params: { isbn, region: 'gk-2004103-auf08' }, signal },
         )
       ).data;
       books.push(...res.books);

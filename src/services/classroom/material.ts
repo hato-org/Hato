@@ -20,10 +20,11 @@ export const useGCCourseworkMaterial = (
   return useQuery({
     ...options,
     queryKey: ['google', 'courseWorkMaterial', id],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<classroom_v1.Schema$CourseWorkMaterial>(
           `/classroom/course/${courseId}/courseworkmaterial/${id}`,
+          { signal },
         )
       ).data,
   });

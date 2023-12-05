@@ -10,7 +10,8 @@ export const useHatoboard = (
     gcTime: Infinity,
     ...options,
     queryKey: ['posts', 'hatoboard'],
-    queryFn: async () => (await client.get<Post[]>('/post')).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<Post[]>('/post', { signal })).data,
   });
 };
 
@@ -23,7 +24,8 @@ export const usePost = (
   return useQuery({
     ...options,
     queryKey: ['post', id],
-    queryFn: async () => (await client.get<Post>(`/post/${id}`)).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<Post>(`/post/${id}`, { signal })).data,
   });
 };
 
@@ -36,10 +38,11 @@ export const usePostAttachment = (
   return useQuery({
     ...options,
     queryKey: ['post', 'attachment', id],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<ArrayBuffer>(`/post/attachment/${id}`, {
           responseType: 'arraybuffer',
+          signal,
         })
       ).data,
   });

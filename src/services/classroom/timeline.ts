@@ -7,10 +7,11 @@ export const useGCTimeline = () => {
 
   return useInfiniteQuery({
     queryKey: ['google', 'timeline'],
-    queryFn: async ({ pageParam = 1 }) =>
+    queryFn: async ({ pageParam = 1, signal }) =>
       (
         await client.get<GCTimeline[]>('/classroom/timeline', {
           params: { page: pageParam },
+          signal,
         })
       ).data,
     initialPageParam: 1,
@@ -26,12 +27,13 @@ export const useGCCourseTimeline = (courseId?: string) => {
 
   return useInfiniteQuery({
     queryKey: ['google', courseId, 'timeline'],
-    queryFn: async ({ pageParam = 1 }) =>
+    queryFn: async ({ pageParam = 1, signal }) =>
       (
         await client.get<GCTimeline[]>(
           `/classroom/timeline/course/${courseId}`,
           {
             params: { page: pageParam },
+            signal,
           },
         )
       ).data,

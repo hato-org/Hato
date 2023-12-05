@@ -15,8 +15,8 @@ export const useUser = () => {
 
   return useQuery({
     queryKey: ['user', user?._id],
-    queryFn: async () => {
-      const res = (await client.get<LoginResponse>('/user')).data;
+    queryFn: async ({ signal }) => {
+      const res = (await client.get<LoginResponse>('/user', { signal })).data;
       setJWT(res.jwt);
       setUser(res.user);
       return res.user;
@@ -59,6 +59,7 @@ export const useUserInfo = (
   return useQuery({
     ...options,
     queryKey: ['user', id],
-    queryFn: async () => (await client.get<User>(`/user/${id}`)).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<User>(`/user/${id}`, { signal })).data,
   });
 };

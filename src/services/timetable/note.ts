@@ -14,10 +14,11 @@ export const useNotes = ({
 
   return useQuery({
     queryKey: ['timetable', 'note', { year, month, day }],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<Note[]>('/timetable/note', {
           params: { year, month, day },
+          signal,
         })
       ).data,
   });

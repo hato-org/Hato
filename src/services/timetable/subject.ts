@@ -15,9 +15,12 @@ export const useUserSubject = (
   return useQuery({
     ...options,
     queryKey: ['timetable', 'usersubject', id],
-    queryFn: async () =>
-      (await client.get<UserSubject>(`/timetable/userschedule/subject/${id}`))
-        .data,
+    queryFn: async ({ signal }) =>
+      (
+        await client.get<UserSubject>(`/timetable/userschedule/subject/${id}`, {
+          signal,
+        })
+      ).data,
   });
 };
 

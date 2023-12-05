@@ -15,10 +15,11 @@ export const useDivision = ({ date }: { date: Date }) => {
 
   return useQuery({
     queryKey: ['timetable', 'division', { year, month, day }],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<Division>('/timetable/division', {
           params: { year, month, day },
+          signal,
         })
       ).data,
   });
@@ -58,8 +59,12 @@ export const useUserSchedule = (
   return useQuery({
     ...options,
     queryKey: ['timetable', 'userschedule', id],
-    queryFn: async () =>
-      (await client.get<UserSchedule>(`/timetable/userschedule/${id}`)).data,
+    queryFn: async ({ signal }) =>
+      (
+        await client.get<UserSchedule>(`/timetable/userschedule/${id}`, {
+          signal,
+        })
+      ).data,
   });
 };
 
@@ -69,11 +74,15 @@ export const useMyUserSchedules = () => {
 
   return useQuery({
     queryKey: ['timetable', 'userschedule', 'user', user._id],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
-        await client.post<UserSchedule[]>('/timetable/userschedule/search', {
-          owner: user._id,
-        })
+        await client.post<UserSchedule[]>(
+          '/timetable/userschedule/search',
+          {
+            owner: user._id,
+          },
+          { signal },
+        )
       ).data,
   });
 };

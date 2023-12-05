@@ -6,7 +6,8 @@ export const useTransit = () => {
 
   return useQuery({
     queryKey: ['transit'],
-    queryFn: async () => (await client.get<Transit>('/transit')).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<Transit>('/transit', { signal })).data,
     refetchInterval: 1000 * 60 * 5, // Refetch every 5 mins
   });
 };
@@ -20,6 +21,7 @@ export const useDiainfo = (
     refetchInterval: 1000 * 60 * 2,
     ...options,
     queryKey: ['transit', 'diainfo'],
-    queryFn: async () => (await client.get<DiaInfo[]>('/transit/diainfo')).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<DiaInfo[]>('/transit/diainfo', { signal })).data,
   });
 };

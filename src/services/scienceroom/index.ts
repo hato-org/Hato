@@ -10,8 +10,12 @@ export const useRoomTable = (
   return useQuery({
     ...options,
     queryKey: ['scienceroom', { y, m, d }],
-    queryFn: async () =>
-      (await client.get<ScienceRoom>('/scienceroom', { params: { y, m, d } }))
-        .data,
+    queryFn: async ({ signal }) =>
+      (
+        await client.get<ScienceRoom>('/scienceroom', {
+          params: { y, m, d },
+          signal,
+        })
+      ).data,
   });
 };

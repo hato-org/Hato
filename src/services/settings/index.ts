@@ -11,8 +11,8 @@ export const useSettings = () => {
 
   return useQuery({
     queryKey: ['settings', user._id],
-    queryFn: async () =>
-      (await client.get<Settings>(`/settings/${user._id}`)).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<Settings>(`/settings/${user._id}`, { signal })).data,
     select: (data) => {
       setSettings(data);
       return data;

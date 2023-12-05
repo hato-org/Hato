@@ -16,10 +16,11 @@ export const useClassmatchSports = (
   return useQuery({
     ...options,
     queryKey: ['classmatch', year, season, 'sports'],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<ClassmatchSport[]>('/classmatch/sports', {
           params: { year, season },
+          signal,
         })
       ).data,
   });
@@ -41,10 +42,11 @@ export const useClassmatchSportInfo = (
 
   return useQuery({
     queryKey: ['classmatch', year, season, sport],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<ClassmatchSportInfo>(`/classmatch/${sport}`, {
           params: { year, season },
+          signal,
         })
       ).data,
     ...options,
@@ -62,10 +64,11 @@ export const useClassmatchLiveStreams = ({
 
   return useQuery({
     queryKey: ['classmatch', year, season, 'livestreams'],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<ClassmatchLiveStream[]>('/classmatch/streams', {
           params: { year, season },
+          signal,
         })
       ).data,
   });
@@ -76,8 +79,9 @@ export const useClassmatchHistory = () => {
 
   return useQuery({
     queryKey: ['classmatch', 'history'],
-    queryFn: async () =>
-      (await client.get<ClassmatchHistory[]>('/classmatch/history')).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<ClassmatchHistory[]>('/classmatch/history', { signal }))
+        .data,
   });
 };
 
@@ -104,12 +108,13 @@ export const useClassmatchUpcomingList = ({
       'upcoming',
       { type, grade, class: classNum },
     ],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<ClassmatchTournamentUpcoming[]>(
           '/classmatch/tournament/upcoming',
           {
             params: { year, season, type, grade, class: classNum },
+            signal,
           },
         )
       ).data,

@@ -9,16 +9,17 @@ import { useClient } from '@/modules/client';
 
 export const useEvents = (
   { year, month, day }: { year: number; month: number; day?: number },
-  options?: Omit<UseQueryOptions<CalendarEvent[]>, 'queryFn'>,
+  options?: Omit<UseQueryOptions<CalendarEvent[]>, 'queryKey' | 'queryFn'>,
 ) => {
   const { client } = useClient();
 
   return useQuery({
     queryKey: ['calendar', 'events', { year, month, day }],
-    queryFn: async () =>
+    queryFn: async ({ signal }) =>
       (
         await client.get<CalendarEvent[]>('/calendar/event', {
           params: { y: year, m: month, d: day },
+          signal,
         })
       ).data,
     gcTime: Infinity,
@@ -45,8 +46,9 @@ export const useEvent = (id: string) => {
 
   return useQuery({
     queryKey: ['calendar', 'event', id],
-    queryFn: async () =>
-      (await client.get<CalendarEvent>(`/calendar/event/${id}`)).data,
+    queryFn: async ({ signal }) =>
+      (await client.get<CalendarEvent>(`/calendar/event/${id}`, { signal }))
+        .data,
   });
 };
 
