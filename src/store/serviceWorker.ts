@@ -1,20 +1,18 @@
-import { selector } from 'recoil';
+import { atom } from 'jotai';
+import { atomWithRefresh } from '@/utils/atoms';
 
-export const serviceWorkerSelector = selector({
-  key: 'hato.serviceWorker',
-  get: async () => navigator.serviceWorker.getRegistration(),
-});
+export const serviceWorkerSelector = atom(async () =>
+  navigator.serviceWorker.getRegistration(),
+);
 
-export const pushSubscriptionSelector = selector({
-  key: 'hato.serviceWorker.pushSubscription',
-  get: async ({ get }) =>
-    get(serviceWorkerSelector)?.pushManager?.getSubscription(),
-});
+export const pushSubscriptionSelector = atomWithRefresh(
+  async (get) =>
+    (await get(serviceWorkerSelector))?.pushManager?.getSubscription(),
+);
 
-export const pushPermissionSelector = selector({
-  key: 'hato.serviceWorker.pushPermission',
-  get: async ({ get }) =>
-    get(serviceWorkerSelector)?.pushManager?.permissionState({
+export const pushPermissionSelector = atom(
+  async (get) =>
+    (await get(serviceWorkerSelector))?.pushManager?.permissionState({
       userVisibleOnly: true,
     }),
-});
+);

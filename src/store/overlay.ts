@@ -1,7 +1,4 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
-
-const { persistAtom } = recoilPersist();
+import { atomWithStorage } from 'jotai/utils';
 
 interface Overlay {
   menu: boolean;
@@ -14,16 +11,11 @@ interface Overlay {
     | undefined;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export const overlayAtom = atom<Overlay>({
-  key: 'hato.overlay',
-  default: {
-    menu: false,
-    cardOrder: false,
-    whatsNew: false,
-    userScheduleEditor: false,
-    userSubjectEditor: false,
-    classmatchTournament: undefined,
-  },
-  effects: [persistAtom],
+export const overlayAtom = atomWithStorage<Overlay>('hato.overlay', {
+  menu: false,
+  cardOrder: false,
+  whatsNew: false,
+  userScheduleEditor: false,
+  userSubjectEditor: false,
+  classmatchTournament: undefined,
 });

@@ -38,7 +38,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import {
   TbChevronDown,
   TbExclamationCircle,
@@ -48,16 +48,16 @@ import {
 import { overlayAtom } from '@/store/overlay';
 import {
   useUserSchedule,
-  useUserScheduleDeleter,
+  useDeleteUserScheduleMutation,
   useUserScheduleMutation,
   useUserSubject,
-} from '@/hooks/timetable';
+} from '@/services/timetable';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import AddUserSubjectDrawer from './AddUserSubjectDrawer';
 import UserSubjectEditor from './UserSubjectEditor';
-import { useClassList, useCourseList, useGradeList } from '@/hooks/info';
+import { useClassList, useCourseList, useGradeList } from '@/services/info';
 import { days } from '@/utils/date';
 
 export default function UserScheduleEditor() {
@@ -68,7 +68,7 @@ export default function UserScheduleEditor() {
     duration: 1000,
   });
   const { data: user } = useUser();
-  const [overlay, setOverlay] = useRecoilState(overlayAtom);
+  const [overlay, setOverlay] = useAtom(overlayAtom);
 
   const initialSchedule = useMemo(
     () => ({
@@ -86,23 +86,21 @@ export default function UserScheduleEditor() {
         course: user.course,
       },
     }),
-    [user]
+    [user],
   );
 
   const [schedule, setSchedule] = useState<UserSchedule>(initialSchedule);
 
   const { data, isLoading, error } = useUserSchedule(
-    {
-      id: overlay.userScheduleEditor || '',
-    },
+    overlay.userScheduleEditor || '',
     {
       enabled:
         !!overlay.userScheduleEditor && overlay.userScheduleEditor !== 'new',
-    }
+    },
   );
 
-  const { mutate, isLoading: mutateLoading } = useUserScheduleMutation();
-  const { mutate: deleteSchedule } = useUserScheduleDeleter();
+  const { mutate, isPending: mutatePending } = useUserScheduleMutation();
+  const { mutate: deleteSchedule } = useDeleteUserScheduleMutation();
 
   useEffect(() => {
     if (data && overlay.userScheduleEditor !== 'new') setSchedule(data);
@@ -239,7 +237,7 @@ export default function UserScheduleEditor() {
               !schedule.meta.grade ||
               !schedule.meta.class
             }
-            isLoading={mutateLoading}
+            isLoading={mutatePending}
             onClick={() => {
               mutate(schedule, {
                 onSuccess: () => {
@@ -359,7 +357,7 @@ const EditorProperties = React.memo(
                             gradeList?.find(
                               (grade) =>
                                 grade.type === meta.type &&
-                                grade.gradeCode === meta.grade
+                                grade.gradeCode === meta.grade,
                             )?.name
                           }
                         </MenuButton>
@@ -402,7 +400,7 @@ const EditorProperties = React.memo(
                               (classInfo) =>
                                 classInfo.type === meta.type &&
                                 classInfo.gradeCode === meta.grade &&
-                                classInfo.classCode === meta.class
+                                classInfo.classCode === meta.class,
                             )?.name
                           }
                         </MenuButton>
@@ -443,7 +441,7 @@ const EditorProperties = React.memo(
                           >
                             {
                               courseList?.find(
-                                (courseInfo) => courseInfo.code === meta.course
+                                (courseInfo) => courseInfo.code === meta.course,
                               )?.name
                             }
                           </MenuButton>
@@ -494,7 +492,7 @@ const EditorProperties = React.memo(
         </Box>
       </VStack>
     );
-  }
+  },
 );
 
 const EditorTable = React.memo(
@@ -551,7 +549,7 @@ const EditorTable = React.memo(
         </Box>
       </VStack>
     );
-  }
+  },
 );
 
 const EditorTableCol = React.memo(
@@ -599,7 +597,7 @@ const EditorTableCol = React.memo(
                   [week]: oldSchedule.schedules[week].map((daySch, idx) =>
                     dayIndex === idx
                       ? schedule.filter((_, i) => index !== i)
-                      : daySch
+                      : daySch,
                   ),
                 },
               }))
@@ -623,7 +621,7 @@ const EditorTableCol = React.memo(
                 schedules: {
                   ...oldSchedule.schedules,
                   [week]: oldSchedule.schedules[week].map((weekSch, idx) =>
-                    idx === dayIndex ? [...schedule, { subjectId }] : weekSch
+                    idx === dayIndex ? [...schedule, { subjectId }] : weekSch,
                   ),
                 },
               }));
@@ -634,7 +632,7 @@ const EditorTableCol = React.memo(
         />
       </VStack>
     );
-  }
+  },
 );
 
 function EditorSubjectGrid({
@@ -645,10 +643,9 @@ function EditorSubjectGrid({
   onDelete: () => void;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data, isLoading, error } = useUserSubject(
-    { id: subjectId ?? '' },
-    { enabled: !!subjectId }
-  );
+  const { data, status } = useUserSubject(subjectId ?? '', {
+    enabled: !!subjectId,
+  });
 
   return (
     <Center
@@ -663,10 +660,9 @@ function EditorSubjectGrid({
       layerStyle="button"
       onClick={onOpen}
     >
-      {/* eslint-disable no-nested-ternary */}
-      {isLoading ? (
+      {status === 'pending' ? (
         <Loading />
-      ) : error ? (
+      ) : status === 'error' ? (
         <Icon as={TbExclamationCircle} />
       ) : (
         <Text
@@ -678,7 +674,6 @@ function EditorSubjectGrid({
           {subjectId ? data.short_name ?? data.name : '-'}
         </Text>
       )}
-      {/* eslint-enable no-nested-ternary */}
       <Portal>
         <UserSubjectEditor
           isOpen={isOpen}

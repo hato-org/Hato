@@ -11,7 +11,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useRoomTable } from '@/hooks/scienceroom';
+import { useRoomTable } from '@/services/scienceroom';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
 
@@ -21,10 +21,14 @@ interface RoomTableTableProps extends TableProps {
 
 const ScienceRoomTableTable = React.memo(
   ({ date, ...rest }: RoomTableTableProps) => {
-    const { data, isLoading, error } = useRoomTable(date);
+    const { data, status, error } = useRoomTable({
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    });
 
-    if (isLoading) return <Loading />;
-    if (error) return <Error error={error} />;
+    if (status === 'pending') return <Loading />;
+    if (status === 'error') return <Error error={error} />;
 
     return (
       <TableContainer w="100%" {...rest}>
@@ -43,7 +47,7 @@ const ScienceRoomTableTable = React.memo(
             {data.roomTable.some((room) => !!room.table.length) ? (
               Array.from({
                 length: Math.max(
-                  ...data.roomTable.map((room) => room.table.length)
+                  ...data.roomTable.map((room) => room.table.length),
                 ),
               }).map((_, index) => (
                 // eslint-disable-next-line react/no-array-index-key
@@ -75,7 +79,7 @@ const ScienceRoomTableTable = React.memo(
         </Table>
       </TableContainer>
     );
-  }
+  },
 );
 
 export default ScienceRoomTableTable;

@@ -17,15 +17,14 @@ import {
   useBreakpointValue,
   Icon,
 } from '@chakra-ui/react';
-import { useQuery, useIsFetching } from '@tanstack/react-query';
+import { useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX } from 'react-icons/tb';
-import { AxiosError } from 'axios';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import { useClient } from '@/modules/client';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
+import { usePostAttachment } from '@/services/posts';
 
 interface PDFViewerProps {
   isOpen: boolean;
@@ -35,31 +34,22 @@ interface PDFViewerProps {
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url
+  import.meta.url,
 ).toString();
 
 const PDFViewer = React.memo(
   ({ isOpen, onClose, attachment }: PDFViewerProps) => {
-    const { client } = useClient();
-    const isFetching = useIsFetching(['post', 'attachment']);
+    const isFetching = useIsFetching({ queryKey: ['post', 'attachment'] });
     const pdfWidth = useBreakpointValue({
       base: window.innerWidth,
       md: undefined,
     });
 
-    const { data, error, isLoading } = useQuery<ArrayBuffer, AxiosError>(
-      ['post', 'attachment', attachment.id],
-      async () =>
-        (
-          await client.get(`/post/attachment/${attachment.id}`, {
-            responseType: 'arraybuffer',
-          })
-        ).data,
-      {
-        enabled: isOpen,
-        staleTime: Infinity, // Infinity
-      }
-    );
+    const { data, error, isPending } = usePostAttachment(attachment.id, {
+      enabled: isOpen,
+      staleTime: Infinity, // Infinity
+      gcTime: Infinity, // Infinity
+    });
 
     const [pageCount, setPageCount] = useState(0);
 
@@ -107,7 +97,7 @@ const PDFViewer = React.memo(
           <DrawerBody p={0} position="relative" zIndex={-5}>
             <Center>
               {/* eslint-disable no-nested-ternary */}
-              {isLoading ? (
+              {isPending ? (
                 <Loading />
               ) : error ? (
                 <Error error={error} />
@@ -144,7 +134,7 @@ const PDFViewer = React.memo(
         </DrawerContent>
       </Drawer>
     );
-  }
+  },
 );
 
 export default PDFViewer;

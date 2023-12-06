@@ -16,13 +16,12 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight } from 'react-icons/tb';
-import { useQuery } from '@tanstack/react-query';
 import { differenceInMinutes, differenceInSeconds, format } from 'date-fns/esm';
 import { useSeconds } from 'use-seconds';
-import { useClient } from '@/modules/client';
 import DiaStatus from '../transit/DiaStatus';
+import { useTransit } from '@/services/transit';
 
-const timedifference = (dateLeft: Date, dateRight: Date) => {
+const formatTimeDifference = (dateLeft: Date, dateRight: Date) => {
   const diffSec = differenceInSeconds(dateLeft, dateRight);
   const diffMin = differenceInMinutes(dateLeft, dateRight);
 
@@ -32,15 +31,7 @@ const timedifference = (dateLeft: Date, dateRight: Date) => {
 };
 
 export default function Transit() {
-  const { client } = useClient();
-
-  const { data, isLoading } = useQuery<Transit>(
-    ['transit'],
-    async () => (await client.get('/transit')).data,
-    {
-      refetchInterval: 1000 * 60 * 5, // Refetch in 5 mins
-    }
-  );
+  const { data, isPending } = useTransit();
 
   return (
     <VStack spacing={4} w="100%" align="flex-start">
@@ -61,13 +52,13 @@ export default function Transit() {
         <Text textStyle="title" fontSize="lg">
           長野方面
         </Text>
-        <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
+        <Skeleton w="100%" rounded="xl" isLoaded={!isPending}>
           <TransitButton transits={data?.nagano} />
         </Skeleton>
         <Text textStyle="title" fontSize="lg">
           上田方面
         </Text>
-        <Skeleton w="100%" rounded="xl" isLoaded={!isLoading}>
+        <Skeleton w="100%" rounded="xl" isLoaded={!isPending}>
           <TransitButton transits={data?.ueda} />
         </Skeleton>
       </VStack>
@@ -80,7 +71,7 @@ const TransitButton = React.memo(
     const { isOpen, onToggle } = useDisclosure();
     const [date] = useSeconds();
     const upcomingTransit = transits?.filter(
-      (transit) => new Date(transit.leaveAt).valueOf() > Date.now()
+      (transit) => new Date(transit.leaveAt).valueOf() > Date.now(),
     );
 
     return upcomingTransit?.length ? (
@@ -97,7 +88,7 @@ const TransitButton = React.memo(
           </VStack>
           <Spacer />
           <Text textStyle="title" fontSize="3xl">
-            {timedifference(new Date(upcomingTransit[0].leaveAt), date)}
+            {formatTimeDifference(new Date(upcomingTransit[0].leaveAt), date)}
           </Text>
         </HStack>
         <Box w="100%">
@@ -119,7 +110,7 @@ const TransitButton = React.memo(
         </Text>
       </Center>
     );
-  }
+  },
 );
 
 const TransitQueue = React.memo(
@@ -134,8 +125,8 @@ const TransitQueue = React.memo(
       </VStack>
       <Spacer />
       <Text textStyle="title">
-        {timedifference(new Date(transit.leaveAt), date)}
+        {formatTimeDifference(new Date(transit.leaveAt), date)}
       </Text>
     </HStack>
-  )
+  ),
 );

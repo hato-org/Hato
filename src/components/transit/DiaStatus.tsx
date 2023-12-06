@@ -15,20 +15,20 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbChevronDown } from 'react-icons/tb';
-import { useDiainfo } from '@/hooks/transit';
+import { useDiainfo } from '@/services/transit';
 import Error from '../cards/Error';
 
 const DiaStatus = React.memo(() => {
-  const { data, isLoading, error } = useDiainfo();
+  const { data, isPending, error } = useDiainfo();
 
   const unstableLines = useMemo(
     () => data?.filter((diaInfo) => diaInfo.status.code !== 'normal') ?? [],
-    [data]
+    [data],
   );
 
   const isAllUnstable = useMemo(
     () => !!(data && data?.length === unstableLines?.length),
-    [data, unstableLines]
+    [data, unstableLines],
   );
 
   return (
@@ -36,7 +36,7 @@ const DiaStatus = React.memo(() => {
       <Text textStyle="title" fontSize="lg">
         運転状況
       </Text>
-      <Skeleton w="100%" minH={8} rounded="xl" isLoaded={!isLoading}>
+      <Skeleton w="100%" minH={8} rounded="xl" isLoaded={!isPending}>
         <Center w="full">
           {/* eslint-disable no-nested-ternary */}
           {error ? (
@@ -101,7 +101,7 @@ const UnstableInfo = React.memo(
         </VStack>
       </Alert>
     );
-  }
+  },
 );
 
 const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {

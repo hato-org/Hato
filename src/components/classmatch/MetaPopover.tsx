@@ -23,15 +23,22 @@ import MetaReporter from './MetaReporter';
 
 const TournamentMetaPopover = React.memo(
   ({
+    year,
+    season,
+    sport,
     id,
     meta,
     participants,
     match,
     editHistory,
-  }: Omit<ClassmatchTournament, 'class'>) => {
+  }: Omit<ClassmatchTournament, 'class'> & {
+    year: number;
+    season: ClassmatchSeason;
+    sport: ClassmatchSportId;
+  }) => {
     const { isOpen, onToggle, onClose } = useDisclosure();
     const [editMode, setEditMode] = useState<'editor' | 'reporter' | undefined>(
-      undefined
+      undefined,
     );
     const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -73,6 +80,9 @@ const TournamentMetaPopover = React.memo(
                 case 'editor':
                   return (
                     <MetaEditor
+                      year={year}
+                      season={season}
+                      sport={sport}
                       id={id}
                       meta={meta}
                       participants={participants}
@@ -210,7 +220,7 @@ const TournamentMetaPopover = React.memo(
         </PopoverContent>
       </Popover>
     );
-  }
+  },
 );
 
 export default TournamentMetaPopover;

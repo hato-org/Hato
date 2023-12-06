@@ -20,8 +20,6 @@ import {
   Box,
 } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import {
   TbCheck,
   TbDotsVertical,
@@ -30,12 +28,11 @@ import {
   TbTrash,
   TbX,
 } from 'react-icons/tb';
-import { useClient } from '@/modules/client';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import ReportModal from '../common/ReportModal';
-import { useNotes } from '@/hooks/timetable';
+import { useNotes, useNoteMutation } from '@/services/timetable';
 
 interface NotesProps extends StackProps {
   date: Date;
@@ -48,16 +45,20 @@ const Notes = React.memo(
   ({ date, type, grade, schoolClass, ...rest }: NotesProps) => {
     const { data: user } = useUser();
 
-    const { data, isLoading, error } = useNotes({ date });
+    const { data, status, error } = useNotes({
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    });
 
     const myNotes = useMemo(
       () => data?.filter((note) => note.owner === user.email),
-      [data, user]
+      [data, user],
     );
 
-    if (isLoading) return <Loading />;
+    if (status === 'pending') return <Loading />;
 
-    if (error) return <Error error={error} />;
+    if (status === 'error') return <Error error={error} />;
 
     return (
       <VStack w="100%" {...rest}>
@@ -67,8 +68,8 @@ const Notes = React.memo(
               (classInfo) =>
                 classInfo.type === type &&
                 classInfo.gradeCode === grade &&
-                classInfo.classCode === schoolClass
-            ) || note.owner === user.email
+                classInfo.classCode === schoolClass,
+            ) || note.owner === user.email,
         ).length ? (
           <VStack w="100%" align="flex-start">
             <VStack w="100%">
@@ -79,8 +80,8 @@ const Notes = React.memo(
                       (classInfo) =>
                         classInfo.type === user.type &&
                         classInfo.gradeCode === user.grade &&
-                        classInfo.classCode === user.class
-                    ) && note.owner !== user.email
+                        classInfo.classCode === user.class,
+                    ) && note.owner !== user.email,
                 )
                 .map((note) => (
                   <NoteCard key={note._id} note={note} />
@@ -104,17 +105,15 @@ const Notes = React.memo(
         )}
       </VStack>
     );
-  }
+  },
 );
 
 const NoteCard = React.memo(({ note }: { note: Note }) => {
   const toast = useToast({
     position: 'top-right',
-    variant: 'left-accent',
+    duration: 1500,
   });
-  const { client } = useClient();
   const { data: user } = useUser();
-  const queryClient = useQueryClient();
   const [editMode, setEditMode] = useState(false);
   const [message, setMessage] = useState(note.message);
 
@@ -122,77 +121,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
     setMessage(note.message);
   }, [note]);
 
-  const { mutate: editMutate, isLoading: editMutateLoading } = useMutation<
-    Note,
-    AxiosError,
-    Note
-  >(
-    async (newNote) =>
-      (await client.post(`/timetable/note/${newNote._id}`, newNote)).data,
-    {
-      onSuccess: (newNote) => {
-        setEditMode(false);
-        toast({
-          status: 'success',
-          title: '保存しました。',
-        });
-        queryClient.setQueryData<Note[]>(
-          [
-            'timetable',
-            'note',
-            {
-              year: new Date(newNote.date).getFullYear(),
-              month: new Date(newNote.date).getMonth() + 1,
-              day: new Date(newNote.date).getDate(),
-            },
-          ],
-          (oldNotes) => [
-            ...(oldNotes?.filter((oldNote) => oldNote._id !== newNote._id) ??
-              []),
-            newNote,
-          ]
-        );
-      },
-      onError: (mutateError) => {
-        toast({
-          status: 'error',
-          title: '保存に失敗しました。',
-          description: mutateError.message,
-        });
-      },
-    }
-  );
-  const { mutate: deleteMutate } = useMutation<Note, AxiosError, string>(
-    async (_id) => (await client.delete(`/timetable/note/${_id}`)).data,
-    {
-      onSuccess: (deletedNote) => {
-        toast({
-          status: 'success',
-          title: '削除しました。',
-        });
-        queryClient.setQueryData<Note[]>(
-          [
-            'timetable',
-            'note',
-            {
-              year: new Date(deletedNote.date).getFullYear(),
-              month: new Date(deletedNote.date).getMonth() + 1,
-              day: new Date(deletedNote.date).getDate(),
-            },
-          ],
-          (oldNotes) =>
-            oldNotes?.filter((oldNote) => oldNote._id !== deletedNote._id)
-        );
-      },
-      onError: (mutateError) => {
-        toast({
-          status: 'error',
-          title: '削除に失敗しました。',
-          description: mutateError.message,
-        });
-      },
-    }
-  );
+  const { mutate, isPending } = useNoteMutation();
 
   return (
     <Box
@@ -238,9 +167,27 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
               variant="solid"
               colorScheme="green"
               icon={<TbCheck />}
-              isLoading={editMutateLoading}
+              isLoading={isPending}
               onClick={() => {
-                editMutate({ ...note, message });
+                mutate(
+                  { action: 'edit', note: { ...note, message } },
+                  {
+                    onSuccess: () => {
+                      setEditMode(false);
+                      toast({
+                        status: 'success',
+                        title: '保存しました。',
+                      });
+                    },
+                    onError: (e) => {
+                      toast({
+                        status: 'error',
+                        title: '保存に失敗しました。',
+                        description: e.message,
+                      });
+                    },
+                  },
+                );
               }}
             />
           </HStack>
@@ -252,7 +199,26 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
             float="right"
             note={note}
             onEdit={() => setEditMode(true)}
-            onDelete={() => deleteMutate(note._id)}
+            onDelete={() =>
+              mutate(
+                { action: 'delete', id: note._id },
+                {
+                  onSuccess: () => {
+                    toast({
+                      status: 'success',
+                      title: '削除しました。',
+                    });
+                  },
+                  onError: (e) => {
+                    toast({
+                      status: 'error',
+                      title: '削除に失敗しました。',
+                      description: e.message,
+                    });
+                  },
+                },
+              )
+            }
           />
           <Text py={2} textStyle="title">
             {note.message}
@@ -343,7 +309,7 @@ const NotesMenu = React.memo(
         </MenuList>
       </Menu>
     );
-  }
+  },
 );
 
 export default Notes;

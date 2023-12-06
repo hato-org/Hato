@@ -1,4 +1,4 @@
-interface Event {
+interface CalendarEvent {
   _id: string;
   title: string;
   description?: string;

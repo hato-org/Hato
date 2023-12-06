@@ -22,3 +22,6 @@ export const generateISBN13 = (isbn: string) => {
   const isbn13 = `978${isbnNumber.substring(0, 9)}${checkDigit}`;
   return isbn13;
 };
+
+export const convertToLocalId = (id: string) =>
+  id.match(/^Negima_GK_2004103-(.*)/)?.[1] || id;

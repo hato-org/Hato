@@ -7,8 +7,8 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import html2canvas from 'html2canvas';
-import { useUser } from '@/hooks/user';
-import { useClassList, useCourseList, useGradeList } from '@/hooks/info';
+import { useUser } from '@/services/user';
+import { useClassList, useCourseList, useGradeList } from '@/services/info';
 
 function Profile() {
   const { data: user } = useUser();
@@ -72,7 +72,7 @@ function Profile() {
               gradeList?.find(
                 (gradeInfo) =>
                   gradeInfo.type === user.type &&
-                  gradeInfo.gradeCode === user.grade
+                  gradeInfo.gradeCode === user.grade,
               )?.shortName
             }
             -
@@ -80,7 +80,7 @@ function Profile() {
               classList?.find(
                 (classInfo) =>
                   classInfo.type === user.type &&
-                  classInfo.gradeCode === user.class
+                  classInfo.gradeCode === user.class,
               )?.shortName
             }
           </Text>

@@ -18,7 +18,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { format } from 'date-fns/esm';
-import { useHatoStatusHistory } from '@/hooks/status';
+import { useHatoStatusHistory } from '@/services/status';
 
 const ServerStatusList = React.memo(({ status }: { status?: Status }) => (
   <VStack w="full">

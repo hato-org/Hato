@@ -15,14 +15,14 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { TbDotsVertical } from 'react-icons/tb';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
 function AddToHomeScreen() {
-  const [tutorialModal, setTutorialModal] = useRecoilState(tutorialModalAtom);
+  const [tutorialModal, setTutorialModal] = useAtom(tutorialModalAtom);
   const onClose = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, ATHS: false })),
-    [setTutorialModal]
+    [setTutorialModal],
   );
 
   return (

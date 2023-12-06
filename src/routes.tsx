@@ -24,57 +24,23 @@ const LibraryBookmarks = React.lazy(() => import('./pages/LibraryBookmarks'));
 const Transit = React.lazy(() => import('./pages/Transit'));
 const Classroom = React.lazy(() => import('./pages/classroom/Classroom'));
 const ClassroomCourse = React.lazy(
-  () => import('./pages/classroom/ClassroomCourse')
+  () => import('./pages/classroom/ClassroomCourse'),
 );
 const ClassroomAnnouncement = React.lazy(
-  () => import('./pages/classroom/ClassroomAnnouncement')
+  () => import('./pages/classroom/ClassroomAnnouncement'),
 );
 const ClassroomCoursework = React.lazy(
-  () => import('./pages/classroom/ClassroomCoursework')
+  () => import('./pages/classroom/ClassroomCoursework'),
 );
 const ClassroomMaterial = React.lazy(
-  () => import('./pages/classroom/ClassroomMaterial')
+  () => import('./pages/classroom/ClassroomMaterial'),
 );
 const ClassroomBookmarks = React.lazy(
-  () => import('./pages/classroom/ClassroomBookmarks')
+  () => import('./pages/classroom/ClassroomBookmarks'),
 );
 const Classmatch2023 = React.lazy(
-  () => import('./pages/classmatch/Classmatch2023')
+  () => import('./pages/classmatch/Classmatch2023'),
 );
-
-// function Router() {
-//   const user = useRecoilValue(userAtom);
-//   const location = useLocation();
-
-//   return (
-//     <AnimatePresence mode="wait">
-//       <Routes location={location} key={location.pathname}>
-//         <Route path="/" element={user ? <Dashboard /> : <Home />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/" element={<RequireLogin />}>
-//           <Route path="settings" element={<Settings />}>
-//             <Route index element={<Setting.Top />} />
-//             <Route path="account" element={<Setting.Account />} />
-//             <Route path="theme" element={<Setting.Theme />} />
-//           </Route>
-//           <Route path="timetable" element={<Timetable />} />
-//           <Route path="events">
-//             <Route index element={<Events />} />
-//             <Route path=":id" element={<EventDetail />} />
-//           </Route>
-//           <Route path="posts" element={<Posts />}>
-//             <Route index element={<PostElement.Top />} />
-//             {/* <Route path="subj-news" element={<PostElement.SubjectNews />} />
-//             <Route path="exam-news" element={<PostElement.ExamNews />} /> */}
-//             <Route path="hatoboard" element={<PostElement.Hatoboard />} />
-//           </Route>
-//           <Route path="posts/:id" element={<PostDetail />} />
-//         </Route>
-//         <Route path="*" element={<NotFound />} />
-//       </Routes>
-//     </AnimatePresence>
-//   );
-// }
 
 const router = createBrowserRouter([
   {

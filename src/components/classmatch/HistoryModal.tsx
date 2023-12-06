@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 import { TbChevronRight } from 'react-icons/tb';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
-import { useClassmatchHistory } from '@/hooks/classmatch';
+import { useClassmatchHistory } from '@/services/classmatch';
 
 export default function HistoryModal({
   isOpen,
@@ -34,7 +34,7 @@ export default function HistoryModal({
     season: ClassmatchSeason;
   }) => void;
 }) {
-  const { data, isLoading, error } = useClassmatchHistory();
+  const { data, isPending, error } = useClassmatchHistory();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -44,8 +44,7 @@ export default function HistoryModal({
         <ModalHeader>過去のクラスマッチ</ModalHeader>
         <ModalBody>
           <VStack w="full">
-            {/* eslint-disable no-nested-ternary */}
-            {isLoading ? (
+            {isPending ? (
               <Loading />
             ) : error ? (
               <Error error={error} />
@@ -84,7 +83,6 @@ export default function HistoryModal({
                 </HStack>
               ))
             )}
-            {/* eslint-enable no-nested-ternary */}
           </VStack>
         </ModalBody>
         <ModalFooter />

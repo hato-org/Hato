@@ -2,7 +2,7 @@ import { Box, HStack, Heading, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/nav/Header';
-import { useDiainfo } from '@/hooks/transit';
+import { useDiainfo } from '@/services/transit';
 import DiaInfo from '@/components/transit/DiaInfo';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Loading from '@/components/common/Loading';
@@ -10,7 +10,7 @@ import Error from '@/components/cards/Error';
 
 function Transit() {
   const queryClient = useQueryClient();
-  const { data, isLoading, error } = useDiainfo();
+  const { data, status, error } = useDiainfo();
 
   return (
     <Box>
@@ -26,13 +26,12 @@ function Transit() {
       </Header>
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries(['transit']);
+          await queryClient.invalidateQueries({ queryKey: ['transit'] });
         }}
       >
-        {/* eslint-disable no-nested-ternary */}
-        {isLoading ? (
+        {status === 'pending' ? (
           <Loading />
-        ) : error ? (
+        ) : status === 'error' ? (
           <Error error={error} />
         ) : (
           <VStack w="100%" mb={32} p={4} spacing={8}>
@@ -41,7 +40,6 @@ function Transit() {
             ))}
           </VStack>
         )}
-        {/* eslint-enable */}
       </ChakraPullToRefresh>
     </Box>
   );

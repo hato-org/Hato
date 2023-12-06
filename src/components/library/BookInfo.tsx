@@ -18,11 +18,10 @@ import {
 import { motion } from 'framer-motion';
 import { TbChevronDown, TbBook, TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import { useRecoilState } from 'recoil';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { useAtom } from 'jotai';
 import { generateISBN13 } from '@/modules/library';
 import { libraryBookmarkAtom } from '@/store/library';
+import { useBookInfoById } from '@/services/library';
 
 const BookInfo = React.memo(
   ({
@@ -36,18 +35,17 @@ const BookInfo = React.memo(
     url,
     source,
   }: Book) => {
-    const [bookmarks, setBookmarks] = useRecoilState(libraryBookmarkAtom);
+    const [bookmarks, setBookmarks] = useAtom(libraryBookmarkAtom);
     const { isOpen, onToggle } = useDisclosure();
     const bgBrightness = useColorModeValue('100%', '40%');
     const bgOpacity = useColorModeValue(0.3, 0.9);
     const isBookmarked = bookmarks.includes(isbn);
-    const localId = id.match(/^Negima_GK_2004103-(.*)/)?.[1] || id;
     const imgSrc = useMemo(
       () =>
         isbn
           ? `https://cover.openbd.jp/${generateISBN13(isbn)}.jpg`
           : undefined,
-      [isbn]
+      [isbn],
     );
 
     const sourceName = useMemo<{ [source: string]: string }>(
@@ -55,21 +53,12 @@ const BookInfo = React.memo(
         NDL: '青空文庫',
         Negima_GK_2004103: '屋代高校・附属中学校図書館',
       }),
-      []
+      [],
     );
 
-    const { data: detail } = useQuery(
-      ['library', 'book', id, 'detail'],
-      async () =>
-        (
-          await axios.get(
-            `https://private.calil.jp/bib/gk-2004103-auf08/${localId}.json`
-          )
-        ).data,
-      {
-        enabled: source !== 'NDL' && isOpen,
-      }
-    );
+    const { data: detail } = useBookInfoById(id, {
+      enabled: source !== 'NDL' && isOpen,
+    });
 
     return (
       <VStack
@@ -164,9 +153,9 @@ const BookInfo = React.memo(
                         setBookmarks((currVal) =>
                           isBookmarked
                             ? currVal.filter(
-                                (markedIsbn) => markedIsbn !== isbn
+                                (markedIsbn) => markedIsbn !== isbn,
                               )
-                            : [...currVal, isbn]
+                            : [...currVal, isbn],
                         )
                       }
                     />
@@ -192,7 +181,7 @@ const BookInfo = React.memo(
                     isDisabled={!detail?.raw_holdings[0]?.id}
                     onClick={() =>
                       window.open(
-                        `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`
+                        `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`,
                       )
                     }
                   >
@@ -205,7 +194,7 @@ const BookInfo = React.memo(
         </Box>
       </VStack>
     );
-  }
+  },
 );
 
 export default BookInfo;

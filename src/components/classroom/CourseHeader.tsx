@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, VStack } from '@chakra-ui/react';
-import { useGCCourseInfo } from '@/hooks/classroom/course';
+import { useGCCourseInfo } from '@/services/classroom';
 import { useStringHSLColor } from '@/hooks/common/color';
 
 const CourseHeader = React.memo(({ courseId }: { courseId?: string }) => {

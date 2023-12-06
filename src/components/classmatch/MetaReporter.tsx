@@ -7,13 +7,15 @@ import {
   Text,
   Textarea,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { TbCheck, TbX } from 'react-icons/tb';
-import { useRecoilValue } from 'recoil';
-import { useUserInfo } from '@/hooks/user';
+import { useAtomValue } from 'jotai';
+import { useUserInfo } from '@/services/user';
 import Loading from '../common/Loading';
-import { useReport } from '@/hooks/report';
+import { useReport } from '@/services/report';
 import { overlayAtom } from '@/store/overlay';
+import Error from '../cards/Error';
 
 export default function MetaReporter({
   id,
@@ -24,26 +26,42 @@ export default function MetaReporter({
   history: ClassmatchTournament['editHistory'];
   onSubmit: () => void;
 }) {
-  const { classmatchTournament } = useRecoilValue(overlayAtom);
+  const toast = useToast({
+    position: 'top-right',
+    duration: 1500,
+  });
+  const { classmatchTournament } = useAtomValue(overlayAtom);
   const [description, setDescription] = useState('');
-  const { data, isLoading, error } = useUserInfo(
-    { id: history?.at(-1)?.userId },
-    { enabled: !!history?.at(-1) }
-  );
+  const { data, status, error } = useUserInfo(history?.at(-1)?.userId!, {
+    enabled: !!history?.at(-1),
+  });
 
-  const { mutate, isLoading: reportLoading } = useReport();
+  const { mutate, isPending: reportPending } = useReport({
+    onSuccess: () => {
+      toast({
+        title: '送信しました。',
+        status: 'success',
+      });
+    },
+    onError: (e) => {
+      toast({
+        title: '送信に失敗しました。',
+        description: e.message,
+        status: 'error',
+      });
+    },
+  });
 
   return (
     <VStack w="full" align="flex-start" spacing={4}>
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         最後に編集したユーザー
       </Text>
-      {/* eslint-disable no-nested-ternary */}
-      {history ? (
-        isLoading ? (
+      {history?.at(-1) ? (
+        status === 'pending' ? (
           <Loading />
-        ) : error ? (
-          <Icon />
+        ) : status === 'error' ? (
+          <Error error={error} />
         ) : (
           <HStack spacing={4} align="center">
             <Avatar src={data.avatar} size="sm" />
@@ -67,7 +85,6 @@ export default function MetaReporter({
           以前に編集したユーザーはいません
         </Text>
       )}
-      {/* eslint-enable no-nested-ternary */}
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         報告理由
       </Text>
@@ -113,10 +130,10 @@ export default function MetaReporter({
               },
               {
                 onSuccess: onSubmit,
-              }
+              },
             )
           }
-          isLoading={reportLoading}
+          isLoading={reportPending}
           isDisabled={!description}
         />
       </HStack>

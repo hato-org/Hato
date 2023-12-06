@@ -8,13 +8,13 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { overlayAtom } from '@/store/overlay';
 import ChangeLog from '@/../CHANGELOG.mdx';
 import './markdown.css';
 
 export default function WhatsNew() {
-  const [{ whatsNew }, setOverlay] = useRecoilState(overlayAtom);
+  const [{ whatsNew }, setOverlay] = useAtom(overlayAtom);
 
   const onClose = useCallback(() => {
     setOverlay((currVal) => ({ ...currVal, whatsNew: false }));

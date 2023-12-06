@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -15,9 +15,9 @@ const API_URL = import.meta.env.DEV
 // eslint-disable-next-line import/prefer-default-export
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
-  const setUser = useSetRecoilState(userAtom);
+  const setUser = useSetAtom(userAtom);
   const [loginLoading, setLoginLoading] = useState(false);
-  const setJWT = useSetRecoilState(jwtAtom);
+  const setJWT = useSetAtom(jwtAtom);
   const toast = useToast({
     position: 'top-right',
     variant: 'left-accent',
@@ -33,7 +33,7 @@ export const useAuth = (scopes?: string[]) => {
         status: 'error',
       });
     },
-    [toast]
+    [toast],
   );
 
   // const login = useCallback(
@@ -78,7 +78,7 @@ export const useAuth = (scopes?: string[]) => {
       } = await axios.post<LoginResponse>(
         '/auth/login',
         { code },
-        { baseURL: API_URL }
+        { baseURL: API_URL },
       );
       if (status !== 200) throw Error('Failed to acquire userdata');
 
@@ -87,16 +87,12 @@ export const useAuth = (scopes?: string[]) => {
 
       queryClient.setQueryDefaults(['user', userData._id], {
         staleTime: 1000 * 60 * 10, // 10 mins
-        cacheTime: Infinity,
+        gcTime: Infinity,
         refetchInterval: 1000 * 60 * 10, // 10 mins
-        onSuccess: (newUser) => {
-          setUser(newUser);
-          console.log('Userdata updated');
-        },
       });
       queryClient.setQueryData(['user', userData._id], userData);
 
-      queryClient.invalidateQueries(['google']);
+      queryClient.invalidateQueries({ queryKey: ['google'] });
 
       toast({
         title: `${userData.name}でログインしました。`,

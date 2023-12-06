@@ -14,13 +14,23 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { TbCheck, TbPencil, TbPlus, TbTrash } from 'react-icons/tb';
+import { useAtom, useSetAtom } from 'jotai';
 import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from '@hello-pangea/dnd';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+  DndContext,
+  useSensors,
+  useSensor,
+  DragEndEvent,
+  MouseSensor,
+  KeyboardSensor,
+  TouchSensor,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import CardElement from '@/components/cards';
@@ -46,20 +56,35 @@ function Dashboard() {
   //     : 'こんばんは';
 
   const queryClient = useQueryClient();
-  const [editMode, setEditMode] = useRecoilState(dashboardEditModeAtom);
-  const setOverlay = useSetRecoilState(overlayAtom);
-  const [cardOrder, setCardOrder] = useRecoilState(cardOrderAtom);
+  const [editMode, setEditMode] = useAtom(dashboardEditModeAtom);
+  const setOverlay = useSetAtom(overlayAtom);
+  const [cardOrder, setCardOrder] = useAtom(cardOrderAtom);
+
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 0,
+      },
+    }),
+  );
 
   const onDragEnd = useCallback(
-    (result: DropResult) => {
-      const newCardOrder = [...cardOrder];
-      const [reorderedItem] = newCardOrder.splice(result.source.index, 1);
-      if (result.destination)
-        newCardOrder.splice(result.destination.index, 0, reorderedItem);
+    ({ active, over }: DragEndEvent) => {
+      if (!over) return;
 
-      setCardOrder(newCardOrder);
+      setCardOrder((prevOrder) => {
+        const oldIndex = prevOrder.indexOf(active.id.toString());
+        const newIndex = prevOrder.indexOf(over.id.toString());
+
+        return arrayMove(prevOrder, oldIndex, newIndex);
+      });
     },
-    [cardOrder, setCardOrder]
+    [setCardOrder],
   );
 
   return (
@@ -113,10 +138,7 @@ function Dashboard() {
         isPullable={!editMode}
         onRefresh={async () => {
           await Promise.all([
-            queryClient.invalidateQueries(['timetable']),
-            queryClient.invalidateQueries(['calendar']),
-            queryClient.invalidateQueries(['posts']),
-            queryClient.invalidateQueries(['transit']),
+            queryClient.invalidateQueries({ type: 'active' }),
           ]);
         }}
       >
@@ -130,30 +152,15 @@ function Dashboard() {
             </Text>
           </VStack> */}
           {editMode ? (
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="cardOrder">
-                {(provided) => (
-                  <Flex
-                    flex={1}
-                    p={4}
-                    pt={-4}
-                    pb={16}
-                    flexDir="column"
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
-                    {cardOrder.map((cardId, index) => (
-                      <DraggableCard
-                        key={cardId}
-                        card={cards.find(({ id }) => cardId === id)}
-                        index={index}
-                      />
-                    ))}
-                    {provided.placeholder}
-                  </Flex>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <DndContext onDragEnd={onDragEnd} sensors={sensors}>
+              <SortableContext items={cardOrder}>
+                <Flex flex={1} p={4} pt={-4} pb={16} flexDir="column">
+                  {cardOrder.map((cardId) => (
+                    <SortableCard key={cardId} cardId={cardId} />
+                  ))}
+                </Flex>
+              </SortableContext>
+            </DndContext>
           ) : (
             <Stack flex={1} p={4} pb={16} spacing={8}>
               <CardElement.Info />
@@ -188,56 +195,67 @@ function Dashboard() {
   );
 }
 
-function DraggableCard({
-  card,
-  index,
-}: {
-  card?: DashboardCard;
-  index: number;
-}) {
-  const setCardOrder = useSetRecoilState(cardOrderAtom);
+function SortableCard({ cardId }: { cardId: string }) {
+  const card = cards.find(({ id }) => id === cardId);
 
-  if (!card) return null;
-  return (
-    <Draggable draggableId={card.id} index={index}>
-      {(provided) => (
-        <Card
-          pos="relative"
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          my={4}
-          ref={provided.innerRef}
-        >
-          {card.component}
-          <Flex
-            pos="absolute"
-            inset={0}
-            p={4}
-            justify="center"
-            align="center"
-            rounded="xl"
-            backdropFilter="auto"
-            backdropBlur="1px"
-          >
-            <IconButton
-              aria-label="Delete card"
-              icon={<Icon as={TbTrash} boxSize={6} />}
-              colorScheme="red"
-              variant="ghost"
-              size="lg"
-              isRound
-              transform="scale(1.5)"
-              onClick={() =>
-                setCardOrder((currVal) =>
-                  currVal.filter((cardId) => cardId !== card.id)
-                )
-              }
-            />
-          </Flex>
-        </Card>
-      )}
-    </Draggable>
-  );
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: card?.id ?? 'draggable',
+  });
+
+  const setCardOrder = useSetAtom(cardOrderAtom);
+
+  const style = transform
+    ? {
+        transform: CSS.Translate.toString(transform),
+        transition,
+      }
+    : undefined;
+
+  return card ? (
+    <Card
+      pos="relative"
+      style={style}
+      my={4}
+      sx={{
+        touchAction: isDragging ? 'manipulation' : 'auto',
+      }}
+      zIndex={isDragging ? 1 : 0}
+    >
+      {card.component}
+      <Flex
+        pos="absolute"
+        inset={0}
+        rounded="xl"
+        backdropFilter="auto"
+        backdropBlur="2px"
+        {...attributes}
+        {...listeners}
+        ref={setNodeRef}
+      />
+      <IconButton
+        pos="absolute"
+        top="50%"
+        left="50%"
+        aria-label="Delete card"
+        icon={<Icon as={TbTrash} boxSize={6} />}
+        colorScheme="red"
+        variant="ghost"
+        size="lg"
+        isRound
+        transform="translate(-50%, -50%) scale(1.5)"
+        onClick={() =>
+          setCardOrder((currVal) => currVal.filter((id) => id !== card.id))
+        }
+      />
+    </Card>
+  ) : null;
 }
 
 export default Dashboard;

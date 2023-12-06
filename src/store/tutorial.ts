@@ -1,5 +1,5 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 interface TutorialAtom {
   events: boolean;
@@ -8,25 +8,16 @@ interface TutorialAtom {
   pin: boolean;
 }
 
-const { persistAtom } = recoilPersist();
-
-export const tutorialAtom = atom<TutorialAtom>({
-  key: 'hato.tutorial',
-  default: {
-    events: false,
-    ATHS: false,
-    iCal: false,
-    pin: false,
-  },
-  effects: [persistAtom],
+export const tutorialAtom = atomWithStorage<TutorialAtom>('hato.tutorial', {
+  events: false,
+  ATHS: false,
+  iCal: false,
+  pin: false,
 });
 
 export const tutorialModalAtom = atom<TutorialAtom>({
-  key: 'hato.tutorial.modal',
-  default: {
-    events: false,
-    ATHS: false,
-    iCal: false,
-    pin: false,
-  },
+  events: false,
+  ATHS: false,
+  iCal: false,
+  pin: false,
 });

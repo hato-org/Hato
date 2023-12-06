@@ -9,13 +9,13 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns/esm';
 import { useSeconds } from 'use-seconds';
-import { useDivision } from '@/hooks/timetable';
+import { useDivision } from '@/services/timetable';
 import { days } from '@/utils/date';
 
 export default function Clock() {
   const { isOpen: isSecondsShowed, onToggle } = useDisclosure();
   const [date] = useSeconds();
-  const { data: division, isLoading } = useDivision({ date });
+  const { data: division, isPending } = useDivision({ date });
 
   return (
     <HStack w="full" p={2} spacing={4}>
@@ -36,7 +36,7 @@ export default function Clock() {
             </Text>
           </Text>
         </HStack> */}
-        <HStack spacing={1}>
+        <HStack spacing={1} flexWrap="nowrap">
           <Text textStyle="title" fontSize="3xl">
             {format(date, 'M')}
             <Text pl={1} as="span" textStyle="description">
@@ -52,7 +52,7 @@ export default function Clock() {
           </Text>
         </HStack>
         {division ? (
-          <HStack w="full">
+          <HStack w="full" flexWrap="nowrap">
             <Text textStyle="title" fontSize="xl">
               {division.week}
               <Text as="span" textStyle="description">
@@ -68,7 +68,7 @@ export default function Clock() {
             </Text>
           </HStack>
         ) : (
-          <Skeleton rounded="md" isLoaded={!isLoading}>
+          <Skeleton rounded="md" isLoaded={!isPending}>
             <Text textStyle="description" fontWeight="bold">
               日課未設定
             </Text>

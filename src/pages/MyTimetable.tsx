@@ -10,24 +10,25 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbPlus } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { useSetAtom } from 'jotai';
 import { useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
-import { useMyUserSchedules } from '@/hooks/timetable';
+import { useMyUserSchedules } from '@/services/timetable';
 import Card from '@/components/timetable/editor/Card';
 import UserScheduleEditor from '@/components/timetable/UserScheduleEditor';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import { overlayAtom } from '@/store/overlay';
 import Loading from '@/components/common/Loading';
+import Error from '@/components/cards/Error';
 
 function MyTimetable() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const setOverlay = useSetRecoilState(overlayAtom);
+  const setOverlay = useSetAtom(overlayAtom);
 
-  const { data, isLoading } = useMyUserSchedules();
+  const { data, isPending, error } = useMyUserSchedules();
 
   return (
     <Box>
@@ -47,18 +48,17 @@ function MyTimetable() {
       </Portal>
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries([
-            'timetable',
-            'userschedule',
-            'user',
-            user._id,
-          ]);
+          await queryClient.invalidateQueries({
+            queryKey: ['timetable', 'userschedule', 'user', user._id],
+          });
         }}
       >
         <Center mb={32} pt={4} px={4} flexDir="column">
           <VStack w="full" spacing={6}>
-            {isLoading ? (
+            {isPending ? (
               <Loading />
+            ) : error ? (
+              <Error error={error} />
             ) : (
               data?.map((userSchedule) => (
                 <Card key={userSchedule._id} {...userSchedule} />

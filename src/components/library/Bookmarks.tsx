@@ -1,13 +1,13 @@
 import { Box, Center, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { Virtuoso } from 'react-virtuoso';
 import BookInfo from './BookInfo';
 import { libraryBookmarkAtom } from '@/store/library';
-import { useBookInfo } from '@/hooks/library';
+import { useBookInfoByISDN } from '@/services/library';
 import Error from '../cards/Error';
 
 export default function Bookmarks() {
-  const bookmarks = useRecoilValue(libraryBookmarkAtom);
+  const bookmarks = useAtomValue(libraryBookmarkAtom);
 
   return (
     <Center w="100%" pt={2} px={4} mb={24}>
@@ -32,11 +32,11 @@ export default function Bookmarks() {
 }
 
 function BookInfoAsync({ isbn }: { isbn: string }) {
-  const { data, isLoading, error, isError } = useBookInfo(isbn);
+  const { data, status, error } = useBookInfoByISDN(isbn);
 
-  if (isError) return <Error error={error} />;
+  if (status === 'error') return <Error error={error} />;
 
-  return isLoading ? (
+  return status === 'pending' ? (
     <HStack p={2} pr={4} w="100%" spacing={4}>
       <Skeleton boxSize={16} rounded="lg" />
       <VStack align="flex-start" spacing={2}>

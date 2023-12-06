@@ -13,7 +13,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { TbChevronDown } from 'react-icons/tb';
-import { useClassList, useGradeList } from '@/hooks/info';
+import { useClassList, useGradeList } from '@/services/info';
 
 interface GradeClassPickerProps extends StackProps {
   onGradeSelect: (gradeInfo: GradeInfo) => void;
@@ -45,7 +45,7 @@ const GradeClassPicker = React.memo(
       },
       {
         enabled: !!(grade || defaultGrade),
-      }
+      },
     );
 
     useEffect(() => {
@@ -53,12 +53,12 @@ const GradeClassPicker = React.memo(
         setGrade(
           gradeList?.find(
             ({ type: gradeType, gradeCode }) =>
-              gradeType === defaultType && gradeCode === defaultGrade
-          )
+              gradeType === defaultType && gradeCode === defaultGrade,
+          ),
         );
       if (!schoolClass)
         setClass(
-          classList?.find(({ classCode }) => classCode === defaultClass)
+          classList?.find(({ classCode }) => classCode === defaultClass),
         );
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gradeList, classList]);
@@ -82,7 +82,7 @@ const GradeClassPicker = React.memo(
                       ? gradeList?.find(
                           (gradeInfo) =>
                             defaultType === gradeInfo.type &&
-                            defaultGrade === gradeInfo.gradeCode
+                            defaultGrade === gradeInfo.gradeCode,
                         )?.shortName
                       : '学年')}
                 </Text>
@@ -122,7 +122,7 @@ const GradeClassPicker = React.memo(
                   {schoolClass?.name ??
                     (defaultClass
                       ? classList?.find(
-                          ({ classCode }) => classCode === defaultClass
+                          ({ classCode }) => classCode === defaultClass,
                         )?.name
                       : 'クラス')}
                 </Text>
@@ -160,7 +160,7 @@ const GradeClassPicker = React.memo(
         </Box>
       </Stack>
     );
-  }
+  },
 );
 
 export default GradeClassPicker;

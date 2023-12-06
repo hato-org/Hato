@@ -16,9 +16,9 @@ import { useDebouncedCallback } from 'use-debounce';
 import { TbArrowLeft, TbPlus } from 'react-icons/tb';
 import {
   useUserSubjectMutation,
-  useUserSubjectSearch,
-} from '@/hooks/timetable';
-import { useUser } from '@/hooks/user';
+  useSearchUserSubject,
+} from '@/services/timetable';
+import { useUser } from '@/services/user';
 import Loading from '../common/Loading';
 
 const AddUserSubjectDrawer = React.memo(
@@ -37,12 +37,12 @@ const AddUserSubjectDrawer = React.memo(
     const [createMode, setCreateMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const { data: user } = useUser();
-    const { mutate, isLoading } = useUserSubjectMutation();
+    const { mutate, isPending } = useUserSubjectMutation();
     const {
       mutate: search,
       data: searchResult,
-      isLoading: searchLoading,
-    } = useUserSubjectSearch();
+      isPending: searchPending,
+    } = useSearchUserSubject();
 
     const debounced = useDebouncedCallback((query: string) => {
       search({ name: query, short_name: query, meta });
@@ -148,7 +148,7 @@ const AddUserSubjectDrawer = React.memo(
                 w="full"
               >
                 {/* eslint-disable no-nested-ternary */}
-                {searchLoading ? (
+                {searchPending ? (
                   <Loading />
                 ) : searchResult?.length ? (
                   searchResult?.map((subj) => (
@@ -182,7 +182,7 @@ const AddUserSubjectDrawer = React.memo(
                   rounded="lg"
                   colorScheme="blue"
                   isDisabled={!subject.name}
-                  isLoading={isLoading}
+                  isLoading={isPending}
                   onClick={() =>
                     mutate(subject as UserSubject, {
                       onSuccess: (res) => {
@@ -211,7 +211,7 @@ const AddUserSubjectDrawer = React.memo(
         </ModalContent>
       </Modal>
     );
-  }
+  },
 );
 
 const UserSubjectSuggestion = React.memo(
@@ -260,7 +260,7 @@ const UserSubjectSuggestion = React.memo(
         )}
       </HStack>
     </VStack>
-  )
+  ),
 );
 
 export default AddUserSubjectDrawer;

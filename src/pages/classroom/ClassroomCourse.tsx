@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Box,
   Heading,
@@ -11,15 +12,14 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Virtuoso } from 'react-virtuoso';
-import { useRecoilState } from 'recoil';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
+import { useAtom } from 'jotai';
 import { TbExternalLink } from 'react-icons/tb';
 import BackButton from '@/components/layout/BackButton';
 import Header from '@/components/nav/Header';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import CourseHeader from '@/components/classroom/CourseHeader';
-import { useGCCourseInfo } from '@/hooks/classroom/course';
-import { useGCCourseTimeline } from '@/hooks/classroom/timeline';
+import { useGCCourseInfo, useGCCourseTimeline } from '@/services/classroom';
 import Post from '@/components/classroom/Post';
 import Footer from '@/components/classroom/LoadingFooter';
 import { GCScrollIndexAtomFamily } from '@/store/classroom';
@@ -37,9 +37,8 @@ export default function ClassroomCourse() {
     isFetchingNextPage,
     fetchNextPage,
   } = useGCCourseTimeline(id);
-  const [scrollIndex, setScrollIndex] = useRecoilState(
-    GCScrollIndexAtomFamily(id)
-  );
+  const scrollRef = useRef<VirtuosoHandle>(null);
+  const [scrollState, setScrollState] = useAtom(GCScrollIndexAtomFamily(id));
 
   return (
     <Box>
@@ -71,7 +70,9 @@ export default function ClassroomCourse() {
         w="full"
         minH="100vh"
         onRefresh={async () => {
-          await queryClient.resetQueries(['google', id, 'timeline']);
+          await queryClient.resetQueries({
+            queryKey: ['google', id, 'timeline'],
+          });
         }}
       >
         <VStack p={4} mb={24}>
@@ -83,6 +84,7 @@ export default function ClassroomCourse() {
             <Error error={error} />
           ) : (
             <Virtuoso
+              ref={scrollRef}
               style={{ height: '100%', width: '100%' }}
               context={{ loadMore: null, loading: isFetchingNextPage }}
               data={timeline?.pages.flat()}
@@ -91,8 +93,10 @@ export default function ClassroomCourse() {
                   <Post {...post} />
                 </Box>
               )}
-              rangeChanged={(range) => setScrollIndex(range.startIndex)}
-              initialTopMostItemIndex={scrollIndex}
+              itemsRendered={() =>
+                scrollRef.current?.getState((state) => setScrollState(state))
+              }
+              restoreStateFrom={scrollState}
               endReached={async () => {
                 await fetchNextPage();
               }}

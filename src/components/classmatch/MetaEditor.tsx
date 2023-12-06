@@ -19,34 +19,37 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
 import { TbCheck, TbChevronDown, TbChevronUp, TbX } from 'react-icons/tb';
 import { format } from 'date-fns/esm';
-import { useClassmatchMutation } from '@/hooks/classmatch';
-import { overlayAtom } from '@/store/overlay';
+import { useClassmatchMutation } from '@/services/classmatch';
 
 function MetaEditor({
+  year,
+  season,
+  sport,
   id,
   meta,
   participants,
   match,
   onSubmit,
 }: Pick<ClassmatchTournament, 'id' | 'meta' | 'participants' | 'match'> & {
+  year: number;
+  season: ClassmatchSeason;
+  sport: ClassmatchSportId;
   onSubmit: () => void;
 }) {
   const [metaValue, setMetaValue] = useState(meta);
   const [participantsValue, setParticipantsValue] = useState(participants);
-  const { classmatchTournament } = useRecoilValue(overlayAtom);
 
-  const { mutate, isLoading } = useClassmatchMutation({
-    year: classmatchTournament?.year,
-    season: classmatchTournament?.season,
-    sport: classmatchTournament?.sport,
+  const { mutate, isPending } = useClassmatchMutation({
+    year,
+    season,
+    sport,
     id,
   });
 
   const isParticipantsEditable = match?.every(
-    (tournament) => tournament.class ?? tournament.participants.length
+    (tournament) => tournament.class ?? tournament.participants.length,
   );
 
   // Clear placeholder value when popover is disappeared / opened
@@ -206,10 +209,10 @@ function MetaEditor({
               },
               {
                 onSuccess: onSubmit,
-              }
+              },
             )
           }
-          isLoading={isLoading}
+          isLoading={isPending}
         />
       </HStack>
     </VStack>
@@ -246,7 +249,11 @@ function ClassSelectMenu({
       <Box>
         <MenuList rounded="xl" shadow="xl">
           {match?.map((tournament) => (
-            <ClassSelectMenuItem onSelect={onSelect} tournament={tournament} />
+            <ClassSelectMenuItem
+              key={tournament.id}
+              onSelect={onSelect}
+              tournament={tournament}
+            />
           ))}
         </MenuList>
       </Box>
@@ -263,7 +270,7 @@ function ClassSelectMenuItem({
 }) {
   const winner = tournament.participants.reduce<ClassmatchParticipant>(
     (prev, curr) => (prev.point > curr.point ? prev : curr),
-    { from: '', point: 0, type: 'hs', grade: '0', class: '0' }
+    { from: '', point: 0, type: 'hs', grade: '0', class: '0' },
   );
 
   if (!tournament.class && !winner.from)
@@ -299,8 +306,8 @@ function ClassSelectMenuItem({
           ? '職員'
           : `${tournament.class.grade}-${tournament.class.class}`
         : winner.type === 'teacher'
-        ? '職員'
-        : `${winner.grade}-${winner.class}`}
+          ? '職員'
+          : `${winner.grade}-${winner.class}`}
       {/* eslint-enable no-nested-ternary */}
     </MenuItem>
   );

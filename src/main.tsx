@@ -9,10 +9,12 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { RecoilRoot } from 'recoil';
+import { DevTools } from 'jotai-devtools';
 import App from './App';
 import theme from './theme';
 import './global.css';
+
+import '@/utils/recoil_migration';
 
 import { createIDBPersister } from './modules/common/querypersist';
 
@@ -23,7 +25,6 @@ const queryClient = new QueryClient({
       refetchOnMount: true,
       refetchOnWindowFocus: false,
       refetchOnReconnect: true,
-      keepPreviousData: true,
       retry: 1,
       staleTime: 1000 * 60 * 5, // Stale time (5 mins)
     },
@@ -44,14 +45,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               maxAge: 1000 * 60 * 60 * 24, // 24 hours
             }}
           >
-            <RecoilRoot>
-              <ColorModeScript />
-              <App />
-            </RecoilRoot>
+            <ColorModeScript />
+            <App />
             <ReactQueryDevtools initialIsOpen={false} />
+            <DevTools />
           </PersistQueryClientProvider>
         </GoogleOAuthProvider>
       </HelmetProvider>
     </ChakraProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

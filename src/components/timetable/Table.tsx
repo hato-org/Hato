@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
-import { useUserSubject } from '@/hooks/timetable';
+import { useUserSubject } from '@/services/timetable';
 
 interface TimetableTableProps extends TableProps {
   week: Week;
@@ -53,21 +53,18 @@ const TimetableTable = React.memo(
                   <Td>{index + 1}</Td>
                   <TablePeriod {...schedules?.[week][day][index]} />
                 </Tr>
-              )
+              ),
             )}
           </Tbody>
         </Table>
       </TableContainer>
     );
-  }
+  },
 );
 
 const TablePeriod = React.memo(
   ({ subjectId }: { subjectId?: string | null }) => {
-    const { data } = useUserSubject(
-      { id: subjectId ?? '' },
-      { enabled: !!subjectId }
-    );
+    const { data } = useUserSubject(subjectId ?? '', { enabled: !!subjectId });
 
     return (
       <>
@@ -79,7 +76,7 @@ const TablePeriod = React.memo(
         </Td>
       </>
     );
-  }
+  },
 );
 
 export default TimetableTable;

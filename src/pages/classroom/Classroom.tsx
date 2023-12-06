@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Box,
   Heading,
@@ -11,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Virtuoso } from 'react-virtuoso';
-import { useRecoilState } from 'recoil';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
+import { useAtom } from 'jotai';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   TbBookmark,
@@ -20,14 +21,14 @@ import {
   TbExternalLink,
 } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
-import { useGCTimeline } from '@/hooks/classroom/timeline';
 import Error from '@/components/cards/Error';
 import Post from '@/components/classroom/Post';
 import Footer from '@/components/classroom/LoadingFooter';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Loading from '@/components/common/Loading';
 import { GCScrollIndexAtomFamily } from '@/store/classroom';
-import { useUser } from '@/hooks/user';
+import { useGCTimeline } from '@/services/classroom';
+import { useUser } from '@/services/user';
 import LoginButton from '@/components/login/LoginButton';
 
 const scopes = [
@@ -42,9 +43,10 @@ const scopes = [
 export default function Classroom() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const [scrollIndex, setScrollIndex] = useRecoilState(
-    GCScrollIndexAtomFamily('user')
+  const [scrollState, setScrollState] = useAtom(
+    GCScrollIndexAtomFamily('timeline'),
   );
+  const scrollRef = useRef<VirtuosoHandle>(null);
   const {
     data: timeline,
     isLoading,
@@ -109,7 +111,7 @@ export default function Classroom() {
         pb={16}
         onRefresh={async () =>
           // queryClient.invalidateQueries(['google', 'timeline'])
-          queryClient.resetQueries(['google', 'timeline'])
+          queryClient.resetQueries({ queryKey: ['google', 'timeline'] })
         }
       >
         <Box px={4}>
@@ -120,6 +122,7 @@ export default function Classroom() {
             <Error error={error} />
           ) : (
             <Virtuoso
+              ref={scrollRef}
               context={{ loadMore: null, loading: isFetchingNextPage }}
               style={{ height: '100%', width: '100%' }}
               data={timeline?.pages?.flat()}
@@ -131,8 +134,10 @@ export default function Classroom() {
               endReached={async () => {
                 await fetchNextPage();
               }}
-              rangeChanged={(range) => setScrollIndex(range.startIndex)}
-              initialTopMostItemIndex={scrollIndex}
+              itemsRendered={() =>
+                scrollRef.current?.getState((state) => setScrollState(state))
+              }
+              restoreStateFrom={scrollState}
               components={{
                 Footer,
               }}

@@ -15,19 +15,15 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { format, isSameDay } from 'date-fns';
 import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { Select } from 'chakra-react-select';
-import { useClient } from '@/modules/client';
-import { useAllTagList } from '@/hooks/calendar/tag';
-import { useUser } from '@/hooks/user';
+import { useAtom } from 'jotai';
+import { AsyncSelect } from 'chakra-react-select';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import { tagsAtom } from '@/store/tags';
+import { useEvents, useTagsSearch } from '@/services/calendar';
 
 interface UpcomingEventsProps {
   year: number;
@@ -36,51 +32,30 @@ interface UpcomingEventsProps {
 }
 
 function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
-  const { client } = useClient();
-  const { data: user } = useUser();
-  const queryClient = useQueryClient();
-  const { data: allTag } = useAllTagList();
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const [tags, setTags] = useRecoilState(tagsAtom);
+  const [tags, setTags] = useAtom(tagsAtom);
 
-  // 全タグリストが非同期でフェッチされるのでリストが変更された際に再計算
+  const { data, status, error } = useEvents({ year, month, day });
+  const {
+    data: tagSearchRes,
+    mutate,
+    mutateAsync,
+    isPending,
+  } = useTagsSearch();
+
+  // set default tags
   useEffect(() => {
-    if (!allTag) return;
-    setTags((oldTags) => [
-      ...oldTags,
-      ...allTag.filter(
-        (tag) =>
-          !oldTags.some((oldTag) => oldTag.value === tag.value) &&
-          (tag.value === 'all' || // 全校
-            tag.value === `${user?.type}-all` || // 高校 / 中学
-            tag.value === `${user?.type}-${user?.grade}` || // 学年
-            tag.value === `${user?.grade}${user?.class}` || // クラス
-            tag.value === `${user?.type}-${user?.grade}-${user?.course}`) // コース
-      ),
-    ]);
-  }, [allTag, user]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const { data, isLoading, error } = useQuery<Event[], AxiosError>(
-    ['calendar', 'events', { year, month, day }],
-    async () =>
-      (
-        await client.get('/calendar/event', {
-          params: {
-            y: year,
-            m: month,
-            d: day,
-          },
-        })
-      ).data,
-    {
-      cacheTime: Infinity,
-      onSuccess: (events) => {
-        events.forEach((event) => {
-          queryClient.setQueryData(['calendar', 'event', event._id], event);
-        });
+    mutate('all', {
+      onSuccess: (res) => {
+        setTags((oldTags) => [
+          ...oldTags,
+          ...res.filter((tag) =>
+            oldTags.some((oldTag) => oldTag.value === tag.value),
+          ),
+        ]);
       },
-    }
-  );
+    });
+  }, [mutate, setTags]);
 
   const filteredEvents = data
     ?.sort((first, second) => {
@@ -103,12 +78,12 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
     .filter((event) => {
       if (!tags.length) return true;
       return tags.some((tag) =>
-        event.tags.some((eventTag) => tag.value === eventTag.value)
+        event.tags.some((eventTag) => tag.value === eventTag.value),
       );
     });
 
-  if (isLoading) return <Loading />;
-  if (error) return <Error error={error} />;
+  if (status === 'pending') return <Loading />;
+  if (status === 'error') return <Error error={error} />;
 
   return (
     <VStack w="100%" spacing={2}>
@@ -121,7 +96,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
               <TagCloseButton
                 onClick={() => {
                   setTags((oldTags) =>
-                    oldTags.filter((oldTag) => oldTag.value !== tag.value)
+                    oldTags.filter((oldTag) => oldTag.value !== tag.value),
                   );
                 }}
               />
@@ -141,14 +116,17 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
       </HStack>
       <Box w="100%">
         <Collapse in={isOpen}>
-          <Select
+          <AsyncSelect
             placeholder="タグを選択"
             menuPosition="fixed"
             onChange={(value) => {
               setTags((oldTags) => [...oldTags, value as Tag]);
               onClose();
             }}
-            options={allTag}
+            value={null}
+            options={tagSearchRes}
+            loadOptions={(value) => mutateAsync(value)}
+            isLoading={isPending}
             chakraStyles={{
               container: (provided) => ({
                 ...provided,
@@ -196,7 +174,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
                   <Text>
                     {isSameDay(
                       new Date(year, month - 1, day),
-                      new Date(event.startAt)
+                      new Date(event.startAt),
                     )
                       ? format(new Date(event.startAt), 'HH:mm')
                       : '0:00'}
@@ -204,7 +182,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
                   <Text>
                     {isSameDay(
                       new Date(year, month - 1, day),
-                      new Date(event.endAt)
+                      new Date(event.endAt),
                     )
                       ? format(new Date(event.endAt), 'HH:mm')
                       : '0:00'}

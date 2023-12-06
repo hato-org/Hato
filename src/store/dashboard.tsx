@@ -1,8 +1,6 @@
-import { atom } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 import CardElement from '@/components/cards';
-
-const { persistAtom } = recoilPersist();
 
 export const cards: DashboardCard[] = [
   {
@@ -56,14 +54,10 @@ export const cards: DashboardCard[] = [
   // },
 ];
 
-export const dashboardEditModeAtom = atom({
-  key: 'hato.dashboard.editmode',
-  default: false,
-});
+export const dashboardEditModeAtom = atom(false);
 
-// eslint-disable-next-line import/prefer-default-export
-export const cardOrderAtom = atom<string[]>({
-  key: 'hato.card.order',
-  default: ['timetable', 'events', 'hatoboard'],
-  effects: [persistAtom],
-});
+export const cardOrderAtom = atomWithStorage<string[]>('hato.card.order', [
+  'timetable',
+  'events',
+  'hatoboard',
+]);

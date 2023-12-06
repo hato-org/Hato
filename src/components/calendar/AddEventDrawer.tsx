@@ -24,29 +24,23 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
-import { Select } from 'chakra-react-select';
+import { AsyncSelect } from 'chakra-react-select';
 import {
   TbArrowBarRight,
   TbArrowBarToRight,
   TbMapPin,
   TbTag,
 } from 'react-icons/tb';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { endOfDay, startOfDay } from 'date-fns';
-import { AxiosError } from 'axios';
-import { useClient } from '@/modules/client';
-import { useAllTagList } from '@/hooks/calendar/tag';
-import { useUser } from '@/hooks/user';
+import { useAddEventMutation, useTagsSearch } from '@/services/calendar';
+import { useUser } from '@/services/user';
 
 const AddEventDrawer = React.memo(
   ({ isOpen, onClose, ...rest }: Omit<DrawerProps, 'children'>) => {
-    const { client } = useClient();
-    const { data: user } = useUser();
     const toast = useToast({
       position: 'top-right',
-      variant: 'left-accent',
+      duration: 1500,
     });
-    const queryClient = useQueryClient();
+    const { data: user } = useUser();
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [startAt, setStartAt] = useState<Date>();
@@ -55,60 +49,15 @@ const AddEventDrawer = React.memo(
     const [location, setLocation] = useState('');
     // const [url, setUrl] = useState('');
     const [tags, setTags] = useState<Tag[]>([]);
-    const { data: allTag } = useAllTagList();
+    const {
+      data: searchRes,
+      mutateAsync: searchTags,
+      isPending: searchPending,
+    } = useTagsSearch();
 
-    const { isLoading: submitLoading, mutate: submit } = useMutation<
-      Event,
-      AxiosError
-    >(
-      async () =>
-        (
-          await client.post('/calendar/event', {
-            title,
-            description: desc,
-            startAt: isAllDay ? startOfDay(new Date(startAt || '')) : startAt,
-            endAt: isAllDay ? endOfDay(new Date(endAt || '')) : endAt,
-            isAllDay,
-            location,
-            tags,
-            owner: user?.email,
-          })
-        ).data,
-      {
-        onSuccess: (event) => {
-          toast({
-            title: '予定を追加しました。',
-            status: 'success',
-          });
-          queryClient.setQueryData<Event[]>(
-            [
-              'calendar',
-              'events',
-              {
-                month: Number(startAt?.getMonth()) + 1,
-                year: startAt?.getFullYear(),
-              },
-            ],
-            (oldEvents) => [...(oldEvents ?? []), event]
-          );
-          queryClient.setQueryData(['calendar', 'event', event._id], event);
-          setTitle('');
-          setDesc('');
-          setStartAt(undefined);
-          setEndAt(undefined);
-          setTags([]);
-          onClose();
-        },
-        onError: (error) => {
-          toast({
-            title: '予定の追加に失敗しました。',
-            description: error.message,
-            status: 'error',
-          });
-        },
-      }
-    );
+    const { isPending, mutate } = useAddEventMutation();
 
+    // TODO: refactor with react-hook-form
     return (
       <Drawer
         isOpen={isOpen}
@@ -160,6 +109,7 @@ const AddEventDrawer = React.memo(
                   <Text textStyle="title">終日</Text>
                   <Spacer />
                   <Switch
+                    isChecked={isAllDay}
                     onChange={() => {
                       setIsAllDay.toggle();
                       setStartAt(undefined);
@@ -220,7 +170,7 @@ const AddEventDrawer = React.memo(
                     <Icon as={TbTag} />
                   </InputLeftElement>
                   {/* <Input variant='flushed' placeholder="o" /> */}
-                  <Select
+                  <AsyncSelect
                     isMulti
                     isInvalid={!tags.length}
                     placeholder="タグ"
@@ -247,7 +197,9 @@ const AddEventDrawer = React.memo(
                         zIndex: 2,
                       }),
                     }}
-                    options={allTag}
+                    options={searchRes}
+                    loadOptions={(value) => searchTags(value)}
+                    isLoading={searchPending}
                     value={tags}
                     onChange={(e: readonly Tag[]) => setTags(e as Tag[])}
                   />
@@ -261,7 +213,7 @@ const AddEventDrawer = React.memo(
               colorScheme="blue"
               rounded="xl"
               shadow="xl"
-              isLoading={submitLoading}
+              isLoading={isPending}
               isDisabled={
                 !title ||
                 !startAt ||
@@ -269,7 +221,45 @@ const AddEventDrawer = React.memo(
                 !tags.length ||
                 startAt.getTime() > endAt.getTime()
               }
-              onClick={() => submit()}
+              onClick={() => {
+                if (startAt && endAt) {
+                  mutate(
+                    {
+                      title,
+                      description: desc,
+                      isAllDay,
+                      startAt,
+                      endAt,
+                      location,
+                      tags,
+                      owner: user.email,
+                    },
+                    {
+                      onSuccess: () => {
+                        onClose();
+                        toast({
+                          title: '追加しました。',
+                          status: 'success',
+                        });
+                        setTitle('');
+                        setDesc('');
+                        setIsAllDay.off();
+                        setStartAt(undefined);
+                        setEndAt(undefined);
+                        setLocation('');
+                        setTags([]);
+                      },
+                      onError: (e) => {
+                        toast({
+                          title: 'エラーが発生しました',
+                          description: e.message,
+                          status: 'error',
+                        });
+                      },
+                    },
+                  );
+                }
+              }}
             >
               追加する
             </Button>
@@ -277,7 +267,7 @@ const AddEventDrawer = React.memo(
         </DrawerContent>
       </Drawer>
     );
-  }
+  },
 );
 
 export default AddEventDrawer;

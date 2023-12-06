@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { HStack, Icon, Center, Box, IconButton, Slide } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import {
   TbHome,
   TbClipboardList,
@@ -12,7 +12,7 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import { dashboardEditModeAtom } from '@/store/dashboard';
 
 function BottomNavbar() {
-  const editMode = useRecoilValue(dashboardEditModeAtom);
+  const editMode = useAtomValue(dashboardEditModeAtom);
 
   const location = useLocation();
 
@@ -44,7 +44,7 @@ function BottomNavbar() {
         href: '/posts/hatoboard',
       },
     ],
-    []
+    [],
   );
 
   return (

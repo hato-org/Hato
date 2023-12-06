@@ -1,6 +1,6 @@
 import { Box, Center, Heading, HStack, Text } from '@chakra-ui/react';
 import { Virtuoso } from 'react-virtuoso';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { Helmet } from 'react-helmet-async';
 import BackButton from '@/components/layout/BackButton';
 import Header from '@/components/nav/Header';
@@ -8,7 +8,7 @@ import { GCBookmarkAtom } from '@/store/classroom';
 import { AsyncPost } from '@/components/classroom/Post';
 
 export default function ClassroomBookmarks() {
-  const bookmarks = useRecoilValue(GCBookmarkAtom);
+  const bookmarks = useAtomValue(GCBookmarkAtom);
 
   return (
     <Box>

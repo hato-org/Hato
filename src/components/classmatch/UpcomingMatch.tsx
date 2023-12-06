@@ -13,10 +13,10 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { format } from 'date-fns/esm';
 import { TbChevronDown } from 'react-icons/tb';
-import { useClassmatchUpcomingList } from '@/hooks/classmatch';
+import { useClassmatchUpcomingList } from '@/services/classmatch';
 import { sportIcon } from '@/utils/classmatch';
 import GradeClassPicker from '../timetable/GradeClassPicker';
-import { useUser } from '@/hooks/user';
+import { useUser } from '@/services/user';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
 
@@ -28,7 +28,7 @@ const UpcomingMatch = React.memo(
     const [type, setType] = useState(user.type);
     const [grade, setGrade] = useState(user.grade);
     const [classNum, setClass] = useState(user.class);
-    const { data, isLoading, error } = useClassmatchUpcomingList({
+    const { data, isPending, error } = useClassmatchUpcomingList({
       year,
       season,
       type,
@@ -43,12 +43,12 @@ const UpcomingMatch = React.memo(
           ({ startAt }) =>
             new Date(startAt ?? '').getTime() -
               new Date(Date.now() - 1000 * 60 * 30).getTime() >
-            0
+            0,
         ),
-      [data]
+      [data],
     );
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error error={error} />;
 
     return (
@@ -102,7 +102,7 @@ const UpcomingMatch = React.memo(
         )}
       </VStack>
     );
-  }
+  },
 );
 
 const Match = React.memo(
@@ -223,7 +223,7 @@ const Match = React.memo(
         <Icon as={sportIcon[id]} boxSize={8} />
       </HStack>
     );
-  }
+  },
 );
 
 export default UpcomingMatch;

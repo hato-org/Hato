@@ -13,26 +13,29 @@ import {
   Switch,
   UnorderedList,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
+import { useAtomValue } from 'jotai';
 import { TbExclamationCircle } from 'react-icons/tb';
 import { MotionCenter } from '../motion';
 import SettingCategory from './Category';
 import SettingButton from './Button';
-import { usePushSubscribe, usePushUnsubscribe } from '@/hooks/push';
+import { usePushSubscribe, usePushUnsubscribe } from '@/services/push';
 import Loading from '../common/Loading';
 import {
   pushPermissionSelector,
   pushSubscriptionSelector,
 } from '@/store/serviceWorker';
-import { useSettings, useSettingsMutation } from '@/hooks/settings';
+import { useSettings, useSettingsMutation } from '@/services/settings';
 
 export default function Notification() {
-  const pushSubscription = useRecoilValue(pushSubscriptionSelector);
-  const pushPermission = useRecoilValue(pushPermissionSelector);
+  const toast = useToast({ position: 'top-right', duration: 1500 });
 
-  const { mutate: subscribe, isLoading: subscribeLoading } = usePushSubscribe();
-  const { mutate: unsubscribe, isLoading: unsubscribeLoading } =
+  const pushSubscription = useAtomValue(pushSubscriptionSelector);
+  const pushPermission = useAtomValue(pushPermissionSelector);
+
+  const { mutate: subscribe, isPending: subscribePending } = usePushSubscribe();
+  const { mutate: unsubscribe, isPending: unsubscribePending } =
     usePushUnsubscribe();
 
   const isPushAvailable = !!pushPermission && pushPermission !== 'denied';
@@ -58,17 +61,35 @@ export default function Notification() {
               description: 'プッシュ通知を有効にするか。',
               children: (
                 <HStack spacing={4}>
-                  {(subscribeLoading || unsubscribeLoading) && (
+                  {(subscribePending || unsubscribePending) && (
                     <Spinner size="sm" color="blue.400" />
                   )}
                   <Switch
                     size="lg"
                     isDisabled={
-                      subscribeLoading || unsubscribeLoading || !isPushAvailable
+                      subscribePending || unsubscribePending || !isPushAvailable
                     }
                     isChecked={!!pushSubscription}
                     onChange={() =>
-                      pushSubscription ? unsubscribe() : subscribe()
+                      pushSubscription
+                        ? unsubscribe(undefined, {
+                            onError: () => {
+                              toast({
+                                title: '無効化に失敗しました',
+                                status: 'error',
+                              });
+                            },
+                          })
+                        : subscribe(undefined, {
+                            onError: () => {
+                              toast({
+                                title: '有効化に失敗しました',
+                                description:
+                                  'システムの通知設定を確認してください',
+                                status: 'error',
+                              });
+                            },
+                          })
                     }
                   />
                 </HStack>
@@ -155,8 +176,9 @@ function NotificationDetail() {
 }
 
 function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
+  const toast = useToast({ position: 'top-right', duration: 1500 });
   const { data: settings, error } = useSettings();
-  const { mutate, isLoading } = useSettingsMutation();
+  const { mutate, isPending } = useSettingsMutation();
 
   const notifySettingReducer = useCallback(
     (serviceId: WebPushServiceId, type: 'add' | 'remove') => ({
@@ -173,15 +195,26 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
 
   return (
     <HStack spacing={4}>
-      {isLoading && <Spinner color="blue.400" size="xs" />}
+      {isPending && <Spinner color="blue.400" size="xs" />}
       {error && (
         <Icon as={TbExclamationCircle} color="yellow.400" boxSize={5} />
       )}
       <Switch
-        isDisabled={isLoading || !!error}
+        isDisabled={isPending || !!error}
         isChecked={settings?.notification.push.includes(id) ?? false}
         onChange={(e) =>
-          mutate(notifySettingReducer(id, e.target.checked ? 'add' : 'remove'))
+          mutate(
+            notifySettingReducer(id, e.target.checked ? 'add' : 'remove'),
+            {
+              onError: (err) => {
+                toast({
+                  title: '更新に失敗しました',
+                  description: err.message,
+                  status: 'error',
+                });
+              },
+            },
+          )
         }
       />
     </HStack>

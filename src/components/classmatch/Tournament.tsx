@@ -20,17 +20,24 @@ const countNumOfClass = ({
     : [classInfo];
 
 export default function Tournament({
+  year,
+  season,
+  sport,
   id,
   participants,
   ...rest
-}: ClassmatchTournament) {
+}: ClassmatchTournament & {
+  year: number;
+  season: ClassmatchSeason;
+  sport: ClassmatchSportId;
+}) {
   const winner = useMemo(
     () =>
       participants.reduce<ClassmatchParticipant>(
         (prev, curr) => (prev.point > curr.point ? prev : curr),
-        { type: 'hs', grade: '0', class: '0', from: '', point: 0 }
+        { type: 'hs', grade: '0', class: '0', from: '', point: 0 },
       ),
-    [participants]
+    [participants],
   );
 
   return (
@@ -40,6 +47,9 @@ export default function Tournament({
       </Text>
       <HStack>
         <TournamentSection
+          year={year}
+          season={season}
+          sport={sport}
           id={id}
           participants={participants}
           isWinner={id === winner.from}
@@ -62,6 +72,9 @@ export default function Tournament({
 
 const TournamentSection = React.memo(
   ({
+    year,
+    season,
+    sport,
     id,
     match,
     class: classInfo,
@@ -70,11 +83,14 @@ const TournamentSection = React.memo(
     editHistory,
     isWinner,
   }: ClassmatchTournament & {
+    year: number;
+    season: ClassmatchSeason;
+    sport: ClassmatchSportId;
     isWinner: boolean;
   }) => {
     const winnerId = participants.reduce(
       (prev, curr) => (prev.point > curr.point ? prev : curr),
-      { from: '', point: 0 }
+      { from: '', point: 0 },
     ).from;
 
     const numOfClass = match?.map((tournament) => countNumOfClass(tournament));
@@ -86,6 +102,9 @@ const TournamentSection = React.memo(
             <TournamentSection
               key={tournament.id}
               {...tournament}
+              year={year}
+              season={season}
+              sport={sport}
               isWinner={tournament.id === winnerId}
             />
           ))}
@@ -106,14 +125,17 @@ const TournamentSection = React.memo(
               {...{
                 [(tournament.id.at(-1) ?? '') === '0' ? 'bottom' : 'top']:
                   '50%',
-                h: `calc(100% / ${numOfClass?.flat()?.length} / 2 * ${
-                  numOfClass?.[Math.abs(index - 1)]?.length
-                } - 2px)`,
+                h: `calc(100% / ${numOfClass?.flat()
+                  ?.length} / 2 * ${numOfClass?.[Math.abs(index - 1)]
+                  ?.length} - 2px)`,
                 bg: winnerId === tournament.id ? 'blue.400' : 'border',
               }}
             />
           ))}
           <TournamentMetaPopover
+            year={year}
+            season={season}
+            sport={sport}
             id={id}
             meta={meta}
             participants={participants}
@@ -129,7 +151,7 @@ const TournamentSection = React.memo(
     ) : (
       <TournamentLeaf isWinner={isWinner} {...classInfo} />
     );
-  }
+  },
 );
 
 const TournamentLeaf = React.memo(
@@ -158,5 +180,5 @@ const TournamentLeaf = React.memo(
         />
       </VStack>
     </HStack>
-  )
+  ),
 );

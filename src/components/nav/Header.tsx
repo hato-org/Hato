@@ -8,15 +8,13 @@ import {
   Icon,
   IconButton,
   Progress,
-  Text,
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useIsFetching } from '@tanstack/react-query';
-import { TbCloudOff, TbMenu2 } from 'react-icons/tb';
-import { useSetRecoilState } from 'recoil';
+import { TbMenu2 } from 'react-icons/tb';
+import { useSetAtom } from 'jotai';
 import { overlayAtom } from '@/store/overlay';
-import { useIsOnline } from '@/hooks/common/online';
 import StatusBanner from './StatusBanner';
 
 interface HeaderProps extends CenterProps {
@@ -25,15 +23,13 @@ interface HeaderProps extends CenterProps {
 
 const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
   const border = useColorModeValue('border', 'transparent');
-  const offlineBg = useColorModeValue('bg.300', 'bg.700');
   const isFetching = useIsFetching();
-  const isOnline = useIsOnline();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const setOverlay = useSetRecoilState(overlayAtom);
+  const setOverlay = useSetAtom(overlayAtom);
 
   const onMenuOpen = useCallback(
     () => setOverlay((currVal) => ({ ...currVal, menu: true })),
-    [setOverlay]
+    [setOverlay],
   );
 
   return (
@@ -53,14 +49,6 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
       {...rest}
     >
       <StatusBanner />
-      <Box w="100%">
-        <Collapse in={!isOnline}>
-          <HStack w="100%" justify="center" py={1} bg={offlineBg}>
-            <Icon as={TbCloudOff} w={6} h={6} />
-            <Text textStyle="title">オフライン</Text>
-          </HStack>
-        </Collapse>
-      </Box>
       <HStack px={2} w="100%" spacing={0}>
         {withMenu && isMobile && (
           <IconButton

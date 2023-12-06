@@ -1,7 +1,6 @@
-import { atom, atomFamily } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
-
-const { persistAtom } = recoilPersist();
+import { atom } from 'jotai';
+import { atomWithStorage, atomFamily } from 'jotai/utils';
+import { StateSnapshot } from 'react-virtuoso';
 
 interface GCBookmark {
   type: 'announcement' | 'courseWork' | 'courseWorkMaterial';
@@ -9,13 +8,11 @@ interface GCBookmark {
   id: string;
 }
 
-export const GCScrollIndexAtomFamily = atomFamily({
-  key: 'hato.google.scroll',
-  default: 0,
-});
+export const GCScrollIndexAtomFamily = atomFamily(() =>
+  atom<StateSnapshot | undefined>(undefined),
+);
 
-export const GCBookmarkAtom = atom<GCBookmark[]>({
-  key: 'hato.google.pinned',
-  default: [],
-  effects: [persistAtom],
-});
+export const GCBookmarkAtom = atomWithStorage<GCBookmark[]>(
+  'hato.google.pinned',
+  [],
+);
