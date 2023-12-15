@@ -13,6 +13,7 @@ export interface SettingButtonProps extends StackProps {
   label: string;
   description?: JSX.Element | string;
   href?: string;
+  htmlFor?: string;
   children?: JSX.Element;
 }
 
@@ -27,7 +28,7 @@ function SettingButton({
     <HStack
       p={2}
       w="100%"
-      as={href ? RouterLink : undefined}
+      as={href ? RouterLink : 'label'}
       to={href || ''}
       rounded="xl"
       layerStyle="button"

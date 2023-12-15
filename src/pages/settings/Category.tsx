@@ -14,7 +14,9 @@ export default function SettingCategory({
       <Heading as="h2" size="md" textStyle="title">
         {title}
       </Heading>
-      {children}
+      <VStack w="100%" spacing={1}>
+        {children}
+      </VStack>
     </VStack>
   );
 }

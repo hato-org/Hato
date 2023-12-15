@@ -1,7 +1,7 @@
 import Top from './Top';
-import ExamNews from './ExamNews';
-import SubjectNews from './SubjectNews';
-import Hatoboard from './Hatoboard';
+import ExamNews from '../../pages/posts/ExamNews';
+import SubjectNews from '../../pages/posts/SubjectNews';
+import Hatoboard from '../../pages/posts/Hatoboard';
 
 const PostElement = {
   Top,

@@ -30,7 +30,7 @@ import { useSetAtom } from 'jotai';
 import { useAuth } from '@/modules/auth';
 import { useUser } from '@/services/user';
 import { tutorialAtom } from '@/store/tutorial';
-import { MotionVStack } from '../motion';
+import { MotionVStack } from '@/components/motion';
 import SettingButton from './Button';
 import { overlayAtom } from '@/store/overlay';
 import SettingCategory from './Category';
@@ -51,13 +51,14 @@ function Top() {
     <MotionVStack
       w="100%"
       spacing={8}
-      initial={{ x: '-100vw', opacity: 0 }}
+      initial={{ x: '-100%', opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: '-100vw', opacity: 0 }}
+      exit={{ x: '-100%', opacity: 0 }}
       transition={{
+        duration: 0.2,
         type: 'spring',
-        bounce: 0,
-        duration: 0.4,
+        damping: 25,
+        stiffness: 180,
       }}
       layout
     >

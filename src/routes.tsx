@@ -1,27 +1,27 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import RequireLogin from './components/login/RequireLogin';
-import Setting from './components/settings';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
-import PostElement from './components/posts';
 import ErrorFallback from './components/common/ErrorFallback';
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 
 const Events = React.lazy(() => import('./pages/Events'));
 // const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const EventDetail = React.lazy(() => import('./pages/EventDetail'));
-const Home = React.lazy(() => import('./pages/Home'));
 const Status = React.lazy(() => import('./pages/Status'));
-const Settings = React.lazy(() => import('./pages/Settings'));
 const Timetable = React.lazy(() => import('./pages/Timetable'));
 const MyTimetable = React.lazy(() => import('./pages/MyTimetable'));
-const Posts = React.lazy(() => import('./pages/Posts'));
-const PostDetail = React.lazy(() => import('./pages/PostDetail'));
 const Library = React.lazy(() => import('./pages/Library'));
 const LibrarySearch = React.lazy(() => import('./pages/LibrarySearch'));
 const LibraryBookmarks = React.lazy(() => import('./pages/LibraryBookmarks'));
 const Transit = React.lazy(() => import('./pages/Transit'));
+
+const Posts = React.lazy(() => import('./pages/Posts'));
+const PostDetail = React.lazy(() => import('./pages/PostDetail'));
+const Hatoboard = React.lazy(() => import('./pages/posts/Hatoboard'));
+
 const Classroom = React.lazy(() => import('./pages/classroom/Classroom'));
 const ClassroomCourse = React.lazy(
   () => import('./pages/classroom/ClassroomCourse'),
@@ -40,6 +40,14 @@ const ClassroomBookmarks = React.lazy(
 );
 const Classmatch2023 = React.lazy(
   () => import('./pages/classmatch/Classmatch2023'),
+);
+
+const Settings = React.lazy(() => import('./pages/Settings'));
+const SettingsTop = React.lazy(() => import('./pages/settings/Top'));
+const SettingsAccount = React.lazy(() => import('./pages/settings/Account'));
+const SettingsTheme = React.lazy(() => import('./pages/settings/Theme'));
+const SettingsNotification = React.lazy(
+  () => import('./pages/settings/Notification'),
 );
 
 const router = createBrowserRouter([
@@ -69,19 +77,19 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Setting.Top />,
+            element: <SettingsTop />,
           },
           {
             path: 'account',
-            element: <Setting.Account />,
+            element: <SettingsAccount />,
           },
           {
             path: 'theme',
-            element: <Setting.Theme />,
+            element: <SettingsTheme />,
           },
           {
             path: 'notification',
-            element: <Setting.Notification />,
+            element: <SettingsNotification />,
           },
         ],
       },
@@ -111,7 +119,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'hatoboard',
-            element: <PostElement.Hatoboard />,
+            element: <Hatoboard />,
           },
         ],
       },

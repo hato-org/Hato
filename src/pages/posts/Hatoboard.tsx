@@ -4,10 +4,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { useAtom, useAtomValue } from 'jotai';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
-import CardElement from '../cards';
-import Loading from '../common/Loading';
-import ChakraPullToRefresh from '../layout/PullToRefresh';
-import Card from './Card';
+import CardElement from '@/components/cards';
+import Loading from '@/components/common/Loading';
+import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
+import Card from '@/components/posts/Card';
 import { pinnedPostAtom, postsScrollStateAtom } from '@/store/posts';
 import { useHatoboard } from '@/services/posts';
 

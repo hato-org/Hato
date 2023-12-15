@@ -17,11 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { useAtomValue } from 'jotai';
 import { TbExclamationCircle } from 'react-icons/tb';
-import { MotionCenter } from '../motion';
+import { MotionCenter } from '@/components/motion';
 import SettingCategory from './Category';
 import SettingButton from './Button';
 import { usePushSubscribe, usePushUnsubscribe } from '@/services/push';
-import Loading from '../common/Loading';
+import Loading from '@/components/common/Loading';
 import {
   pushPermissionSelector,
   pushSubscriptionSelector,
@@ -43,13 +43,14 @@ export default function Notification() {
   return (
     <MotionCenter
       w="100%"
-      initial={{ x: '100vw', opacity: 0 }}
+      initial={{ x: '100%', opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: '-100vw', opacity: 0 }}
+      exit={{ x: '100%', opacity: 0 }}
       transition={{
+        duration: 0.2,
         type: 'spring',
-        bounce: 0,
-        duration: 0.4,
+        damping: 25,
+        stiffness: 180,
       }}
       layout
     >
