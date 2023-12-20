@@ -1,5 +1,6 @@
 import '@fontsource/josefin-sans';
-import '@fontsource/noto-sans-jp';
+// import '@fontsource/noto-sans-jp';
+import '@fontsource-variable/noto-sans-jp';
 import '@fontsource/inter';
 import React from 'react';
 import ReactDOM from 'react-dom/client';

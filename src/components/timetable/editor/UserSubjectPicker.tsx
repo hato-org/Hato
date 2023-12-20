@@ -7,29 +7,32 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import { useDebouncedCallback } from 'use-debounce';
-import { TbArrowLeft, TbPlus } from 'react-icons/tb';
+import { TbArrowLeft, TbMapPin, TbPlus, TbUser } from 'react-icons/tb';
 import {
   useUserSubjectMutation,
   useSearchUserSubject,
 } from '@/services/timetable';
 import { useUser } from '@/services/user';
-import Loading from '../common/Loading';
+import Loading from '../../common/Loading';
 
-const AddUserSubjectDrawer = React.memo(
+const UserSubjectPicker = React.memo(
   ({
     isOpen,
-    onClose,
+    onSelect,
+    onCancel,
     meta,
     isPrivate,
   }: {
     isOpen: boolean;
-    onClose: (subjectId?: string | null) => void;
+    onSelect: (subjectId?: string | null) => void;
+    onCancel: () => void;
     meta: UserSchedule['meta'];
     isPrivate: UserSchedule['private'];
   }) => {
@@ -60,7 +63,7 @@ const AddUserSubjectDrawer = React.memo(
     }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} size="xl">
+      <Modal isOpen={isOpen} onClose={onCancel} autoFocus={false} size="xl">
         <ModalOverlay zIndex={1400} />
         <ModalContent
           zIndex={1500}
@@ -68,7 +71,7 @@ const AddUserSubjectDrawer = React.memo(
           rounded="xl"
           pb="env(safe-area-inset-bottom)"
         >
-          <ModalHeader>時限の追加</ModalHeader>
+          <ModalHeader>時限の追加・置き換え</ModalHeader>
           <ModalBody>
             <VStack w="full" align="flex-start" spacing={4}>
               {createMode ? (
@@ -158,7 +161,7 @@ const AddUserSubjectDrawer = React.memo(
                       onSelect={() => {
                         mutate(subj, {
                           onSuccess: (res) => {
-                            onClose(res._id);
+                            onSelect(res._id);
                           },
                         });
                       }}
@@ -186,7 +189,7 @@ const AddUserSubjectDrawer = React.memo(
                   onClick={() =>
                     mutate(subject as UserSubject, {
                       onSuccess: (res) => {
-                        onClose(res._id);
+                        onSelect(res._id);
                       },
                     })
                   }
@@ -208,6 +211,7 @@ const AddUserSubjectDrawer = React.memo(
               )}
             </VStack>
           </ModalBody>
+          <ModalFooter />
         </ModalContent>
       </Modal>
     );
@@ -217,6 +221,7 @@ const AddUserSubjectDrawer = React.memo(
 const UserSubjectSuggestion = React.memo(
   ({
     name,
+    short_name,
     description,
     teacher,
     location,
@@ -227,40 +232,50 @@ const UserSubjectSuggestion = React.memo(
       py={2}
       w="full"
       align="flex-start"
-      spacing={0}
+      spacing={1}
       layerStyle="button"
       rounded="xl"
       onClick={onSelect}
     >
       <HStack w="full" align="flex-end">
         <Text textStyle="title">{name}</Text>
-        {/* <Text textStyle="description">{data?.short_name}</Text> */}
+        {short_name && <Text textStyle="description">({short_name})</Text>}
       </HStack>
       {description && (
         <Text textStyle="description" fontWeight="normal">
           {description}
         </Text>
       )}
-      <HStack
-        divider={
-          <Text color="description" fontSize="xs" fontWeight="normal">
-            ・
-          </Text>
-        }
-      >
+      <HStack wrap="wrap" rowGap={0.5}>
         {teacher && (
-          <Text color="description" fontSize="xs" fontWeight="normal">
-            {teacher}
-          </Text>
+          <HStack align="center" spacing={1}>
+            <Icon as={TbUser} />
+            <Text
+              color="description"
+              fontSize="xs"
+              fontWeight="normal"
+              noOfLines={1}
+            >
+              {teacher}
+            </Text>
+          </HStack>
         )}
         {location && (
-          <Text color="description" fontSize="xs" fontWeight="normal">
-            {location}
-          </Text>
+          <HStack align="center" spacing={1}>
+            <Icon as={TbMapPin} />
+            <Text
+              color="description"
+              fontSize="xs"
+              fontWeight="normal"
+              noOfLines={1}
+            >
+              {location}
+            </Text>
+          </HStack>
         )}
       </HStack>
     </VStack>
   ),
 );
 
-export default AddUserSubjectDrawer;
+export default UserSubjectPicker;

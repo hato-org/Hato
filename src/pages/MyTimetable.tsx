@@ -16,7 +16,7 @@ import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
 import { useMyUserSchedules } from '@/services/timetable';
 import Card from '@/components/timetable/editor/Card';
-import UserScheduleEditor from '@/components/timetable/UserScheduleEditor';
+import UserScheduleEditor from '@/components/timetable/editor/UserScheduleEditor';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import { useUser } from '@/services/user';
 import { overlayAtom } from '@/store/overlay';

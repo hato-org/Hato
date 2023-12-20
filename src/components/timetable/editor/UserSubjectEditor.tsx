@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -8,32 +7,21 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Icon,
   Input,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
   Text,
   VStack,
   useToast,
 } from '@chakra-ui/react';
-import { TbTrash } from 'react-icons/tb';
 import { useUserSubject, useUserSubjectMutation } from '@/services/timetable';
 import { useUser } from '@/services/user';
 
 export default function UserSubjectEditor({
   isOpen,
   onClose,
-  onDelete,
   subjectId,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onDelete: () => void;
   subjectId?: string | null;
 }) {
   const toast = useToast({
@@ -133,46 +121,7 @@ export default function UserSubjectEditor({
             />
           </VStack>
         </DrawerBody>
-        <DrawerFooter>
-          <Popover>
-            <PopoverTrigger>
-              <Button
-                w="full"
-                rounded="lg"
-                colorScheme="red"
-                variant="outline"
-                leftIcon={<Icon as={TbTrash} />}
-              >
-                この時限を削除
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              p={2}
-              rounded="xl"
-              bg="panel"
-              borderColor="border"
-              shadow="lg"
-            >
-              <PopoverArrow bg="panel" />
-              <PopoverCloseButton top={4} right={4} />
-              <PopoverHeader border="0px">
-                <Text textAlign="center" w="full" textStyle="title">
-                  本当に削除しますか？
-                </Text>
-              </PopoverHeader>
-              <PopoverBody>
-                <Button
-                  w="full"
-                  rounded="lg"
-                  colorScheme="red"
-                  onClick={onDelete}
-                >
-                  削除
-                </Button>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </DrawerFooter>
+        <DrawerFooter />
       </DrawerContent>
     </Drawer>
   );

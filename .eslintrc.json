@@ -38,6 +38,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-use-before-define": "off",
+    "@typescript-eslint/naming-convention": "warn",
     "@typescript-eslint/no-use-before-define": "off",
     "no-underscore-dangle": "off",
     "no-console": "warn",

@@ -82,7 +82,7 @@ const Card = React.memo(
                   <Thead>
                     <Tr>
                       <Th>A週</Th>
-                      {days.map((day) => (
+                      {days.slice(1, 6).map((day) => (
                         <Th key={day}>{day}</Th>
                       ))}
                     </Tr>
@@ -95,7 +95,7 @@ const Card = React.memo(
                     }).map((_, index) => (
                       <Tr>
                         <Td textStyle="title">{index + 1}</Td>
-                        {schedules.A.map((daySchedule, idx) => (
+                        {schedules.A.slice(1, 6).map((daySchedule, idx) => (
                           <TablePeriod
                             // eslint-disable-next-line react/no-array-index-key
                             key={`${days[index]}-${idx}`}
@@ -112,7 +112,7 @@ const Card = React.memo(
                   <Thead>
                     <Tr>
                       <Th>B週</Th>
-                      {days.map((day) => (
+                      {days.slice(1, 6).map((day) => (
                         <Th key={day}>{day}</Th>
                       ))}
                     </Tr>
@@ -125,7 +125,7 @@ const Card = React.memo(
                     }).map((_, index) => (
                       <Tr>
                         <Td textStyle="title">{index + 1}</Td>
-                        {schedules.B.map((daySchedule) => (
+                        {schedules.B.slice(1, 6).map((daySchedule) => (
                           <TablePeriod
                             subjectId={daySchedule[index]?.subjectId}
                           />
