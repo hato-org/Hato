@@ -52,6 +52,7 @@ export default function Classroom() {
     isLoading,
     error,
     isFetchingNextPage,
+    hasNextPage,
     fetchNextPage,
   } = useGCTimeline();
 
@@ -114,7 +115,7 @@ export default function Classroom() {
           queryClient.resetQueries({ queryKey: ['google', 'timeline'] })
         }
       >
-        <Box px={4}>
+        <Box px={4} mb={24}>
           {/* eslint-disable no-nested-ternary */}
           {isLoading ? (
             <Loading withTips initialTip={0} />
@@ -132,7 +133,7 @@ export default function Classroom() {
                 </Box>
               )}
               endReached={async () => {
-                await fetchNextPage();
+                if (hasNextPage) await fetchNextPage();
               }}
               itemsRendered={() =>
                 scrollRef.current?.getState((state) => setScrollState(state))

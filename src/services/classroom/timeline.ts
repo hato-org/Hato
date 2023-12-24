@@ -7,7 +7,7 @@ export const useGCTimeline = () => {
 
   return useInfiniteQuery({
     queryKey: ['google', 'timeline'],
-    queryFn: async ({ pageParam = 1, signal }) =>
+    queryFn: async ({ pageParam, signal }) =>
       (
         await client.get<GCTimeline[]>('/classroom/timeline', {
           params: { page: pageParam },
@@ -16,9 +16,7 @@ export const useGCTimeline = () => {
       ).data,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length
-        ? Math.ceil(allPages.flat().length / 50 + 1) ?? 1
-        : undefined,
+      lastPage.length ? Math.ceil(allPages.flat().length / 50 + 1) ?? 1 : null,
   });
 };
 
@@ -27,7 +25,7 @@ export const useGCCourseTimeline = (courseId?: string) => {
 
   return useInfiniteQuery({
     queryKey: ['google', courseId, 'timeline'],
-    queryFn: async ({ pageParam = 1, signal }) =>
+    queryFn: async ({ pageParam, signal }) =>
       (
         await client.get<GCTimeline[]>(
           `/classroom/timeline/course/${courseId}`,
@@ -39,8 +37,8 @@ export const useGCCourseTimeline = (courseId?: string) => {
       ).data,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
-      lastPage.length
+      lastPage.length === 50
         ? Math.ceil(allPages.flat().length / 50 + 1) ?? 1
-        : undefined,
+        : null,
   });
 };

@@ -35,13 +35,14 @@ export default function ClassroomCourse() {
     isLoading,
     error,
     isFetchingNextPage,
+    hasNextPage,
     fetchNextPage,
   } = useGCCourseTimeline(id);
   const scrollRef = useRef<VirtuosoHandle>(null);
   const [scrollState, setScrollState] = useAtom(GCScrollIndexAtomFamily(id));
 
   return (
-    <Box>
+    <>
       <Helmet>
         <title>
           {data?.name} - {import.meta.env.VITE_APP_NAME}
@@ -98,7 +99,7 @@ export default function ClassroomCourse() {
               }
               restoreStateFrom={scrollState}
               endReached={async () => {
-                await fetchNextPage();
+                if (hasNextPage) await fetchNextPage();
               }}
               components={{
                 Footer,
@@ -109,6 +110,6 @@ export default function ClassroomCourse() {
           {/* eslint-enable no-nested-ternary */}
         </VStack>
       </ChakraPullToRefresh>
-    </Box>
+    </>
   );
 }
