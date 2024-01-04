@@ -45,7 +45,7 @@ export default function Clock() {
           </Text>
           {/* <Text textStyle='description' fontSize='3xl'>/</Text> */}
           <Text textStyle="title" fontSize="3xl">
-            {format(date, 'dd')}
+            {format(date, 'd')}
             <Text pl={1} as="span" textStyle="description">
               日
             </Text>
