@@ -1,5 +1,5 @@
 import { Switch, useColorMode, VStack } from '@chakra-ui/react';
-import { MotionCenter } from '../motion';
+import { MotionCenter } from '@/components/motion';
 import SettingButton from './Button';
 import SettingCategory from './Category';
 
@@ -23,13 +23,14 @@ function Theme() {
   return (
     <MotionCenter
       w="100%"
-      initial={{ x: '100vw', opacity: 0 }}
+      initial={{ x: '100%', opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: '-100vw', opacity: 0 }}
+      exit={{ x: '100%', opacity: 0 }}
       transition={{
+        duration: 0.2,
         type: 'spring',
-        bounce: 0,
-        duration: 0.4,
+        damping: 25,
+        stiffness: 180,
       }}
       layout
     >
