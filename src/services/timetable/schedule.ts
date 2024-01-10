@@ -91,7 +91,7 @@ export const useUserScheduleSearch = () => {
   const { client } = useClient();
 
   return useMutation({
-    mutationFn: async (query: Partial<UserSchedule>) =>
+    mutationFn: async (query: RecursivePartial<UserSchedule>) =>
       (
         await client.post<UserSchedule[]>(
           '/timetable/userschedule/search',

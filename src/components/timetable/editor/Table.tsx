@@ -294,7 +294,7 @@ function EditorSubjectGrid({
       <UserSubjectEditor
         isOpen={isEditorOpen}
         onClose={onEditorClose}
-        subjectId={subjectId}
+        subject={data}
       />
     </>
   );

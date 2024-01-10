@@ -48,7 +48,6 @@ const UpcomingMatch = React.memo(
       [data],
     );
 
-    if (isPending) return <Loading />;
     if (error) return <Error error={error} />;
 
     return (
@@ -64,7 +63,9 @@ const UpcomingMatch = React.memo(
           defaultClass={user.class}
           direction="row"
         />
-        {upcomingMatches?.length ? (
+        {isPending ? (
+          <Loading />
+        ) : upcomingMatches?.length ? (
           <Box w="full">
             <Collapse
               startingHeight={(data?.length ?? 0) > 3 ? 220 : 0}
