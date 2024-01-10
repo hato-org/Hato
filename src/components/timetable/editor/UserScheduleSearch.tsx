@@ -32,7 +32,7 @@ export function UserScheduleSearch() {
 
   const [isFilterEnabled, { toggle }] = useBoolean(false);
 
-  const [inputVal, setInputVal] = useState('');
+  const [inputVal, setInputVal] = useState(searchParams.get('q') ?? '');
   const [grade, setGrade] = useState<GradeInfo>();
   const [classInfo, setClass] = useState<ClassInfo>();
   const [course, setCourse] = useState<CourseInfo>();
@@ -138,7 +138,12 @@ export function UserScheduleSearch() {
           {data
             ?.filter(({ owner }) => owner !== user._id)
             .map((schedule) => (
-              <UserScheduleCard key={schedule._id} {...schedule} />
+              <UserScheduleCard
+                // expand by default when search by ID
+                defaultIsOpen={schedule._id === inputVal}
+                key={schedule._id}
+                {...schedule}
+              />
             ))}
         </VStack>
       )}

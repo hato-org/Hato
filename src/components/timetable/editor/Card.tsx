@@ -35,6 +35,7 @@ import { useClassList, useCourseList, useGradeList } from '@/services/info';
 
 const Card = React.memo(
   ({
+    defaultIsOpen,
     _id,
     title,
     description,
@@ -42,8 +43,8 @@ const Card = React.memo(
     owner,
     meta,
     ...rest
-  }: UserSchedule) => {
-    const { isOpen, onToggle } = useDisclosure();
+  }: UserSchedule & { defaultIsOpen?: boolean }) => {
+    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen });
     const {
       isOpen: importModalOpen,
       onOpen: importModalOnOpen,
