@@ -104,7 +104,7 @@ const Card = React.memo(
             {
               classList?.find(
                 ({ type, classCode }) =>
-                  type === meta.type && classCode && meta.class,
+                  type === meta.type && classCode === meta.class,
               )?.shortName
             }{' '}
             {meta.course &&

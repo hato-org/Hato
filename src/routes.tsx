@@ -102,7 +102,7 @@ const router = createBrowserRouter([
         element: <Timetable />,
       },
       {
-        path: 'timetable/editor',
+        path: 'timetable/editor/search?',
         element: <MyTimetable />,
       },
       {

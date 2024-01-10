@@ -94,6 +94,7 @@ const GradeClassPicker = React.memo(
         <Box w="100%">
           <Menu>
             <MenuButton
+              type="button"
               w="100%"
               h="full"
               rounded="lg"
@@ -134,6 +135,7 @@ const GradeClassPicker = React.memo(
         <Box w="100%">
           <Menu>
             <MenuButton
+              type="button"
               w="100%"
               h="full"
               rounded="lg"
@@ -185,6 +187,7 @@ const GradeClassPicker = React.memo(
           <Box w="100%">
             <Menu>
               <MenuButton
+                type="button"
                 w="100%"
                 h="full"
                 rounded="lg"
