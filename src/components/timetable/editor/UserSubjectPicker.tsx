@@ -179,39 +179,40 @@ const UserSubjectPicker = React.memo(
                 )}
                 {/* eslint-enable no-nested-ternary */}
               </VStack>
-              {createMode ? (
-                <Button
-                  w="full"
-                  rounded="lg"
-                  colorScheme="blue"
-                  isDisabled={!subject.name}
-                  isLoading={isPending}
-                  onClick={() =>
-                    mutate(subject as UserSubject, {
-                      onSuccess: (res) => {
-                        onSelect(res._id);
-                      },
-                    })
-                  }
-                >
-                  追加
-                </Button>
-              ) : (
-                <Button
-                  w="full"
-                  rounded="lg"
-                  leftIcon={<Icon as={TbPlus} />}
-                  onClick={() => {
-                    setCreateMode(true);
-                    setSubject((val) => ({ ...val, name: searchQuery }));
-                  }}
-                >
-                  作成する
-                </Button>
-              )}
             </VStack>
           </ModalBody>
-          <ModalFooter />
+          <ModalFooter>
+            {createMode ? (
+              <Button
+                w="full"
+                rounded="lg"
+                colorScheme="blue"
+                isDisabled={!subject.name}
+                isLoading={isPending}
+                onClick={() =>
+                  mutate(subject as UserSubject, {
+                    onSuccess: (res) => {
+                      onSelect(res._id);
+                    },
+                  })
+                }
+              >
+                追加
+              </Button>
+            ) : (
+              <Button
+                w="full"
+                rounded="lg"
+                leftIcon={<Icon as={TbPlus} />}
+                onClick={() => {
+                  setCreateMode(true);
+                  setSubject((val) => ({ ...val, name: searchQuery }));
+                }}
+              >
+                作成する
+              </Button>
+            )}
+          </ModalFooter>
         </ModalContent>
       </Modal>
     );
