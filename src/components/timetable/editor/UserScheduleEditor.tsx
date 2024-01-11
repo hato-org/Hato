@@ -70,7 +70,7 @@ export default function UserScheduleEditor() {
 
   const [schedule, setSchedule] = useState<UserSchedule>(initialSchedule);
 
-  const { data, isPending, error } = useUserSchedule(
+  const { data, isLoading, isPending, error } = useUserSchedule(
     overlay.userScheduleEditor || '',
     {
       enabled:
@@ -82,7 +82,7 @@ export default function UserScheduleEditor() {
   useEffect(() => {
     if (data && overlay.userScheduleEditor !== 'new') setSchedule(data);
     else setSchedule(initialSchedule);
-  }, [data, overlay.userScheduleEditor, initialSchedule]);
+  }, [isLoading, overlay.userScheduleEditor]);
 
   return (
     <Modal
