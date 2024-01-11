@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { Suspense, useCallback } from 'react';
 import {
   Modal,
   ModalBody,
@@ -10,8 +10,10 @@ import {
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { overlayAtom } from '@/store/overlay';
-import ChangeLog from '@/../CHANGELOG.mdx';
+import Loading from './Loading';
 import './markdown.css';
+
+const ChangeLog = React.lazy(() => import('@/../CHANGELOG.mdx'));
 
 export default function WhatsNew() {
   const [{ whatsNew }, setOverlay] = useAtom(overlayAtom);
@@ -33,7 +35,9 @@ export default function WhatsNew() {
         <ModalCloseButton top={4} right={4} />
         <ModalHeader>リリースノート</ModalHeader>
         <ModalBody rounded="lg" overflow="hidden">
-          <ChangeLog />
+          <Suspense fallback={<Loading />}>
+            <ChangeLog />
+          </Suspense>
         </ModalBody>
         <ModalFooter />
       </ModalContent>

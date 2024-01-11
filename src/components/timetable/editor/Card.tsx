@@ -6,10 +6,9 @@ import {
   HStack,
   Icon,
   Spacer,
+  StackDivider,
   Table,
   TableContainer,
-  Tag,
-  TagLabel,
   Tbody,
   Td,
   Text,
@@ -19,19 +18,51 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { TbCheck, TbChevronDown, TbPencil, TbX } from 'react-icons/tb';
+import {
+  TbCheck,
+  TbChevronDown,
+  TbDownload,
+  TbPencil,
+  TbX,
+} from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
 import { useUser, useUserMutation } from '@/services/user';
 import { overlayAtom } from '@/store/overlay';
 import { useUserSubject } from '@/services/timetable';
 import { days } from '@/utils/date';
+import { UserScheduleImportModal } from './UserScheduleImportModal';
+import { useClassList, useCourseList, useGradeList } from '@/services/info';
 
 const Card = React.memo(
-  ({ _id, title, description, schedules }: UserSchedule) => {
-    const { isOpen, onToggle } = useDisclosure();
+  ({
+    defaultIsOpen,
+    _id,
+    title,
+    description,
+    schedules,
+    owner,
+    meta,
+    ...rest
+  }: UserSchedule & { defaultIsOpen?: boolean }) => {
+    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen });
+    const {
+      isOpen: importModalOpen,
+      onOpen: importModalOnOpen,
+      onClose: importModalOnClose,
+    } = useDisclosure();
     const setOverlay = useSetAtom(overlayAtom);
     const { data: user } = useUser();
     const { mutate, isPending } = useUserMutation();
+
+    const { data: gradeList } = useGradeList();
+    const { data: classList } = useClassList({
+      type: meta.type,
+      grade: meta.grade,
+    });
+    const { data: courseList } = useCourseList({
+      type: meta.type,
+      grade: meta.grade,
+    });
 
     const isSelected = user.userScheduleId === _id;
 
@@ -49,6 +80,11 @@ const Card = React.memo(
         transition="all .3s ease"
       >
         <HStack w="full" onClick={onToggle} spacing={4}>
+          <StackDivider
+            borderWidth={2}
+            borderColor={isSelected ? 'green.400' : 'blue.400'}
+            rounded="full"
+          />
           <VStack align="flex-start" spacing={1}>
             <Text textStyle="title" noOfLines={1}>
               {title}
@@ -58,11 +94,23 @@ const Card = React.memo(
             </Text>
           </VStack>
           <Spacer />
-          {isSelected && (
-            <Tag colorScheme="green" flexShrink={0}>
-              <TagLabel whiteSpace="nowrap">現在使用中</TagLabel>
-            </Tag>
-          )}
+          <Text color="description" whiteSpace="nowrap">
+            {
+              gradeList?.find(
+                ({ type, gradeCode }) =>
+                  type === meta.type && gradeCode === meta.grade,
+              )?.shortName
+            }
+            -
+            {
+              classList?.find(
+                ({ type, classCode }) =>
+                  type === meta.type && classCode === meta.class,
+              )?.shortName
+            }{' '}
+            {meta.course &&
+              courseList?.find(({ code }) => code === meta.course)?.shortName}
+          </Text>
           {/* <Icon
             as={isPrivate ? TbLock : TbWorld}
             boxSize={6}
@@ -135,35 +183,67 @@ const Card = React.memo(
                   </Tbody>
                 </Table>
               </TableContainer>
-              <HStack w="full">
-                <Button
-                  w="full"
-                  rounded="lg"
-                  variant="ghost"
-                  leftIcon={<Icon as={TbPencil} />}
-                  onClick={() =>
-                    setOverlay((currVal) => ({
-                      ...currVal,
-                      userScheduleEditor: _id!,
-                    }))
-                  }
-                >
-                  編集
-                </Button>
-                <Button
-                  w="full"
-                  rounded="lg"
-                  variant={isSelected ? 'outline' : 'solid'}
-                  colorScheme={isSelected ? 'red' : 'blue'}
-                  leftIcon={<Icon as={isSelected ? TbX : TbCheck} />}
-                  onClick={() =>
-                    mutate({ userScheduleId: isSelected ? null : _id })
-                  }
-                  isLoading={isPending}
-                >
-                  {isSelected ? '使用をやめる' : '使用する'}
-                </Button>
-              </HStack>
+              {owner === user._id ? (
+                <HStack w="full">
+                  <Button
+                    w="full"
+                    rounded="lg"
+                    variant="ghost"
+                    leftIcon={<Icon as={TbPencil} />}
+                    onClick={() =>
+                      setOverlay((currVal) => ({
+                        ...currVal,
+                        userScheduleEditor: _id!,
+                      }))
+                    }
+                  >
+                    編集
+                  </Button>
+                  <Button
+                    w="full"
+                    rounded="lg"
+                    variant={isSelected ? 'outline' : 'solid'}
+                    colorScheme={isSelected ? 'red' : 'blue'}
+                    leftIcon={<Icon as={isSelected ? TbX : TbCheck} />}
+                    onClick={() =>
+                      mutate({ userScheduleId: isSelected ? null : _id })
+                    }
+                    isLoading={isPending}
+                  >
+                    {isSelected ? '使用をやめる' : '使用する'}
+                  </Button>
+                </HStack>
+              ) : (
+                <>
+                  <VStack w="full" gap={4}>
+                    <Button
+                      w="full"
+                      rounded="lg"
+                      colorScheme={isSelected ? 'red' : 'blue'}
+                      variant={isSelected ? 'outline' : 'solid'}
+                      leftIcon={<Icon as={isSelected ? TbX : TbCheck} />}
+                      onClick={() =>
+                        mutate({ userScheduleId: isSelected ? null : _id })
+                      }
+                    >
+                      {isSelected ? '使用をやめる' : 'インポートせずに使用する'}
+                    </Button>
+                    <Button
+                      w="full"
+                      rounded="lg"
+                      leftIcon={<Icon as={TbDownload} />}
+                      onClick={importModalOnOpen}
+                    >
+                      インポート
+                    </Button>
+                  </VStack>
+                  <UserScheduleImportModal
+                    schedule={{ title, description, schedules, meta, ...rest }}
+                    isOpen={importModalOpen}
+                    onClose={importModalOnClose}
+                  />
+                </>
+              )}
             </VStack>
           </Collapse>
         </Box>

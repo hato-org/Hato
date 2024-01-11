@@ -13,34 +13,48 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { TbChevronDown } from 'react-icons/tb';
-import { useClassList, useGradeList } from '@/services/info';
+import { useClassList, useCourseList, useGradeList } from '@/services/info';
 
 interface GradeClassPickerProps extends StackProps {
   onGradeSelect: (gradeInfo: GradeInfo) => void;
   onClassSelect: (classInfo: ClassInfo) => void;
+  onCourseSelect?: (courseInfo: CourseInfo) => void;
   defaultType?: Type;
   defaultGrade?: GradeCode;
   defaultClass?: ClassCode;
+  defaultCourse?: CourseCode;
 }
 
 const GradeClassPicker = React.memo(
   ({
     onGradeSelect,
     onClassSelect,
+    onCourseSelect,
     defaultType,
     defaultGrade,
     defaultClass,
+    defaultCourse,
     ...rest
   }: GradeClassPickerProps) => {
-    const [type, setType] = useState<Type | undefined>(defaultType);
     const [grade, setGrade] = useState<GradeInfo>();
     const [schoolClass, setClass] = useState<ClassInfo>();
+    const [course, setCourse] = useState<CourseInfo>();
 
-    const { data: gradeList } = useGradeList();
+    const { data: gradeList, isLoading: gradeInitialLoading } = useGradeList();
 
-    const { data: classList } = useClassList(
+    const { data: classList, isLoading: classInitialLoading } = useClassList(
       {
-        type,
+        type: grade?.type,
+        grade: grade?.gradeCode ?? defaultGrade,
+      },
+      {
+        enabled: !!(grade || defaultGrade),
+      },
+    );
+
+    const { data: courseList, isLoading: courseInitialLoading } = useCourseList(
+      {
+        type: grade?.type,
         grade: grade?.gradeCode ?? defaultGrade,
       },
       {
@@ -56,18 +70,31 @@ const GradeClassPicker = React.memo(
               gradeType === defaultType && gradeCode === defaultGrade,
           ),
         );
+    }, [gradeInitialLoading]);
+
+    useEffect(() => {
       if (!schoolClass)
         setClass(
           classList?.find(({ classCode }) => classCode === defaultClass),
         );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [gradeList, classList]);
+    }, [classInitialLoading]);
+
+    useEffect(() => {
+      if (!course)
+        setCourse(courseList?.find(({ code }) => code === defaultCourse));
+    }, [courseInitialLoading]);
+
+    useEffect(() => {
+      if (schoolClass) setClass(undefined);
+      if (course) setCourse(undefined);
+    }, [grade]);
 
     return (
       <Stack w="100%" {...rest}>
         <Box w="100%">
           <Menu>
             <MenuButton
+              type="button"
               w="100%"
               h="full"
               rounded="lg"
@@ -78,13 +105,12 @@ const GradeClassPicker = React.memo(
               <HStack w="100%" px={4} py={2} textStyle="title">
                 <Text>
                   {grade?.shortName ??
-                    (defaultGrade
-                      ? gradeList?.find(
-                          (gradeInfo) =>
-                            defaultType === gradeInfo.type &&
-                            defaultGrade === gradeInfo.gradeCode,
-                        )?.shortName
-                      : '学年')}
+                    gradeList?.find(
+                      (gradeInfo) =>
+                        defaultType === gradeInfo.type &&
+                        defaultGrade === gradeInfo.gradeCode,
+                    )?.shortName ??
+                    '学年'}
                 </Text>
                 <Spacer />
                 <Icon as={TbChevronDown} />
@@ -96,7 +122,6 @@ const GradeClassPicker = React.memo(
                   key={gradeInfo.name}
                   fontWeight="bold"
                   onClick={() => {
-                    setType(gradeInfo.type);
                     setGrade(gradeInfo);
                     onGradeSelect(gradeInfo);
                   }}
@@ -110,6 +135,7 @@ const GradeClassPicker = React.memo(
         <Box w="100%">
           <Menu>
             <MenuButton
+              type="button"
               w="100%"
               h="full"
               rounded="lg"
@@ -120,11 +146,10 @@ const GradeClassPicker = React.memo(
               <HStack w="100%" px={4} py={2} textStyle="title">
                 <Text>
                   {schoolClass?.name ??
-                    (defaultClass
-                      ? classList?.find(
-                          ({ classCode }) => classCode === defaultClass,
-                        )?.name
-                      : 'クラス')}
+                    classList?.find(
+                      ({ classCode }) => classCode === defaultClass,
+                    )?.name ??
+                    'クラス'}
                 </Text>
                 <Spacer />
                 <Icon as={TbChevronDown} />
@@ -158,6 +183,58 @@ const GradeClassPicker = React.memo(
             </MenuList>
           </Menu>
         </Box>
+        {onCourseSelect && (
+          <Box w="100%">
+            <Menu>
+              <MenuButton
+                type="button"
+                w="100%"
+                h="full"
+                rounded="lg"
+                layerStyle="button"
+                border="1px solid"
+                borderColor="border"
+              >
+                <HStack w="100%" px={4} py={2} textStyle="title">
+                  <Text>
+                    {course?.name ??
+                      courseList?.find(({ code }) => code === defaultCourse)
+                        ?.name ??
+                      '講座'}
+                  </Text>
+                  <Spacer />
+                  <Icon as={TbChevronDown} />
+                </HStack>
+              </MenuButton>
+              <MenuList shadow="lg" rounded="xl">
+                {grade ? (
+                  courseList?.map((courseInfo) => (
+                    <MenuItem
+                      key={courseInfo.name}
+                      fontWeight="bold"
+                      onClick={() => {
+                        setCourse(courseInfo);
+                        onCourseSelect(courseInfo);
+                      }}
+                    >
+                      {courseInfo.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <Text
+                    w="full"
+                    py={2}
+                    textAlign="center"
+                    textStyle="description"
+                    fontWeight="bold"
+                  >
+                    最初に学年を選択
+                  </Text>
+                )}
+              </MenuList>
+            </Menu>
+          </Box>
+        )}
       </Stack>
     );
   },
