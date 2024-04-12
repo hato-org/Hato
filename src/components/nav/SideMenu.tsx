@@ -145,7 +145,7 @@ const MenuBody = React.memo(() => {
         type: 'button',
         icon: <Icon as={TbTrophy} boxSize={7} />,
         label: 'クラスマッチ',
-        href: '/classmatch/2023',
+        href: '/classmatch',
       },
       {
         type: 'divider',
@@ -218,7 +218,9 @@ const MenuBody = React.memo(() => {
               w="100%"
               spacing={4}
               color={
-                location.pathname === menuItem.href ? 'blue.400' : undefined
+                location.pathname.startsWith(menuItem.href)
+                  ? 'blue.400'
+                  : undefined
               }
               layerStyle="button"
               rounded="xl"
@@ -230,7 +232,9 @@ const MenuBody = React.memo(() => {
               <Text
                 color={
                   menuItem.color ??
-                  (location.pathname === menuItem.href ? 'blue.400' : undefined)
+                  (location.pathname.startsWith(menuItem.href)
+                    ? 'blue.400'
+                    : undefined)
                 }
                 textStyle="title"
                 fontSize="lg"

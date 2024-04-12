@@ -53,13 +53,19 @@ export const useClassmatchSportInfo = (
   });
 };
 
-export const useClassmatchLiveStreams = ({
-  year,
-  season,
-}: {
-  year: number;
-  season: ClassmatchSeason;
-}) => {
+export const useClassmatchLiveStreams = (
+  {
+    year,
+    season,
+  }: {
+    year: number;
+    season: ClassmatchSeason;
+  },
+  options?: Omit<
+    UseQueryOptions<ClassmatchLiveStream[]>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
   const { client } = useClient();
 
   return useQuery({
@@ -71,6 +77,7 @@ export const useClassmatchLiveStreams = ({
           signal,
         })
       ).data,
+    ...options,
   });
 };
 

@@ -38,9 +38,7 @@ const ClassroomMaterial = React.lazy(
 const ClassroomBookmarks = React.lazy(
   () => import('./pages/classroom/ClassroomBookmarks'),
 );
-const Classmatch2023 = React.lazy(
-  () => import('./pages/classmatch/Classmatch2023'),
-);
+const Classmatch = React.lazy(() => import('./pages/Classmatch'));
 
 const Settings = React.lazy(() => import('./pages/Settings'));
 const SettingsTop = React.lazy(() => import('./pages/settings/Top'));
@@ -178,8 +176,8 @@ const router = createBrowserRouter([
         element: <ClassroomMaterial />,
       },
       {
-        path: 'classmatch/2023',
-        element: <Classmatch2023 />,
+        path: 'classmatch/:year?',
+        element: <Classmatch />,
       },
     ],
   },
