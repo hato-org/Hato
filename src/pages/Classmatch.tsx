@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { useSearchParams } from 'react-router-dom';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { TbChevronRight } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
@@ -30,9 +30,9 @@ import Error from '@/components/cards/Error';
 import Loading from '@/components/common/Loading';
 import HistoryModal from '@/components/classmatch/HistoryModal';
 
-const year = 2023;
-
-export default function Classmatch2023() {
+export default function Classmatch() {
+  const { year: y } = useParams();
+  const year = Number(y);
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,18 +65,30 @@ export default function Classmatch2023() {
     data: sports,
     status: sportsStatus,
     error: sportsError,
-  } = useClassmatchSports({
-    year,
-    season,
-  });
+  } = useClassmatchSports(
+    {
+      year,
+      season,
+    },
+    {
+      enabled: !!year,
+    },
+  );
   const {
     data: streams,
     status: streamsStatus,
     error: streamsError,
-  } = useClassmatchLiveStreams({
-    year,
-    season,
-  });
+  } = useClassmatchLiveStreams(
+    {
+      year,
+      season,
+    },
+    {
+      enabled: !!year,
+    },
+  );
+
+  if (!year) return <Navigate to={`/classmatch/${new Date().getFullYear()}`} />;
 
   return (
     <Box>
