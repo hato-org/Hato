@@ -24,7 +24,7 @@ import {
   TbHome,
   TbClipboardList,
   TbCalendar,
-  TbFileDescription,
+  // TbFileDescription,
   TbSettings,
   TbBook2,
   TbLogout,
@@ -123,12 +123,12 @@ const MenuBody = React.memo(() => {
         label: '年間行事予定',
         href: '/events',
       },
-      {
-        type: 'button',
-        icon: <Icon as={TbFileDescription} boxSize={7} />,
-        label: 'はとボード',
-        href: '/posts/hatoboard',
-      },
+      // {
+      //   type: 'button',
+      //   icon: <Icon as={TbFileDescription} boxSize={7} />,
+      //   label: 'はとボード',
+      //   href: '/posts/hatoboard',
+      // },
       {
         type: 'button',
         icon: <Icon as={TbBook2} boxSize={7} />,

@@ -6,7 +6,7 @@ import {
   TbHome,
   TbClipboardList,
   TbCalendar,
-  TbFileDescription,
+  // TbFileDescription,
 } from 'react-icons/tb';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { dashboardEditModeAtom } from '@/store/dashboard';
@@ -38,11 +38,11 @@ function BottomNavbar() {
         label: 'カレンダー',
         href: '/events',
       },
-      {
-        icon: <Icon as={TbFileDescription} boxSize={8} />,
-        label: '掲示物',
-        href: '/posts/hatoboard',
-      },
+      // {
+      //   icon: <Icon as={TbFileDescription} boxSize={8} />,
+      //   label: '掲示物',
+      //   href: '/posts/hatoboard',
+      // },
     ],
     [],
   );
