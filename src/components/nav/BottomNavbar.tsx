@@ -9,6 +9,7 @@ import {
   // TbFileDescription,
 } from 'react-icons/tb';
 import { SiGoogleclassroom } from 'react-icons/si';
+import { MdOutlineTrain } from 'react-icons/md';
 import { dashboardEditModeAtom } from '@/store/dashboard';
 
 function BottomNavbar() {
@@ -43,6 +44,11 @@ function BottomNavbar() {
       //   label: '掲示物',
       //   href: '/posts/hatoboard',
       // },
+      {
+        icon: <Icon as={MdOutlineTrain} boxSize={8} />,
+        label: '交通情報',
+        href: '/transit',
+      },
     ],
     [],
   );
