@@ -42,7 +42,7 @@
     "@typescript-eslint/no-use-before-define": "off",
     "no-underscore-dangle": "off",
     "no-console": "warn",
-    "no-nested-ternary": "warn",
+    "no-nested-ternary": "off",
     "import/extensions": "off",
     "import/prefer-default-export": "off"
   }

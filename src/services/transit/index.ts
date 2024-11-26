@@ -12,6 +12,28 @@ export const useTransit = () => {
   });
 };
 
+export const useTransitTimetable = ({
+  dest,
+  kind,
+}: {
+  dest: 'nagano' | 'ueda';
+  kind: 'weekdays' | 'saturday' | 'sunday';
+}) => {
+  const { client } = useClient();
+
+  return useQuery({
+    queryKey: ['transit', 'timetable', dest, kind],
+    queryFn: async ({ signal }) =>
+      (
+        await client.get<TransitTimetable[]>('/transit/timetable', {
+          params: { dest, kind },
+          signal,
+        })
+      ).data,
+    refetchInterval: 1000 * 60 * 5,
+  });
+};
+
 export const useDiainfo = (
   options?: Omit<UseQueryOptions<DiaInfo[]>, 'queryKey' | 'queryFn'>,
 ) => {

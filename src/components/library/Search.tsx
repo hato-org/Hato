@@ -123,7 +123,6 @@ const SearchResult = React.memo(
   }) => (
     <Box w="100%" h="100%">
       <Collapse in={!!result || isLoading}>
-        {/* eslint-disable no-nested-ternary */}
         {isLoading ? (
           <Loading />
         ) : result?.count ? (
@@ -178,7 +177,6 @@ const SearchResult = React.memo(
             </Text>
           </VStack>
         )}
-        {/* eslint-enable no-nested-ternary */}
       </Collapse>
     </Box>
   ),

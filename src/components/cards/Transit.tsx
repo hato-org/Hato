@@ -1,37 +1,23 @@
 import React from 'react';
 import {
-  Box,
-  Center,
-  Collapse,
   Heading,
   HStack,
   Icon,
   LinkBox,
   Skeleton,
   Spacer,
-  StackDivider,
   Text,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TbChevronRight } from 'react-icons/tb';
-import { differenceInMinutes, differenceInSeconds, format } from 'date-fns/esm';
-import { useSeconds } from 'use-seconds';
-import DiaStatus from '../transit/DiaStatus';
-import { useTransit } from '@/services/transit';
-
-const formatTimeDifference = (dateLeft: Date, dateRight: Date) => {
-  const diffSec = differenceInSeconds(dateLeft, dateRight);
-  const diffMin = differenceInMinutes(dateLeft, dateRight);
-
-  return `${diffMin}:${Math.abs(diffSec - 60 * diffMin)
-    .toString()
-    .padStart(2, '0')}`;
-};
+import { useDiainfo } from '@/services/transit';
+import StatusAlert from '../transit/StatusAlert';
+import Error from './Error';
 
 export default function Transit() {
-  const { data, isPending } = useTransit();
+  // const { data, isPending } = useTransit();
+  const { data: diaInfo, status, error } = useDiainfo();
 
   return (
     <VStack spacing={4} w="100%" align="flex-start">
@@ -48,11 +34,17 @@ export default function Transit() {
         </HStack>
       </LinkBox>
       <VStack p={2} align="flex-start" w="100%">
-        <DiaStatus />
+        {status === 'error' ? (
+          <Error error={error} />
+        ) : (
+          <Skeleton w="full" rounded="xl" isLoaded={status !== 'pending'}>
+            <StatusAlert lines={diaInfo} />
+          </Skeleton>
+        )}
         <Text textStyle="title" fontSize="lg">
           長野方面
         </Text>
-        <Skeleton w="100%" rounded="xl" isLoaded={!isPending}>
+        {/* <Skeleton w="100%" rounded="xl" isLoaded={!isPending}>
           <TransitButton transits={data?.nagano} />
         </Skeleton>
         <Text textStyle="title" fontSize="lg">
@@ -60,73 +52,8 @@ export default function Transit() {
         </Text>
         <Skeleton w="100%" rounded="xl" isLoaded={!isPending}>
           <TransitButton transits={data?.ueda} />
-        </Skeleton>
+        </Skeleton> */}
       </VStack>
     </VStack>
   );
 }
-
-const TransitButton = React.memo(
-  ({ transits }: { transits?: TransitInfo[] }) => {
-    const { isOpen, onToggle } = useDisclosure();
-    const [date] = useSeconds();
-    const upcomingTransit = transits?.filter(
-      (transit) => new Date(transit.leaveAt).valueOf() > Date.now(),
-    );
-
-    return upcomingTransit?.length ? (
-      <VStack w="100%" spacing={0} rounded="xl" layerStyle="button">
-        <HStack w="100%" p={2} onClick={onToggle}>
-          <StackDivider borderWidth={2} borderColor="blue.400" rounded="full" />
-          <VStack spacing={0} align="flex-start">
-            <Text textStyle="title" fontSize="xl">
-              {format(new Date(upcomingTransit[0].leaveAt), 'HH:mm')}
-            </Text>
-            <Text textStyle="description">
-              {upcomingTransit[0].destination}行
-            </Text>
-          </VStack>
-          <Spacer />
-          <Text textStyle="title" fontSize="3xl">
-            {formatTimeDifference(new Date(upcomingTransit[0].leaveAt), date)}
-          </Text>
-        </HStack>
-        <Box w="100%">
-          <Collapse in={isOpen}>
-            {upcomingTransit.slice(1).map((transit) => (
-              <TransitQueue
-                key={transit.leaveAt}
-                date={date}
-                transit={transit}
-              />
-            ))}
-          </Collapse>
-        </Box>
-      </VStack>
-    ) : (
-      <Center w="100%" py={2}>
-        <Text textStyle="description" fontWeight="bold">
-          次の電車はありません
-        </Text>
-      </Center>
-    );
-  },
-);
-
-const TransitQueue = React.memo(
-  ({ date, transit }: { date: Date; transit: TransitInfo }) => (
-    <HStack w="100%" p={2} pl={6}>
-      <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
-      <VStack spacing={0} align="flex-start">
-        <Text fontSize="md">{format(new Date(transit.leaveAt), 'HH:mm')}</Text>
-        <Text textStyle="description" fontSize="2xs">
-          {transit.destination}行
-        </Text>
-      </VStack>
-      <Spacer />
-      <Text textStyle="title">
-        {formatTimeDifference(new Date(transit.leaveAt), date)}
-      </Text>
-    </HStack>
-  ),
-);

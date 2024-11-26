@@ -38,7 +38,6 @@ const DiaStatus = React.memo(() => {
       </Text>
       <Skeleton w="100%" minH={8} rounded="xl" isLoaded={!isPending}>
         <Center w="full">
-          {/* eslint-disable no-nested-ternary */}
           {error ? (
             <Error error={error} />
           ) : unstableLines?.length ? (
@@ -51,7 +50,6 @@ const DiaStatus = React.memo(() => {
               全路線平常運転
             </Text>
           )}
-          {/* eslint-enable no-nested-ternary */}
         </Center>
       </Skeleton>
     </VStack>

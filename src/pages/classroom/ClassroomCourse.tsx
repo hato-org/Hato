@@ -78,7 +78,6 @@ export default function ClassroomCourse() {
       >
         <VStack p={4} mb={24}>
           <CourseHeader courseId={id} />
-          {/* eslint-disable no-nested-ternary */}
           {isLoading ? (
             <Loading withTips initialTip={0} />
           ) : error ? (
@@ -107,7 +106,6 @@ export default function ClassroomCourse() {
               useWindowScroll
             />
           )}
-          {/* eslint-enable no-nested-ternary */}
         </VStack>
       </ChakraPullToRefresh>
     </>
