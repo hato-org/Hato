@@ -46,7 +46,7 @@ export default function Classmatch() {
   useEffect(() => {
     searchParams.set('year', year.toString());
     searchParams.set('season', season);
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, { replace: true });
     //  eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, season]);
 
