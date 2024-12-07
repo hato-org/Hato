@@ -64,7 +64,6 @@ function MetaEditor({
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         試合結果
       </Text>
-      {/* eslint-disable no-nested-ternary */}
       <Box w="full" pos="relative">
         {!isParticipantsEditable && (
           <Center
@@ -238,13 +237,11 @@ function ClassSelectMenu({
         rightIcon={<Icon as={TbChevronDown} />}
         textStyle={currentClass?.from ? 'title' : 'description'}
       >
-        {/* eslint-disable no-nested-ternary */}
         {currentClass?.from
           ? currentClass.type === 'teacher'
             ? '職員'
             : `${currentClass.grade}-${currentClass.class}`
           : 'クラス'}
-        {/* eslint-enable no-nested-ternary */}
       </MenuButton>
       <Box>
         <MenuList rounded="xl" shadow="xl">
@@ -300,7 +297,6 @@ function ClassSelectMenuItem({
         })
       }
     >
-      {/* eslint-disable no-nested-ternary */}
       {tournament.class
         ? tournament.class.type === 'teacher'
           ? '職員'
@@ -308,7 +304,6 @@ function ClassSelectMenuItem({
         : winner.type === 'teacher'
           ? '職員'
           : `${winner.grade}-${winner.class}`}
-      {/* eslint-enable no-nested-ternary */}
     </MenuItem>
   );
 }

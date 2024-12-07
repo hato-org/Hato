@@ -175,7 +175,6 @@ function Timetable() {
                     </HStack>
                     <Icon as={TbChevronRight} />
                   </HStack>
-                  {/* eslint-disable no-nested-ternary */}
                   {user.userScheduleId ? (
                     division ? (
                       <TimetableTable
@@ -196,7 +195,6 @@ function Timetable() {
                   ) : (
                     <Error type="userScheduleNotSet" />
                   )}
-                  {/* eslint-enable no-nested-ternary */}
                 </VStack>
                 {/* <StackDivider borderWidth="1px" /> */}
                 <HStack w="100%">

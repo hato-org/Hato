@@ -20,3 +20,15 @@ interface DiaInfo {
   description: string;
   updatedAt: string;
 }
+
+interface TransitTimetable {
+  starting: string;
+  destination: string;
+  stations: TransitTimetableStation[];
+}
+
+interface TransitTimetableStation {
+  name: string;
+  arriveAt?: string;
+  departAt?: string;
+}

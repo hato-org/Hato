@@ -96,7 +96,6 @@ const PDFViewer = React.memo(
           </DrawerHeader>
           <DrawerBody p={0} position="relative" zIndex={-5}>
             <Center>
-              {/* eslint-disable no-nested-ternary */}
               {isPending ? (
                 <Loading />
               ) : error ? (
@@ -128,7 +127,6 @@ const PDFViewer = React.memo(
                   ))}
                 </Document>
               )}
-              {/* eslint-enable no-nested-ternary */}
             </Center>
           </DrawerBody>
         </DrawerContent>

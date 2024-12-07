@@ -4,13 +4,16 @@ import { AnimatePresence } from 'framer-motion';
 import { MotionCenter } from '../motion';
 
 const tips = [
-  'Classroomの読み込みは時間がかかる場合があります\nその間はTipsをお楽しみください',
+  'Classroomの読み込みは時間がかかる場合があります',
   'Hatoはオープンソースです。ぜひ貢献してください！',
   'Hatoは多くの方の協力で成り立っています\n皆さんの協力に感謝します',
   '時間割は有志の方が手動で設定しています\nあなたも協力してみませんか？',
-  'はとボードの新着投稿は5分以内に反映されます',
+  '年間行事予定は生徒の協力により反映されています\nぜひ協力をお願いします',
+  // 'はとボードの新着投稿は5分以内に反映されます',
   '交通情報は5分ごとに更新しています',
+  '時刻表では各駅停車時刻・行先と接続を確認できます',
   'Classroomの課題と資料はブックマークできます',
+  '3棟前モニター用の理科室割表示サイトを作ったのですが却下されました\nhttps://srtable-viewer.vercel.app/',
 ];
 
 const Loading = React.memo(
@@ -21,7 +24,7 @@ const Loading = React.memo(
   }: { withTips?: boolean; initialTip?: number } & SpinnerProps) => {
     const [tipsShowed, setTipsShowed] = useState(false);
     const [tip, setTip] = useState(
-      tips[initialTip ?? Math.floor(Math.random() * tips.length)]
+      tips[initialTip ?? Math.floor(Math.random() * tips.length)],
     );
 
     useEffect(() => {
@@ -53,7 +56,7 @@ const Loading = React.memo(
         )}
       </VStack>
     );
-  }
+  },
 );
 
 export const GlobalLoading = React.memo(() => (

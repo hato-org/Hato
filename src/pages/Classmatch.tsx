@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { TbChevronRight } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
@@ -31,11 +31,12 @@ import Loading from '@/components/common/Loading';
 import HistoryModal from '@/components/classmatch/HistoryModal';
 
 export default function Classmatch() {
-  const { year: y } = useParams();
-  const year = Number(y);
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [year, setYear] = useState(
+    Number(searchParams.get('year')) || new Date().getFullYear(),
+  );
   const [season, setSeason] = useState<ClassmatchSeason>(
     searchParams.get('season') ?? new Date().getMonth() > 6
       ? 'autumn'
@@ -43,19 +44,21 @@ export default function Classmatch() {
   );
 
   useEffect(() => {
+    searchParams.set('year', year.toString());
     searchParams.set('season', season);
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, { replace: true });
     //  eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [season]);
+  }, [year, season]);
 
   const onSeasonSelected = useCallback(
     ({
-      // year: newYear,
+      year: newYear,
       season: newSeason,
     }: {
       year: number;
       season: ClassmatchSeason;
     }) => {
+      setYear(newYear);
       setSeason(newSeason);
     },
     [],
@@ -87,8 +90,6 @@ export default function Classmatch() {
       enabled: !!year,
     },
   );
-
-  if (!year) return <Navigate to={`/classmatch/${new Date().getFullYear()}`} />;
 
   return (
     <Box>

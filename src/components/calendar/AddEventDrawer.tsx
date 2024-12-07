@@ -198,7 +198,7 @@ const AddEventDrawer = React.memo(
                       }),
                     }}
                     options={searchRes}
-                    loadOptions={(value) => searchTags(value)}
+                    loadOptions={(value) => searchTags(value || '*')}
                     isLoading={searchPending}
                     value={tags}
                     onChange={(e: readonly Tag[]) => setTags(e as Tag[])}
