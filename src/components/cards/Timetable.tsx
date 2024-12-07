@@ -90,7 +90,6 @@ function Timetable() {
         ) : (
           <Error type="userScheduleNotSet" />
         )}
-        {/* eslint-enable no-nested-ternary */}
       </VStack>
       <DivisionEditor date={date} isOpen={isOpen} onClose={onClose} />
     </>

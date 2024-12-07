@@ -91,7 +91,6 @@ const Calendar = React.memo(
                     >
                       <Text
                         color={
-                          /* eslint-disable no-nested-ternary */
                           isSameMonth(date, day)
                             ? isSaturday(day)
                               ? 'blue.400'
@@ -99,7 +98,6 @@ const Calendar = React.memo(
                                 ? 'red.400'
                                 : 'title'
                             : 'description'
-                          /* eslint-enable no-nested-ternary */
                         }
                         textStyle="title"
                         fontSize="xs"
@@ -141,7 +139,6 @@ const Calendar = React.memo(
                               px={{ base: 0, md: '2px' }}
                               py={{ base: 0, md: '1px' }}
                               bg={
-                                /* eslint-disable no-nested-ternary */
                                 event.external
                                   ? event.isAllDay
                                     ? 'green.400'
@@ -149,10 +146,8 @@ const Calendar = React.memo(
                                   : event.isAllDay
                                     ? 'blue.400'
                                     : 'blue.50'
-                                /* eslint-enable no-nested-ternary */
                               }
                               color={
-                                /* eslint-disable no-nested-ternary */
                                 event.external
                                   ? event.isAllDay
                                     ? 'white'
@@ -160,10 +155,8 @@ const Calendar = React.memo(
                                   : event.isAllDay
                                     ? 'white'
                                     : 'blue.400'
-                                /* eslint-enable no-nested-ternary */
                               }
                               _hover={{
-                                /* eslint-disable no-nested-ternary */
                                 bg: event.external
                                   ? event.isAllDay
                                     ? 'green.500'
@@ -171,7 +164,6 @@ const Calendar = React.memo(
                                   : event.isAllDay
                                     ? 'blue.500'
                                     : 'blue.100',
-                                /* eslint-enable no-nested-ternary */
                               }}
                               transition="all .2s ease"
                               as={RouterLink}

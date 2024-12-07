@@ -116,7 +116,6 @@ export default function Classroom() {
         }
       >
         <Box px={4} mb={24}>
-          {/* eslint-disable no-nested-ternary */}
           {isLoading ? (
             <Loading withTips initialTip={0} />
           ) : error ? (
@@ -145,7 +144,6 @@ export default function Classroom() {
               useWindowScroll
             />
           )}
-          {/* eslint-enable no-nested-ternary */}
         </Box>
       </ChakraPullToRefresh>
     </Box>

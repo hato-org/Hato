@@ -24,9 +24,11 @@ interface DiaInfo {
 interface TransitTimetable {
   starting: string;
   destination: string;
-  stations: {
-    name: string;
-    arriveAt?: string;
-    departAt?: string;
-  }[];
+  stations: TransitTimetableStation[];
+}
+
+interface TransitTimetableStation {
+  name: string;
+  arriveAt?: string;
+  departAt?: string;
 }

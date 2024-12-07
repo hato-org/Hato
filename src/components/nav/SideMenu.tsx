@@ -184,66 +184,63 @@ const MenuBody = React.memo(() => {
           </Heading>
         )}
       </HStack>
-      {menu.map(
-        (menuItem, index) =>
-          /* eslint-disable no-nested-ternary */
-          menuItem.type === 'divider' ? (
-            <StackDivider
-              // eslint-disable-next-line react/no-array-index-key
-              key={`${menuItem.type}-${index}`}
-              borderWidth="1px"
-              borderColor="border"
-            />
-          ) : breakPoint === 1 ? (
-            <IconButton
-              aria-label={menuItem.label}
-              icon={menuItem.icon}
-              size="lg"
-              variant="ghost"
-              isRound
+      {menu.map((menuItem, index) =>
+        menuItem.type === 'divider' ? (
+          <StackDivider
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${menuItem.type}-${index}`}
+            borderWidth="1px"
+            borderColor="border"
+          />
+        ) : breakPoint === 1 ? (
+          <IconButton
+            aria-label={menuItem.label}
+            icon={menuItem.icon}
+            size="lg"
+            variant="ghost"
+            isRound
+            color={
+              menuItem.color ??
+              (location.pathname === menuItem.href ? 'blue.400' : undefined)
+            }
+            as={RouterLink}
+            to={menuItem.href}
+            onClick={
+              menuItem.onClick as unknown as React.MouseEventHandler<HTMLButtonElement>
+            }
+          />
+        ) : (
+          <HStack
+            p={2}
+            key={menuItem.label}
+            w="100%"
+            spacing={4}
+            color={
+              location.pathname.startsWith(menuItem.href)
+                ? 'blue.400'
+                : undefined
+            }
+            layerStyle="button"
+            rounded="xl"
+            as={RouterLink}
+            to={menuItem.href}
+            {...menuItem}
+          >
+            {menuItem.icon}
+            <Text
               color={
                 menuItem.color ??
-                (location.pathname === menuItem.href ? 'blue.400' : undefined)
-              }
-              as={RouterLink}
-              to={menuItem.href}
-              onClick={
-                menuItem.onClick as unknown as React.MouseEventHandler<HTMLButtonElement>
-              }
-            />
-          ) : (
-            <HStack
-              p={2}
-              key={menuItem.label}
-              w="100%"
-              spacing={4}
-              color={
-                location.pathname.startsWith(menuItem.href)
+                (location.pathname.startsWith(menuItem.href)
                   ? 'blue.400'
-                  : undefined
+                  : undefined)
               }
-              layerStyle="button"
-              rounded="xl"
-              as={RouterLink}
-              to={menuItem.href}
-              {...menuItem}
+              textStyle="title"
+              fontSize="lg"
             >
-              {menuItem.icon}
-              <Text
-                color={
-                  menuItem.color ??
-                  (location.pathname.startsWith(menuItem.href)
-                    ? 'blue.400'
-                    : undefined)
-                }
-                textStyle="title"
-                fontSize="lg"
-              >
-                {menuItem.label}
-              </Text>
-            </HStack>
-          ),
-        /* eslint-enable no-nested-ternary */
+              {menuItem.label}
+            </Text>
+          </HStack>
+        ),
       )}
       <Spacer />
       <Account />

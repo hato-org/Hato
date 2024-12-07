@@ -150,7 +150,6 @@ const UserSubjectPicker = React.memo(
                 onClick={(e) => e.stopPropagation()}
                 w="full"
               >
-                {/* eslint-disable no-nested-ternary */}
                 {searchPending ? (
                   <Loading />
                 ) : searchResult?.length ? (
@@ -177,7 +176,6 @@ const UserSubjectPicker = React.memo(
                     候補がありません
                   </Text>
                 )}
-                {/* eslint-enable no-nested-ternary */}
               </VStack>
             </VStack>
           </ModalBody>
