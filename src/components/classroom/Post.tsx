@@ -11,7 +11,7 @@ import {
   SkeletonCircle,
   SkeletonText,
 } from '@chakra-ui/react';
-import { format, isThisYear } from 'date-fns/esm';
+import { format, isThisYear } from 'date-fns';
 import { useNavigate } from 'react-router';
 import {
   TbAlbum,

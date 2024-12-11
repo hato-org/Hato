@@ -25,7 +25,7 @@ import {
   TbExternalLink,
 } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { useSetAtom } from 'jotai';
 import { useAuth } from '@/modules/auth';
 import { useUser } from '@/services/user';

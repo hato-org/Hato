@@ -7,7 +7,7 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { useSeconds } from 'use-seconds';
 import { useDivision } from '@/services/timetable';
 import { days } from '@/utils/date';

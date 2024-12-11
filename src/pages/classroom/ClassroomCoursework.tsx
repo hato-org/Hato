@@ -19,7 +19,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router';
 import { TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { useAtom } from 'jotai';
 import { useGCCourseWork, useGCUserInfo } from '@/services/classroom';
 import Header from '@/components/nav/Header';

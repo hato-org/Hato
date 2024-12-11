@@ -27,7 +27,7 @@ import {
   TbHelpCircle,
   TbX,
 } from 'react-icons/tb';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 
 const StatusAlert = React.memo(
   ({
@@ -184,8 +184,8 @@ const StatusDetailModal = React.memo(
                   {diaInfo.status.text}
                 </Text>
               </VStack>
-              <Text textStyle='description'>{diaInfo.description}</Text>
-              <Text alignSelf='flex-end' textStyle='description'>
+              <Text textStyle="description">{diaInfo.description}</Text>
+              <Text alignSelf="flex-end" textStyle="description">
                 {format(new Date(diaInfo.updatedAt), 'MM/dd HH:mm')} 更新
               </Text>
             </VStack>

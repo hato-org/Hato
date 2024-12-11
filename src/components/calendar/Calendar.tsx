@@ -21,7 +21,7 @@ import {
   isSameMonth,
   isSameDay,
   isToday,
-} from 'date-fns/esm';
+} from 'date-fns';
 import React, { useMemo } from 'react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
 import Card from '../layout/Card';

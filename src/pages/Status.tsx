@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { TbPlus } from 'react-icons/tb';
 import { useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/nav/Header';

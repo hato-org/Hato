@@ -13,8 +13,8 @@ import {
   Wrap,
   useDisclosure,
 } from '@chakra-ui/react';
-import { format } from 'date-fns/esm';
-import { ja } from 'date-fns/esm/locale';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { TbChevronDown, TbChevronRight } from 'react-icons/tb';
 import { useHatoStatusServerList } from '@/services/status';
 

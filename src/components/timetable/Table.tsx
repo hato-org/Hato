@@ -9,6 +9,7 @@ import {
   Td,
   TableProps,
 } from '@chakra-ui/react';
+import { Day } from 'date-fns';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import { useUserSubject } from '@/services/timetable';

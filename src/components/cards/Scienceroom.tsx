@@ -1,6 +1,6 @@
 import { Heading, HStack, Spacer, Text, VStack } from '@chakra-ui/react';
-import { format } from 'date-fns/esm';
-import { ja } from 'date-fns/esm/locale';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import ScienceRoomTableTable from '../scienceroom/Table';
 
 export default function Scienceroom() {

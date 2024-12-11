@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
 import { TbChevronRight, TbPoint } from 'react-icons/tb';
-import { format, setDay } from 'date-fns/esm';
+import { format, setDay } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import TimetableTable from '../timetable/Table';
 import { useUserSchedule, useNotes, useDivision } from '@/services/timetable';

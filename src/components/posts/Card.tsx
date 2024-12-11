@@ -13,7 +13,7 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import {
   TbChevronRight,
   TbCircleArrowDown,

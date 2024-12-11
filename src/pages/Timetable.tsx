@@ -16,8 +16,8 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { addDays, format, setDay, subDays } from 'date-fns/esm';
-import { ja } from 'date-fns/esm/locale';
+import { addDays, format, setDay, subDays } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { Helmet } from 'react-helmet-async';
 import {
   TbPlus,

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
 import { Select } from 'chakra-react-select';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import {
   useHatoStatusMaintenanceMutation,
   useHatoStatusServerList,

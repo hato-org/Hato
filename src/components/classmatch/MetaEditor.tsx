@@ -20,7 +20,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbChevronUp, TbX } from 'react-icons/tb';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { useClassmatchMutation } from '@/services/classmatch';
 
 function MetaEditor({

@@ -15,7 +15,7 @@ import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router';
 import { useAtom, useSetAtom } from 'jotai';
 import { useQueryClient } from '@tanstack/react-query';
-import { addMonths, subMonths } from 'date-fns/esm';
+import { addMonths, subMonths } from 'date-fns';
 import Header from '@/components/nav/Header';
 import Calendar from '@/components/calendar/Calendar';
 import FloatButton from '@/components/layout/FloatButton';

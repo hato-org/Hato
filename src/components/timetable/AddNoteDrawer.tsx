@@ -24,8 +24,8 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
-import { format } from 'date-fns/esm';
-import { ja } from 'date-fns/esm/locale';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { useGradeList, useAllClassList } from '@/services/info';
 import { useAddNoteMutation } from '@/services/timetable';
 import { useUser } from '@/services/user';
