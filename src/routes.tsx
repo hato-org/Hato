@@ -1,11 +1,12 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 import RequireLogin from './components/login/RequireLogin';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import ErrorFallback from './components/common/ErrorFallback';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import { GlobalLoading } from './components/common/Loading';
 
 const Events = React.lazy(() => import('./pages/Events'));
 // const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <RequireLogin />,
     errorElement: <ErrorFallback />,
+    hydrateFallbackElement: <GlobalLoading />,
     children: [
       {
         path: 'dashboard',

@@ -14,7 +14,7 @@ import {
   useBoolean,
 } from '@chakra-ui/react';
 import { TbSearch } from 'react-icons/tb';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import Card from '@/components/layout/Card';
 import UserScheduleCard from './Card';
 import { useUserScheduleSearch } from '@/services/timetable';

@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbUser } from 'react-icons/tb';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { useUser } from '@/services/user';
 
 function Account({ ...rest }: FlexProps) {

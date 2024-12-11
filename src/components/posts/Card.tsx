@@ -12,7 +12,7 @@ import {
   VStack,
   Wrap,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { format } from 'date-fns/esm';
 import {
   TbChevronRight,

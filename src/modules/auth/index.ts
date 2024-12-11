@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 import { useSetAtom } from 'jotai';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useQueryClient } from '@tanstack/react-query';
 import { jwtAtom, userAtom } from '@/store/auth';

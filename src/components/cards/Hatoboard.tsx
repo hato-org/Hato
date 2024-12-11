@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { TbChevronDown, TbChevronRight } from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import Loading from '../common/Loading';
 import Card from '../posts/Card';
 import Error from './Error';

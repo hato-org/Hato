@@ -10,7 +10,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import { useAtom } from 'jotai';

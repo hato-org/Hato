@@ -1,5 +1,5 @@
 import { Heading, HStack, Icon, Spacer, VStack } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { TbChevronRight } from 'react-icons/tb';
 import UpcomingEvents from '../calendar/UpcomingEvents';
 

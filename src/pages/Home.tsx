@@ -1,6 +1,6 @@
 import { Button, Center, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink, Navigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate } from 'react-router';
 import { useAtomValue } from 'jotai';
 import { jwtAtom } from '@/store/auth';
 

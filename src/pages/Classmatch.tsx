@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { TbChevronRight } from 'react-icons/tb';
 import Header from '@/components/nav/Header';
@@ -38,7 +38,7 @@ export default function Classmatch() {
     Number(searchParams.get('year')) || new Date().getFullYear(),
   );
   const [season, setSeason] = useState<ClassmatchSeason>(
-    searchParams.get('season') ?? new Date().getMonth() > 6
+    (searchParams.get('season') ?? new Date().getMonth() > 6)
       ? 'autumn'
       : 'spring',
   );

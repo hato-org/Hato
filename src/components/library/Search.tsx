@@ -19,7 +19,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Virtuoso } from 'react-virtuoso';
 import { TbMoodSad } from 'react-icons/tb';

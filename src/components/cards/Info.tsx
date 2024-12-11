@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Center, VStack, Icon, Text, IconButton } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { TbBulb, TbInfoCircle, TbX } from 'react-icons/tb';
 import { useAtom, useSetAtom } from 'jotai';
 import { useUser } from '@/services/user';

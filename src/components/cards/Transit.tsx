@@ -13,7 +13,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { TbChevronRight } from 'react-icons/tb';
 import { useSeconds } from 'use-seconds';
 import { useDiainfo, useTransitTimetable } from '@/services/transit';

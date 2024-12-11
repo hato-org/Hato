@@ -1,5 +1,5 @@
 import { Heading, HStack, VStack, Text, Button, Box } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';

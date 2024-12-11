@@ -14,11 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
-import {
-  Link as RouterLink,
-  Navigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { Link as RouterLink, Navigate, useSearchParams } from 'react-router';
 import { useAtomValue } from 'jotai';
 import LoginButton from '@/components/login/LoginButton';
 import { jwtAtom } from '@/store/auth';

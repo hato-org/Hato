@@ -11,7 +11,7 @@ import {
   Skeleton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { TbChevronRight, TbPoint } from 'react-icons/tb';
 import { format, setDay } from 'date-fns/esm';
 import { ja } from 'date-fns/locale';

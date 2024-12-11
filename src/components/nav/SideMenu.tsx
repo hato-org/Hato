@@ -32,7 +32,7 @@ import {
 } from 'react-icons/tb';
 import { MdOutlineTrain } from 'react-icons/md';
 import { SiGoogleclassroom } from 'react-icons/si';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router';
 import { useAtom } from 'jotai';
 import { overlayAtom } from '@/store/overlay';
 import { useAuth } from '@/modules/auth';

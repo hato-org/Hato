@@ -14,7 +14,7 @@ import {
   StackDivider,
   WrapItem,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { format, isSameDay } from 'date-fns';
 import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
 import { useEffect } from 'react';

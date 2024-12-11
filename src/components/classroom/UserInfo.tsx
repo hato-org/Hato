@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { useGCUserInfo, useGCCourseInfo } from '@/services/classroom';
 
 const UserInfo = React.memo(

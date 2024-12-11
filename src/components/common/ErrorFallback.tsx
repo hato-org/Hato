@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbLoader, TbRotate } from 'react-icons/tb';
-import { useRouteError } from 'react-router-dom';
+import { useRouteError } from 'react-router';
 import { useAuth } from '@/modules/auth';
 import { useReport } from '@/services/report';
 

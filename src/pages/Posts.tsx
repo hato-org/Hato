@@ -8,7 +8,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { TbExternalLink } from 'react-icons/tb';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import Header from '@/components/nav/Header';
 
 function Posts() {

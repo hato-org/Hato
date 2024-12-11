@@ -1,7 +1,7 @@
 import { Center, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
 import { AxiosError } from 'axios';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 interface ErrorProps {
   error?: AxiosError;

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { TbInfoCircle, TbPlus, TbX, TbBulb } from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useAtom, useSetAtom } from 'jotai';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, subMonths } from 'date-fns/esm';

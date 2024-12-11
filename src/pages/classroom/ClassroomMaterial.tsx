@@ -14,7 +14,7 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { useAtom } from 'jotai';

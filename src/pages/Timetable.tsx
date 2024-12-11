@@ -26,7 +26,7 @@ import {
   TbPencil,
   TbChevronRight,
 } from 'react-icons/tb';
-import { Link as RouterLink, useSearchParams } from 'react-router-dom';
+import { Link as RouterLink, useSearchParams } from 'react-router';
 import Header from '@/components/nav/Header';
 import DateSwitcher from '@/components/timetable/DateSwitcher';
 import TimetableTable from '@/components/timetable/Table';

@@ -12,7 +12,7 @@ import {
   SkeletonText,
 } from '@chakra-ui/react';
 import { format, isThisYear } from 'date-fns/esm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import {
   TbAlbum,
   TbCheckupList,
