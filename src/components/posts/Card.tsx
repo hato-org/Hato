@@ -155,5 +155,6 @@ const Card = React.memo(
     );
   },
 );
+Card.displayName = 'Card';
 
 export default Card;

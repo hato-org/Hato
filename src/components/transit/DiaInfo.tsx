@@ -54,5 +54,6 @@ const DiaInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
     </Card>
   );
 });
+DiaInfo.displayName = 'DiaInfo';
 
 export default DiaInfo;

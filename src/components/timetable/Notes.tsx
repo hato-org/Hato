@@ -107,6 +107,7 @@ const Notes = React.memo(
     );
   },
 );
+Notes.displayName = 'Notes';
 
 const NoteCard = React.memo(({ note }: { note: Note }) => {
   const toast = useToast({
@@ -242,6 +243,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
     </Box>
   );
 });
+NoteCard.displayName = 'NoteCard';
 
 interface NotesMenuProps extends MenuButtonProps {
   note: Note;
@@ -311,5 +313,6 @@ const NotesMenu = React.memo(
     );
   },
 );
+NotesMenu.displayName = 'NotesMenu';
 
 export default Notes;

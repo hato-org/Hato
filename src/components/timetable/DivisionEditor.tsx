@@ -154,5 +154,6 @@ const DivisionEditor = React.memo(
     );
   },
 );
+DivisionEditor.displayName = 'DivisionEditor';
 
 export default DivisionEditor;

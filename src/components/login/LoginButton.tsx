@@ -18,5 +18,6 @@ const LoginButton = React.memo(({ scopes }: { scopes?: string[] }) => {
     </Button>
   );
 });
+LoginButton.displayName = 'LoginButton';
 
 export default LoginButton;

@@ -23,5 +23,6 @@ const TransitSummary = React.memo(() => {
     </Card>
   );
 });
+TransitSummary.displayName = 'TransitSummary';
 
 export default TransitSummary;

@@ -1,8 +1,0 @@
-dist/
-public/
-**/node_modules/
-*.config.js
-*.config.ts
-*.local
-.*
-pdf.worker.min.js

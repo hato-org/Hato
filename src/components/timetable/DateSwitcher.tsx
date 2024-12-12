@@ -42,5 +42,6 @@ const DateSwitcher = React.memo(
     );
   },
 );
+DateSwitcher.displayName = 'DateSwitcher';
 
 export default DateSwitcher;

@@ -27,6 +27,7 @@ const ServerStatusList = React.memo(({ status }: { status?: Status }) => (
     ))}
   </VStack>
 ));
+ServerStatusList.displayName = 'ServerStatusList';
 
 const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -65,6 +66,7 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
     </VStack>
   );
 });
+ServerStatus.displayName = 'ServerStatus';
 
 const ServerStatusHistoryStack = React.memo(({ id }: { id: string }) => {
   const { data } = useHatoStatusHistory({ id });
@@ -135,5 +137,6 @@ const ServerStatusHistoryStack = React.memo(({ id }: { id: string }) => {
     </VStack>
   );
 });
+ServerStatusHistoryStack.displayName = 'ServerStatusHistoryStack';
 
 export default ServerStatusList;

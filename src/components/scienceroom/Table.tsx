@@ -50,11 +50,10 @@ const ScienceRoomTableTable = React.memo(
                   ...data.roomTable.map((room) => room.table.length),
                 ),
               }).map((_, index) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <Tr key={`${index}-${_}`}>
                   <Td>{index + 1}</Td>
                   {data.roomTable.map((room) => (
-                    <Td>
+                    <Td key={room.name}>
                       <Text whiteSpace="pre" textAlign="center">
                         {room.table[index] !== '\n'
                           ? room.table[index] || '-'
@@ -81,5 +80,6 @@ const ScienceRoomTableTable = React.memo(
     );
   },
 );
+ScienceRoomTableTable.displayName = 'ScienceRoomTableTable';
 
 export default ScienceRoomTableTable;

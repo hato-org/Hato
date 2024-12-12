@@ -38,6 +38,7 @@ const StatusInfoList = React.memo(
       </Text>
     ),
 );
+StatusInfoList.displayName = 'StatusInfoList';
 
 const StatusInfo = React.memo(
   ({ title, description, startAt, endAt, scope }: StatusMaintenance) => {
@@ -67,7 +68,7 @@ const StatusInfo = React.memo(
             <Text textStyle="title">{title}</Text>
             <Wrap>
               {scope.map((serverId) => (
-                <Tag size="sm">
+                <Tag key={serverId} size="sm">
                   {data?.find(({ id }) => id === serverId)?.name}
                 </Tag>
               ))}
@@ -115,5 +116,6 @@ const StatusInfo = React.memo(
     );
   },
 );
+StatusInfo.displayName = 'StatusInfo';
 
 export default StatusInfoList;

@@ -82,6 +82,7 @@ function MetaEditor({
           <HStack w="full" justify="space-around" spacing={0}>
             {Array.from({ length: 2 }).map((_, index) => (
               <VStack
+                key={`${JSON.stringify(participantsValue[index])}${index}`}
                 w="full"
                 rounded="xl"
                 spacing={4}

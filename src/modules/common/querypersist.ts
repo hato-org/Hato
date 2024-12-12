@@ -8,7 +8,6 @@ import {
  * Creates an Indexed DB persister
  * @see https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
  */
-// eslint-disable-next-line import/prefer-default-export
 export function createIDBPersister(idbValidKey: IDBValidKey = 'reactQuery') {
   return {
     persistClient: async (client: PersistedClient) => {

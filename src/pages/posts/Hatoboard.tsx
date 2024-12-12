@@ -172,5 +172,6 @@ const Hatoboard = React.memo(() => {
     </Tabs>
   );
 });
+Hatoboard.displayName = 'Hatoboard';
 
 export default Hatoboard;

@@ -187,7 +187,6 @@ const MenuBody = React.memo(() => {
       {menu.map((menuItem, index) =>
         menuItem.type === 'divider' ? (
           <StackDivider
-            // eslint-disable-next-line react/no-array-index-key
             key={`${menuItem.type}-${index}`}
             borderWidth="1px"
             borderColor="border"
@@ -247,3 +246,4 @@ const MenuBody = React.memo(() => {
     </VStack>
   );
 });
+MenuBody.displayName = 'MenuBody';

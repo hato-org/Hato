@@ -110,6 +110,7 @@ const StatusAlert = React.memo(
     );
   },
 );
+StatusAlert.displayName = 'StatusAlert';
 
 const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -139,6 +140,7 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
     </HStack>
   );
 });
+LineInfo.displayName = 'LineInfo';
 
 const StatusDetailModal = React.memo(
   ({
@@ -196,5 +198,6 @@ const StatusDetailModal = React.memo(
     );
   },
 );
+StatusDetailModal.displayName = 'StatusDetailModal';
 
 export default StatusAlert;

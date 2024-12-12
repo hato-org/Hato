@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import {
   Center,
   Heading,
@@ -61,8 +61,6 @@ function Timetable() {
     onClose: reportOnClose,
   } = useDisclosure();
   const [tableFocus, setTableFocus] = useState(false);
-
-  const popoverRef = useRef(null);
 
   const year = Number(searchParams.get('y'));
   const month = Number(searchParams.get('m'));
@@ -139,7 +137,7 @@ function Timetable() {
           await queryClient.invalidateQueries({ queryKey: ['timetable'] });
         }}
       >
-        <Center w="100%" mb={32} ref={popoverRef}>
+        <Center w="100%" mb={32}>
           <VStack w="100%" px={4} spacing={8}>
             <VStack w="100%">
               <DateSwitcher
@@ -184,7 +182,6 @@ function Timetable() {
                         onTouchStart={() => setTableFocus(true)}
                         onTouchEnd={() => setTableFocus(false)}
                         overflowX="auto"
-                        portalContainerRef={popoverRef}
                       />
                     ) : (
                       <Error

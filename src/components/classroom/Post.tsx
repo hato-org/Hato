@@ -115,6 +115,7 @@ const Post = React.memo(
     );
   },
 );
+Post.displayName = 'Post';
 
 export const AsyncPost = React.memo(
   ({
@@ -145,9 +146,7 @@ export const AsyncPost = React.memo(
     )
       return <PostPlaceholder />;
 
-    // eslint-disable-next-line consistent-return
     const post = (() => {
-      // eslint-disable-next-line default-case
       switch (type) {
         case 'announcement':
           return { type, ...announcement };
@@ -161,6 +160,7 @@ export const AsyncPost = React.memo(
     return <Post {...post} />;
   },
 );
+AsyncPost.displayName = 'AsyncPost';
 
 function PostPlaceholder() {
   return (

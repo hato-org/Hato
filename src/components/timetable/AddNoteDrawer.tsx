@@ -54,13 +54,7 @@ const AddNoteDrawer = React.memo(
     const { mutate, isPending } = useAddNoteMutation();
 
     return (
-      <Drawer
-        placement="bottom"
-        isOpen={isOpen}
-        onClose={onClose}
-        autoFocus={false}
-        {...rest}
-      >
+      <Drawer placement="bottom" isOpen={isOpen} onClose={onClose} {...rest}>
         <DrawerOverlay />
         <DrawerContent
           borderTopRadius="xl"
@@ -279,5 +273,6 @@ const AddNoteDrawer = React.memo(
     );
   },
 );
+AddNoteDrawer.displayName = 'AddNoteDrawer';
 
 export default AddNoteDrawer;

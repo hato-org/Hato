@@ -181,6 +181,7 @@ const SearchResult = React.memo(
     </Box>
   ),
 );
+SearchResult.displayName = 'SearchResult';
 
 function FreeSearch({ onSubmit }: { onSubmit: () => void }) {
   const [params, setParams] = useAtom(librarySearchAtom);

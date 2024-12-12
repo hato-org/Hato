@@ -77,5 +77,6 @@ const UserInfo = React.memo(
     );
   },
 );
+UserInfo.displayName = 'UserInfo';
 
 export default UserInfo;

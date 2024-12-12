@@ -10,7 +10,6 @@ import { FaTableTennis, FaFutbol } from 'react-icons/fa';
 import { IoFootball } from 'react-icons/io5';
 import { GiShuttlecock } from 'react-icons/gi';
 
-// eslint-disable-next-line import/prefer-default-export
 export const sportIcon: Record<ClassmatchSportId, IconType> = {
   futsal: FaFutbol,
   volleyball: TbBallVolleyball,

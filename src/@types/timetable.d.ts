@@ -83,8 +83,8 @@ interface DaySchedule {
   };
   target: {
     type: Type;
-    grade: Number;
-    class: Number;
+    grade: number;
+    class: number;
     course?: Course;
   }[];
   meta: {

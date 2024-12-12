@@ -149,6 +149,7 @@ const UpcomingTrains = React.memo(() => {
     </Card>
   );
 });
+UpcomingTrains.displayName = 'UpcomingTrains';
 
 export const PrimaryUpcomingTrainCountdown = React.memo(
   ({
@@ -199,6 +200,8 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
     );
   },
 );
+PrimaryUpcomingTrainCountdown.displayName = 'PrimaryUpcomingTrainCountdown';
+
 export const SecondoryUpcomingTrainCountdown = React.memo(
   ({
     date,
@@ -247,5 +250,6 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
     );
   },
 );
+SecondoryUpcomingTrainCountdown.displayName = 'SecondoryUpcomingTrainCountdown';
 
 export default UpcomingTrains;

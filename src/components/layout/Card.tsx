@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const Card__ = React.forwardRef<HTMLDivElement, BoxProps>(
   ({ children, ...rest }: BoxProps, ref) => (
     <Box
@@ -20,8 +19,9 @@ const Card__ = React.forwardRef<HTMLDivElement, BoxProps>(
     >
       {children}
     </Box>
-  )
+  ),
 );
+Card__.displayName = 'Card';
 
 const Card = React.memo(Card__);
 

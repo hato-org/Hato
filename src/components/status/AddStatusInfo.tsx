@@ -146,5 +146,6 @@ const AddStatusInfo = React.memo(
     );
   },
 );
+AddStatusInfo.displayName = 'AddStatusInfo';
 
 export default AddStatusInfo;

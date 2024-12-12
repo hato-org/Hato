@@ -51,7 +51,7 @@ function EventDetail() {
     onClose: reportOnClose,
     onOpen: reportOnOpen,
   } = useDisclosure();
-  const cancelRef = useRef<any>();
+  const cancelRef = useRef<HTMLElement>(null);
 
   const { data: user } = useUser();
 

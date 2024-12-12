@@ -17,6 +17,7 @@ function ErrorFallback() {
   const { logout } = useAuth();
   const [sendReport, setSendReport] = useState(true);
 
+  // eslint-disable-next-line no-console
   console.error(error);
 
   const { mutate } = useReport();
@@ -32,7 +33,8 @@ function ErrorFallback() {
   );
 
   return (
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Chakra UI doesn't support `dvh`
     <Center w="full" h={[['100vh', '100dvh']]} p={8}>
       <VStack w="full" spacing={4} userSelect="text">
         <Heading>エラーが発生しました</Heading>

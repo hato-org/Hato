@@ -44,17 +44,15 @@ export const useBookInfoByISDN = (isbn: string) =>
       running = res.running;
       while (running) {
         // wait 500ms for polling
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((r) => {
-          setTimeout(r, 500);
+        await new Promise((resolve) => {
+          setTimeout(resolve, 500);
         });
         const pollingRes = (
-          await axios.get<LibrarySearchDiffResponse>( // eslint-disable-line no-await-in-loop
+          await axios.get<LibrarySearchDiffResponse>(
             'https://unitrad.calil.jp/v1/polling',
             { params: { uuid: res.uuid, version, diff: 1 } },
           )
         ).data;
-        // eslint-disable-next-line no-continue
         if (!pollingRes) continue;
         books.push(...pollingRes.books_diff.insert);
 
@@ -101,17 +99,15 @@ export const useLibrarySearch = (
 
       while (running) {
         // wait 500ms for polling
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((r) => {
-          setTimeout(r, 500);
+        await new Promise((resolve) => {
+          setTimeout(resolve, 500);
         });
         const pollingRes = (
-          await axios.get<LibrarySearchDiffResponse>( // eslint-disable-line no-await-in-loop
+          await axios.get<LibrarySearchDiffResponse>(
             'https://unitrad.calil.jp/v1/polling',
             { params: { uuid: res.uuid, version, diff: 1 } },
           )
         ).data;
-        // eslint-disable-next-line no-continue
         if (!pollingRes) continue;
         books.push(...pollingRes.books_diff.insert);
         running = pollingRes.running;

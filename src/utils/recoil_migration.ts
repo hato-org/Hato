@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /*
 	Recoil state migration script
 

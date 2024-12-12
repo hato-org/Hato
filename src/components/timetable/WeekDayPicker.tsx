@@ -104,5 +104,6 @@ const WeekDayPicker = React.memo(
     );
   },
 );
+WeekDayPicker.displayName = 'WeekDayPicker';
 
 export default WeekDayPicker;

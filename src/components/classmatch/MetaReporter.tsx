@@ -32,7 +32,7 @@ export default function MetaReporter({
   });
   const { classmatchTournament } = useAtomValue(overlayAtom);
   const [description, setDescription] = useState('');
-  const { data, status, error } = useUserInfo(history?.at(-1)?.userId!, {
+  const { data, status, error } = useUserInfo(history?.at(-1)?.userId ?? '', {
     enabled: !!history?.at(-1),
   });
 

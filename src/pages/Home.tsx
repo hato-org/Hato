@@ -15,7 +15,8 @@ function Home() {
         <title>{import.meta.env.VITE_APP_NAME}</title>
       </Helmet>
       <Center
-        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore: Charkra UI doesn't support `dvh`
         minH={[['100vh', '100dvh']]}
         flexDirection="column"
         p={8}

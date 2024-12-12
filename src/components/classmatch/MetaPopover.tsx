@@ -222,5 +222,6 @@ const TournamentMetaPopover = React.memo(
     );
   },
 );
+TournamentMetaPopover.displayName = 'TournamentMetaPopover';
 
 export default TournamentMetaPopover;

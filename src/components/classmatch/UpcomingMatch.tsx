@@ -105,6 +105,7 @@ const UpcomingMatch = React.memo(
     );
   },
 );
+UpcomingMatch.displayName = 'UpcomingMatch';
 
 const Match = React.memo(
   ({ id, name, startAt, location }: ClassmatchTournamentUpcoming) => {
@@ -226,5 +227,6 @@ const Match = React.memo(
     );
   },
 );
+Match.displayName = 'Match';
 
 export default UpcomingMatch;

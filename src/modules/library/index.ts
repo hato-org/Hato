@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const generateISBN13 = (isbn: string) => {
   const isbnNumber = isbn.replaceAll('-', '');
   if (isbnNumber.length === 13) return isbn;

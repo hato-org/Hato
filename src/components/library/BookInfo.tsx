@@ -196,5 +196,6 @@ const BookInfo = React.memo(
     );
   },
 );
+BookInfo.displayName = 'BookInfo';
 
 export default BookInfo;

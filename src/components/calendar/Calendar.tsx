@@ -192,6 +192,7 @@ const Calendar = React.memo(
     );
   },
 );
+Calendar.displayName = 'Calendar';
 
 interface MonthSwitcherProps {
   date: Date;
@@ -220,5 +221,6 @@ const MonthSwitcher = React.memo(
     </HStack>
   ),
 );
+MonthSwitcher.displayName = 'MonthSwitcher';
 
 export default Calendar;

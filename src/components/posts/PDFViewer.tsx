@@ -134,5 +134,6 @@ const PDFViewer = React.memo(
     );
   },
 );
+PDFViewer.displayName = 'PDFViewer';
 
 export default PDFViewer;
