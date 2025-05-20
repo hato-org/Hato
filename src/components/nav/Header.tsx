@@ -70,5 +70,6 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
     </Center>
   );
 });
+Header.displayName = 'Header';
 
 export default Header;

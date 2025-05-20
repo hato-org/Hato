@@ -37,7 +37,8 @@ const LiveStream = React.memo(({ type, name, url }: ClassmatchLiveStream) =>
       <Spacer />
       <Icon as={TbExternalLink} boxSize={6} />
     </HStack>
-  )
+  ),
 );
+LiveStream.displayName = 'LiveStream';
 
 export default LiveStream;

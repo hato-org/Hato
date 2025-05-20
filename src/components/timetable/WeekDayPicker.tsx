@@ -18,14 +18,14 @@ import {
   format,
   getDay,
   startOfWeek,
-} from 'date-fns/esm';
+} from 'date-fns';
 import { ja } from 'date-fns/locale';
 
 interface WeekDayPickerProps {
   onWeekSelect: (week: Week) => void;
-  onDaySelect: (day: Day) => void;
+  onDaySelect: (day: number) => void;
   week?: Week;
-  day?: Day;
+  day?: number;
 }
 
 const WeekDayPicker = React.memo(
@@ -104,5 +104,6 @@ const WeekDayPicker = React.memo(
     );
   },
 );
+WeekDayPicker.displayName = 'WeekDayPicker';
 
 export default WeekDayPicker;

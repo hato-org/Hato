@@ -7,7 +7,7 @@ import {
   Text,
   Center,
 } from '@chakra-ui/react';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import Card from '../layout/Card';
 
 const DiaInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
@@ -54,5 +54,6 @@ const DiaInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
     </Card>
   );
 });
+DiaInfo.displayName = 'DiaInfo';
 
 export default DiaInfo;

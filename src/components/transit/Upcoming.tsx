@@ -15,11 +15,15 @@ import {
 } from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
 import { useSeconds } from 'use-seconds';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import Card from '../layout/Card';
 import { useTransitTimetable } from '@/services/transit';
 import { TrainTimetableModal } from './Timetable';
-import { dayNumberToString, formatTimeDifference, formatTimeStringToDate } from '@/utils/transit';
+import {
+  dayNumberToString,
+  formatTimeDifference,
+  formatTimeStringToDate,
+} from '@/utils/transit';
 
 type UpcomingTrain = TransitTimetable & {
   name?: string;
@@ -145,6 +149,7 @@ const UpcomingTrains = React.memo(() => {
     </Card>
   );
 });
+UpcomingTrains.displayName = 'UpcomingTrains';
 
 export const PrimaryUpcomingTrainCountdown = React.memo(
   ({
@@ -195,6 +200,8 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
     );
   },
 );
+PrimaryUpcomingTrainCountdown.displayName = 'PrimaryUpcomingTrainCountdown';
+
 export const SecondoryUpcomingTrainCountdown = React.memo(
   ({
     date,
@@ -243,5 +250,6 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
     );
   },
 );
+SecondoryUpcomingTrainCountdown.displayName = 'SecondoryUpcomingTrainCountdown';
 
 export default UpcomingTrains;

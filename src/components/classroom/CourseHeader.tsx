@@ -35,5 +35,6 @@ const CourseHeader = React.memo(({ courseId }: { courseId?: string }) => {
     </VStack>
   );
 });
+CourseHeader.displayName = 'CourseHeader';
 
 export default CourseHeader;

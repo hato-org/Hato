@@ -10,7 +10,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import { useAtom } from 'jotai';

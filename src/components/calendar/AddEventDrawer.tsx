@@ -59,13 +59,7 @@ const AddEventDrawer = React.memo(
 
     // TODO: refactor with react-hook-form
     return (
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="bottom"
-        autoFocus={false}
-        {...rest}
-      >
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" {...rest}>
         <DrawerOverlay />
         <DrawerContent
           borderTopRadius="xl"
@@ -270,4 +264,5 @@ const AddEventDrawer = React.memo(
   },
 );
 
+AddEventDrawer.displayName = 'AddEventDrawer';
 export default AddEventDrawer;

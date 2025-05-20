@@ -13,8 +13,8 @@ import {
   Wrap,
   useDisclosure,
 } from '@chakra-ui/react';
-import { format } from 'date-fns/esm';
-import { ja } from 'date-fns/esm/locale';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { TbChevronDown, TbChevronRight } from 'react-icons/tb';
 import { useHatoStatusServerList } from '@/services/status';
 
@@ -38,6 +38,7 @@ const StatusInfoList = React.memo(
       </Text>
     ),
 );
+StatusInfoList.displayName = 'StatusInfoList';
 
 const StatusInfo = React.memo(
   ({ title, description, startAt, endAt, scope }: StatusMaintenance) => {
@@ -67,7 +68,7 @@ const StatusInfo = React.memo(
             <Text textStyle="title">{title}</Text>
             <Wrap>
               {scope.map((serverId) => (
-                <Tag size="sm">
+                <Tag key={serverId} size="sm">
                   {data?.find(({ id }) => id === serverId)?.name}
                 </Tag>
               ))}
@@ -115,5 +116,6 @@ const StatusInfo = React.memo(
     );
   },
 );
+StatusInfo.displayName = 'StatusInfo';
 
 export default StatusInfoList;

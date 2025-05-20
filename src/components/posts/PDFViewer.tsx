@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Drawer,
@@ -16,9 +16,12 @@ import {
   Center,
   useBreakpointValue,
   Icon,
+  Editable,
+  EditablePreview,
+  EditableInput,
 } from '@chakra-ui/react';
 import { useIsFetching } from '@tanstack/react-query';
-import { TbExternalLink, TbX } from 'react-icons/tb';
+import { TbExternalLink, TbX, TbZoomIn, TbZoomOut } from 'react-icons/tb';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -33,7 +36,7 @@ interface PDFViewerProps {
 }
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
+  'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
 ).toString();
 
@@ -44,6 +47,10 @@ const PDFViewer = React.memo(
       base: window.innerWidth,
       md: undefined,
     });
+    const isZoomControlShow = useBreakpointValue({
+      base: false,
+      lg: true,
+    });
 
     const { data, error, isPending } = usePostAttachment(attachment.id, {
       enabled: isOpen,
@@ -51,7 +58,13 @@ const PDFViewer = React.memo(
       gcTime: Infinity, // Infinity
     });
 
+    const pdfData = useMemo(
+      () => (isOpen ? structuredClone(data) : undefined),
+      [isOpen, data],
+    );
+
     const [pageCount, setPageCount] = useState(0);
+    const [zoom, setZoom] = useState(100);
 
     return (
       <Drawer
@@ -102,14 +115,11 @@ const PDFViewer = React.memo(
                 <Error error={error} />
               ) : (
                 <Document
-                  file={{
-                    data: structuredClone(data),
-                  }}
+                  file={pdfData}
                   onLoadSuccess={(pdf) => {
                     setPageCount(pdf.numPages);
                   }}
                   loading={<Loading />}
-                  // renderMode="svg"
                 >
                   {Array.from(new Array(pageCount), (el, index) => (
                     <Center
@@ -117,8 +127,10 @@ const PDFViewer = React.memo(
                       py={2}
                       shadow="md"
                       maxW="100vw"
+                      onDoubleClick={() => setZoom((z) => z + 20)}
                     >
                       <Page
+                        scale={zoom * 0.01}
                         width={pdfWidth}
                         pageNumber={index + 1}
                         loading={<Loading />}
@@ -128,11 +140,72 @@ const PDFViewer = React.memo(
                 </Document>
               )}
             </Center>
+            {isZoomControlShow && (
+              <ZoomControls
+                zoom={zoom}
+                onZoomIn={() => setZoom((z) => z + 10)}
+                onZoomOut={() => setZoom((z) => z - 10)}
+                onSetZoom={(z) =>
+                  /[^0-9]/.test(z) ? undefined : setZoom(Number(z))
+                }
+              />
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     );
   },
 );
+PDFViewer.displayName = 'PDFViewer';
+
+const ZoomControls = React.memo(
+  ({
+    zoom,
+    onZoomIn,
+    onZoomOut,
+    onSetZoom,
+  }: {
+    zoom: number;
+    onZoomIn: () => void;
+    onZoomOut: () => void;
+    onSetZoom: (zoom: string) => void;
+  }) => (
+    <Center position="fixed" bottom={4} w="full" zIndex={3000}>
+      <HStack
+        bg="bgAlpha"
+        backdropFilter="auto"
+        backdropBlur="sm"
+        px={2}
+        py={2}
+        rounded="xl"
+        shadow="lg"
+        spacing={4}
+        border="1px solid"
+        borderColor="border"
+      >
+        <IconButton
+          aria-label="Zoom out"
+          rounded="lg"
+          onClick={onZoomOut}
+          icon={<Icon boxSize={6} as={TbZoomOut} />}
+        />
+        <HStack textStyle="title">
+          <Editable value={zoom.toString()} onChange={onSetZoom}>
+            <EditablePreview />
+            <EditableInput />
+          </Editable>
+          <Text>%</Text>
+        </HStack>
+        <IconButton
+          aria-label="Zoom in"
+          rounded="lg"
+          onClick={onZoomIn}
+          icon={<Icon boxSize={6} as={TbZoomIn} />}
+        />
+      </HStack>
+    </Center>
+  ),
+);
+ZoomControls.displayName = 'ZoomControls';
 
 export default PDFViewer;

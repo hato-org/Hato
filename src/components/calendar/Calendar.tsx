@@ -8,7 +8,7 @@ import {
   Divider,
   Center,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import {
   eachWeekOfInterval,
   eachDayOfInterval,
@@ -21,7 +21,7 @@ import {
   isSameMonth,
   isSameDay,
   isToday,
-} from 'date-fns/esm';
+} from 'date-fns';
 import React, { useMemo } from 'react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
 import Card from '../layout/Card';
@@ -192,6 +192,7 @@ const Calendar = React.memo(
     );
   },
 );
+Calendar.displayName = 'Calendar';
 
 interface MonthSwitcherProps {
   date: Date;
@@ -220,5 +221,6 @@ const MonthSwitcher = React.memo(
     </HStack>
   ),
 );
+MonthSwitcher.displayName = 'MonthSwitcher';
 
 export default Calendar;

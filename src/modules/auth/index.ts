@@ -2,8 +2,8 @@ import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 import { useSetAtom } from 'jotai';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router';
+import { CodeResponse, useGoogleLogin } from '@react-oauth/google';
 import { useQueryClient } from '@tanstack/react-query';
 import { jwtAtom, userAtom } from '@/store/auth';
 import { unregister } from '@/utils/serviceWorker';
@@ -12,7 +12,6 @@ const API_URL = import.meta.env.DEV
   ? `${window.location.protocol}//${window.location.host}/api`
   : import.meta.env.VITE_API_URL;
 
-// eslint-disable-next-line import/prefer-default-export
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
   const setUser = useSetAtom(userAtom);
@@ -25,7 +24,10 @@ export const useAuth = (scopes?: string[]) => {
   const navigate = useNavigate();
 
   const onFail = useCallback(
-    (error: any) => {
+    (
+      error: Pick<CodeResponse, 'error' | 'error_description' | 'error_uri'>,
+    ) => {
+      // eslint-disable-next-line no-console
       console.error('Error occurred while logging in:', error);
 
       toast({
@@ -102,7 +104,6 @@ export const useAuth = (scopes?: string[]) => {
     },
     onError: (err) => {
       onFail(err);
-      console.error(err);
     },
     flow: 'auth-code',
     hosted_domain: 'g.nagano-c.ed.jp',

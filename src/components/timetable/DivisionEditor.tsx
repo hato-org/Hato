@@ -17,7 +17,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { format, startOfDay } from 'date-fns/esm';
+import { format, startOfDay } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbX } from 'react-icons/tb';
 import WeekDayPicker from './WeekDayPicker';
@@ -39,7 +39,7 @@ const DivisionEditor = React.memo(
     const [division, setDivision] = useState<Partial<Division>>({
       date: startOfDay(date),
       week: undefined,
-      day: date.getDay() as Day,
+      day: date.getDay(),
       irregular: false,
     });
 
@@ -51,7 +51,7 @@ const DivisionEditor = React.memo(
       setDivision({
         date: startOfDay(date),
         week: undefined,
-        day: date.getDay() as Day,
+        day: date.getDay(),
         irregular: false,
         ...currentDivision,
       });
@@ -154,5 +154,6 @@ const DivisionEditor = React.memo(
     );
   },
 );
+DivisionEditor.displayName = 'DivisionEditor';
 
 export default DivisionEditor;

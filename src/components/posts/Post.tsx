@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { TbClock, TbFile, TbPaperclip, TbTag } from 'react-icons/tb';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';

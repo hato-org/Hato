@@ -120,5 +120,6 @@ const AddCardDrawer = React.memo(() => {
     </Drawer>
   );
 });
+AddCardDrawer.displayName = 'AddCardDrawer';
 
 export default AddCardDrawer;

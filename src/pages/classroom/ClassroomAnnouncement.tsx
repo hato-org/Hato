@@ -14,7 +14,7 @@ import {
   SkeletonText,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router';
 import { TbExclamationCircle, TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { useAtom } from 'jotai';

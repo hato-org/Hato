@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { eachMonthOfInterval } from 'date-fns/esm';
+import { eachMonthOfInterval } from 'date-fns';
 import { useClient } from '@/modules/client';
 
 export const useEvents = (

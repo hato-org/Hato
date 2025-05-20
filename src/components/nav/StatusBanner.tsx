@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Box, Collapse, HStack, Icon, Text, VStack } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import {
   TbAlertTriangle,
   TbChevronRight,

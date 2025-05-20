@@ -1,6 +1,6 @@
 import { Center, HStack, Heading } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
-import { useLocation, useOutlet } from 'react-router-dom';
+import { useLocation, useOutlet } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';

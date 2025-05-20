@@ -125,9 +125,9 @@ const TournamentSection = React.memo(
               {...{
                 [(tournament.id.at(-1) ?? '') === '0' ? 'bottom' : 'top']:
                   '50%',
-                h: `calc(100% / ${numOfClass?.flat()
-                  ?.length} / 2 * ${numOfClass?.[Math.abs(index - 1)]
-                  ?.length} - 2px)`,
+                h: `calc(100% / ${numOfClass?.flat()?.length} / 2 * ${
+                  numOfClass?.[Math.abs(index - 1)]?.length
+                } - 2px)`,
                 bg: winnerId === tournament.id ? 'blue.400' : 'border',
               }}
             />
@@ -153,6 +153,7 @@ const TournamentSection = React.memo(
     );
   },
 );
+TournamentSection.displayName = 'TournamentSection';
 
 const TournamentLeaf = React.memo(
   ({
@@ -182,3 +183,4 @@ const TournamentLeaf = React.memo(
     </HStack>
   ),
 );
+TournamentLeaf.displayName = 'TournamentLeaf';

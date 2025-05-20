@@ -1,6 +1,6 @@
 import { HStack, Icon, Spacer, Text, VStack } from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 interface LibraryCategoryButtonProps {
   icon: JSX.Element;

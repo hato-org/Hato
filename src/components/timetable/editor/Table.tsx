@@ -74,6 +74,7 @@ export const EditorTable = React.memo(
                 ?.slice(1, 6)
                 .map((weekSchedule, index) => (
                   <EditorTableCol
+                    key={`schedule-day${index}`}
                     schedule={weekSchedule}
                     meta={meta}
                     isPrivate={isPrivate}
@@ -88,6 +89,7 @@ export const EditorTable = React.memo(
     );
   },
 );
+EditorTable.displayName = 'EditorTable';
 
 const EditorTableCol = React.memo(
   ({
@@ -107,11 +109,7 @@ const EditorTableCol = React.memo(
     const [, setSchedule] = useUserScheduleContext();
 
     return (
-      <VStack
-        // eslint-disable-next-line react/no-array-index-key
-        key={JSON.stringify(schedule) + dayIndex}
-        spacing={1}
-      >
+      <VStack key={JSON.stringify(schedule) + dayIndex} spacing={1}>
         <Text
           w="full"
           textAlign="center"
@@ -122,7 +120,6 @@ const EditorTableCol = React.memo(
         </Text>
         {schedule.map((period, index) => (
           <EditorSubjectGrid
-            // eslint-disable-next-line react/no-array-index-key
             key={`${period.subjectId} + ${index}`}
             subjectId={period.subjectId}
             meta={meta}
@@ -189,6 +186,7 @@ const EditorTableCol = React.memo(
     );
   },
 );
+EditorTableCol.displayName = 'EditorTableCol';
 
 function EditorSubjectGrid({
   subjectId,
@@ -243,7 +241,7 @@ function EditorSubjectGrid({
                 fontSize="sm"
                 wordBreak="break-all"
               >
-                {subjectId ? data.short_name ?? data.name : '-'}
+                {subjectId ? (data.short_name ?? data.name) : '-'}
               </Text>
             )}
           </Center>

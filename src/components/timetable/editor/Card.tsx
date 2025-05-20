@@ -141,11 +141,10 @@ const Card = React.memo(
                         ...schedules.A.map((daySchedule) => daySchedule.length),
                       ),
                     }).map((_, index) => (
-                      <Tr>
+                      <Tr key={index}>
                         <Td textStyle="title">{index + 1}</Td>
                         {schedules.A.slice(1, 6).map((daySchedule, idx) => (
                           <TablePeriod
-                            // eslint-disable-next-line react/no-array-index-key
                             key={`${days[index]}-${idx}`}
                             subjectId={daySchedule[index]?.subjectId}
                           />
@@ -171,10 +170,11 @@ const Card = React.memo(
                         ...schedules.B.map((daySchedule) => daySchedule.length),
                       ),
                     }).map((_, index) => (
-                      <Tr>
+                      <Tr key={index}>
                         <Td textStyle="title">{index + 1}</Td>
-                        {schedules.B.slice(1, 6).map((daySchedule) => (
+                        {schedules.B.slice(1, 6).map((daySchedule, idx) => (
                           <TablePeriod
+                            key={`${days[index]}-${idx}`}
                             subjectId={daySchedule[index]?.subjectId}
                           />
                         ))}
@@ -251,6 +251,7 @@ const Card = React.memo(
     );
   },
 );
+Card.displayName = 'Card';
 
 const TablePeriod = React.memo(
   ({ subjectId }: { subjectId: string | null }) => {
@@ -263,5 +264,6 @@ const TablePeriod = React.memo(
     );
   },
 );
+TablePeriod.displayName = 'TablePeriod';
 
 export default Card;

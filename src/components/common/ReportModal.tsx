@@ -110,5 +110,6 @@ const ReportModal = React.memo(
     );
   },
 );
+ReportModal.displayName = 'ReportModal';
 
 export default ReportModal;

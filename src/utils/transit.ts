@@ -1,4 +1,4 @@
-import { differenceInMinutes, differenceInSeconds, format } from 'date-fns/esm';
+import { differenceInMinutes, differenceInSeconds, format } from 'date-fns';
 
 export const formatTimeStringToDate = (date: Date, timeString?: string) =>
   new Date(

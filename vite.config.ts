@@ -43,7 +43,8 @@ export default defineConfig(({ mode }) => {
           remarkPlugins: [remarkGfm],
         }),
       },
-      react({ plugins: [['@swc-jotai/debug-label', {}]] }),
+      // react({ plugins: [['@swc-jotai/debug-label', {}]] }),
+      react(),
       tsConfigPaths(),
       VitePWA({
         strategies: 'injectManifest',

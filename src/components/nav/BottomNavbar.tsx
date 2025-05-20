@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { HStack, Icon, Center, Box, IconButton, Slide } from '@chakra-ui/react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { useAtomValue } from 'jotai';
 import {
   TbHome,

@@ -1,6 +1,6 @@
 import { Button, Center, Icon, Text, VStack } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 type ErrorProps =
   | {

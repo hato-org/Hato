@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const useIsOnline = () => {
   const [online, setOnline] = useState(navigator.onLine);
 

@@ -62,6 +62,7 @@ const GradeClassPicker = React.memo(
       },
     );
 
+    // TODO: move logics to separated functions (don't use effects)
     useEffect(() => {
       if (!grade)
         setGrade(
@@ -70,19 +71,19 @@ const GradeClassPicker = React.memo(
               gradeType === defaultType && gradeCode === defaultGrade,
           ),
         );
-    }, [gradeInitialLoading]);
+    }, [grade, gradeList, defaultGrade, defaultType, gradeInitialLoading]);
 
     useEffect(() => {
       if (!schoolClass)
         setClass(
           classList?.find(({ classCode }) => classCode === defaultClass),
         );
-    }, [classInitialLoading]);
+    }, [schoolClass, classList, defaultClass, classInitialLoading]);
 
     useEffect(() => {
       if (!course)
         setCourse(courseList?.find(({ code }) => code === defaultCourse));
-    }, [courseInitialLoading]);
+    }, [course, courseList, defaultCourse, courseInitialLoading]);
 
     useEffect(() => {
       if (schoolClass) setClass(undefined);
@@ -239,5 +240,6 @@ const GradeClassPicker = React.memo(
     );
   },
 );
+GradeClassPicker.displayName = 'GradeClassPicker';
 
 export default GradeClassPicker;

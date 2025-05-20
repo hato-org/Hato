@@ -1,6 +1,6 @@
 import { Icon, IconButton } from '@chakra-ui/react';
 import { TbArrowNarrowLeft } from 'react-icons/tb';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 function BackButton() {
   const navigate = useNavigate();

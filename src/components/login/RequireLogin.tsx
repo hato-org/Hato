@@ -1,9 +1,4 @@
-import {
-  Navigate,
-  Outlet,
-  ScrollRestoration,
-  useLocation,
-} from 'react-router-dom';
+import { Navigate, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { useAtomValue } from 'jotai';
 import usePageTracking from '@/hooks/common/ga4';
 import PageContainer from '../layout/PageContainer';

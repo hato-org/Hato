@@ -116,6 +116,7 @@ export default function UserScheduleEditor() {
                 />
                 {Object.entries(schedule.schedules).map(([key, val]) => (
                   <EditorTable
+                    key={key}
                     week={key as Week}
                     schedules={val}
                     meta={schedule.meta}

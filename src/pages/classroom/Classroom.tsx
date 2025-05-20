@@ -10,7 +10,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import { useAtom } from 'jotai';
@@ -58,7 +58,8 @@ export default function Classroom() {
 
   if (error?.response?.status === 401)
     return (
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: Chakra UI doesn't support `dvh`
       <VStack spacing={8} w="full" h={[['100dvh', '100vh']]} justify="center">
         <Icon as={TbExclamationCircle} boxSize={24} color="yellow.400" />
         <Text textAlign="center" textStyle="title" fontSize="xl">

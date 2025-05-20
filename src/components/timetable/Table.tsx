@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 import {
   TableContainer,
   Table,
@@ -12,14 +12,14 @@ import {
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import { useUserSubject } from '@/services/timetable';
+import { AxiosError } from 'axios';
 
 interface TimetableTableProps extends TableProps {
   week: Week;
-  day: Day;
+  day: number;
   schedules?: UserSchedule['schedules'];
   isLoading?: boolean;
-  portalContainerRef?: RefObject<HTMLElement | null>;
-  error?: any;
+  error?: AxiosError;
 }
 
 const TimetableTable = React.memo(
@@ -29,7 +29,6 @@ const TimetableTable = React.memo(
     schedules,
     isLoading,
     error,
-    portalContainerRef,
     ...rest
   }: TimetableTableProps) => {
     if (isLoading) return <Loading />;
@@ -48,7 +47,6 @@ const TimetableTable = React.memo(
           <Tbody>
             {Array.from({ length: schedules?.[week][day].length ?? 0 }).map(
               (_, index) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <Tr key={`${schedules?.[week][day][index]?.subjectId}${index}`}>
                   <Td>{index + 1}</Td>
                   <TablePeriod {...schedules?.[week][day][index]} />
@@ -61,6 +59,7 @@ const TimetableTable = React.memo(
     );
   },
 );
+TimetableTable.displayName = 'TimetableTable';
 
 const TablePeriod = React.memo(
   ({ subjectId }: { subjectId?: string | null }) => {
@@ -78,5 +77,6 @@ const TablePeriod = React.memo(
     );
   },
 );
+TablePeriod.displayName = 'TablePeriod';
 
 export default TimetableTable;

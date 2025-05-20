@@ -40,5 +40,6 @@ const SportButton = React.memo(
     );
   },
 );
+SportButton.displayName = 'SportButton';
 
 export default SportButton;

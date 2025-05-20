@@ -63,7 +63,7 @@ const UserSubjectPicker = React.memo(
     }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-      <Modal isOpen={isOpen} onClose={onCancel} autoFocus={false} size="xl">
+      <Modal isOpen={isOpen} onClose={onCancel} size="xl">
         <ModalOverlay zIndex={1400} />
         <ModalContent
           zIndex={1500}
@@ -216,6 +216,7 @@ const UserSubjectPicker = React.memo(
     );
   },
 );
+UserSubjectPicker.displayName = 'UserSubjectPicker';
 
 const UserSubjectSuggestion = React.memo(
   ({
@@ -276,5 +277,6 @@ const UserSubjectSuggestion = React.memo(
     </VStack>
   ),
 );
+UserSubjectSuggestion.displayName = 'UserSubjectSuggestion';
 
 export default UserSubjectPicker;

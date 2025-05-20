@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Tabs, TabList, Tab, TabPanel, TabPanels, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useAtom, useAtomValue } from 'jotai';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import CardElement from '@/components/cards';
@@ -172,5 +172,6 @@ const Hatoboard = React.memo(() => {
     </Tabs>
   );
 });
+Hatoboard.displayName = 'Hatoboard';
 
 export default Hatoboard;

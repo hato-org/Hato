@@ -58,6 +58,7 @@ const Loading = React.memo(
     );
   },
 );
+Loading.displayName = 'Loading';
 
 export const GlobalLoading = React.memo(() => (
   <AnimatePresence>
@@ -79,5 +80,6 @@ export const GlobalLoading = React.memo(() => (
     </MotionCenter>
   </AnimatePresence>
 ));
+GlobalLoading.displayName = 'GlobalLoading';
 
 export default Loading;

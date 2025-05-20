@@ -15,7 +15,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { TbFlag, TbPencil } from 'react-icons/tb';
 
 import MetaEditor from './MetaEditor';
@@ -222,5 +222,6 @@ const TournamentMetaPopover = React.memo(
     );
   },
 );
+TournamentMetaPopover.displayName = 'TournamentMetaPopover';
 
 export default TournamentMetaPopover;

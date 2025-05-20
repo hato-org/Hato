@@ -55,6 +55,7 @@ const DiaStatus = React.memo(() => {
     </VStack>
   );
 });
+DiaStatus.displayName = 'DiaStatus';
 
 const UnstableInfo = React.memo(
   ({
@@ -101,6 +102,7 @@ const UnstableInfo = React.memo(
     );
   },
 );
+UnstableInfo.displayName = 'UnstableInfo';
 
 const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
   const borderColor = (() => {
@@ -127,5 +129,6 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
     </HStack>
   );
 });
+LineInfo.displayName = 'LineInfo';
 
 export default DiaStatus;

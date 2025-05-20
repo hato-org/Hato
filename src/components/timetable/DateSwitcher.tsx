@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { HStack, IconButton, Input, StackProps } from '@chakra-ui/react';
 import { TbChevronLeft, TbChevronRight } from 'react-icons/tb';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 
 interface DateSwitcherProps extends StackProps {
   date: Date;
@@ -40,7 +40,8 @@ const DateSwitcher = React.memo(
         />
       </HStack>
     );
-  }
+  },
 );
+DateSwitcher.displayName = 'DateSwitcher';
 
 export default DateSwitcher;

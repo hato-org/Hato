@@ -91,5 +91,6 @@ const Material = React.memo(
     return null;
   },
 );
+Material.displayName = 'Material';
 
 export default Material;

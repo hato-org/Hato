@@ -37,13 +37,13 @@ function Top() {
         href: 'public-news',
       },
     ],
-    []
+    [],
   );
 
   return (
     <VStack w="100%" p={4}>
       {categories.map((category) => (
-        <PostCategoryButton {...category} />
+        <PostCategoryButton key={category.label} {...category} />
       ))}
       {/* <PostCategoryButton label='教科通信' description="各教科からのお知らせです。" icon={TbFile} /> */}
     </VStack>

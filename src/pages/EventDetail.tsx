@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet-async';
 import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import { useRef } from 'react';
 import Header from '@/components/nav/Header';
 import Error from '@/components/cards/Error';
@@ -51,7 +51,7 @@ function EventDetail() {
     onClose: reportOnClose,
     onOpen: reportOnOpen,
   } = useDisclosure();
-  const cancelRef = useRef<any>();
+  const cancelRef = useRef<HTMLElement>(null);
 
   const { data: user } = useUser();
 

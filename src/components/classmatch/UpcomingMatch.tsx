@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { TbChevronDown } from 'react-icons/tb';
 import { useClassmatchUpcomingList } from '@/services/classmatch';
 import { sportIcon } from '@/utils/classmatch';
@@ -105,6 +105,7 @@ const UpcomingMatch = React.memo(
     );
   },
 );
+UpcomingMatch.displayName = 'UpcomingMatch';
 
 const Match = React.memo(
   ({ id, name, startAt, location }: ClassmatchTournamentUpcoming) => {
@@ -226,5 +227,6 @@ const Match = React.memo(
     );
   },
 );
+Match.displayName = 'Match';
 
 export default UpcomingMatch;

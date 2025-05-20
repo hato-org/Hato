@@ -20,7 +20,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbChevronUp, TbX } from 'react-icons/tb';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 import { useClassmatchMutation } from '@/services/classmatch';
 
 function MetaEditor({
@@ -82,6 +82,7 @@ function MetaEditor({
           <HStack w="full" justify="space-around" spacing={0}>
             {Array.from({ length: 2 }).map((_, index) => (
               <VStack
+                key={`${JSON.stringify(participantsValue[index])}${index}`}
                 w="full"
                 rounded="xl"
                 spacing={4}

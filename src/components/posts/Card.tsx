@@ -12,8 +12,8 @@ import {
   VStack,
   Wrap,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { format } from 'date-fns/esm';
+import { Link as RouterLink } from 'react-router';
+import { format } from 'date-fns';
 import {
   TbChevronRight,
   TbCircleArrowDown,
@@ -155,5 +155,6 @@ const Card = React.memo(
     );
   },
 );
+Card.displayName = 'Card';
 
 export default Card;

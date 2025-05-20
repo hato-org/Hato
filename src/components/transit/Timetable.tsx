@@ -32,10 +32,13 @@ export const TrainTimetableModal = React.memo(
           <VStack spacing={4}>
             <VStack w="full" align="flex-start" spacing={2}>
               <Text textStyle="description">列車詳細</Text>
-              <HStack w='full' justify='space-evenly'>
+              <HStack w="full" justify="space-evenly">
                 <VStack spacing={0}>
-                  <Text fontSize="2xl" lineHeight={1}>{starting}</Text>
-                  <Text fontSize='lg'>{stations[0].departAt}{' '}
+                  <Text fontSize="2xl" lineHeight={1}>
+                    {starting}
+                  </Text>
+                  <Text fontSize="lg">
+                    {stations[0].departAt}{' '}
                     <Text as="span" fontSize="xs">
                       発
                     </Text>
@@ -43,8 +46,11 @@ export const TrainTimetableModal = React.memo(
                 </VStack>
                 <Icon as={TbChevronRight} boxSize={6} />
                 <VStack spacing={0}>
-                  <Text fontSize="2xl" lineHeight={1}>{destination}</Text>
-                  <Text fontSize='lg'>{stations.at(-1)?.arriveAt}{' '}
+                  <Text fontSize="2xl" lineHeight={1}>
+                    {destination}
+                  </Text>
+                  <Text fontSize="lg">
+                    {stations.at(-1)?.arriveAt}{' '}
                     <Text as="span" fontSize="xs">
                       着
                     </Text>
@@ -56,7 +62,7 @@ export const TrainTimetableModal = React.memo(
               <Text textStyle="description">各駅発着時刻</Text>
               <VStack w="full" spacing={0}>
                 {stations.map((station) => (
-                  <Station {...station} />
+                  <Station key={station.name} {...station} />
                 ))}
               </VStack>
             </VStack>
@@ -67,6 +73,7 @@ export const TrainTimetableModal = React.memo(
     </Modal>
   ),
 );
+TrainTimetableModal.displayName = 'TrainTimetableModal';
 
 const Station = React.memo(
   ({ name, arriveAt, departAt }: TransitTimetableStation) => (
@@ -151,7 +158,7 @@ const Station = React.memo(
           </Text>
         )}
         {departAt && (
-          <Text lineHeight={.9} textStyle="title" fontSize="lg" color="title">
+          <Text lineHeight={0.9} textStyle="title" fontSize="lg" color="title">
             {departAt}{' '}
             <Text as="span" fontSize="sm">
               発
@@ -167,3 +174,4 @@ const Station = React.memo(
     </HStack>
   ),
 );
+Station.displayName = 'Station';

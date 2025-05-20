@@ -68,7 +68,7 @@ interface UserLocation {
 interface Division {
   date: Date;
   week: 'A' | 'B';
-  day: Day;
+  day: number;
   irregular: boolean;
 }
 
@@ -78,13 +78,13 @@ interface DaySchedule {
   timetable: Period[];
   schedule: {
     week: Week;
-    day: Day;
+    day: number;
     irregular: boolean;
   };
   target: {
     type: Type;
-    grade: Number;
-    class: Number;
+    grade: number;
+    class: number;
     course?: Course;
   }[];
   meta: {
@@ -98,7 +98,7 @@ interface DaySchedule {
 interface Schedule {
   date: Date | string;
   week: Week;
-  day: Day;
+  day: number;
   schedule: {
     type: Type;
     grade: number;

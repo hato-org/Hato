@@ -14,7 +14,7 @@ function UpdatePrompt() {
     updateServiceWorker,
   } = useRegisterSW({
     onRegisteredSW(_, r) {
-      // eslint-disable-next-line prefer-template
+      // eslint-disable-next-line no-console
       console.log('Service Worker has been registered: ' + r);
 
       if (r)
@@ -27,6 +27,7 @@ function UpdatePrompt() {
         }, intervalMS);
     },
     onRegisterError(error) {
+      // eslint-disable-next-line no-console
       console.error('SW registration error', error);
     },
   });

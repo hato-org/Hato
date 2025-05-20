@@ -81,5 +81,6 @@ const TournamentModal = React.memo(
     );
   },
 );
+TournamentModal.displayName = 'TournamentModal';
 
 export default TournamentModal;

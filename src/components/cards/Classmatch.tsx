@@ -7,7 +7,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import UpcomingMatch from '../classmatch/UpcomingMatch';
 
 export default function Classmatch() {

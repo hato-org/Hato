@@ -119,6 +119,7 @@ export const UserScheduleMetaEditor = React.memo(
                         <MenuList shadow="lg" rounded="xl">
                           {gradeList?.map((gradeInfo) => (
                             <MenuItem
+                              key={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
                               textStyle="title"
                               onClick={() =>
                                 setSchedule((val) => ({
@@ -162,6 +163,7 @@ export const UserScheduleMetaEditor = React.memo(
                         <MenuList shadow="lg" rounded="xl">
                           {classList?.map((classInfo) => (
                             <MenuItem
+                              key={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
                               textStyle="title"
                               onClick={() =>
                                 setSchedule((val) => ({
@@ -203,6 +205,7 @@ export const UserScheduleMetaEditor = React.memo(
                           <MenuList shadow="lg" rounded="xl">
                             {courseList?.map((courseInfo) => (
                               <MenuItem
+                                key={courseInfo.code}
                                 textStyle="title"
                                 onClick={() =>
                                   setSchedule((val) => ({
@@ -249,3 +252,4 @@ export const UserScheduleMetaEditor = React.memo(
     );
   },
 );
+UserScheduleMetaEditor.displayName = 'UserScheduleMetaEditor';

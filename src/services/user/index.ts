@@ -7,6 +7,7 @@ import {
 import { useAtom, useSetAtom } from 'jotai';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
+import { useToast } from '@chakra-ui/react';
 
 export const useUser = () => {
   const { client } = useClient();
@@ -29,6 +30,7 @@ export const useUser = () => {
 
 export const useUserMutation = () => {
   const queryClient = useQueryClient();
+  const toast = useToast({ position: 'top-right', duration: 1500 });
   const { client } = useClient();
   const { data: user } = useUser();
   const setUser = useSetAtom(userAtom);
@@ -46,7 +48,14 @@ export const useUserMutation = () => {
       queryClient.setQueryData(['user', newUser._id], newUser);
       setUser(newUser);
     },
-    onError: console.error,
+    onError: (err) => {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      toast({
+        title: 'エラーが発生しました',
+        description: err.description,
+      });
+    },
   });
 };
 
