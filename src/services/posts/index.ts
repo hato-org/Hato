@@ -11,7 +11,7 @@ export const useHatoboard = (
     ...options,
     queryKey: ['posts', 'hatoboard'],
     queryFn: async ({ signal }) =>
-      (await client.get<Post[]>('/post', { signal })).data,
+      await client.get('post', { signal }).json<Post[]>(),
   });
 };
 
@@ -25,7 +25,7 @@ export const usePost = (
     ...options,
     queryKey: ['post', id],
     queryFn: async ({ signal }) =>
-      (await client.get<Post>(`/post/${id}`, { signal })).data,
+      await client.get(`post/${id}`, { signal }).json<Post>(),
   });
 };
 
@@ -39,11 +39,6 @@ export const usePostAttachment = (
     ...options,
     queryKey: ['post', 'attachment', id],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ArrayBuffer>(`/post/attachment/${id}`, {
-          responseType: 'arraybuffer',
-          signal,
-        })
-      ).data,
+      await client.get(`post/attachment/${id}`, { signal }).arrayBuffer(),
   });
 };

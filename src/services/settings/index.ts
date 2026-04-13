@@ -12,7 +12,7 @@ export const useSettings = () => {
   return useQuery({
     queryKey: ['settings', user._id],
     queryFn: async ({ signal }) =>
-      (await client.get<Settings>(`/settings/${user._id}`, { signal })).data,
+      await client.get(`settings/${user._id}`, { signal }).json<Settings>(),
     select: (data) => {
       setSettings(data);
       return data;
@@ -30,7 +30,9 @@ export const useSettingsMutation = () => {
 
   return useMutation({
     mutationFn: async (settings: Partial<Settings>) =>
-      (await client.post<Settings>(`/settings/${user._id}`, settings)).data,
+      await client
+        .post(`settings/${user._id}`, { json: settings })
+        .json<Settings>(),
     onSuccess: (settings) => {
       setSettings(settings);
       queryClient.setQueryData(['settings', user._id], settings);

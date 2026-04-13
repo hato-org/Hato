@@ -1,4 +1,4 @@
-import axios from 'axios';
+import ky from 'ky';
 import { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 import { jwtAtom } from '@/store/auth';
@@ -12,13 +12,12 @@ export const useClient = () => {
 
   const client = useMemo(
     () =>
-      axios.create({
-        baseURL: API_URL,
+      ky.create({
+        prefix: API_URL,
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
         timeout: 1000 * 15,
-        timeoutErrorMessage: 'Timeout exceeded',
       }),
     [jwt],
   );

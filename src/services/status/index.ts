@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
+import ky, { HTTPError } from 'ky';
 
 const STATUS_API_URL = import.meta.env.VITE_STATUS_API_URL;
 
@@ -8,7 +8,7 @@ export const useHatoStatus = () =>
   useQuery({
     queryKey: ['status'],
     queryFn: async ({ signal }) =>
-      (await axios.get<Status>('/', { baseURL: STATUS_API_URL, signal })).data,
+      await ky.get('', { prefix: STATUS_API_URL, signal }).json<Status>(),
     refetchInterval: 1000 * 60 * 2,
   });
 
@@ -16,12 +16,9 @@ export const useHatoStatusMaintenance = () =>
   useQuery({
     queryKey: ['status', 'maintenance'],
     queryFn: async ({ signal }) =>
-      (
-        await axios.get<StatusMaintenance[]>('/info', {
-          baseURL: STATUS_API_URL,
-          signal,
-        })
-      ).data,
+      await ky
+        .get('info', { prefix: STATUS_API_URL, signal })
+        .json<StatusMaintenance[]>(),
   });
 
 export const useHatoStatusMaintenanceMutation = () => {
@@ -30,13 +27,14 @@ export const useHatoStatusMaintenanceMutation = () => {
     duration: 1000,
   });
 
-  return useMutation<StatusMaintenance[], AxiosError, StatusMaintenance>({
+  return useMutation<StatusMaintenance[], HTTPError, StatusMaintenance>({
     mutationFn: async (data) =>
-      (
-        await axios.post('/info', data, {
-          baseURL: STATUS_API_URL,
+      await ky
+        .post('info', {
+          prefix: STATUS_API_URL,
+          json: data,
         })
-      ).data,
+        .json<StatusMaintenance[]>(),
     onSuccess: () => {
       toast({
         title: '追加しました。',
@@ -50,17 +48,17 @@ export const useHatoStatusHistory = ({ id }: { id: string }) =>
   useInfiniteQuery({
     queryKey: ['status', 'history', id],
     queryFn: async ({ pageParam = 1, signal }) =>
-      (
-        await axios.get<StatusHistory[]>('/history', {
-          baseURL: STATUS_API_URL,
-          params: { id, page: pageParam },
+      await ky
+        .get('history', {
+          prefix: STATUS_API_URL,
+          searchParams: { id, page: pageParam },
           signal,
         })
-      ).data,
+        .json<StatusHistory[]>(),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length
-        ? Math.ceil(allPages.flat().length / 24 + 1) ?? 1
+        ? (Math.ceil(allPages.flat().length / 24 + 1) ?? 1)
         : undefined,
   });
 
@@ -68,10 +66,10 @@ export const useHatoStatusServerList = () =>
   useQuery({
     queryKey: ['status', 'servers'],
     queryFn: async ({ signal }) =>
-      (
-        await axios.get<Pick<StatusServer, 'id' | 'name'>[]>('/servers', {
-          baseURL: STATUS_API_URL,
+      await ky
+        .get('servers', {
+          prefix: STATUS_API_URL,
           signal,
         })
-      ).data,
+        .json<Pick<StatusServer, 'id' | 'name'>[]>(),
   });

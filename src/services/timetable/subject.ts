@@ -16,11 +16,9 @@ export const useUserSubject = (
     ...options,
     queryKey: ['timetable', 'usersubject', id],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<UserSubject>(`/timetable/userschedule/subject/${id}`, {
-          signal,
-        })
-      ).data,
+      await client
+        .get(`timetable/userschedule/subject/${id}`, { signal })
+        .json<UserSubject>(),
   });
 };
 
@@ -30,12 +28,9 @@ export const useUserSubjectMutation = () => {
 
   return useMutation({
     mutationFn: async (subject: UserSubject) =>
-      (
-        await client.post<UserSubject>(
-          '/timetable/userschedule/subject',
-          subject,
-        )
-      ).data,
+      await client
+        .post('timetable/userschedule/subject', { json: subject })
+        .json<UserSubject>(),
     onSuccess: (subject) => {
       queryClient.setQueryData(
         ['timetable', 'usersubject', subject._id],
@@ -50,11 +45,8 @@ export const useSearchUserSubject = () => {
 
   return useMutation({
     mutationFn: async (query: Partial<UserSubject>) =>
-      (
-        await client.post<UserSubject[]>(
-          '/timetable/userschedule/subject/search',
-          query,
-        )
-      ).data,
+      await client
+        .post('timetable/userschedule/subject/search', { json: query })
+        .json<UserSubject[]>(),
   });
 };

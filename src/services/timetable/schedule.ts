@@ -16,12 +16,12 @@ export const useDivision = ({ date }: { date: Date }) => {
   return useQuery({
     queryKey: ['timetable', 'division', { year, month, day }],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<Division>('/timetable/division', {
-          params: { year, month, day },
+      await client
+        .get('timetable/division', {
+          searchParams: { year, month, day },
           signal,
         })
-      ).data,
+        .json<Division>(),
   });
 };
 
@@ -31,7 +31,9 @@ export const useDivisionMutation = () => {
 
   return useMutation({
     mutationFn: async (division: Division) =>
-      (await client.post<Division>('/timetable/division', division)).data,
+      await client
+        .post('timetable/division', { json: division })
+        .json<Division>(),
     onSuccess: (division) => {
       const date = new Date(division.date);
       queryClient.setQueryData(
@@ -60,11 +62,9 @@ export const useUserSchedule = (
     ...options,
     queryKey: ['timetable', 'userschedule', id],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<UserSchedule>(`/timetable/userschedule/${id}`, {
-          signal,
-        })
-      ).data,
+      await client
+        .get(`timetable/userschedule/${id}`, { signal })
+        .json<UserSchedule>(),
   });
 };
 
@@ -75,15 +75,12 @@ export const useMyUserSchedules = () => {
   return useQuery({
     queryKey: ['timetable', 'userschedule', 'user', user._id],
     queryFn: async ({ signal }) =>
-      (
-        await client.post<UserSchedule[]>(
-          '/timetable/userschedule/search',
-          {
-            owner: user._id,
-          },
-          { signal },
-        )
-      ).data,
+      await client
+        .post('timetable/userschedule/search', {
+          json: { owner: user._id },
+          signal,
+        })
+        .json<UserSchedule[]>(),
   });
 };
 
@@ -92,12 +89,9 @@ export const useUserScheduleSearch = () => {
 
   return useMutation({
     mutationFn: async (query: RecursivePartial<UserSchedule>) =>
-      (
-        await client.post<UserSchedule[]>(
-          '/timetable/userschedule/search',
-          query,
-        )
-      ).data,
+      await client
+        .post('timetable/userschedule/search', { json: query })
+        .json<UserSchedule[]>(),
   });
 };
 
@@ -108,8 +102,9 @@ export const useUserScheduleMutation = () => {
 
   return useMutation({
     mutationFn: async (schedule: Partial<UserSchedule>) =>
-      (await client.post<UserSchedule>('timetable/userschedule', schedule))
-        .data,
+      await client
+        .post('timetable/userschedule', { json: schedule })
+        .json<UserSchedule>(),
     onSuccess: (schedule) => {
       queryClient.setQueryData(
         ['timetable', 'userschedule', schedule._id],
@@ -129,7 +124,7 @@ export const useDeleteUserScheduleMutation = () => {
 
   return useMutation({
     mutationFn: async (id: string | undefined) =>
-      (await client.delete<UserSchedule>(`/timetable/userschedule/${id}`)).data,
+      await client.delete(`timetable/userschedule/${id}`).json<UserSchedule>(),
     onSuccess: (schedule) => {
       queryClient.removeQueries({
         queryKey: ['timetable', 'userschedule', schedule._id],

@@ -17,7 +17,7 @@ export const useGradeList = (
     ...options,
     queryKey: ['info', 'grade'],
     queryFn: async ({ signal }) =>
-      (await client.get<GradeList>('/info/grade', { signal })).data,
+      await client.get('info/grade', { signal }).json<GradeList>(),
   });
 };
 
@@ -33,12 +33,12 @@ export const useAllClassList = (
         ...options,
         queryKey: ['info', 'class', type, gradeCode],
         queryFn: async ({ signal }) =>
-          (
-            await client.get<ClassList>('/info/class', {
-              params: { type, grade: gradeCode },
+          await client
+            .get('info/class', {
+              searchParams: { type, grade: gradeCode },
               signal,
             })
-          ).data,
+            .json<ClassList>(),
       })) ?? [],
   });
 };
@@ -59,12 +59,12 @@ export const useClassList = (
     ...options,
     queryKey: ['info', 'class', type, grade],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ClassList>('/info/class', {
-          params: { type, grade },
+      await client
+        .get('info/class', {
+          searchParams: { type: type!, grade: grade! },
           signal,
         })
-      ).data,
+        .json<ClassList>(),
   });
 };
 
@@ -84,12 +84,12 @@ export const useCourseList = (
     ...options,
     queryKey: ['info', 'course', type, grade],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<CourseList>('/info/course', {
-          params: { type, grade },
+      await client
+        .get('info/course', {
+          searchParams: { type: type!, grade: grade! },
           signal,
         })
-      ).data,
+        .json<CourseList>(),
   });
 };
 
@@ -109,12 +109,12 @@ export const useSubjectList = (
     ...options,
     queryKey: ['info', 'subject', type, grade],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<SubjectList>('/info/subject', {
-          params: { type, grade },
+      await client
+        .get('info/subject', {
+          searchParams: { type, grade },
           signal,
         })
-      ).data,
+        .json<SubjectList>(),
   });
 };
 
@@ -130,12 +130,11 @@ export const useProfile = () => {
   return useQuery({
     queryKey: ['user', 'profile'],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<Blob>('/assets/profile', {
-          params: isDark ? { dark: '' } : {},
-          responseType: 'blob',
+      await client
+        .get('assets/profile', {
+          searchParams: isDark ? { dark: '' } : {},
           signal,
         })
-      ).data,
+        .blob(),
   });
 };

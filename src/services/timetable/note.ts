@@ -15,12 +15,12 @@ export const useNotes = ({
   return useQuery({
     queryKey: ['timetable', 'note', { year, month, day }],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<Note[]>('/timetable/note', {
-          params: { year, month, day },
+      await client
+        .get('timetable/note', {
+          searchParams: { year, month, day },
           signal,
         })
-      ).data,
+        .json<Note[]>(),
   });
 };
 
@@ -30,7 +30,7 @@ export const useAddNoteMutation = () => {
 
   return useMutation({
     mutationFn: async (note: Omit<Note, '_id'>) =>
-      (await client.post<Note>('/timetable/note', note)).data,
+      await client.post('timetable/note', { json: note }).json<Note>(),
     onSuccess: (note) => {
       const date = new Date(note.date);
 
@@ -61,8 +61,10 @@ export const useNoteMutation = () => {
   return useMutation({
     mutationFn: async ({ action, note, id }: NoteMutationVariable) =>
       action === 'edit'
-        ? (await client.post<Note>(`/timetable/note/${note._id}`, note)).data
-        : (await client.delete<Note>(`/timetable/note/${id}`)).data,
+        ? await client
+            .post(`timetable/note/${note._id}`, { json: note })
+            .json<Note>()
+        : await client.delete(`timetable/note/${id}`).json<Note>(),
     onSuccess: (note, { action }) => {
       const date = new Date(note.date);
 

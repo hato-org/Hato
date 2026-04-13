@@ -17,7 +17,7 @@ export const useUser = () => {
   return useQuery({
     queryKey: ['user', user?._id],
     queryFn: async ({ signal }) => {
-      const res = (await client.get<LoginResponse>('/user', { signal })).data;
+      const res = await client.get('user', { signal }).json<LoginResponse>();
       setJWT(res.jwt);
       setUser(res.user);
       return res.user;
@@ -37,12 +37,14 @@ export const useUserMutation = () => {
 
   return useMutation({
     mutationFn: async (newUser: Partial<User>) =>
-      (
-        await client.post<User>('/user', {
-          ...newUser,
-          _id: user?._id,
+      await client
+        .post('user', {
+          json: {
+            ...newUser,
+            _id: user?._id,
+          },
         })
-      ).data,
+        .json<User>(),
     onSuccess: (newUser) => {
       queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
       queryClient.setQueryData(['user', newUser._id], newUser);
@@ -53,7 +55,7 @@ export const useUserMutation = () => {
       console.error(err);
       toast({
         title: 'エラーが発生しました',
-        description: err.description,
+        description: err.message,
       });
     },
   });
@@ -69,6 +71,6 @@ export const useUserInfo = (
     ...options,
     queryKey: ['user', id],
     queryFn: async ({ signal }) =>
-      (await client.get<User>(`/user/${id}`, { signal })).data,
+      await client.get(`user/${id}`, { signal }).json<User>(),
   });
 };

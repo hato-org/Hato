@@ -8,12 +8,9 @@ export const useGCUserInfo = (userId?: string | null) => {
   return useQuery({
     queryKey: ['google', 'user', userId],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<classroom_v1.Schema$UserProfile>(
-          `/classroom/user/${userId}`,
-          { signal },
-        )
-      ).data,
+      await client
+        .get(`classroom/user/${userId}`, { signal })
+        .json<classroom_v1.Schema$UserProfile>(),
     staleTime: 1000 * 60 * 60 * 24, // 1 day
     retry: false,
     retryOnMount: false,

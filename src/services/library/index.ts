@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import ky, { HTTPError } from 'ky';
 import { useAtomValue } from 'jotai';
 import {
   UseMutationOptions,
@@ -17,14 +17,14 @@ export const useBookInfoById = (
     ...options,
     queryKey: ['library', 'book', id, 'detail'],
     queryFn: async ({ signal }) =>
-      (
-        await axios.get<DetailedBook>(
+      await ky
+        .get(
           `https://private.calil.jp/bib/gk-2004103-auf08/${convertToLocalId(
             id,
           )}.json`,
           { signal },
         )
-      ).data,
+        .json<DetailedBook>(),
   });
 
 export const useBookInfoByISDN = (isbn: string) =>
@@ -34,12 +34,12 @@ export const useBookInfoByISDN = (isbn: string) =>
       const books = [];
       let running;
       let version = 1;
-      const res = (
-        await axios.get<LibrarySearchResponse>(
-          'https://unitrad.calil.jp/v1/search',
-          { params: { isbn, region: 'gk-2004103-auf08' }, signal },
-        )
-      ).data;
+      const res = await ky
+        .get('https://unitrad.calil.jp/v1/search', {
+          searchParams: { isbn, region: 'gk-2004103-auf08' },
+          signal,
+        })
+        .json<LibrarySearchResponse>();
       books.push(...res.books);
       running = res.running;
       while (running) {
@@ -47,12 +47,11 @@ export const useBookInfoByISDN = (isbn: string) =>
         await new Promise((resolve) => {
           setTimeout(resolve, 500);
         });
-        const pollingRes = (
-          await axios.get<LibrarySearchDiffResponse>(
-            'https://unitrad.calil.jp/v1/polling',
-            { params: { uuid: res.uuid, version, diff: 1 } },
-          )
-        ).data;
+        const pollingRes = await ky
+          .get('https://unitrad.calil.jp/v1/polling', {
+            searchParams: { uuid: res.uuid, version, diff: 1 },
+          })
+          .json<LibrarySearchDiffResponse>();
         if (!pollingRes) continue;
         books.push(...pollingRes.books_diff.insert);
 
@@ -67,13 +66,13 @@ export const useBookInfoByISDN = (isbn: string) =>
 export const useLibrarySearch = (
   options?: UseMutationOptions<
     LibrarySearchResponse,
-    AxiosError,
+    HTTPError,
     'free' | 'detail'
   >,
 ) => {
   const { free, ...params } = useAtomValue(librarySearchAtom);
 
-  return useMutation<LibrarySearchResponse, AxiosError, 'free' | 'detail'>({
+  return useMutation<LibrarySearchResponse, HTTPError, 'free' | 'detail'>({
     ...options,
     mutationKey: ['library', 'search', { free, ...params }],
     mutationFn: async (type) => {
@@ -81,18 +80,15 @@ export const useLibrarySearch = (
       let count;
       let version = 1;
       let running;
-      const res = (
-        await axios.get<LibrarySearchResponse>(
-          'https://unitrad.calil.jp/v1/search',
-          {
-            params: {
-              ...params,
-              free: type === 'free' ? free : undefined,
-              region: 'gk-2004103-auf08',
-            },
+      const res = await ky
+        .get('https://unitrad.calil.jp/v1/search', {
+          searchParams: {
+            ...params,
+            ...(type === 'free' ? { free } : {}),
+            region: 'gk-2004103-auf08',
           },
-        )
-      ).data;
+        })
+        .json<LibrarySearchResponse>();
       books.push(...res.books);
       running = res.running;
       count = res.count;
@@ -102,12 +98,11 @@ export const useLibrarySearch = (
         await new Promise((resolve) => {
           setTimeout(resolve, 500);
         });
-        const pollingRes = (
-          await axios.get<LibrarySearchDiffResponse>(
-            'https://unitrad.calil.jp/v1/polling',
-            { params: { uuid: res.uuid, version, diff: 1 } },
-          )
-        ).data;
+        const pollingRes = await ky
+          .get('https://unitrad.calil.jp/v1/polling', {
+            searchParams: { uuid: res.uuid, version, diff: 1 },
+          })
+          .json<LibrarySearchDiffResponse>();
         if (!pollingRes) continue;
         books.push(...pollingRes.books_diff.insert);
         running = pollingRes.running;

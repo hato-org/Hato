@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 import { useSetAtom } from 'jotai';
-import axios from 'axios';
+import ky from 'ky';
 import { useNavigate } from 'react-router';
 import { CodeResponse, useGoogleLogin } from '@react-oauth/google';
 import { useQueryClient } from '@tanstack/react-query';
@@ -74,15 +74,12 @@ export const useAuth = (scopes?: string[]) => {
   const login = useGoogleLogin({
     onSuccess: async ({ code }) => {
       setLoginLoading(true);
-      const {
-        status,
-        data: { jwt, user: userData },
-      } = await axios.post<LoginResponse>(
-        '/auth/login',
-        { code },
-        { baseURL: API_URL },
-      );
-      if (status !== 200) throw Error('Failed to acquire userdata');
+      const { jwt, user: userData } = await ky
+        .post('auth/login', {
+          prefix: API_URL,
+          json: { code },
+        })
+        .json<LoginResponse>();
 
       setJWT(jwt);
       setUser(userData);

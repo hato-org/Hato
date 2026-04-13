@@ -11,11 +11,11 @@ export const useRoomTable = (
     ...options,
     queryKey: ['scienceroom', { y, m, d }],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ScienceRoom>('/scienceroom', {
-          params: { y, m, d },
+      await client
+        .get('scienceroom', {
+          searchParams: { y, m, d },
           signal,
         })
-      ).data,
+        .json<ScienceRoom>(),
   });
 };

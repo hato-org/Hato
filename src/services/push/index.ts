@@ -13,14 +13,16 @@ export const usePushSubscribe = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const vapidKey = (await client.get<string>('/webpush/key')).data;
+      const vapidKey = await client.get('webpush/key').text();
       const subscription = await serviceWorker?.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: vapidKey,
       });
 
       if (subscription)
-        await client.post('/webpush/subscribe', subscription.toJSON());
+        await client.post('webpush/subscribe', {
+          json: subscription.toJSON(),
+        });
     },
     onSettled: refreshPushSubscription,
   });
@@ -35,7 +37,9 @@ export const usePushUnsubscribe = () => {
     mutationFn: async () => {
       const subscription = await serviceWorker?.pushManager.getSubscription();
       if (subscription) {
-        await client.post('/webpush/unsubscribe', subscription.toJSON());
+        await client.post('webpush/unsubscribe', {
+          json: subscription.toJSON(),
+        });
         await subscription.unsubscribe();
       }
     },

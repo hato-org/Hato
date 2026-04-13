@@ -21,11 +21,8 @@ export const useGCCourseWork = (
     ...options,
     queryKey: ['google', 'courseWork', { courseId, id }],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<classroom_v1.Schema$CourseWork>(
-          `/classroom/course/${courseId}/coursework/${id}`,
-          { signal },
-        )
-      ).data,
+      await client
+        .get(`classroom/course/${courseId}/coursework/${id}`, { signal })
+        .json<classroom_v1.Schema$CourseWork>(),
   });
 };

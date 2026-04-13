@@ -17,12 +17,12 @@ export const useClassmatchSports = (
     ...options,
     queryKey: ['classmatch', year, season, 'sports'],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ClassmatchSport[]>('/classmatch/sports', {
-          params: { year, season },
+      await client
+        .get('classmatch/sports', {
+          searchParams: { year, season },
           signal,
         })
-      ).data,
+        .json<ClassmatchSport[]>(),
   });
 };
 
@@ -43,12 +43,12 @@ export const useClassmatchSportInfo = (
   return useQuery({
     queryKey: ['classmatch', year, season, sport],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ClassmatchSportInfo>(`/classmatch/${sport}`, {
-          params: { year, season },
+      await client
+        .get(`classmatch/${sport}`, {
+          searchParams: { year, season },
           signal,
         })
-      ).data,
+        .json<ClassmatchSportInfo>(),
     ...options,
   });
 };
@@ -71,12 +71,12 @@ export const useClassmatchLiveStreams = (
   return useQuery({
     queryKey: ['classmatch', year, season, 'livestreams'],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ClassmatchLiveStream[]>('/classmatch/streams', {
-          params: { year, season },
+      await client
+        .get('classmatch/streams', {
+          searchParams: { year, season },
           signal,
         })
-      ).data,
+        .json<ClassmatchLiveStream[]>(),
     ...options,
   });
 };
@@ -87,8 +87,9 @@ export const useClassmatchHistory = () => {
   return useQuery({
     queryKey: ['classmatch', 'history'],
     queryFn: async ({ signal }) =>
-      (await client.get<ClassmatchHistory[]>('/classmatch/history', { signal }))
-        .data,
+      await client
+        .get('classmatch/history', { signal })
+        .json<ClassmatchHistory[]>(),
   });
 };
 
@@ -116,15 +117,18 @@ export const useClassmatchUpcomingList = ({
       { type, grade, class: classNum },
     ],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<ClassmatchTournamentUpcoming[]>(
-          '/classmatch/tournament/upcoming',
-          {
-            params: { year, season, type, grade, class: classNum },
-            signal,
+      await client
+        .get('classmatch/tournament/upcoming', {
+          searchParams: {
+            year,
+            season,
+            type: type!,
+            grade: grade!,
+            class: classNum!,
           },
-        )
-      ).data,
+          signal,
+        })
+        .json<ClassmatchTournamentUpcoming[]>(),
     enabled: !!(year && season && type && grade && classNum),
   });
 };
@@ -149,15 +153,12 @@ export const useClassmatchMutation = ({
 
   return useMutation({
     mutationFn: async (tournament: Partial<ClassmatchTournament>) =>
-      (
-        await client.post<ClassmatchTournament>(
-          '/classmatch/tournament',
-          tournament,
-          {
-            params: { year, season, sport, id },
-          },
-        )
-      ).data,
+      await client
+        .post('classmatch/tournament', {
+          json: tournament,
+          searchParams: { year, season, sport, id },
+        })
+        .json<ClassmatchTournament>(),
     retry: 5,
     onSuccess: (data) => {
       queryClient.setQueryData(['classmatch', year, season, sport], data);

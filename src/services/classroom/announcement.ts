@@ -15,12 +15,9 @@ export const useGCAnnouncements = (
     ...options,
     queryKey: ['google', courseId, 'announcements'],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<classroom_v1.Schema$ListAnnouncementsResponse>(
-          `/classroom/course/${courseId}/announcement`,
-          { signal },
-        )
-      ).data,
+      await client
+        .get(`classroom/course/${courseId}/announcement`, { signal })
+        .json<classroom_v1.Schema$ListAnnouncementsResponse>(),
     enabled: !!courseId,
   });
 };
@@ -37,12 +34,9 @@ export const useGCAnnouncement = (
   return useQuery({
     queryKey: ['google', 'announcement', courseId, id],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<classroom_v1.Schema$Announcement>(
-          `/classroom/course/${courseId}/announcement/${id}`,
-          { signal },
-        )
-      ).data,
+      await client
+        .get(`classroom/course/${courseId}/announcement/${id}`, { signal })
+        .json<classroom_v1.Schema$Announcement>(),
     enabled: !!courseId && !!id,
     ...options,
   });
@@ -54,10 +48,8 @@ export const useGCMyAnnouncements = () => {
   return useQuery({
     queryKey: ['google', 'me', 'announcements'],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<
-          classroom_v1.Schema$ListAnnouncementsResponse['announcements']
-        >('/classroom/announcement/me', { signal })
-      ).data,
+      await client
+        .get('classroom/announcement/me', { signal })
+        .json<classroom_v1.Schema$ListAnnouncementsResponse['announcements']>(),
   });
 };

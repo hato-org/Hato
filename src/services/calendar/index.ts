@@ -16,27 +16,17 @@ export const useEvents = (
   return useQuery({
     queryKey: ['calendar', 'events', { year, month, day }],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<CalendarEvent[]>('/calendar/event', {
-          params: { y: year, m: month, d: day },
+      await client
+        .get('calendar/event', {
+          searchParams: {
+            y: year,
+            m: month,
+            ...(day !== undefined && { d: day }),
+          },
           signal,
         })
-      ).data,
+        .json<CalendarEvent[]>(),
     gcTime: Infinity,
-    // onSuccess: (data) => {
-    //   data.forEach((event) => {
-    //     queryClient.setQueryData(['calendar', 'event', event._id], event);
-    //   });
-    // },
-    // onError: (error) => {
-    //   toast({
-    //     position: 'top-right',
-    //     variant: 'left-accent',
-    //     status: 'error',
-    //     title: 'データを取得できませんでした',
-    //     description: error.message,
-    //   });
-    // },
     ...options,
   });
 };
@@ -47,8 +37,9 @@ export const useEvent = (id: string) => {
   return useQuery({
     queryKey: ['calendar', 'event', id],
     queryFn: async ({ signal }) =>
-      (await client.get<CalendarEvent>(`/calendar/event/${id}`, { signal }))
-        .data,
+      await client
+        .get(`calendar/event/${id}`, { signal })
+        .json<CalendarEvent>(),
   });
 };
 
@@ -58,13 +49,11 @@ export const useAddEventMutation = () => {
 
   return useMutation({
     mutationFn: async (event: Omit<CalendarEvent, '_id'>) =>
-      (await client.post<CalendarEvent>('/calendar/event', event)).data,
+      await client
+        .post('calendar/event', { json: event })
+        .json<CalendarEvent>(),
     onSuccess: (event) => {
       const startAt = new Date(event.startAt);
-      // toast({
-      //   title: '予定を追加しました。',
-      //   status: 'success',
-      // });
       queryClient.setQueryData<CalendarEvent[]>(
         [
           'calendar',
@@ -78,13 +67,6 @@ export const useAddEventMutation = () => {
       );
       queryClient.setQueryData(['calendar', 'event', event._id], event);
     },
-    // onError: (error) => {
-    // toast({
-    //   title: '予定の追加に失敗しました。',
-    //   description: error.message,
-    //   status: 'error',
-    // });
-    // },
   });
 };
 
@@ -99,13 +81,10 @@ export const useEventMutation = () => {
   return useMutation({
     mutationFn: async ({ action, event, id }: EventMutationVariable) =>
       action === 'edit'
-        ? (
-            await client.post<CalendarEvent>(
-              `/calendar/event/${event._id}`,
-              event,
-            )
-          ).data
-        : (await client.delete<CalendarEvent>(`/calendar/event/${id}`)).data,
+        ? await client
+            .post(`calendar/event/${event._id}`, { json: event })
+            .json<CalendarEvent>()
+        : await client.delete(`calendar/event/${id}`).json<CalendarEvent>(),
     onSuccess: (data) => {
       queryClient.removeQueries({ queryKey: ['calendar', 'event', data._id] });
 
@@ -134,6 +113,6 @@ export const useTagsSearch = () => {
 
   return useMutation({
     mutationFn: async (q: string) =>
-      (await client.post<Tag[]>('/calendar/tags/search', { q })).data,
+      await client.post('calendar/tags/search', { json: { q } }).json<Tag[]>(),
   });
 };

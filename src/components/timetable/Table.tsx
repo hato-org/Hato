@@ -12,14 +12,14 @@ import {
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import { useUserSubject } from '@/services/timetable';
-import { AxiosError } from 'axios';
+import { HTTPError } from 'ky';
 
 interface TimetableTableProps extends TableProps {
   week: Week;
   day: number;
   schedules?: UserSchedule['schedules'];
   isLoading?: boolean;
-  error?: AxiosError;
+  error?: HTTPError;
 }
 
 const TimetableTable = React.memo(

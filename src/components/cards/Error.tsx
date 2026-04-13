@@ -1,14 +1,14 @@
 import { Center, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import { TbAlertCircle } from 'react-icons/tb';
-import { AxiosError } from 'axios';
+import { HTTPError } from 'ky';
 import { Link as RouterLink } from 'react-router';
 
 interface ErrorProps {
-  error?: AxiosError;
+  error?: HTTPError;
 }
 
-function Error({ error = new AxiosError() }: ErrorProps) {
-  switch (error.response?.status) {
+function Error({ error }: ErrorProps) {
+  switch (error?.response?.status) {
     case 400:
       return (
         <Center w="100%">

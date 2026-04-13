@@ -7,7 +7,7 @@ export const useTransit = () => {
   return useQuery({
     queryKey: ['transit'],
     queryFn: async ({ signal }) =>
-      (await client.get<Transit>('/transit', { signal })).data,
+      await client.get('transit', { signal }).json<Transit>(),
     refetchInterval: 1000 * 60 * 5, // Refetch every 5 mins
   });
 };
@@ -24,12 +24,12 @@ export const useTransitTimetable = ({
   return useQuery({
     queryKey: ['transit', 'timetable', dest, kind],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<TransitTimetable[]>('/transit/timetable', {
-          params: { dest, kind },
+      await client
+        .get('transit/timetable', {
+          searchParams: { dest, kind },
           signal,
         })
-      ).data,
+        .json<TransitTimetable[]>(),
     refetchInterval: 1000 * 60 * 5,
   });
 };
@@ -44,6 +44,6 @@ export const useDiainfo = (
     ...options,
     queryKey: ['transit', 'diainfo'],
     queryFn: async ({ signal }) =>
-      (await client.get<DiaInfo[]>('/transit/diainfo', { signal })).data,
+      await client.get('transit/diainfo', { signal }).json<DiaInfo[]>(),
   });
 };

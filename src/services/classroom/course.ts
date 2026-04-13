@@ -8,12 +8,9 @@ export const useGCCourses = () => {
   return useQuery({
     queryKey: ['google', 'courses'],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<classroom_v1.Schema$ListCoursesResponse>(
-          '/classroom/course',
-          { signal },
-        )
-      ).data,
+      await client
+        .get('classroom/course', { signal })
+        .json<classroom_v1.Schema$ListCoursesResponse>(),
   });
 };
 
@@ -23,12 +20,9 @@ export const useGCCourseInfo = (courseId?: string | null) => {
   return useQuery({
     queryKey: ['google', 'course', courseId],
     queryFn: async ({ signal }) =>
-      (
-        await client.get<classroom_v1.Schema$Course>(
-          `/classroom/course/${courseId}`,
-          { signal },
-        )
-      ).data,
+      await client
+        .get(`classroom/course/${courseId}`, { signal })
+        .json<classroom_v1.Schema$Course>(),
     staleTime: 1000 * 60 * 60 * 24, // 1 day
     enabled: !!courseId,
   });
