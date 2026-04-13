@@ -14,7 +14,13 @@ import {
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { TbCheck, TbPencil, TbPlus, TbTrash } from 'react-icons/tb';
+import {
+  TbAlertCircle,
+  TbCheck,
+  TbPencil,
+  TbPlus,
+  TbTrash,
+} from 'react-icons/tb';
 import { useAtom, useSetAtom } from 'jotai';
 import {
   DndContext,
@@ -43,17 +49,17 @@ import { cards, cardOrderAtom, dashboardEditModeAtom } from '@/store/dashboard';
 function CardErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <Center w="100%" py={4}>
-      <VStack spacing={2}>
-        <Text color="description" fontSize="sm" fontWeight="bold">
-          カードの表示中にエラーが発生しました
-        </Text>
-        <Text color="description" fontSize="xs">
+      <VStack>
+        <Icon as={TbAlertCircle} w={16} h={16} color="warning" />
+        <Text textStyle="description" align="center">
           {error.message}
+        </Text>
+        <Text textStyle="title" align="center">
+          カードの表示中にエラーが発生しました
         </Text>
         <Text
           as="button"
-          color="blue.400"
-          fontSize="sm"
+          textStyle="link"
           fontWeight="bold"
           onClick={resetErrorBoundary}
         >
