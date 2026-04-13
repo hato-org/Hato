@@ -19,12 +19,13 @@ export const useGCCourseworkMaterial = (
 
   return useQuery({
     ...options,
-    queryKey: ['google', 'courseWorkMaterial', id],
+    queryKey: ['google', 'courseWorkMaterial', { courseId, id }],
     queryFn: async ({ signal }) =>
       await client
         .get(`classroom/course/${courseId}/courseworkmaterial/${id}`, {
           signal,
         })
         .json<classroom_v1.Schema$CourseWorkMaterial>(),
+    enabled: !!courseId && !!id,
   });
 };

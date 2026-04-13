@@ -24,5 +24,6 @@ export const useGCCourseWork = (
       await client
         .get(`classroom/course/${courseId}/coursework/${id}`, { signal })
         .json<classroom_v1.Schema$CourseWork>(),
+    enabled: !!courseId && !!id,
   });
 };

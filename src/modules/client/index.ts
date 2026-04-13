@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
-import { jwtAtom } from '@/store/auth';
+import { jwtAtom, clearAuth } from '@/store/auth';
 
 const API_URL = import.meta.env.DEV
   ? `${window.location.protocol}//${window.location.host}/api`
@@ -18,6 +18,18 @@ export const useClient = () => {
           Authorization: `Bearer ${jwt}`,
         },
         timeout: 1000 * 15,
+        hooks: {
+          afterResponse: [
+            ({ response }) => {
+              if (response.status === 401) {
+                clearAuth();
+                window.location.replace(
+                  `/login?return_to=${encodeURIComponent(window.location.pathname + window.location.search)}`,
+                );
+              }
+            },
+          ],
+        },
       }),
     [jwt],
   );

@@ -43,13 +43,22 @@ export const useBookInfoByISDN = (isbn: string) =>
       books.push(...res.books);
       running = res.running;
       while (running) {
-        // wait 500ms for polling
-        await new Promise((resolve) => {
-          setTimeout(resolve, 500);
+        signal.throwIfAborted();
+        await new Promise<void>((resolve, reject) => {
+          const timer = setTimeout(resolve, 500);
+          signal.addEventListener(
+            'abort',
+            () => {
+              clearTimeout(timer);
+              reject(signal.reason);
+            },
+            { once: true },
+          );
         });
         const pollingRes = await ky
           .get('https://unitrad.calil.jp/v1/polling', {
             searchParams: { uuid: res.uuid, version, diff: 1 },
+            signal,
           })
           .json<LibrarySearchDiffResponse>();
         if (!pollingRes) continue;
@@ -80,6 +89,8 @@ export const useLibrarySearch = (
       let count;
       let version = 1;
       let running;
+      const MAX_POLLS = 120; // 最大60秒 (500ms × 120)
+      let polls = 0;
       const res = await ky
         .get('https://unitrad.calil.jp/v1/search', {
           searchParams: {
@@ -93,8 +104,8 @@ export const useLibrarySearch = (
       running = res.running;
       count = res.count;
 
-      while (running) {
-        // wait 500ms for polling
+      while (running && polls < MAX_POLLS) {
+        polls++;
         await new Promise((resolve) => {
           setTimeout(resolve, 500);
         });

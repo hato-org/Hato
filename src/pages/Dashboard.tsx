@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import {
   Box,
+  Center,
   Heading,
   HStack,
   IconButton,
@@ -31,12 +32,37 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import CardElement from '@/components/cards';
 import Header from '@/components/nav/Header';
 import { overlayAtom } from '@/store/overlay';
 import { cards, cardOrderAtom, dashboardEditModeAtom } from '@/store/dashboard';
+
+function CardErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+  return (
+    <Center w="100%" py={4}>
+      <VStack spacing={2}>
+        <Text color="description" fontSize="sm" fontWeight="bold">
+          カードの表示中にエラーが発生しました
+        </Text>
+        <Text color="description" fontSize="xs">
+          {error.message}
+        </Text>
+        <Text
+          as="button"
+          color="blue.400"
+          fontSize="sm"
+          fontWeight="bold"
+          onClick={resetErrorBoundary}
+        >
+          再試行
+        </Text>
+      </VStack>
+    </Center>
+  );
+}
 
 function Dashboard() {
   // const [date] = useSeconds();
@@ -167,7 +193,9 @@ function Dashboard() {
               {cardOrder.length ? (
                 cardOrder.map((cardId) => (
                   <Card key={cardId}>
-                    {cards.find(({ id }) => cardId === id)?.component}
+                    <ErrorBoundary FallbackComponent={CardErrorFallback}>
+                      {cards.find(({ id }) => cardId === id)?.component}
+                    </ErrorBoundary>
                   </Card>
                 ))
               ) : (
@@ -228,7 +256,9 @@ function SortableCard({ cardId }: { cardId: string }) {
       }}
       zIndex={isDragging ? 1 : 0}
     >
-      {card.component}
+      <ErrorBoundary FallbackComponent={CardErrorFallback}>
+        {card.component}
+      </ErrorBoundary>
       <Flex
         pos="absolute"
         inset={0}
