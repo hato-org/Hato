@@ -9,8 +9,8 @@
 
 | # | タイトル | 手順書 | 概要 | 状態 |
 |---|---------|--------|------|------|
-| 1 | JWT トークンリフレッシュの実装 | [01-jwt-token-refresh.md](./guides/01-jwt-token-refresh.md) | トークン期限切れ時の自動リフレッシュ機構を導入し、無条件ログアウトを防止する | ⬜ |
-| 2 | 401 レスポンス処理の改善 | [02-401-handling.md](./guides/02-401-handling.md) | `window.location.replace()` によるハードリロードを React Router ベースのナビゲーションに置き換える | ⬜ |
+| 1 | JWT トークンリフレッシュの実装 | [01-jwt-token-refresh.md](./guides/01-jwt-token-refresh.md) | トークン期限切れ時の自動リフレッシュ機構を導入し、無条件ログアウトを防止する | ✅ |
+| 2 | 401 レスポンス処理の改善 | [02-401-handling.md](./guides/02-401-handling.md) | `window.location.replace()` によるハードリロードを React Router ベースのナビゲーションに置き換える | ✅ |
 | 3 | ルートレベル ErrorBoundary の追加 | [03-root-error-boundary.md](./guides/03-root-error-boundary.md) | Provider 初期化失敗時のリカバリを可能にするため `main.tsx` にエラーバウンダリを追加する | ✅ |
 | 4 | テスト基盤の導入 | [04-testing-infrastructure.md](./guides/04-testing-infrastructure.md) | vitest + React Testing Library によるテスト環境を構築し、主要コンポーネントのテストを書く | ⬜ |
 | 5 | Dashboard の遅延読み込み化 | [05-dashboard-lazy-load.md](./guides/05-dashboard-lazy-load.md) | Dashboard を `React.lazy()` で遅延読み込みに変更し、初期バンドルサイズを削減する | ✅ |

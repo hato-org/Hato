@@ -24,3 +24,13 @@ export const clearAuth = () => {
   store.set(jwtAtom, null);
   store.set(userAtom, null);
 };
+
+/**
+ * React のコンポーネントツリー外から認証情報を更新する。
+ * トークンリフレッシュ時に利用。
+ */
+export const updateAuth = (jwt: string, user: User) => {
+  const store = getDefaultStore();
+  store.set(jwtAtom, jwt);
+  store.set(userAtom, user);
+};
