@@ -32,6 +32,13 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: './dist',
     },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: ['./src/test/setup.ts'],
+      include: ['src/**/*.test.{ts,tsx}'],
+      css: true,
+    },
     define: {
       __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
       __GIT_COMMIT_TIMESTAMP__: JSON.stringify(gitCommitTimestamp),
