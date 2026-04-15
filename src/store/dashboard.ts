@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
+import { createVersionedStorage } from '@/utils/versionedStorage';
 
 export const cards: DashboardCard[] = [
   {
@@ -43,8 +44,13 @@ export const cards: DashboardCard[] = [
 
 export const dashboardEditModeAtom = atom(false);
 
-export const cardOrderAtom = atomWithStorage<string[]>('hato.card.order', [
-  'timetable',
-  'events',
-  'hatoboard',
-]);
+const cardOrderStorage = createVersionedStorage<string[]>({
+  version: 1,
+  migrate: (old) => (Array.isArray(old) ? (old as string[]) : []),
+});
+
+export const cardOrderAtom = atomWithStorage<string[]>(
+  'hato.card.order',
+  ['timetable', 'events', 'hatoboard'],
+  cardOrderStorage,
+);

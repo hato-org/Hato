@@ -66,95 +66,35 @@ const router = createBrowserRouter([
     errorElement: <ErrorFallback />,
     hydrateFallbackElement: <GlobalLoading />,
     children: [
-      {
-        path: 'dashboard',
-        errorElement: <ErrorFallback />,
-        element: <Dashboard />,
-      },
-      {
-        path: 'settings',
-        element: <Settings />,
-        children: [
-          {
-            index: true,
-            element: <SettingsTop />,
-          },
-          {
-            path: 'account',
-            element: <SettingsAccount />,
-          },
-          {
-            path: 'theme',
-            element: <SettingsTheme />,
-          },
-          {
-            path: 'notification',
-            element: <SettingsNotification />,
-          },
-        ],
-      },
-      {
-        path: 'status',
-        element: <Status />,
-      },
-      {
-        path: 'timetable',
-        element: <Timetable />,
-      },
-      {
-        path: 'timetable/editor/search?',
-        element: <MyTimetable />,
-      },
-      {
-        path: 'events',
-        element: <Events />,
-      },
-      {
-        path: 'events/:id',
-        element: <EventDetail />,
-      },
+      // ダッシュボード
+      { path: 'dashboard', element: <Dashboard /> },
+      { path: 'status', element: <Status /> },
+
+      // 時間割
+      { path: 'timetable', element: <Timetable /> },
+      { path: 'timetable/editor', element: <MyTimetable /> },
+
+      // イベント
+      { path: 'events', element: <Events /> },
+      { path: 'events/:id', element: <EventDetail /> },
+
+      // 投稿
       {
         path: 'posts',
         element: <Posts />,
-        children: [
-          {
-            path: 'hatoboard',
-            element: <Hatoboard />,
-          },
-        ],
+        children: [{ path: 'hatoboard', element: <Hatoboard /> }],
       },
-      {
-        path: 'posts/:id',
-        element: <PostDetail />,
-      },
-      {
-        path: 'library',
-        element: <Library />,
-      },
-      {
-        path: 'library/search',
-        element: <LibrarySearch />,
-      },
-      {
-        path: 'library/bookmarks',
-        element: <LibraryBookmarks />,
-      },
-      {
-        path: 'transit',
-        element: <Transit />,
-      },
-      {
-        path: 'classroom',
-        element: <Classroom />,
-      },
-      {
-        path: 'classroom/bookmarks',
-        element: <ClassroomBookmarks />,
-      },
-      {
-        path: 'classroom/course/:id',
-        element: <ClassroomCourse />,
-      },
+      { path: 'posts/:id', element: <PostDetail /> },
+
+      // 図書館
+      { path: 'library', element: <Library /> },
+      { path: 'library/search', element: <LibrarySearch /> },
+      { path: 'library/bookmarks', element: <LibraryBookmarks /> },
+
+      // Google Classroom
+      { path: 'classroom', element: <Classroom /> },
+      { path: 'classroom/bookmarks', element: <ClassroomBookmarks /> },
+      { path: 'classroom/course/:id', element: <ClassroomCourse /> },
       {
         path: 'classroom/course/:id/announcement/:announcementId',
         element: <ClassroomAnnouncement />,
@@ -167,9 +107,23 @@ const router = createBrowserRouter([
         path: 'classroom/course/:id/courseWorkMaterial/:materialId',
         element: <ClassroomMaterial />,
       },
+
+      // クラスマッチ
+      { path: 'classmatch/:year?', element: <Classmatch /> },
+
+      // 交通
+      { path: 'transit', element: <Transit /> },
+
+      // 設定
       {
-        path: 'classmatch/:year?',
-        element: <Classmatch />,
+        path: 'settings',
+        element: <Settings />,
+        children: [
+          { index: true, element: <SettingsTop /> },
+          { path: 'account', element: <SettingsAccount /> },
+          { path: 'theme', element: <SettingsTheme /> },
+          { path: 'notification', element: <SettingsNotification /> },
+        ],
       },
     ],
   },

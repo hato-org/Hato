@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オフライン - Hato</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, Inter, "Noto Sans JP Variable", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100dvh;
+      padding: 2rem;
+      background: #fff;
+      color: #333;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #121212; color: #e0e0e0; }
+      p { color: #999; }
+      .retry-btn { background: #3182ce; }
+      .retry-btn:hover { background: #2b6cb0; }
+    }
+    .container { text-align: center; max-width: 400px; }
+    .icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.6; }
+    h1 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    p { font-size: 0.875rem; color: #666; margin-bottom: 1.5rem; line-height: 1.6; }
+    .retry-btn {
+      display: inline-block;
+      padding: 0.625rem 1.5rem;
+      background: #3182ce;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .retry-btn:hover { background: #2b6cb0; }
+    .retry-btn:active { background: #2c5282; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📡</div>
+    <h1>オフラインです</h1>
+    <p>
+      インターネットに接続されていません。<br>
+      接続を確認して、もう一度お試しください。
+    </p>
+    <button class="retry-btn" onclick="window.location.reload()">
+      再試行
+    </button>
+  </div>
+  <script>
+    window.addEventListener('online', () => window.location.reload());
+  </script>
+</body>
+</html>

@@ -21,7 +21,7 @@
 | # | タイトル | 手順書 | 概要 | 状態 |
 |---|---------|--------|------|------|
 | 7 | overlayAtom の分割 | [07-overlay-atom-split.md](./guides/07-overlay-atom-split.md) | 巨大な単一アトムを個別アトムに分割し、不要な再レンダリングを抑制する | ✅ |
-| 8 | Query Key Factory の導入 | [08-query-key-factory.md](./guides/08-query-key-factory.md) | 散在するクエリキーを一元管理するファクトリパターンを導入する | ⬜ |
+| 8 | Query Key Factory の導入 | [08-query-key-factory.md](./guides/08-query-key-factory.md) | 散在するクエリキーを一元管理するファクトリパターンを導入する | ✅ |
 | 9 | API 設定の共通化 | [09-api-config-shared.md](./guides/09-api-config-shared.md) | auth と client で重複する API URL 計算を共有設定ファイルに抽出する | ✅ |
 | 10 | Service Worker ランタイムキャッシュの導入 | [10-sw-runtime-cache.md](./guides/10-sw-runtime-cache.md) | API レスポンスに StaleWhileRevalidate 戦略を適用し、オフライン体験を向上させる | ⬜ |
 | 11 | ErrorFallback の改善 | [11-error-fallback-improvement.md](./guides/11-error-fallback-improvement.md) | 本番環境でのスタックトレース非表示化、エラーログ送信の堅牢化を行う | ✅ |

@@ -53,7 +53,21 @@ export default defineConfig(({ mode }) => {
         registerType: 'prompt',
         injectRegister: 'auto',
         injectManifest: {
-          globPatterns: ['**/*.{js,css,html,ico,png,gif,svg,woff,woff2}'],
+          globPatterns: [
+            '**/*.{js,css,html,woff,woff2}',
+            'icon-*.png',
+            'favicon.ico',
+          ],
+          globIgnores: [
+            '**/ical/**',
+            '**/AddToHomeScreen/**',
+            '**/classmatch/**',
+            '**/pin/**',
+            'hato.png',
+            'hero.png',
+            'logo_alpha.png',
+            '98_*.png',
+          ],
         },
         manifest: {
           name: process.env.VITE_APP_NAME,

@@ -1,17 +1,28 @@
 import { getDefaultStore } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
+import { createVersionedStorage } from '@/utils/versionedStorage';
+
+const jwtStorage = createVersionedStorage<string | null>({
+  version: 1,
+  migrate: (old) => (typeof old === 'string' ? old : null),
+});
 
 export const jwtAtom = atomWithStorage<string | null>(
   'hato.auth',
   null,
-  undefined,
+  jwtStorage,
   { getOnInit: true },
 );
+
+const userStorage = createVersionedStorage<User | null>({
+  version: 1,
+  migrate: (old) => (old && typeof old === 'object' ? (old as User) : null),
+});
 
 export const userAtom = atomWithStorage<User | null>(
   'hato.user',
   null,
-  undefined,
+  userStorage,
   { getOnInit: true },
 );
 
