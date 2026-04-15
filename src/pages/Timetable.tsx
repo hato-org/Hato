@@ -172,7 +172,6 @@ function Timetable() {
                       ) : (
                         <Text>日課未設定</Text>
                       )}
-                      {/* <Icon as={TbPencil} /> */}
                     </HStack>
                     <Icon as={TbChevronRight} />
                   </HStack>
@@ -196,7 +195,6 @@ function Timetable() {
                     <Error type="userScheduleNotSet" />
                   )}
                 </VStack>
-                {/* <StackDivider borderWidth="1px" /> */}
                 <HStack w="100%">
                   <Heading size="md">特記事項・備考</Heading>
                   <Spacer />

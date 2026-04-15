@@ -65,6 +65,7 @@ const TournamentModal = React.memo(
                   aspectRatio="4 / 3"
                   src={`/classmatch/${year}/${data.map}${darkSuffix}.png`}
                   rounded="xl"
+                  alt="トーナメント表"
                 />
                 <Tournament
                   year={year}

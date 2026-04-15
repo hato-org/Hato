@@ -26,7 +26,12 @@ export default function Pin() {
         <ModalCloseButton top={4} right={4} />
         <ModalHeader>投稿のピン留め</ModalHeader>
         <ModalBody>
-          <Image src="/pin/pin.gif" rounded="lg" shadow="md" />
+          <Image
+            src="/pin/pin.gif"
+            rounded="lg"
+            shadow="md"
+            alt="ピン留め操作の説明"
+          />
         </ModalBody>
         <ModalFooter />
       </ModalContent>

@@ -22,7 +22,7 @@ function Home() {
         p={8}
       >
         <VStack>
-          <Image src="/logo_alpha.png" boxSize={72} />
+          <Image src="/logo_alpha.png" boxSize={72} alt="Hato ロゴ" />
           <Heading
             size="4xl"
             color="blue.500"

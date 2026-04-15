@@ -41,6 +41,7 @@ function AddToHomeScreen() {
                   rounded="lg"
                   shadow="md"
                   src="/AddToHomeScreen/iPhone_1.png"
+                  alt="ホーム画面に追加 手順1: 共有メニューを開く"
                 />
               </ListItem>
               <ListItem>「ホーム画面に追加」をタップ</ListItem>
@@ -50,6 +51,7 @@ function AddToHomeScreen() {
                   rounded="lg"
                   shadow="md"
                   src="/AddToHomeScreen/iPhone_2.png"
+                  alt="ホーム画面に追加 手順3: 追加をタップ"
                 />
               </ListItem>
             </OrderedList>

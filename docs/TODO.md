@@ -23,11 +23,11 @@
 | 7 | overlayAtom の分割 | [07-overlay-atom-split.md](./guides/07-overlay-atom-split.md) | 巨大な単一アトムを個別アトムに分割し、不要な再レンダリングを抑制する | ✅ |
 | 8 | Query Key Factory の導入 | [08-query-key-factory.md](./guides/08-query-key-factory.md) | 散在するクエリキーを一元管理するファクトリパターンを導入する | ✅ |
 | 9 | API 設定の共通化 | [09-api-config-shared.md](./guides/09-api-config-shared.md) | auth と client で重複する API URL 計算を共有設定ファイルに抽出する | ✅ |
-| 10 | Service Worker ランタイムキャッシュの導入 | [10-sw-runtime-cache.md](./guides/10-sw-runtime-cache.md) | API レスポンスに StaleWhileRevalidate 戦略を適用し、オフライン体験を向上させる | ⬜ |
+| 10 | Service Worker ランタイムキャッシュの導入 | [10-sw-runtime-cache.md](./guides/10-sw-runtime-cache.md) | API レスポンスに StaleWhileRevalidate 戦略を適用し、オフライン体験を向上させる | ✅ |
 | 11 | ErrorFallback の改善 | [11-error-fallback-improvement.md](./guides/11-error-fallback-improvement.md) | 本番環境でのスタックトレース非表示化、エラーログ送信の堅牢化を行う | ✅ |
 | 12 | dashboard.tsx からの JSX 分離 | [12-dashboard-store-refactor.md](./guides/12-dashboard-store-refactor.md) | store ファイルに混在する JSX をコンポーネントに移動する | ✅ |
-| 13 | 大規模コンポーネントの分割 | [13-large-component-split.md](./guides/13-large-component-split.md) | Dashboard・Timetable 等の巨大コンポーネントをサブコンポーネントに分割する | ⬜ |
-| 14 | アクセシビリティ (a11y) 改善 | [14-accessibility.md](./guides/14-accessibility.md) | D&D の aria 属性、画像 alt テキスト、ライブリージョン等を追加する | ⬜ |
+| 13 | 大規模コンポーネントの分割 | [13-large-component-split.md](./guides/13-large-component-split.md) | Dashboard・Timetable 等の巨大コンポーネントをサブコンポーネントに分割する | ✅ |
+| 14 | アクセシビリティ (a11y) 改善 | [14-accessibility.md](./guides/14-accessibility.md) | D&D の aria 属性、画像 alt テキスト、ライブリージョン等を追加する | ✅ |
 
 ## 🟢 Priority 3 — 改善推奨
 
@@ -35,7 +35,7 @@
 |---|---------|--------|------|------|
 | 15 | テーマのハードコード値の解消 | [15-theme-hardcoded-values.md](./guides/15-theme-hardcoded-values.md) | `#202020` 等のハードコードカラーをテーマトークンに置き換える | ✅ |
 | 16 | global.css の修正 | [16-global-css-fix.md](./guides/16-global-css-fix.md) | タイポ修正、重複セレクタ削除、ダークモード対応を行う | ✅ |
-| 17 | ストレージバージョニングの導入 | [17-storage-versioning.md](./guides/17-storage-versioning.md) | Jotai アトムのストレージにバージョン管理を導入し、スキーマ変更時のマイグレーションを可能にする | ⬜ |
-| 18 | ルート構造のリファクタリング | [18-route-restructure.md](./guides/18-route-restructure.md) | フラットなルート定義を機能別にネストし、保守性を向上させる | ⬜ |
-| 19 | プリキャッシュサイズの最適化 | [19-precache-optimization.md](./guides/19-precache-optimization.md) | 不要な画像を除外してプリキャッシュサイズを削減する | ⬜ |
-| 20 | オフラインフォールバックページの作成 | [20-offline-fallback.md](./guides/20-offline-fallback.md) | キャッシュ外 URL アクセス時に表示するオフラインページを作成する | ⬜ |
+| 17 | ストレージバージョニングの導入 | [17-storage-versioning.md](./guides/17-storage-versioning.md) | Jotai アトムのストレージにバージョン管理を導入し、スキーマ変更時のマイグレーションを可能にする | ✅ |
+| 18 | ルート構造のリファクタリング | [18-route-restructure.md](./guides/18-route-restructure.md) | フラットなルート定義を機能別にネストし、保守性を向上させる | ✅ |
+| 19 | プリキャッシュサイズの最適化 | [19-precache-optimization.md](./guides/19-precache-optimization.md) | 不要な画像を除外してプリキャッシュサイズを削減する | ✅ |
+| 20 | オフラインフォールバックページの作成 | [20-offline-fallback.md](./guides/20-offline-fallback.md) | キャッシュ外 URL アクセス時に表示するオフラインページを作成する | ✅ |

@@ -102,6 +102,7 @@ function Account() {
                     w="full"
                     objectFit="contain"
                     src={profile ? URL.createObjectURL(profile) : undefined}
+                    alt="プロフィール画像"
                   />
                 </Box>
               )}

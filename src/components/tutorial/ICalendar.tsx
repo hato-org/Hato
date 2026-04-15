@@ -84,11 +84,13 @@ export default function ICalendar() {
                     shadow="md"
                     rounded="lg"
                     src="/ical/iCal_iPhone_1.png"
+                    alt="iOSカレンダー 手順1: カレンダーアプリを開く"
                   />
                   <Image
                     shadow="md"
                     rounded="lg"
                     src="/ical/iCal_iPhone_2.png"
+                    alt="iOSカレンダー 手順2: 照会を追加"
                   />
                   <VStack>
                     <InputGroup>
@@ -107,6 +109,7 @@ export default function ICalendar() {
                       shadow="md"
                       rounded="lg"
                       src="/ical/iCal_iPhone_3.png"
+                      alt="iOSカレンダー 手順3: URLを貼り付けて照会"
                     />
                   </VStack>
                 </VStack>
@@ -138,6 +141,7 @@ export default function ICalendar() {
                     shadow="md"
                     rounded="lg"
                     src="/ical/iCal_Android_1.png"
+                    alt="Googleカレンダー 手順1: 他のカレンダーを追加"
                   />
                   <VStack>
                     <InputGroup>
@@ -156,6 +160,7 @@ export default function ICalendar() {
                       shadow="md"
                       rounded="lg"
                       src="/ical/iCal_Android_2.png"
+                      alt="Googleカレンダー 手順2: URLを貼り付けて追加"
                     />
                   </VStack>
                 </VStack>
@@ -178,16 +183,19 @@ export default function ICalendar() {
                     shadow="md"
                     rounded="lg"
                     src="/ical/iCal_Timetree_0.png"
+                    alt="Timetree 手順1: 事前にiOS/Googleカレンダーの連携を完了"
                   />
                   <Image
                     shadow="md"
                     rounded="lg"
                     src="/ical/iCal_Timetree_1.png"
+                    alt="Timetree 手順2: OSカレンダーと連携"
                   />
                   <Image
                     shadow="md"
                     rounded="lg"
                     src="/ical/iCal_Timetree_2.png"
+                    alt="Timetree 手順3: カレンダーの取り込みを確認"
                   />
                 </VStack>
               </AccordionPanel>

@@ -1,26 +1,19 @@
 import { useCallback } from 'react';
 import {
   Box,
-  Center,
+  Flex,
   Heading,
   HStack,
   IconButton,
   Spacer,
   Stack,
   Icon,
-  Flex,
   VStack,
   Text,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import {
-  TbAlertCircle,
-  TbCheck,
-  TbPencil,
-  TbPlus,
-  TbTrash,
-} from 'react-icons/tb';
+import { TbCheck, TbPencil, TbPlus } from 'react-icons/tb';
 import { useAtom, useSetAtom } from 'jotai';
 import {
   DndContext,
@@ -31,14 +24,13 @@ import {
   KeyboardSensor,
   TouchSensor,
 } from '@dnd-kit/core';
+import type { Announcements } from '@dnd-kit/core';
 import {
   SortableContext,
   arrayMove,
   sortableKeyboardCoordinates,
-  useSortable,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import CardElement from '@/components/cards';
@@ -46,48 +38,10 @@ import Header from '@/components/nav/Header';
 import { cardOrderDrawerAtom } from '@/store/overlay';
 import { cards, cardOrderAtom, dashboardEditModeAtom } from '@/store/dashboard';
 import { cardComponentMap } from '@/components/cards';
-
-function CardErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
-  return (
-    <Center w="100%" py={4}>
-      <VStack>
-        <Icon as={TbAlertCircle} w={16} h={16} color="warning" />
-        <Text textStyle="description" align="center">
-          {error.message}
-        </Text>
-        <Text textStyle="title" align="center">
-          カードの表示中にエラーが発生しました
-        </Text>
-        <Text
-          as="button"
-          textStyle="link"
-          fontWeight="bold"
-          onClick={resetErrorBoundary}
-        >
-          再試行
-        </Text>
-      </VStack>
-    </Center>
-  );
-}
+import SortableCard from '@/components/dashboard/SortableCard';
+import CardErrorFallback from '@/components/dashboard/CardErrorFallback';
 
 function Dashboard() {
-  // const [date] = useSeconds();
-
-  // const formatDate = new Intl.DateTimeFormat([], {
-  //   dateStyle: 'full',
-  //   timeStyle: 'short',
-  // }).format(date);
-  // const hour = new Date().getHours();
-  // const greet =
-  //   hour > 0 && hour < 4
-  //     ? 'こんばんは'
-  //     : hour >= 4 && hour < 9
-  //     ? 'おはようございます'
-  //     : hour >= 9 && hour < 19
-  //     ? 'こんにちは'
-  //     : 'こんばんは';
-
   const queryClient = useQueryClient();
   const [editMode, setEditMode] = useAtom(dashboardEditModeAtom);
   const setCardOrderDrawer = useSetAtom(cardOrderDrawerAtom);
@@ -105,6 +59,33 @@ function Dashboard() {
       },
     }),
   );
+
+  const announcements: Announcements = {
+    onDragStart({ active }) {
+      const card = cards.find(({ id }) => id === active.id);
+      return `${card?.name ?? 'カード'}を掴みました`;
+    },
+    onDragOver({ active, over }) {
+      const activeCard = cards.find(({ id }) => id === active.id);
+      if (over) {
+        const overCard = cards.find(({ id }) => id === over.id);
+        return `${activeCard?.name ?? 'カード'}を${overCard?.name ?? 'カード'}の上に移動しました`;
+      }
+      return `${activeCard?.name ?? 'カード'}はドロップエリア外です`;
+    },
+    onDragEnd({ active, over }) {
+      const activeCard = cards.find(({ id }) => id === active.id);
+      if (over) {
+        const overCard = cards.find(({ id }) => id === over.id);
+        return `${activeCard?.name ?? 'カード'}を${overCard?.name ?? 'カード'}の位置に移動しました`;
+      }
+      return `${activeCard?.name ?? 'カード'}をドロップしました`;
+    },
+    onDragCancel({ active }) {
+      const card = cards.find(({ id }) => id === active.id);
+      return `ドラッグをキャンセルしました。${card?.name ?? 'カード'}は元の位置に戻りました`;
+    },
+  };
 
   const onDragEnd = useCallback(
     ({ active, over }: DragEndEvent) => {
@@ -150,15 +131,6 @@ function Dashboard() {
             isRound
             onClick={() => setEditMode(!editMode)}
           />
-          {/* <IconButton
-            aria-label="Go to settings"
-            icon={<Icon as={TbSettings} boxSize={6} />}
-            variant="ghost"
-            size="lg"
-            isRound
-            as={RouterLink}
-            to="/settings"
-          /> */}
         </HStack>
       </Header>
 
@@ -168,22 +140,16 @@ function Dashboard() {
         mb={16}
         isPullable={!editMode}
         onRefresh={async () => {
-          await Promise.all([
-            queryClient.invalidateQueries({ type: 'active' }),
-          ]);
+          await queryClient.invalidateQueries({ type: 'active' });
         }}
       >
         <Stack>
-          {/* <VStack w="100%" align="flex-start" spacing={1}>
-            <Heading as="h2" textStyle="title">
-              {greet}
-            </Heading>
-            <Text fontWeight="bold" textStyle="description">
-              {formatDate}
-            </Text>
-          </VStack> */}
           {editMode ? (
-            <DndContext onDragEnd={onDragEnd} sensors={sensors}>
+            <DndContext
+              onDragEnd={onDragEnd}
+              sensors={sensors}
+              accessibility={{ announcements }}
+            >
               <SortableContext items={cardOrder}>
                 <Flex flex={1} p={4} pt={-4} pb={16} flexDir="column">
                   {cardOrder.map((cardId) => (
@@ -229,73 +195,6 @@ function Dashboard() {
       </ChakraPullToRefresh>
     </Box>
   );
-}
-
-function SortableCard({ cardId }: { cardId: string }) {
-  const card = cards.find(({ id }) => id === cardId);
-
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: card?.id ?? 'draggable',
-  });
-
-  const setCardOrder = useSetAtom(cardOrderAtom);
-
-  const style = transform
-    ? {
-        transform: CSS.Translate.toString(transform),
-        transition,
-      }
-    : undefined;
-
-  const CardComponent = cardComponentMap[cardId];
-
-  return card ? (
-    <Card
-      pos="relative"
-      style={style}
-      my={4}
-      sx={{
-        touchAction: isDragging ? 'manipulation' : 'auto',
-      }}
-      zIndex={isDragging ? 1 : 0}
-    >
-      <ErrorBoundary FallbackComponent={CardErrorFallback}>
-        {CardComponent && <CardComponent />}
-      </ErrorBoundary>
-      <Flex
-        pos="absolute"
-        inset={0}
-        rounded="xl"
-        backdropFilter="auto"
-        backdropBlur="2px"
-        {...attributes}
-        {...listeners}
-        ref={setNodeRef}
-      />
-      <IconButton
-        pos="absolute"
-        top="50%"
-        left="50%"
-        aria-label="Delete card"
-        icon={<Icon as={TbTrash} boxSize={6} />}
-        colorScheme="red"
-        variant="ghost"
-        size="lg"
-        isRound
-        transform="translate(-50%, -50%) scale(1.5)"
-        onClick={() =>
-          setCardOrder((currVal) => currVal.filter((id) => id !== card.id))
-        }
-      />
-    </Card>
-  ) : null;
 }
 
 export default Dashboard;

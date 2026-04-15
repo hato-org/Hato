@@ -168,7 +168,7 @@ const MenuBody = React.memo(() => {
   return (
     <VStack w="100%" h="100%" spacing={2} pb="env(safe-area-inset-bottom)">
       <HStack w="100%" spacing={0}>
-        <Image src="/logo_alpha.png" boxSize={12} />
+        <Image src="/logo_alpha.png" boxSize={12} alt="Hato ロゴ" />
         {breakPoint !== 1 && (
           <Heading
             w="100%"

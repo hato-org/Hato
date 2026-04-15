@@ -84,6 +84,7 @@ const BookInfo = React.memo(
           brightness={bgBrightness}
           transition="all .4s ease"
           opacity={isOpen ? bgOpacity : 0}
+          alt=""
         />
 
         <HStack p={2} pr={4} w="100%" spacing={4} onClick={onToggle}>
@@ -95,6 +96,7 @@ const BookInfo = React.memo(
             rounded="lg"
             src={imgSrc}
             fallback={<Icon as={TbBook} boxSize={16} p={4} />}
+            alt={`${title}の表紙`}
           />
           <VStack align="flex-start" spacing={1}>
             <Text textStyle="title">{title}</Text>
