@@ -23,6 +23,7 @@ import AddEventDrawer from '@/components/calendar/AddEventDrawer';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import { tutorialAtom, tutorialModalAtom } from '@/store/tutorial';
 import Card from '@/components/layout/Card';
+import { queryKeys } from '@/services/queryKeys';
 
 function Events() {
   const queryClient = useQueryClient();
@@ -86,7 +87,7 @@ function Events() {
         w="100%"
         onRefresh={async () => {
           await Promise.all([
-            queryClient.invalidateQueries({ queryKey: ['calendar'] }),
+            queryClient.invalidateQueries({ queryKey: queryKeys.calendar.all }),
           ]);
         }}
       >

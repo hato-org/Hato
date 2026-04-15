@@ -5,6 +5,7 @@ import Header from '@/components/nav/Header';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import TransitSummary from '@/components/transit/Summary';
 import UpcomingTrains from '@/components/transit/Upcoming';
+import { queryKeys } from '@/services/queryKeys';
 
 function Transit() {
   const queryClient = useQueryClient();
@@ -23,7 +24,9 @@ function Transit() {
       </Header>
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries({ queryKey: ['transit'] });
+          await queryClient.invalidateQueries({
+            queryKey: queryKeys.transit.all,
+          });
         }}
       >
         <VStack w="100%" mb={32} p={4} spacing={8}>

@@ -5,6 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useUserSubject = (
   id: string,
@@ -14,7 +15,7 @@ export const useUserSubject = (
 
   return useQuery({
     ...options,
-    queryKey: ['timetable', 'usersubject', id],
+    queryKey: queryKeys.timetable.userSubject(id),
     queryFn: async ({ signal }) =>
       await client
         .get(`timetable/userschedule/subject/${id}`, { signal })
@@ -33,7 +34,7 @@ export const useUserSubjectMutation = () => {
         .json<UserSubject>(),
     onSuccess: (subject) => {
       queryClient.setQueryData(
-        ['timetable', 'usersubject', subject._id],
+        queryKeys.timetable.userSubject(subject._id),
         subject,
       );
     },

@@ -1,6 +1,7 @@
 import type { classroom_v1 } from 'googleapis';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useGCAnnouncements = (
   courseId: string,
@@ -13,7 +14,7 @@ export const useGCAnnouncements = (
 
   return useQuery({
     ...options,
-    queryKey: ['google', courseId, 'announcements'],
+    queryKey: queryKeys.google.announcements(courseId),
     queryFn: async ({ signal }) =>
       await client
         .get(`classroom/course/${courseId}/announcement`, { signal })
@@ -32,7 +33,7 @@ export const useGCAnnouncement = (
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['google', 'announcement', courseId, id],
+    queryKey: queryKeys.google.announcement(courseId, id),
     queryFn: async ({ signal }) =>
       await client
         .get(`classroom/course/${courseId}/announcement/${id}`, { signal })
@@ -46,7 +47,7 @@ export const useGCMyAnnouncements = () => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['google', 'me', 'announcements'],
+    queryKey: queryKeys.google.myAnnouncements(),
     queryFn: async ({ signal }) =>
       await client
         .get('classroom/announcement/me', { signal })

@@ -30,6 +30,7 @@ import { GCScrollIndexAtomFamily } from '@/store/classroom';
 import { useGCTimeline } from '@/services/classroom';
 import { useUser } from '@/services/user';
 import LoginButton from '@/components/login/LoginButton';
+import { queryKeys } from '@/services/queryKeys';
 
 const scopes = [
   'https://www.googleapis.com/auth/classroom.courses.readonly',
@@ -113,7 +114,7 @@ export default function Classroom() {
         pb={16}
         onRefresh={async () =>
           // queryClient.invalidateQueries(['google', 'timeline'])
-          queryClient.resetQueries({ queryKey: ['google', 'timeline'] })
+          queryClient.resetQueries({ queryKey: queryKeys.google.timeline() })
         }
       >
         <Box px={4} mb={24}>

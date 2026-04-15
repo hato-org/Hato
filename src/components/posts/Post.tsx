@@ -18,6 +18,7 @@ import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import ChakraPullToRefresh from '../layout/PullToRefresh';
 import { usePost } from '@/services/posts';
+import { queryKeys } from '@/services/queryKeys';
 
 const PDFViewer = lazy(() => import('./PDFViewer'));
 
@@ -38,10 +39,12 @@ function Post({ id }: { id: string }) {
       mb={16}
       onRefresh={async () => {
         await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ['post', id] }),
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.posts.detail(id),
+          }),
           ...data.attachments.map((attachment) =>
             queryClient.invalidateQueries({
-              queryKey: ['post', 'attachment', attachment.id],
+              queryKey: queryKeys.posts.attachment(attachment.id),
             }),
           ),
         ]);

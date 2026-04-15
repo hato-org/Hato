@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { eachMonthOfInterval } from 'date-fns';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useEvents = (
   { year, month, day }: { year: number; month: number; day?: number },
@@ -14,7 +15,7 @@ export const useEvents = (
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['calendar', 'events', { year, month, day }],
+    queryKey: queryKeys.calendar.events({ year, month, day }),
     queryFn: async ({ signal }) =>
       await client
         .get('calendar/event', {
@@ -35,7 +36,7 @@ export const useEvent = (id: string) => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['calendar', 'event', id],
+    queryKey: queryKeys.calendar.event(id),
     queryFn: async ({ signal }) =>
       await client
         .get(`calendar/event/${id}`, { signal })
@@ -55,17 +56,13 @@ export const useAddEventMutation = () => {
     onSuccess: (event) => {
       const startAt = new Date(event.startAt);
       queryClient.setQueryData<CalendarEvent[]>(
-        [
-          'calendar',
-          'events',
-          {
-            month: Number(startAt.getMonth()) + 1,
-            year: startAt.getFullYear(),
-          },
-        ],
+        queryKeys.calendar.events({
+          year: startAt.getFullYear(),
+          month: Number(startAt.getMonth()) + 1,
+        }),
         (oldEvents) => [...(oldEvents ?? []), event],
       );
-      queryClient.setQueryData(['calendar', 'event', event._id], event);
+      queryClient.setQueryData(queryKeys.calendar.event(event._id), event);
     },
   });
 };
@@ -86,7 +83,9 @@ export const useEventMutation = () => {
             .json<CalendarEvent>()
         : await client.delete(`calendar/event/${id}`).json<CalendarEvent>(),
     onSuccess: (data) => {
-      queryClient.removeQueries({ queryKey: ['calendar', 'event', data._id] });
+      queryClient.removeQueries({
+        queryKey: queryKeys.calendar.event(data._id),
+      });
 
       const monthRange = eachMonthOfInterval({
         start: new Date(data.startAt),
@@ -95,11 +94,10 @@ export const useEventMutation = () => {
 
       monthRange.forEach((month) => {
         queryClient.setQueryData<CalendarEvent[]>(
-          [
-            'calendar',
-            'events',
-            { month: month.getMonth() + 1, year: month.getFullYear() },
-          ],
+          queryKeys.calendar.events({
+            year: month.getFullYear(),
+            month: month.getMonth() + 1,
+          }),
           (oldEvents) =>
             oldEvents?.filter((oldEvent) => oldEvent._id !== data?._id),
         );

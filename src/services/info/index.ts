@@ -7,6 +7,7 @@ import {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useGradeList = (
   options?: Omit<UseQueryOptions<GradeList>, 'queryKey' | 'queryFn'>,
@@ -15,7 +16,7 @@ export const useGradeList = (
 
   return useQuery({
     ...options,
-    queryKey: ['info', 'grade'],
+    queryKey: queryKeys.info.grade(),
     queryFn: async ({ signal }) =>
       await client.get('info/grade', { signal }).json<GradeList>(),
   });
@@ -31,7 +32,7 @@ export const useAllClassList = (
     queries:
       gradeList?.map<UseQueryOptions<ClassList>>(({ type, gradeCode }) => ({
         ...options,
-        queryKey: ['info', 'class', type, gradeCode],
+        queryKey: queryKeys.info.classList(type, gradeCode),
         queryFn: async ({ signal }) =>
           await client
             .get('info/class', {
@@ -57,7 +58,7 @@ export const useClassList = (
 
   return useQuery({
     ...options,
-    queryKey: ['info', 'class', type, grade],
+    queryKey: queryKeys.info.classList(type, grade),
     queryFn: async ({ signal }) =>
       await client
         .get('info/class', {
@@ -82,7 +83,7 @@ export const useCourseList = (
 
   return useQuery({
     ...options,
-    queryKey: ['info', 'course', type, grade],
+    queryKey: queryKeys.info.courseList(type, grade),
     queryFn: async ({ signal }) =>
       await client
         .get('info/course', {
@@ -107,7 +108,7 @@ export const useSubjectList = (
 
   return useQuery({
     ...options,
-    queryKey: ['info', 'subject', type, grade],
+    queryKey: queryKeys.info.subjectList(type, grade),
     queryFn: async ({ signal }) =>
       await client
         .get('info/subject', {
@@ -124,11 +125,11 @@ export const useProfile = () => {
   const isDark = useColorModeValue(false, true);
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
+    queryClient.invalidateQueries({ queryKey: queryKeys.user.profile() });
   }, [queryClient, isDark]);
 
   return useQuery({
-    queryKey: ['user', 'profile'],
+    queryKey: queryKeys.user.profile(),
     queryFn: async ({ signal }) =>
       await client
         .get('assets/profile', {

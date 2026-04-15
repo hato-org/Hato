@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-query';
 import { convertToLocalId } from '@/modules/library';
 import { librarySearchAtom } from '@/store/library';
+import { queryKeys } from '../queryKeys';
 
 export const useBookInfoById = (
   id: string,
@@ -15,7 +16,7 @@ export const useBookInfoById = (
 ) =>
   useQuery({
     ...options,
-    queryKey: ['library', 'book', id, 'detail'],
+    queryKey: queryKeys.library.bookDetail(id),
     queryFn: async ({ signal }) =>
       await ky
         .get(
@@ -29,7 +30,7 @@ export const useBookInfoById = (
 
 export const useBookInfoByISDN = (isbn: string) =>
   useQuery({
-    queryKey: ['library', 'book', isbn],
+    queryKey: queryKeys.library.bookByIsbn(isbn),
     queryFn: async ({ signal }) => {
       const books = [];
       let running;
@@ -83,7 +84,7 @@ export const useLibrarySearch = (
 
   return useMutation<LibrarySearchResponse, HTTPError, 'free' | 'detail'>({
     ...options,
-    mutationKey: ['library', 'search', { free, ...params }],
+    mutationKey: queryKeys.library.search({ free, ...params }),
     mutationFn: async (type) => {
       const books = [];
       let count;

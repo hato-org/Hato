@@ -23,6 +23,7 @@ import UserScheduleEditor from '@/components/timetable/editor/UserScheduleEditor
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import { useUser } from '@/services/user';
 import { userScheduleEditorAtom } from '@/store/overlay';
+import { queryKeys } from '@/services/queryKeys';
 import Loading from '@/components/common/Loading';
 import Error from '@/components/cards/Error';
 import { UserScheduleSearch } from '@/components/timetable/editor/UserScheduleSearch';
@@ -53,7 +54,7 @@ function MyTimetable() {
       <ChakraPullToRefresh
         onRefresh={async () => {
           await queryClient.invalidateQueries({
-            queryKey: ['timetable', 'userschedule', 'user', user._id],
+            queryKey: queryKeys.timetable.myUserSchedules(user._id),
           });
         }}
       >

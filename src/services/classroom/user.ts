@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import type { classroom_v1 } from 'googleapis';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useGCUserInfo = (userId?: string | null) => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['google', 'user', userId],
+    queryKey: queryKeys.google.user(userId),
     queryFn: async ({ signal }) =>
       await client
         .get(`classroom/user/${userId}`, { signal })

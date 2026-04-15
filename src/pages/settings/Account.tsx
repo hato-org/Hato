@@ -15,6 +15,7 @@ import AccountGrade from './account/Grade';
 import AccountClass from './account/Class';
 import AccountCourse from './account/Course';
 import AccountApiKey from './account/ApiKey';
+import { queryKeys } from '@/services/queryKeys';
 
 function Account() {
   const { data: user } = useUser();
@@ -45,7 +46,7 @@ function Account() {
         pb={16}
         onRefresh={async () => {
           await Promise.all([
-            queryClient.invalidateQueries({ queryKey: ['user'] }),
+            queryClient.invalidateQueries({ queryKey: queryKeys.user.all }),
           ]);
         }}
         refreshingContent={<Loading />}

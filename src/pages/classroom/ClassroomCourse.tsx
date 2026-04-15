@@ -25,6 +25,7 @@ import Footer from '@/components/classroom/LoadingFooter';
 import { GCScrollIndexAtomFamily } from '@/store/classroom';
 import Loading from '@/components/common/Loading';
 import Error from '@/components/cards/Error';
+import { queryKeys } from '@/services/queryKeys';
 
 export default function ClassroomCourse() {
   const queryClient = useQueryClient();
@@ -72,7 +73,7 @@ export default function ClassroomCourse() {
         minH="100vh"
         onRefresh={async () => {
           await queryClient.resetQueries({
-            queryKey: ['google', id, 'timeline'],
+            queryKey: queryKeys.google.courseTimeline(id!),
           });
         }}
       >

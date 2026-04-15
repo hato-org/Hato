@@ -10,6 +10,7 @@ import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/posts/Card';
 import { pinnedPostAtom, postsScrollStateAtom } from '@/store/posts';
 import { useHatoboard } from '@/services/posts';
+import { queryKeys } from '@/services/queryKeys';
 
 const Hatoboard = React.memo(() => {
   const queryClient = useQueryClient();
@@ -110,7 +111,9 @@ const Hatoboard = React.memo(() => {
         pb={24}
         onRefresh={async () => {
           await Promise.all([
-            queryClient.invalidateQueries({ queryKey: ['posts', 'hatoboard'] }),
+            queryClient.invalidateQueries({
+              queryKey: queryKeys.posts.hatoboard(),
+            }),
           ]);
         }}
       >

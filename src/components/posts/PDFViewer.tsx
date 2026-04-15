@@ -28,6 +28,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
 import { usePostAttachment } from '@/services/posts';
+import { queryKeys } from '@/services/queryKeys';
 
 interface PDFViewerProps {
   isOpen: boolean;
@@ -42,7 +43,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const PDFViewer = React.memo(
   ({ isOpen, onClose, attachment }: PDFViewerProps) => {
-    const isFetching = useIsFetching({ queryKey: ['post', 'attachment'] });
+    const isFetching = useIsFetching({
+      queryKey: queryKeys.posts.attachmentAll(),
+    });
     const pdfWidth = useBreakpointValue({
       base: window.innerWidth,
       md: undefined,

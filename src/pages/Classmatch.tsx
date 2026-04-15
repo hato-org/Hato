@@ -29,6 +29,7 @@ import Info from '@/components/cards/Info';
 import Error from '@/components/cards/Error';
 import Loading from '@/components/common/Loading';
 import HistoryModal from '@/components/classmatch/HistoryModal';
+import { queryKeys } from '@/services/queryKeys';
 
 export default function Classmatch() {
   const queryClient = useQueryClient();
@@ -111,10 +112,10 @@ export default function Classmatch() {
       <ChakraPullToRefresh
         onRefresh={async () => {
           await queryClient.invalidateQueries({
-            queryKey: ['classmatch', year, season],
+            queryKey: queryKeys.classmatch.all(year, season),
           });
           await queryClient.invalidateQueries({
-            queryKey: ['classmatch', 'history'],
+            queryKey: queryKeys.classmatch.history(),
           });
         }}
       >

@@ -20,6 +20,7 @@ import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import StatusInfoList from '@/components/status/StatusInfoList';
 import AddStatusInfo from '@/components/status/AddStatusInfo';
 import { useUser } from '@/services/user';
+import { queryKeys } from '@/services/queryKeys';
 
 function Status() {
   const queryClient = useQueryClient();
@@ -42,7 +43,9 @@ function Status() {
       </Header>
       <ChakraPullToRefresh
         onRefresh={async () => {
-          await queryClient.invalidateQueries({ queryKey: ['status'] });
+          await queryClient.invalidateQueries({
+            queryKey: queryKeys.status.all,
+          });
         }}
       >
         <VStack w="full" p={4} spacing={8}>

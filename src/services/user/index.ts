@@ -8,6 +8,7 @@ import { useAtom, useSetAtom } from 'jotai';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
 import { useToast } from '@chakra-ui/react';
+import { queryKeys } from '../queryKeys';
 
 export const useUser = () => {
   const { client } = useClient();
@@ -15,7 +16,7 @@ export const useUser = () => {
   const setJWT = useSetAtom(jwtAtom);
 
   return useQuery({
-    queryKey: ['user', user?._id],
+    queryKey: queryKeys.user.detail(user?._id ?? ''),
     queryFn: async ({ signal }) => {
       const res = await client.get('user', { signal }).json<LoginResponse>();
       setJWT(res.jwt);
@@ -46,8 +47,8 @@ export const useUserMutation = () => {
         })
         .json<User>(),
     onSuccess: (newUser) => {
-      queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });
-      queryClient.setQueryData(['user', newUser._id], newUser);
+      queryClient.invalidateQueries({ queryKey: queryKeys.user.profile() });
+      queryClient.setQueryData(queryKeys.user.detail(newUser._id), newUser);
       setUser(newUser);
     },
     onError: (err) => {
@@ -69,7 +70,7 @@ export const useUserInfo = (
 
   return useQuery({
     ...options,
-    queryKey: ['user', id],
+    queryKey: queryKeys.user.detail(id),
     queryFn: async ({ signal }) =>
       await client.get(`user/${id}`, { signal }).json<User>(),
   });

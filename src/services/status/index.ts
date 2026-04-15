@@ -1,12 +1,13 @@
 import { useToast } from '@chakra-ui/react';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import ky, { HTTPError } from 'ky';
+import { queryKeys } from '../queryKeys';
 
 const STATUS_API_URL = import.meta.env.VITE_STATUS_API_URL;
 
 export const useHatoStatus = () =>
   useQuery({
-    queryKey: ['status'],
+    queryKey: queryKeys.status.all,
     queryFn: async ({ signal }) =>
       await ky.get('', { prefix: STATUS_API_URL, signal }).json<Status>(),
     refetchInterval: 1000 * 60 * 2,
@@ -14,7 +15,7 @@ export const useHatoStatus = () =>
 
 export const useHatoStatusMaintenance = () =>
   useQuery({
-    queryKey: ['status', 'maintenance'],
+    queryKey: queryKeys.status.maintenance(),
     queryFn: async ({ signal }) =>
       await ky
         .get('info', { prefix: STATUS_API_URL, signal })
@@ -46,7 +47,7 @@ export const useHatoStatusMaintenanceMutation = () => {
 
 export const useHatoStatusHistory = ({ id }: { id: string }) =>
   useInfiniteQuery({
-    queryKey: ['status', 'history', id],
+    queryKey: queryKeys.status.history(id),
     queryFn: async ({ pageParam = 1, signal }) =>
       await ky
         .get('history', {
@@ -64,7 +65,7 @@ export const useHatoStatusHistory = ({ id }: { id: string }) =>
 
 export const useHatoStatusServerList = () =>
   useQuery({
-    queryKey: ['status', 'servers'],
+    queryKey: queryKeys.status.servers(),
     queryFn: async ({ signal }) =>
       await ky
         .get('servers', {

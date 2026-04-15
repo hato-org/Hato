@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
 import { useUser } from '../user';
+import { queryKeys } from '../queryKeys';
 
 export const useDivision = ({ date }: { date: Date }) => {
   const { client } = useClient();
@@ -14,7 +15,7 @@ export const useDivision = ({ date }: { date: Date }) => {
   const day = date.getDate();
 
   return useQuery({
-    queryKey: ['timetable', 'division', { year, month, day }],
+    queryKey: queryKeys.timetable.division({ year, month, day }),
     queryFn: async ({ signal }) =>
       await client
         .get('timetable/division', {
@@ -37,15 +38,11 @@ export const useDivisionMutation = () => {
     onSuccess: (division) => {
       const date = new Date(division.date);
       queryClient.setQueryData(
-        [
-          'timetable',
-          'division',
-          {
-            year: date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate(),
-          },
-        ],
+        queryKeys.timetable.division({
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+        }),
         division,
       );
     },
@@ -60,7 +57,7 @@ export const useUserSchedule = (
 
   return useQuery({
     ...options,
-    queryKey: ['timetable', 'userschedule', id],
+    queryKey: queryKeys.timetable.userSchedule(id),
     queryFn: async ({ signal }) =>
       await client
         .get(`timetable/userschedule/${id}`, { signal })
@@ -73,7 +70,7 @@ export const useMyUserSchedules = () => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['timetable', 'userschedule', 'user', user._id],
+    queryKey: queryKeys.timetable.myUserSchedules(user._id),
     queryFn: async ({ signal }) =>
       await client
         .post('timetable/userschedule/search', {
@@ -107,11 +104,11 @@ export const useUserScheduleMutation = () => {
         .json<UserSchedule>(),
     onSuccess: (schedule) => {
       queryClient.setQueryData(
-        ['timetable', 'userschedule', schedule._id],
+        queryKeys.timetable.userSchedule(schedule._id),
         schedule,
       );
       queryClient.invalidateQueries({
-        queryKey: ['timetable', 'userschedule', 'user', user._id],
+        queryKey: queryKeys.timetable.myUserSchedules(user._id),
       });
     },
   });
@@ -127,10 +124,10 @@ export const useDeleteUserScheduleMutation = () => {
       await client.delete(`timetable/userschedule/${id}`).json<UserSchedule>(),
     onSuccess: (schedule) => {
       queryClient.removeQueries({
-        queryKey: ['timetable', 'userschedule', schedule._id],
+        queryKey: queryKeys.timetable.userSchedule(schedule._id),
       });
       queryClient.setQueryData<UserSchedule[]>(
-        ['timetable', 'userschedule', 'user', user._id],
+        queryKeys.timetable.myUserSchedules(user._id),
         (schedules) => schedules?.filter((sch) => sch._id !== schedule._id),
       );
     },

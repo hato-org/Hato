@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useNotes = ({
   year,
@@ -13,7 +14,7 @@ export const useNotes = ({
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['timetable', 'note', { year, month, day }],
+    queryKey: queryKeys.timetable.note({ year, month, day }),
     queryFn: async ({ signal }) =>
       await client
         .get('timetable/note', {
@@ -35,15 +36,11 @@ export const useAddNoteMutation = () => {
       const date = new Date(note.date);
 
       queryClient.setQueryData<Note[]>(
-        [
-          'timetable',
-          'note',
-          {
-            year: date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate(),
-          },
-        ],
+        queryKeys.timetable.note({
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+        }),
         (oldNotes) => [...(oldNotes ?? []), note],
       );
     },
@@ -69,15 +66,11 @@ export const useNoteMutation = () => {
       const date = new Date(note.date);
 
       queryClient.setQueryData<Note[]>(
-        [
-          'timetable',
-          'note',
-          {
-            year: date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate(),
-          },
-        ],
+        queryKeys.timetable.note({
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+        }),
         (oldNotes) =>
           [
             ...(oldNotes?.filter((oldNote) => oldNote._id !== note._id) ?? []),

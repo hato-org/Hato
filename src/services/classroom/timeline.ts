@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
 import { GCTimeline } from '@/@types/classroom';
+import { queryKeys } from '../queryKeys';
 
 export const useGCTimeline = () => {
   const { client } = useClient();
 
   return useInfiniteQuery({
-    queryKey: ['google', 'timeline'],
+    queryKey: queryKeys.google.timeline(),
     queryFn: async ({ pageParam, signal }) =>
       await client
         .get('classroom/timeline', {
@@ -26,7 +27,7 @@ export const useGCCourseTimeline = (courseId?: string) => {
   const { client } = useClient();
 
   return useInfiniteQuery({
-    queryKey: ['google', courseId, 'timeline'],
+    queryKey: queryKeys.google.courseTimeline(courseId),
     queryFn: async ({ pageParam, signal }) =>
       await client
         .get(`classroom/timeline/course/${courseId}`, {

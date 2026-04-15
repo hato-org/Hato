@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useClassmatchSports = (
   { year, season }: { year: number; season: ClassmatchSeason },
@@ -15,7 +16,7 @@ export const useClassmatchSports = (
 
   return useQuery({
     ...options,
-    queryKey: ['classmatch', year, season, 'sports'],
+    queryKey: queryKeys.classmatch.sports(year, season),
     queryFn: async ({ signal }) =>
       await client
         .get('classmatch/sports', {
@@ -41,7 +42,7 @@ export const useClassmatchSportInfo = (
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['classmatch', year, season, sport],
+    queryKey: queryKeys.classmatch.sport(year, season, sport),
     queryFn: async ({ signal }) =>
       await client
         .get(`classmatch/${sport}`, {
@@ -69,7 +70,7 @@ export const useClassmatchLiveStreams = (
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['classmatch', year, season, 'livestreams'],
+    queryKey: queryKeys.classmatch.livestreams(year, season),
     queryFn: async ({ signal }) =>
       await client
         .get('classmatch/streams', {
@@ -85,7 +86,7 @@ export const useClassmatchHistory = () => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['classmatch', 'history'],
+    queryKey: queryKeys.classmatch.history(),
     queryFn: async ({ signal }) =>
       await client
         .get('classmatch/history', { signal })
@@ -109,13 +110,11 @@ export const useClassmatchUpcomingList = ({
   const { client } = useClient();
 
   return useQuery({
-    queryKey: [
-      'classmatch',
-      year,
-      season,
-      'upcoming',
-      { type, grade, class: classNum },
-    ],
+    queryKey: queryKeys.classmatch.upcoming(year, season, {
+      type,
+      grade,
+      class: classNum,
+    }),
     queryFn: async ({ signal }) =>
       await client
         .get('classmatch/tournament/upcoming', {
@@ -161,7 +160,10 @@ export const useClassmatchMutation = ({
         .json<ClassmatchTournament>(),
     retry: 5,
     onSuccess: (data) => {
-      queryClient.setQueryData(['classmatch', year, season, sport], data);
+      queryClient.setQueryData(
+        queryKeys.classmatch.sport(year, season, sport),
+        data,
+      );
       toast({
         title: '更新しました。',
         status: 'success',

@@ -1,12 +1,13 @@
 import type { classroom_v1 } from 'googleapis';
 import { useQuery } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useGCCourses = () => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['google', 'courses'],
+    queryKey: queryKeys.google.courses(),
     queryFn: async ({ signal }) =>
       await client
         .get('classroom/course', { signal })
@@ -18,7 +19,7 @@ export const useGCCourseInfo = (courseId?: string | null) => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['google', 'course', courseId],
+    queryKey: queryKeys.google.course(courseId),
     queryFn: async ({ signal }) =>
       await client
         .get(`classroom/course/${courseId}`, { signal })

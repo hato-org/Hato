@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import type { classroom_v1 } from 'googleapis';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useGCCourseworkMaterial = (
   {
@@ -19,7 +20,7 @@ export const useGCCourseworkMaterial = (
 
   return useQuery({
     ...options,
-    queryKey: ['google', 'courseWorkMaterial', { courseId, id }],
+    queryKey: queryKeys.google.courseWorkMaterial(courseId, id),
     queryFn: async ({ signal }) =>
       await client
         .get(`classroom/course/${courseId}/courseworkmaterial/${id}`, {

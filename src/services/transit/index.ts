@@ -1,11 +1,12 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useClient } from '@/modules/client';
+import { queryKeys } from '../queryKeys';
 
 export const useTransit = () => {
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['transit'],
+    queryKey: queryKeys.transit.all,
     queryFn: async ({ signal }) =>
       await client.get('transit', { signal }).json<Transit>(),
     refetchInterval: 1000 * 60 * 5, // Refetch every 5 mins
@@ -22,7 +23,7 @@ export const useTransitTimetable = ({
   const { client } = useClient();
 
   return useQuery({
-    queryKey: ['transit', 'timetable', dest, kind],
+    queryKey: queryKeys.transit.timetable(dest, kind),
     queryFn: async ({ signal }) =>
       await client
         .get('transit/timetable', {
@@ -42,7 +43,7 @@ export const useDiainfo = (
   return useQuery({
     refetchInterval: 1000 * 60 * 2,
     ...options,
-    queryKey: ['transit', 'diainfo'],
+    queryKey: queryKeys.transit.diainfo(),
     queryFn: async ({ signal }) =>
       await client.get('transit/diainfo', { signal }).json<DiaInfo[]>(),
   });

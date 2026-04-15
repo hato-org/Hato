@@ -38,6 +38,7 @@ import { useUser } from '@/services/user';
 import { useDivision, useUserSchedule } from '@/services/timetable';
 import Error from '@/components/timetable/Error';
 import DivisionEditor from '@/components/timetable/DivisionEditor';
+import { queryKeys } from '@/services/queryKeys';
 
 const ReportModal = lazy(() => import('@/components/common/ReportModal'));
 const Notes = lazy(() => import('@/components/timetable/Notes'));
@@ -134,7 +135,9 @@ function Timetable() {
       <ChakraPullToRefresh
         isPullable={!tableFocus}
         onRefresh={async () => {
-          await queryClient.invalidateQueries({ queryKey: ['timetable'] });
+          await queryClient.invalidateQueries({
+            queryKey: queryKeys.timetable.all,
+          });
         }}
       >
         <Center w="100%" mb={32}>
