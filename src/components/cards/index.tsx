@@ -19,3 +19,13 @@ export default {
   Scienceroom,
   Classmatch,
 };
+
+export const cardComponentMap: Record<string, React.ComponentType> = {
+  clock: Clock,
+  timetable: Timetable,
+  transit: Transit,
+  events: Events,
+  hatoboard: Hatoboard,
+  scienceroom: Scienceroom,
+  classmatch: Classmatch,
+};

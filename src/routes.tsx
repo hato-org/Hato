@@ -5,11 +5,11 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import ErrorFallback from './components/common/ErrorFallback';
 import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
 import { GlobalLoading } from './components/common/Loading';
 
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+
 const Events = React.lazy(() => import('./pages/Events'));
-// const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const EventDetail = React.lazy(() => import('./pages/EventDetail'));
 const Status = React.lazy(() => import('./pages/Status'));
 const Timetable = React.lazy(() => import('./pages/Timetable'));
@@ -130,16 +130,6 @@ const router = createBrowserRouter([
       {
         path: 'library',
         element: <Library />,
-        // children: [
-        //   {
-        //     index: true,
-        //     element: <LibraryElement.Top />
-        //   },
-        //   {
-        //     path: 'search',
-        //     element: <LibraryElement.Search />
-        //   }
-        // ]
       },
       {
         path: 'library/search',

@@ -43,8 +43,9 @@ import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import Card from '@/components/layout/Card';
 import CardElement from '@/components/cards';
 import Header from '@/components/nav/Header';
-import { overlayAtom } from '@/store/overlay';
+import { cardOrderDrawerAtom } from '@/store/overlay';
 import { cards, cardOrderAtom, dashboardEditModeAtom } from '@/store/dashboard';
+import { cardComponentMap } from '@/components/cards';
 
 function CardErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
@@ -89,7 +90,7 @@ function Dashboard() {
 
   const queryClient = useQueryClient();
   const [editMode, setEditMode] = useAtom(dashboardEditModeAtom);
-  const setOverlay = useSetAtom(overlayAtom);
+  const setCardOrderDrawer = useSetAtom(cardOrderDrawerAtom);
   const [cardOrder, setCardOrder] = useAtom(cardOrderAtom);
 
   const sensors = useSensors(
@@ -137,9 +138,7 @@ function Dashboard() {
               variant="ghost"
               size="lg"
               isRound
-              onClick={() =>
-                setOverlay((currVal) => ({ ...currVal, cardOrder: true }))
-              }
+              onClick={() => setCardOrderDrawer(true)}
             />
           )}
           <IconButton
@@ -197,13 +196,16 @@ function Dashboard() {
             <Stack flex={1} p={4} pb={16} spacing={8}>
               <CardElement.Info />
               {cardOrder.length ? (
-                cardOrder.map((cardId) => (
-                  <Card key={cardId}>
-                    <ErrorBoundary FallbackComponent={CardErrorFallback}>
-                      {cards.find(({ id }) => cardId === id)?.component}
-                    </ErrorBoundary>
-                  </Card>
-                ))
+                cardOrder.map((cardId) => {
+                  const CardComponent = cardComponentMap[cardId];
+                  return (
+                    <Card key={cardId}>
+                      <ErrorBoundary FallbackComponent={CardErrorFallback}>
+                        {CardComponent && <CardComponent />}
+                      </ErrorBoundary>
+                    </Card>
+                  );
+                })
               ) : (
                 <VStack>
                   <Text color="description" textStyle="title" fontSize="4xl">
@@ -252,6 +254,8 @@ function SortableCard({ cardId }: { cardId: string }) {
       }
     : undefined;
 
+  const CardComponent = cardComponentMap[cardId];
+
   return card ? (
     <Card
       pos="relative"
@@ -263,7 +267,7 @@ function SortableCard({ cardId }: { cardId: string }) {
       zIndex={isDragging ? 1 : 0}
     >
       <ErrorBoundary FallbackComponent={CardErrorFallback}>
-        {card.component}
+        {CardComponent && <CardComponent />}
       </ErrorBoundary>
       <Flex
         pos="absolute"

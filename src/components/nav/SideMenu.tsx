@@ -34,7 +34,7 @@ import { MdOutlineTrain } from 'react-icons/md';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { Link as RouterLink, useLocation } from 'react-router';
 import { useAtom } from 'jotai';
-import { overlayAtom } from '@/store/overlay';
+import { menuAtom } from '@/store/overlay';
 import { useAuth } from '@/modules/auth';
 import Account from '../login/Account';
 
@@ -55,11 +55,8 @@ export default function SideMenu() {
 
 export function SideMenuDrawer() {
   const location = useLocation();
-  const [overlay, setOverlay] = useAtom(overlayAtom);
-  const onClose = useCallback(
-    () => setOverlay((currVal) => ({ ...currVal, menu: false })),
-    [setOverlay],
-  );
+  const [menu, setMenu] = useAtom(menuAtom);
+  const onClose = useCallback(() => setMenu(false), [setMenu]);
 
   useEffect(() => {
     onClose();
@@ -67,7 +64,7 @@ export function SideMenuDrawer() {
 
   return (
     <Portal>
-      <Drawer isOpen={overlay.menu} onClose={onClose} placement="left">
+      <Drawer isOpen={menu} onClose={onClose} placement="left">
         <DrawerOverlay />
         <DrawerContent bg="panel" roundedRight="2xl">
           <DrawerCloseButton top={9} right={8} />

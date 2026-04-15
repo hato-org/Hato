@@ -27,7 +27,7 @@ import {
 } from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
 import { useUser, useUserMutation } from '@/services/user';
-import { overlayAtom } from '@/store/overlay';
+import { userScheduleEditorAtom } from '@/store/overlay';
 import { useUserSubject } from '@/services/timetable';
 import { days } from '@/utils/date';
 import { UserScheduleImportModal } from './UserScheduleImportModal';
@@ -50,7 +50,7 @@ const Card = React.memo(
       onOpen: importModalOnOpen,
       onClose: importModalOnClose,
     } = useDisclosure();
-    const setOverlay = useSetAtom(overlayAtom);
+    const setUserScheduleEditor = useSetAtom(userScheduleEditorAtom);
     const { data: user } = useUser();
     const { mutate, isPending } = useUserMutation();
 
@@ -190,12 +190,7 @@ const Card = React.memo(
                     rounded="lg"
                     variant="ghost"
                     leftIcon={<Icon as={TbPencil} />}
-                    onClick={() =>
-                      setOverlay((currVal) => ({
-                        ...currVal,
-                        userScheduleEditor: _id!,
-                      }))
-                    }
+                    onClick={() => setUserScheduleEditor(_id!)}
                   >
                     編集
                   </Button>

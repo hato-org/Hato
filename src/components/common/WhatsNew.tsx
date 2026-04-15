@@ -9,18 +9,18 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
-import { overlayAtom } from '@/store/overlay';
+import { whatsNewAtom } from '@/store/overlay';
 import Loading from './Loading';
 import './markdown.css';
 
 const ChangeLog = React.lazy(() => import('@/../CHANGELOG.mdx'));
 
 export default function WhatsNew() {
-  const [{ whatsNew }, setOverlay] = useAtom(overlayAtom);
+  const [whatsNew, setWhatsNew] = useAtom(whatsNewAtom);
 
   const onClose = useCallback(() => {
-    setOverlay((currVal) => ({ ...currVal, whatsNew: false }));
-  }, [setOverlay]);
+    setWhatsNew(false);
+  }, [setWhatsNew]);
 
   return (
     <Modal isOpen={whatsNew} onClose={onClose} size="xl">

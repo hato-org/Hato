@@ -18,22 +18,23 @@ import { useAtom } from 'jotai';
 import { TbPlus } from 'react-icons/tb';
 import Card from '../layout/Card';
 import { cards, cardOrderAtom } from '@/store/dashboard';
-import { overlayAtom } from '@/store/overlay';
+import { cardComponentMap } from '@/components/cards';
+import { cardOrderDrawerAtom } from '@/store/overlay';
 
 const AddCardDrawer = React.memo(() => {
-  const [overlay, setOverlay] = useAtom(overlayAtom);
+  const [cardOrderDrawer, setCardOrderDrawer] = useAtom(cardOrderDrawerAtom);
   const [cardOrder, setCardOrder] = useAtom(cardOrderAtom);
   const [selectedCard, setSelectedCard] = useState('');
 
   const unlistedCards = cards.filter((card) => !cardOrder.includes(card.id));
 
   const onClose = useCallback(
-    () => setOverlay((currVal) => ({ ...currVal, cardOrder: false })),
-    [setOverlay],
+    () => setCardOrderDrawer(false),
+    [setCardOrderDrawer],
   );
 
   return (
-    <Drawer placement="bottom" isOpen={overlay.cardOrder} onClose={onClose}>
+    <Drawer placement="bottom" isOpen={cardOrderDrawer} onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent bg="panel" roundedTop="xl">
         <DrawerHeader w="full" maxW="container.lg" mx="auto">
@@ -76,7 +77,10 @@ const AddCardDrawer = React.memo(() => {
                       w="full"
                       transform="scale(0.8)"
                     >
-                      {card.component}
+                      {(() => {
+                        const CardComponent = cardComponentMap[card.id];
+                        return CardComponent ? <CardComponent /> : null;
+                      })()}
                       <Box
                         pos="absolute"
                         inset={0}

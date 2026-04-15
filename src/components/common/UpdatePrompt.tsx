@@ -2,12 +2,12 @@ import { VStack, Text, Button, Slide, IconButton } from '@chakra-ui/react';
 import { TbX } from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
 import { useRegisterSW } from 'virtual:pwa-register/react';
-import { overlayAtom } from '@/store/overlay';
+import { whatsNewAtom } from '@/store/overlay';
 
 const intervalMS = 1000 * 60 * 1; // 1 min
 
 function UpdatePrompt() {
-  const setOverlay = useSetAtom(overlayAtom);
+  const setWhatsNew = useSetAtom(whatsNewAtom);
   const {
     // offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
@@ -62,7 +62,7 @@ function UpdatePrompt() {
           colorScheme="blue"
           onClick={() => {
             updateServiceWorker();
-            setOverlay((currVal) => ({ ...currVal, whatsNew: true }));
+            setWhatsNew(true);
           }}
         >
           再読み込み

@@ -25,7 +25,7 @@ import { useAtom } from 'jotai';
 import { TbTrash } from 'react-icons/tb';
 import { UserScheduleContext } from './context';
 import { useUser } from '@/services/user';
-import { overlayAtom } from '@/store/overlay';
+import { userScheduleEditorAtom } from '@/store/overlay';
 import {
   useDeleteUserScheduleMutation,
   useUserSchedule,
@@ -47,7 +47,9 @@ export default function UserScheduleEditor() {
     onClose: onDeleteModalClose,
   } = useDisclosure();
   const { data: user } = useUser();
-  const [overlay, setOverlay] = useAtom(overlayAtom);
+  const [userScheduleEditor, setUserScheduleEditor] = useAtom(
+    userScheduleEditorAtom,
+  );
 
   const initialSchedule = useMemo(
     () => ({
@@ -71,25 +73,22 @@ export default function UserScheduleEditor() {
   const [schedule, setSchedule] = useState<UserSchedule>(initialSchedule);
 
   const { data, isLoading, isPending, error } = useUserSchedule(
-    overlay.userScheduleEditor || '',
+    userScheduleEditor || '',
     {
-      enabled:
-        !!overlay.userScheduleEditor && overlay.userScheduleEditor !== 'new',
+      enabled: !!userScheduleEditor && userScheduleEditor !== 'new',
     },
   );
   const { mutate, isPending: mutatePending } = useUserScheduleMutation();
 
   useEffect(() => {
-    if (data && overlay.userScheduleEditor !== 'new') setSchedule(data);
+    if (data && userScheduleEditor !== 'new') setSchedule(data);
     else setSchedule(initialSchedule);
-  }, [isLoading, overlay.userScheduleEditor]);
+  }, [isLoading, userScheduleEditor]);
 
   return (
     <Modal
-      isOpen={!!overlay.userScheduleEditor}
-      onClose={() =>
-        setOverlay((currVal) => ({ ...currVal, userScheduleEditor: false }))
-      }
+      isOpen={!!userScheduleEditor}
+      onClose={() => setUserScheduleEditor(false)}
       size={{ base: 'full', md: '2xl' }}
     >
       <ModalOverlay />
@@ -100,7 +99,7 @@ export default function UserScheduleEditor() {
           <ModalCloseButton top={4} right={4} />
           <ModalHeader>マイ時間割の編集</ModalHeader>
           <ModalBody px={4}>
-            {overlay.userScheduleEditor !== 'new' && isPending ? (
+            {userScheduleEditor !== 'new' && isPending ? (
               <Loading />
             ) : error ? (
               <Error error={error} />
@@ -140,10 +139,7 @@ export default function UserScheduleEditor() {
                       isOpen={isDeleteModalOpen}
                       onDelete={() => {
                         onDeleteModalClose();
-                        setOverlay((currVal) => ({
-                          ...currVal,
-                          userScheduleEditor: false,
-                        }));
+                        setUserScheduleEditor(false);
                       }}
                       onCancel={onDeleteModalClose}
                     />
@@ -167,10 +163,7 @@ export default function UserScheduleEditor() {
               onClick={() => {
                 mutate(schedule, {
                   onSuccess: () => {
-                    setOverlay((currVal) => ({
-                      ...currVal,
-                      userScheduleEditor: false,
-                    }));
+                    setUserScheduleEditor(false);
                     toast({
                       title: '更新しました。',
                       status: 'success',
@@ -185,7 +178,7 @@ export default function UserScheduleEditor() {
                 });
               }}
             >
-              {overlay.userScheduleEditor === 'new' ? '追加' : '更新'}
+              {userScheduleEditor === 'new' ? '追加' : '更新'}
             </Button>
           </ModalFooter>
         </UserScheduleContext.Provider>

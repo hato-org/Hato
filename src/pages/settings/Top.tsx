@@ -32,7 +32,7 @@ import { useUser } from '@/services/user';
 import { tutorialAtom } from '@/store/tutorial';
 import { MotionVStack } from '@/components/motion';
 import SettingButton from './Button';
-import { overlayAtom } from '@/store/overlay';
+import { whatsNewAtom } from '@/store/overlay';
 import SettingCategory from './Category';
 
 function Top() {
@@ -41,11 +41,11 @@ function Top() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const queryClient = useQueryClient();
   const setTutorial = useSetAtom(tutorialAtom);
-  const setOverlay = useSetAtom(overlayAtom);
+  const setWhatsNew = useSetAtom(whatsNewAtom);
 
   const onWhatsNewOpen = useCallback(() => {
-    setOverlay((currVal) => ({ ...currVal, whatsNew: true }));
-  }, [setOverlay]);
+    setWhatsNew(true);
+  }, [setWhatsNew]);
 
   return (
     <MotionVStack

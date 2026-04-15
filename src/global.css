@@ -1,11 +1,10 @@
 * {
   scrollbar-width: thin;
   overflow-scrolling: touch;
-  -webkit-overlow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
 }
 
-::-webkit-scrollbar,
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -18,4 +17,14 @@
 ::-webkit-scrollbar-thumb {
   background: #aaa;
   border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+  }
 }

@@ -14,7 +14,7 @@ import { useAtomValue } from 'jotai';
 import { useUserInfo } from '@/services/user';
 import Loading from '../common/Loading';
 import { useReport } from '@/services/report';
-import { overlayAtom } from '@/store/overlay';
+import { classmatchTournamentAtom } from '@/store/overlay';
 import Error from '../cards/Error';
 
 export default function MetaReporter({
@@ -30,7 +30,7 @@ export default function MetaReporter({
     position: 'top-right',
     duration: 1500,
   });
-  const { classmatchTournament } = useAtomValue(overlayAtom);
+  const classmatchTournament = useAtomValue(classmatchTournamentAtom);
   const [description, setDescription] = useState('');
   const { data, status, error } = useUserInfo(history?.at(-1)?.userId ?? '', {
     enabled: !!history?.at(-1),

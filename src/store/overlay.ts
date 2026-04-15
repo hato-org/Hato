@@ -1,21 +1,11 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atom } from 'jotai';
 
-interface Overlay {
-  menu: boolean;
-  cardOrder: boolean;
-  whatsNew: boolean;
-  userScheduleEditor: string | false;
-  userSubjectEditor: string | false;
-  classmatchTournament:
-    | { year: number; season: ClassmatchSeason; sport: ClassmatchSportId }
-    | undefined;
-}
-
-export const overlayAtom = atomWithStorage<Overlay>('hato.overlay', {
-  menu: false,
-  cardOrder: false,
-  whatsNew: false,
-  userScheduleEditor: false,
-  userSubjectEditor: false,
-  classmatchTournament: undefined,
-});
+export const menuAtom = atom(false);
+export const cardOrderDrawerAtom = atom(false);
+export const whatsNewAtom = atom(false);
+export const userScheduleEditorAtom = atom<string | false>(false);
+export const userSubjectEditorAtom = atom<string | false>(false);
+export const classmatchTournamentAtom = atom<
+  | { year: number; season: ClassmatchSeason; sport: ClassmatchSportId }
+  | undefined
+>(undefined);

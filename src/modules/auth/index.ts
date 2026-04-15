@@ -7,10 +7,7 @@ import { CodeResponse, useGoogleLogin } from '@react-oauth/google';
 import { useQueryClient } from '@tanstack/react-query';
 import { jwtAtom, userAtom } from '@/store/auth';
 import { unregister } from '@/utils/serviceWorker';
-
-const API_URL = import.meta.env.DEV
-  ? `${window.location.protocol}//${window.location.host}/api`
-  : import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/api';
 
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
@@ -37,39 +34,6 @@ export const useAuth = (scopes?: string[]) => {
     },
     [toast],
   );
-
-  // const login = useCallback(
-  //   async ({ credential }: GoogleCredentialResponse) => {
-  //     try {
-  //       // サーバーにユーザーデータ問い合わせ
-  //       const { user: userdata } = await getToken(credential);
-
-  //       // 返却されたJWTとユーザーデータをatomに格納
-  //       setUser(userdata);
-
-  //       queryClient.setQueryDefaults(['user', userdata._id], {
-  //         staleTime: 1000 * 60 * 10, // 10 mins
-  //         cacheTime: Infinity,
-  //         refetchInterval: 1000 * 60 * 10, // 10 mins
-  //         onSuccess: (newUser: User) => {
-  //           setUser(newUser);
-  //           console.log('Userdata updated');
-  //         },
-  //       });
-  //       queryClient.setQueryData(['user', userdata._id], userdata);
-
-  //       toast({
-  //         title: `${userdata.name}でログインしました。`,
-  //         status: 'success',
-  //       });
-
-  //       navigate('/dashboard');
-  //     } catch (error) {
-  //       onFail(error);
-  //     }
-  //   },
-  //   [toast, setUser, navigate, onFail, queryClient]
-  // );
 
   const login = useGoogleLogin({
     onSuccess: async ({ code }) => {

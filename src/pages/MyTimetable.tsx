@@ -22,7 +22,7 @@ import Card from '@/components/timetable/editor/Card';
 import UserScheduleEditor from '@/components/timetable/editor/UserScheduleEditor';
 import ChakraPullToRefresh from '@/components/layout/PullToRefresh';
 import { useUser } from '@/services/user';
-import { overlayAtom } from '@/store/overlay';
+import { userScheduleEditorAtom } from '@/store/overlay';
 import Loading from '@/components/common/Loading';
 import Error from '@/components/cards/Error';
 import { UserScheduleSearch } from '@/components/timetable/editor/UserScheduleSearch';
@@ -30,7 +30,7 @@ import { UserScheduleSearch } from '@/components/timetable/editor/UserScheduleSe
 function MyTimetable() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const setOverlay = useSetAtom(overlayAtom);
+  const setUserScheduleEditor = useSetAtom(userScheduleEditorAtom);
 
   const { data, isPending, error } = useMyUserSchedules();
 
@@ -72,12 +72,7 @@ function MyTimetable() {
                 variant="ghost"
                 colorScheme="blue"
                 isRound
-                onClick={() =>
-                  setOverlay((currVal) => ({
-                    ...currVal,
-                    userScheduleEditor: 'new',
-                  }))
-                }
+                onClick={() => setUserScheduleEditor('new')}
               />
             </HStack>
             {isPending ? (
@@ -95,12 +90,7 @@ function MyTimetable() {
               variant="ghost"
               colorScheme="blue"
               leftIcon={<Icon as={TbPlus} />}
-              onClick={() =>
-                setOverlay((currVal) => ({
-                  ...currVal,
-                  userScheduleEditor: 'new',
-                }))
-              }
+              onClick={() => setUserScheduleEditor('new')}
             >
               新しい時間割を作成
             </Button>

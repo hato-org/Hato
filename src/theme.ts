@@ -16,6 +16,7 @@ const colors = {
     '600': '#636363',
     '700': '#505050',
     '800': '#323232',
+    '850': '#202020',
     '900': '#121212',
   },
 };
@@ -42,11 +43,11 @@ const theme = extendTheme({
       },
       bgAlpha: {
         default: 'whiteAlpha.800',
-        _dark: '#121212CC',
+        _dark: 'rgba(18, 18, 18, 0.8)',
       },
       panel: {
         default: 'white',
-        _dark: '#202020',
+        _dark: 'bg.850',
       },
       popover: {
         default: 'white',
@@ -127,7 +128,6 @@ const theme = extendTheme({
       transition: 'all .2s ease',
       _hover: {
         bg: 'hover',
-        // borderColor: 'gray.100',
         cursor: 'pointer',
       },
       _active: {
