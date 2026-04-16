@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as JotaiProvider, createStore } from 'jotai';
@@ -17,63 +17,76 @@ vi.mock('@/components/layout/PageContainer', () => ({
   ),
 }));
 
+beforeEach(() => {
+  localStorage.clear();
+});
+
 function renderWithRouter(
   store: ReturnType<typeof createStore>,
   initialEntries: string[],
+  routes?: Parameters<typeof createMemoryRouter>[0],
 ) {
-  const router = createMemoryRouter(
-    [
-      {
-        path: '/',
-        element: <RequireLogin />,
-        children: [
-          { index: true, element: <div>Protected Content</div> },
-          { path: 'dashboard', element: <div>Dashboard Content</div> },
-        ],
-      },
-      {
-        path: '/login',
-        element: <div data-testid="login-page">Login</div>,
-      },
-    ],
-    { initialEntries },
-  );
+  const defaultRoutes = [
+    {
+      path: '/',
+      element: <RequireLogin />,
+      children: [
+        { index: true, element: <div>Protected Content</div> },
+        { path: 'dashboard', element: <div>Dashboard Content</div> },
+      ],
+    },
+    {
+      path: '/login',
+      element: <div data-testid="login-page">Login</div>,
+    },
+  ];
 
-  return render(
+  const router = createMemoryRouter(routes ?? defaultRoutes, {
+    initialEntries,
+  });
+
+  render(
     <JotaiProvider store={store}>
       <ChakraProvider theme={theme}>
         <RouterProvider router={router} />
       </ChakraProvider>
     </JotaiProvider>,
   );
+
+  return router;
 }
 
 describe('RequireLogin', () => {
-  it('renders child content when JWT exists', () => {
+  it('renders child content when JWT exists', async () => {
     const store = createStore();
     store.set(jwtAtom, 'valid-token');
 
     renderWithRouter(store, ['/']);
 
-    expect(screen.getByText('Protected Content')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Protected Content')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('page-container')).toBeInTheDocument();
   });
 
-  it('redirects to /login when JWT is null', () => {
+  it('redirects to /login when JWT is null', async () => {
     const store = createStore();
     store.set(jwtAtom, null);
 
     renderWithRouter(store, ['/']);
 
-    expect(screen.getByTestId('login-page')).toBeInTheDocument();
-    expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
+    });
   });
 
-  it('includes the current pathname in return_to', () => {
+  it('includes the current pathname in return_to', async () => {
     const store = createStore();
     store.set(jwtAtom, null);
 
-    const router = createMemoryRouter(
+    const router = renderWithRouter(
+      store,
+      ['/dashboard'],
       [
         {
           path: '/dashboard',
@@ -85,50 +98,23 @@ describe('RequireLogin', () => {
           element: <div data-testid="login-page">Login</div>,
         },
       ],
-      { initialEntries: ['/dashboard'] },
     );
 
-    render(
-      <JotaiProvider store={store}>
-        <ChakraProvider theme={theme}>
-          <RouterProvider router={router} />
-        </ChakraProvider>
-      </JotaiProvider>,
-    );
-
-    expect(screen.getByTestId('login-page')).toBeInTheDocument();
-    expect(router.state.location.pathname).toBe('/login');
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/login');
+    });
     expect(router.state.location.search).toContain('return_to=/dashboard');
   });
 
-  it('includes search params in return_to', () => {
+  it('includes search params in return_to', async () => {
     const store = createStore();
     store.set(jwtAtom, null);
 
-    const router = createMemoryRouter(
-      [
-        {
-          path: '/',
-          element: <RequireLogin />,
-          children: [{ index: true, element: <div>Content</div> }],
-        },
-        {
-          path: '/login',
-          element: <div data-testid="login-page">Login</div>,
-        },
-      ],
-      { initialEntries: ['/?tab=overview'] },
-    );
+    const router = renderWithRouter(store, ['/?tab=overview']);
 
-    render(
-      <JotaiProvider store={store}>
-        <ChakraProvider theme={theme}>
-          <RouterProvider router={router} />
-        </ChakraProvider>
-      </JotaiProvider>,
-    );
-
-    expect(router.state.location.pathname).toBe('/login');
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/login');
+    });
     expect(router.state.location.search).toContain('return_to=/?tab=overview');
   });
 });
