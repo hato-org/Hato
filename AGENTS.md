@@ -27,6 +27,8 @@ yarn dev:local-api  # ローカル API モードで開発
 yarn build          # 本番ビルド (→ dist/)
 yarn preview        # ビルドプレビュー
 yarn test           # Vitest
+yarn test:watch     # Vitest (watch モード)
+yarn test:coverage  # Vitest + カバレッジレポート
 yarn lint           # ESLint
 yarn format         # Prettier
 ```
@@ -43,6 +45,7 @@ yarn format         # Prettier
 | 認証 | Google OAuth (@react-oauth/google) |
 | PWA | vite-plugin-pwa + Workbox |
 | ビルド | Vite 6, TypeScript strict |
+| テスト | Vitest, @testing-library/react, @testing-library/jest-dom |
 
 ## Conventions
 
@@ -66,6 +69,57 @@ yarn format         # Prettier
 - **エラー処理** — `react-error-boundary` でラップ
 - **オフラインファースト** — React Query の `networkMode: 'offlineFirst'`、IndexedDB 永続化 (24h)
 - **pre-commit** — Husky + lint-staged (ESLint + Prettier)
+
+## Testing
+
+テストフレームワークは Vitest + @testing-library/react。設定は `vite.config.ts` の `test` ブロック。
+
+### テスト構成
+
+```
+src/test/
+├── setup.ts       # @testing-library/jest-dom の設定、グローバルモック
+└── utils.tsx      # AllProviders ラッパー (Chakra + QueryClient + Jotai + Router)
+```
+
+### テストの書き方
+
+- **ユニットテスト** — `*.test.ts` / `*.test.tsx` をソースファイルの隣に配置
+- **純粋関数** — 直接 import してテスト
+- **Jotai アトム** — `createStore()` で独立したストアを作成してテスト:
+  ```typescript
+  import { createStore } from 'jotai';
+  const store = createStore();
+  store.set(myAtom, newValue);
+  expect(store.get(myAtom)).toBe(newValue);
+  ```
+- **React フック** — `renderHook` + Jotai `Provider` ラッパーでテスト
+- **コンポーネント** — `renderWithProviders()` (`src/test/utils.tsx`) を使用:
+  ```typescript
+  import { renderWithProviders } from '@/test/utils';
+  renderWithProviders(<MyComponent />);
+  ```
+- **グローバル API** — `globals: true` により `describe`, `it`, `expect`, `vi` はインポート不要（明示的インポートも可）
+- **環境** — jsdom（`vite.config.ts` で設定済み）
+
+### クエリキーファクトリ
+
+`src/services/queryKeys.ts` にクエリキーを一元管理。サービスフックでは直接文字列配列を使わず、ファクトリ関数を使用:
+```typescript
+import { queryKeys } from '@/services/queryKeys';
+queryKey: queryKeys.user.all,
+queryKey: queryKeys.timetable.division({ year, month, day }),
+```
+
+### ストレージバージョニング
+
+`atomWithStorage` には `createVersionedStorage()` (`src/utils/versionedStorage.ts`) を使用。バージョン番号とマイグレーション関数でスキーマ変更に対応:
+```typescript
+const storage = createVersionedStorage<MyType>({
+  version: 2,
+  migrate: (old, oldVersion) => ({ ...old, newField: 'default' }),
+});
+```
 
 ## Design System
 
@@ -165,4 +219,7 @@ layerStyle="button" — border: 1px solid transparent, hover: bg hover, active: 
 - [src/theme.ts](src/theme.ts) — Chakra UI テーマ
 - [src/modules/client/index.ts](src/modules/client/index.ts) — API クライアント設定
 - [src/modules/auth/index.ts](src/modules/auth/index.ts) — 認証フック
+- [src/services/queryKeys.ts](src/services/queryKeys.ts) — クエリキーファクトリ
+- [src/utils/versionedStorage.ts](src/utils/versionedStorage.ts) — バージョン管理付き localStorage アダプタ
+- [src/test/utils.tsx](src/test/utils.tsx) — テストユーティリティ (AllProviders ラッパー)
 - [CONTRIBUTING.md](CONTRIBUTING.md) — コントリビューションガイド

@@ -188,7 +188,8 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
         push:
           type === 'add'
             ? [...(settings?.notification.push ?? []), serviceId]
-            : settings?.notification.push.filter((i) => i !== serviceId) ?? [],
+            : (settings?.notification.push.filter((i) => i !== serviceId) ??
+              []),
       },
     }),
     [settings],

@@ -19,7 +19,7 @@ export default function Top() {
         href: 'bookmarks',
       },
     ],
-    []
+    [],
   );
 
   return (
