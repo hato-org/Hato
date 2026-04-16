@@ -1,11 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { createMemoryRouter, RouterProvider } from 'react-router';
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as JotaiProvider, createStore } from 'jotai';
 import { theme } from '@/theme';
 import { jwtAtom } from '@/store/auth';
 import RequireLogin from '@/components/login/RequireLogin';
+
+// Navigate の遷移先を記録するためのモック
+const navigatedTo = vi.fn<[string]>();
 
 vi.mock('@/hooks/common/ga4', () => ({
   default: vi.fn(),
@@ -17,43 +20,49 @@ vi.mock('@/components/layout/PageContainer', () => ({
   ),
 }));
 
-beforeEach(() => {
-  localStorage.clear();
+// ScrollRestoration は MemoryRouter（非データルーター）では使えないためモック
+vi.mock('react-router', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router')>('react-router');
+  return {
+    ...actual,
+    ScrollRestoration: () => null,
+  };
 });
 
-function renderWithRouter(
+/**
+ * /login ルートで現在の location を記録するコンポーネント
+ */
+function LoginCapture() {
+  const loc = useLocation();
+  navigatedTo(loc.pathname + loc.search);
+  return <div data-testid="login-page">Login</div>;
+}
+
+beforeEach(() => {
+  localStorage.clear();
+  navigatedTo.mockClear();
+});
+
+function renderWithMemoryRouter(
   store: ReturnType<typeof createStore>,
   initialEntries: string[],
-  routes?: Parameters<typeof createMemoryRouter>[0],
+  protectedPath = '/',
 ) {
-  const defaultRoutes = [
-    {
-      path: '/',
-      element: <RequireLogin />,
-      children: [
-        { index: true, element: <div>Protected Content</div> },
-        { path: 'dashboard', element: <div>Dashboard Content</div> },
-      ],
-    },
-    {
-      path: '/login',
-      element: <div data-testid="login-page">Login</div>,
-    },
-  ];
-
-  const router = createMemoryRouter(routes ?? defaultRoutes, {
-    initialEntries,
-  });
-
   render(
     <JotaiProvider store={store}>
       <ChakraProvider theme={theme}>
-        <RouterProvider router={router} />
+        <MemoryRouter initialEntries={initialEntries}>
+          <Routes>
+            <Route path={protectedPath} element={<RequireLogin />}>
+              <Route index element={<div>Protected Content</div>} />
+            </Route>
+            <Route path="/login" element={<LoginCapture />} />
+          </Routes>
+        </MemoryRouter>
       </ChakraProvider>
     </JotaiProvider>,
   );
-
-  return router;
 }
 
 describe('RequireLogin', () => {
@@ -61,7 +70,7 @@ describe('RequireLogin', () => {
     const store = createStore();
     store.set(jwtAtom, 'valid-token');
 
-    renderWithRouter(store, ['/']);
+    renderWithMemoryRouter(store, ['/']);
 
     await waitFor(() => {
       expect(screen.getByText('Protected Content')).toBeInTheDocument();
@@ -73,10 +82,10 @@ describe('RequireLogin', () => {
     const store = createStore();
     store.set(jwtAtom, null);
 
-    renderWithRouter(store, ['/']);
+    renderWithMemoryRouter(store, ['/']);
 
     await waitFor(() => {
-      expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
+      expect(screen.getByTestId('login-page')).toBeInTheDocument();
     });
   });
 
@@ -84,37 +93,27 @@ describe('RequireLogin', () => {
     const store = createStore();
     store.set(jwtAtom, null);
 
-    const router = renderWithRouter(
-      store,
-      ['/dashboard'],
-      [
-        {
-          path: '/dashboard',
-          element: <RequireLogin />,
-          children: [{ index: true, element: <div>Dashboard Content</div> }],
-        },
-        {
-          path: '/login',
-          element: <div data-testid="login-page">Login</div>,
-        },
-      ],
-    );
+    renderWithMemoryRouter(store, ['/dashboard'], '/dashboard');
 
     await waitFor(() => {
-      expect(router.state.location.pathname).toBe('/login');
+      expect(screen.getByTestId('login-page')).toBeInTheDocument();
     });
-    expect(router.state.location.search).toContain('return_to=/dashboard');
+    expect(navigatedTo).toHaveBeenCalledWith(
+      expect.stringContaining('return_to=/dashboard'),
+    );
   });
 
   it('includes search params in return_to', async () => {
     const store = createStore();
     store.set(jwtAtom, null);
 
-    const router = renderWithRouter(store, ['/?tab=overview']);
+    renderWithMemoryRouter(store, ['/?tab=overview']);
 
     await waitFor(() => {
-      expect(router.state.location.pathname).toBe('/login');
+      expect(screen.getByTestId('login-page')).toBeInTheDocument();
     });
-    expect(router.state.location.search).toContain('return_to=/?tab=overview');
+    expect(navigatedTo).toHaveBeenCalledWith(
+      expect.stringContaining('return_to=/?tab=overview'),
+    );
   });
 });
