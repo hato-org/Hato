@@ -3,9 +3,13 @@ import { createBrowserRouter } from 'react-router';
 import RequireLogin from './components/login/RequireLogin';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
-import ErrorFallback from './components/common/ErrorFallback';
 import Home from './pages/Home';
 import { GlobalLoading } from './components/common/Loading';
+
+// ErrorFallback は useClient → routes の循環依存を避けるため遅延インポート
+const ErrorFallback = React.lazy(
+  () => import('./components/common/ErrorFallback'),
+);
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
