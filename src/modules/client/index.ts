@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 import { jwtAtom, clearAuth, updateAuth } from '@/store/auth';
 import { API_URL } from '@/config/api';
-import router from '@/routes';
 
 /**
  * 同時リフレッシュ防止用ミューテックス。
@@ -37,7 +36,8 @@ const refreshToken = async (currentJwt: string): Promise<string | null> => {
   return refreshPromise;
 };
 
-const navigateToLogin = () => {
+const navigateToLogin = async () => {
+  const { default: router } = await import('@/routes');
   router.navigate(
     `/login?return_to=${encodeURIComponent(window.location.pathname + window.location.search)}`,
   );
