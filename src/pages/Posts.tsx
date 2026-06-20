@@ -25,14 +25,13 @@ function Posts() {
           <Spacer />
           <IconButton
             aria-label="open hatoboard"
-            icon={<Icon as={TbExternalLink} w={6} h={6} />}
             size="lg"
             variant="ghost"
             borderRadius="full"
             as={Link}
             href="https://sites.google.com/g.nagano-c.ed.jp/yashiro-board/"
             target="_blank" rel="noreferrer"
-          />
+          >{<Icon as={TbExternalLink} w={6} h={6} />}</IconButton>
         </HStack>
       </Header>
       <Outlet />

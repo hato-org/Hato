@@ -205,19 +205,17 @@ const MonthSwitcher = React.memo(
     <HStack p={2} w="100%" rounded="xl" justify="space-between">
       <IconButton
         aria-label="previous month"
-        icon={<TbChevronLeft />}
         onClick={onPrev}
         borderRadius="full"
         variant="ghost"
-      />
+      >{<TbChevronLeft />}</IconButton>
       <Text textStyle="title">{format(date, 'yyyy年M月')}</Text>
       <IconButton
         aria-label="next month"
-        icon={<TbChevronRight />}
         onClick={onNext}
         borderRadius="full"
         variant="ghost"
-      />
+      >{<TbChevronRight />}</IconButton>
     </HStack>
   ),
 );

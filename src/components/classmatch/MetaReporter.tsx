@@ -98,16 +98,14 @@ export default function MetaReporter({
       <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
-          icon={<Icon as={TbX} />}
           colorScheme="red"
           variant="outline"
           rounded="lg"
           flex={1}
           onClick={onSubmit}
-        />
+        >{<Icon as={TbX} />}</IconButton>
         <IconButton
           aria-label="confirm changes"
-          icon={<Icon as={TbCheck} />}
           rounded="lg"
           colorScheme="green"
           flex={2}
@@ -135,7 +133,7 @@ export default function MetaReporter({
           }
           loading={reportPending}
           disabled={!description}
-        />
+        >{<Icon as={TbCheck} />}</IconButton>
       </HStack>
     </VStack>
   );

@@ -76,12 +76,11 @@ function BottomNavbar() {
             >
               <IconButton
                 aria-label={label}
-                icon={icon}
                 size="lg"
                 variant="ghost"
                 color={location.pathname === href ? 'blue.300' : 'title'}
                 borderRadius="full"
-              />
+              >{icon}</IconButton>
             </Center>
           ))}
         </HStack>

@@ -83,26 +83,24 @@ const PDFViewer = React.memo(
             <HStack align="center" w="100%" px={2} gap={2}>
               <IconButton
                 aria-label="close"
-                icon={<Icon as={TbX} boxSize={6} />}
                 size="lg"
                 variant="ghost"
                 onClick={onClose}
                 borderRadius="full"
-              />
+              >{<Icon as={TbX} boxSize={6} />}</IconButton>
               <Text textStyle="title" whiteSpace="nowrap" lineClamp={1} py={4}>
                 {attachment.name}
               </Text>
               <Spacer />
               <IconButton
                 aria-label="open source link"
-                icon={<Icon as={TbExternalLink} boxSize={6} />}
                 size="lg"
                 variant="ghost"
                 as={Link}
                 href={attachment.url ?? ''}
                 target="_blank" rel="noreferrer"
                 borderRadius="full"
-              />
+              >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
             </HStack>
             <Box w="100%">
               <Collapse in={!!isFetching}>
@@ -190,8 +188,7 @@ const ZoomControls = React.memo(
           aria-label="Zoom out"
           rounded="lg"
           onClick={onZoomOut}
-          icon={<Icon boxSize={6} as={TbZoomOut} />}
-        />
+        >{<Icon boxSize={6} as={TbZoomOut} />}</IconButton>
         <HStack textStyle="title">
           <Editable value={zoom.toString()} onChange={onSetZoom}>
             <EditablePreview />
@@ -203,8 +200,7 @@ const ZoomControls = React.memo(
           aria-label="Zoom in"
           rounded="lg"
           onClick={onZoomIn}
-          icon={<Icon boxSize={6} as={TbZoomIn} />}
-        />
+        >{<Icon boxSize={6} as={TbZoomIn} />}</IconButton>
       </HStack>
     </Center>
   ),

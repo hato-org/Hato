@@ -52,9 +52,8 @@ function UpdatePrompt() {
           top={2}
           right={2}
           rounded="lg"
-          icon={<TbX />}
           onClick={() => setNeedRefresh(false)}
-        />
+        >{<TbX />}</IconButton>
         <Text textStyle="title">アップデートが利用可能です</Text>
         <Button
           w="100%"

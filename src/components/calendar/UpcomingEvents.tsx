@@ -106,12 +106,11 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
         <Center bg="inherit" position="sticky" right={0} pl={1}>
           <IconButton
             aria-label="Add filter"
-            icon={<TbPlus />}
             variant="ghost"
             borderRadius="full"
             size="sm"
             onClick={onToggle}
-          />
+          >{<TbPlus />}</IconButton>
         </Center>
       </HStack>
       <Box w="100%">

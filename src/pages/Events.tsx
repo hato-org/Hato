@@ -75,12 +75,11 @@ function Events() {
           <Spacer />
           <IconButton
             aria-label="open help"
-            icon={<Icon as={TbInfoCircle} w={6} h={6} />}
             onClick={onHelpOpen}
             borderRadius="full"
             size="lg"
             variant="ghost"
-          />
+          >{<Icon as={TbInfoCircle} w={6} h={6} />}</IconButton>
         </HStack>
       </Header>
       <ChakraPullToRefresh
@@ -105,14 +104,13 @@ function Events() {
                   position="absolute"
                   top={0}
                   right={0}
-                  icon={<TbX />}
                   onClick={() =>
                     setTutorial((oldTutorial) => ({
                       ...oldTutorial,
                       iCal: true,
                     }))
                   }
-                />
+                >{<TbX />}</IconButton>
               </VStack>
             </Card>
           )}

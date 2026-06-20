@@ -71,12 +71,11 @@ function Status() {
                 {user.role === 'admin' && (
                   <IconButton
                     aria-label="Add maintenance info"
-                    icon={<Icon as={TbPlus} />}
                     onClick={onOpen}
                     variant="ghost"
                     colorScheme="blue"
                     borderRadius="full"
-                  />
+                  >{<Icon as={TbPlus} />}</IconButton>
                 )}
               </HStack>
               <StatusInfoList statusInfo={statusInfo} />

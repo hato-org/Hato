@@ -44,11 +44,10 @@ function Info() {
                 position="absolute"
                 top={0}
                 right={0}
-                icon={<TbX />}
                 onClick={() =>
                   setTutorial((oldTutorial) => ({ ...oldTutorial, ATHS: true }))
                 }
-              />
+              >{<TbX />}</IconButton>
               <Icon as={TbBulb} w={16} h={16} color="yellow.500" />
               <Text textStyle="title" textAlign="center">
                 <Text as="span" textStyle="link" onClick={onATHSOpen}>

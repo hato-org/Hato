@@ -159,10 +159,9 @@ const EditorTableCol = React.memo(
           w="full"
           aria-label="Add period"
           rounded="lg"
-          icon={<Icon as={TbPlus} />}
           variant="outline"
           onClick={onOpen}
-        />
+        >{<Icon as={TbPlus} />}</IconButton>
         <UserSubjectPicker
           isOpen={isOpen}
           onSelect={(subjectId) => {

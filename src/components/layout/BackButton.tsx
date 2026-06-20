@@ -8,12 +8,11 @@ function BackButton() {
   return (
     <IconButton
       aria-label="go back"
-      icon={<Icon as={TbArrowNarrowLeft} w={6} h={6} />}
       variant="ghost"
       size="lg"
       borderRadius="full"
       onClick={() => navigate(-1)}
-    />
+    >{<Icon as={TbArrowNarrowLeft} w={6} h={6} />}</IconButton>
   );
 }
 

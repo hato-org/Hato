@@ -64,7 +64,6 @@ export default function SortableCard({ cardId }: { cardId: string }) {
         top="50%"
         left="50%"
         aria-label="Delete card"
-        icon={<Icon as={TbTrash} boxSize={6} />}
         colorScheme="red"
         variant="ghost"
         size="lg"
@@ -73,7 +72,7 @@ export default function SortableCard({ cardId }: { cardId: string }) {
         onClick={() =>
           setCardOrder((currVal) => currVal.filter((id) => id !== card.id))
         }
-      />
+      >{<Icon as={TbTrash} boxSize={6} />}</IconButton>
     </Card>
   ) : null;
 }

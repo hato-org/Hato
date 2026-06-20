@@ -70,12 +70,11 @@ const DivisionEditor = React.memo(
               </Text>
               <IconButton
                 aria-label="close modal"
-                icon={<Icon as={TbX} boxSize={4} />}
                 variant="ghost"
                 rounded="lg"
                 size="sm"
                 onClick={onClose}
-              />
+              >{<Icon as={TbX} boxSize={4} />}</IconButton>
             </HStack>
           </ModalHeader>
           <ModalBody>

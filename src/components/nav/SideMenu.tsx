@@ -191,7 +191,6 @@ const MenuBody = React.memo(() => {
         ) : breakPoint === 1 ? (
           <IconButton
             aria-label={menuItem.label}
-            icon={menuItem.icon}
             size="lg"
             variant="ghost"
             borderRadius="full"
@@ -204,7 +203,7 @@ const MenuBody = React.memo(() => {
             onClick={
               menuItem.onClick as unknown as React.MouseEventHandler<HTMLButtonElement>
             }
-          />
+          >{menuItem.icon}</IconButton>
         ) : (
           <HStack
             p={2}

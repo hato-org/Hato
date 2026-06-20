@@ -188,16 +188,14 @@ function MetaEditor({
       <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
-          icon={<Icon as={TbX} />}
           colorScheme="red"
           variant="outline"
           rounded="lg"
           flex={1}
           onClick={onSubmit}
-        />
+        >{<Icon as={TbX} />}</IconButton>
         <IconButton
           aria-label="confirm changes"
-          icon={<Icon as={TbCheck} />}
           rounded="lg"
           colorScheme="green"
           flex={2}
@@ -213,7 +211,7 @@ function MetaEditor({
             )
           }
           loading={isPending}
-        />
+        >{<Icon as={TbCheck} />}</IconButton>
       </HStack>
     </VStack>
   );

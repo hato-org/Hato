@@ -93,20 +93,18 @@ export default function Classroom() {
           variant="ghost"
           borderRadius="full"
           size="lg"
-          icon={<Icon as={TbBookmark} boxSize={6} />}
           as={RouterLink}
           to="/classroom/bookmarks"
-        />
+        >{<Icon as={TbBookmark} boxSize={6} />}</IconButton>
         <IconButton
           aria-label="open in browser"
           variant="ghost"
           borderRadius="full"
           size="lg"
-          icon={<Icon as={TbExternalLink} boxSize={6} />}
           as={Link}
           href={`https://classroom.google.com/u/${user.email}`}
           target="_blank" rel="noreferrer"
-        />
+        >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
       </Header>
       <ChakraPullToRefresh
         w="full"

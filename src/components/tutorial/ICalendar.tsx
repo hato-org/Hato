@@ -100,9 +100,8 @@ export default function ICalendar() {
                           aria-label="copy ical url"
                           variant="outline"
                           colorScheme={hasCopied ? 'green' : 'gray'}
-                          icon={hasCopied ? <TbCheck /> : <TbCopy />}
                           onClick={onCopy}
-                        />
+                        >{hasCopied ? <TbCheck /> : <TbCopy />}</IconButton>
                       </InputRightElement>
                     </InputGroup>
                     <Image
@@ -151,9 +150,8 @@ export default function ICalendar() {
                           aria-label="copy ical url"
                           variant="outline"
                           colorScheme={hasCopied ? 'green' : 'gray'}
-                          icon={hasCopied ? <TbCheck /> : <TbCopy />}
                           onClick={onCopy}
-                        />
+                        >{hasCopied ? <TbCheck /> : <TbCopy />}</IconButton>
                       </InputRightElement>
                     </InputGroup>
                     <Image

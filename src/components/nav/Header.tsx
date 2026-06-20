@@ -50,12 +50,11 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
         {withMenu && isMobile && (
           <IconButton
             aria-label="menu"
-            icon={<Icon as={TbMenu2} boxSize={6} />}
             variant="ghost"
             borderRadius="full"
             size="lg"
             onClick={onMenuOpen}
-          />
+          >{<Icon as={TbMenu2} boxSize={6} />}</IconButton>
         )}
         {children}
       </HStack>

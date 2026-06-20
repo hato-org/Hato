@@ -67,13 +67,6 @@ export default function ClassroomCoursework() {
             variant="ghost"
             size="lg"
             borderRadius="full"
-            icon={
-              <Icon
-                color={isBookmarked ? 'blue.400' : undefined}
-                as={isBookmarked ? IoBookmark : IoBookmarkOutline}
-                boxSize={5}
-              />
-            }
             onClick={() =>
               setBookmarks((currVal) =>
                 isBookmarked
@@ -96,7 +89,13 @@ export default function ClassroomCoursework() {
                     ],
               )
             }
-          />
+          >{
+              <Icon
+                color={isBookmarked ? 'blue.400' : undefined}
+                as={isBookmarked ? IoBookmark : IoBookmarkOutline}
+                boxSize={5}
+              />
+            }</IconButton>
           <IconButton
             aria-label="open in browser"
             as={Link}
@@ -105,8 +104,7 @@ export default function ClassroomCoursework() {
             size="lg"
             variant="ghost"
             borderRadius="full"
-            icon={<Icon as={TbExternalLink} boxSize={6} />}
-          />
+          >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
         </HStack>
       </Header>
 

@@ -69,12 +69,11 @@ function MyTimetable() {
               <Spacer />
               <IconButton
                 aria-label="Add new user schedule"
-                icon={<Icon as={TbPlus} />}
                 variant="ghost"
                 colorScheme="blue"
                 borderRadius="full"
                 onClick={() => setUserScheduleEditor('new')}
-              />
+              >{<Icon as={TbPlus} />}</IconButton>
             </HStack>
             {isPending ? (
               <Loading />

@@ -209,11 +209,10 @@ function Timetable() {
                     colorScheme="blue"
                     color="blue.400"
                     aria-label="Add note"
-                    icon={<TbPlus />}
                     variant="ghost"
                     borderRadius="full"
                     onClick={onOpen}
-                  />
+                  >{<TbPlus />}</IconButton>
                 </HStack>
                 <Suspense fallback={<Loading />}>
                   <Notes

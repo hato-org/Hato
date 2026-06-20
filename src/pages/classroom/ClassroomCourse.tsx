@@ -64,8 +64,7 @@ export default function ClassroomCourse() {
             size="lg"
             borderRadius="full"
             target="_blank" rel="noreferrer"
-            icon={<Icon as={TbExternalLink} boxSize={6} />}
-          />
+          >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
         </HStack>
       </Header>
       <ChakraPullToRefresh

@@ -155,19 +155,17 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
               rounded="lg"
               variant="ghost"
               colorScheme="red"
-              icon={<TbX />}
               onClick={() => {
                 setEditMode(false);
                 setMessage(note.message);
               }}
-            />
+            >{<TbX />}</IconButton>
             <IconButton
               aria-label="apply changes"
               flex={3}
               rounded="lg"
               variant="solid"
               colorScheme="green"
-              icon={<TbCheck />}
               loading={isPending}
               onClick={() => {
                 mutate(
@@ -190,7 +188,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                   },
                 );
               }}
-            />
+            >{<TbCheck />}</IconButton>
           </HStack>
         </VStack>
       ) : (

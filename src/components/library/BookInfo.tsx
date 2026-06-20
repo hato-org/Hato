@@ -143,12 +143,6 @@ const BookInfo = React.memo(
                   <motion.div whileTap={{ scale: 0.9 }}>
                     <IconButton
                       aria-label="bookmark"
-                      icon={
-                        <Icon
-                          as={isBookmarked ? IoBookmark : IoBookmarkOutline}
-                          color={isBookmarked ? 'blue.400' : undefined}
-                        />
-                      }
                       rounded="lg"
                       shadow="lg"
                       onClick={() =>
@@ -160,7 +154,12 @@ const BookInfo = React.memo(
                             : [...currVal, isbn],
                         )
                       }
-                    />
+                    >{
+                        <Icon
+                          as={isBookmarked ? IoBookmark : IoBookmarkOutline}
+                          color={isBookmarked ? 'blue.400' : undefined}
+                        />
+                      }</IconButton>
                   </motion.div>
                 )}
                 <Button
