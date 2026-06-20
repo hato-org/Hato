@@ -2,7 +2,7 @@ import {
   Box,
   Button,
   Center,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   IconButton,
@@ -68,7 +68,7 @@ export const EditorTable = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapse in={isOpen} unmountOnExit>
+          <Collapsible.Root open={isOpen}><Collapsible.Content>
             <SimpleGrid w="full" p={4} pt={8} columns={5} gap={1}>
               {schedules
                 ?.slice(1, 6)
@@ -83,7 +83,7 @@ export const EditorTable = React.memo(
                   />
                 ))}
             </SimpleGrid>
-          </Collapse>
+          </Collapsible.Content></Collapsible.Root>
         </Box>
       </VStack>
     );

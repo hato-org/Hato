@@ -8,7 +8,7 @@ import {
   Text,
   Icon,
   IconButton,
-  Collapse,
+  Collapsible,
   ButtonGroup,
   Button,
   Link,
@@ -118,7 +118,7 @@ const BookInfo = React.memo(
           />
         </HStack>
         <Box w="100%">
-          <Collapse in={isOpen}>
+          <Collapsible.Root open={isOpen}><Collapsible.Content>
             <VStack w="100%" p={2} gap={1}>
               <HStack w="100%" gap={4}>
                 <Text w={16} textAlign="right" textStyle="title">
@@ -190,7 +190,7 @@ const BookInfo = React.memo(
                 )}
               </ButtonGroup>
             </VStack>
-          </Collapse>
+          </Collapsible.Content></Collapsible.Root>
         </Box>
       </VStack>
     );

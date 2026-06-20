@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Collapse, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { Box, Collapsible, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
 import {
   TbAlertTriangle,
@@ -28,7 +28,7 @@ export default function StatusBanner() {
   return (
     <VStack w="full" gap={0}>
       <Box w="full">
-        <Collapse in={!!statusInfo?.length}>
+        <Collapsible.Root open={!!statusInfo?.length}><Collapsible.Content>
           <HStack
             w="full"
             justify="center"
@@ -44,10 +44,10 @@ export default function StatusBanner() {
             </Text>
             <Icon as={TbChevronRight} />
           </HStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
       <Box w="full">
-        <Collapse in={isInMaintenance}>
+        <Collapsible.Root open={isInMaintenance}><Collapsible.Content>
           <HStack
             w="full"
             justify="center"
@@ -63,10 +63,10 @@ export default function StatusBanner() {
             </Text>
             <Icon as={TbChevronRight} />
           </HStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
       <Box w="full">
-        <Collapse in={isDown}>
+        <Collapsible.Root open={isDown}><Collapsible.Content>
           <HStack
             w="full"
             justify="center"
@@ -82,17 +82,17 @@ export default function StatusBanner() {
             </Text>
             <Icon as={TbChevronRight} />
           </HStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
       <Box w="full">
-        <Collapse in={!isOnline}>
+        <Collapsible.Root open={!isOnline}><Collapsible.Content>
           <HStack w="full" justify="center" py={1} bg="bg.500" color="white">
             <Icon as={TbCloudOff} boxSize={6} />
             <Text textStyle="title" color="inherit">
               オフライン
             </Text>
           </HStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
     </VStack>
   );

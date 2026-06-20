@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Box,
-  Collapse,
+  Collapsible,
   HStack,
   Heading,
   Icon,
@@ -82,7 +82,7 @@ const StatusInfo = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapse in={isOpen}>
+          <Collapsible.Root open={isOpen}><Collapsible.Content>
             <VStack w="full" pt={6} gap={4}>
               <HStack w="full" justify="space-evenly">
                 <VStack align="flex-start" gap={0}>
@@ -110,7 +110,7 @@ const StatusInfo = React.memo(
                 <Text textStyle="description">{description}</Text>
               </HStack>
             </VStack>
-          </Collapse>
+          </Collapsible.Content></Collapsible.Root>
         </Box>
       </VStack>
     );

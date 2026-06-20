@@ -7,7 +7,7 @@ import {
   Spacer,
   TagCloseButton,
   IconButton,
-  Collapse,
+  Collapsible,
   useDisclosure,
   Box,
   Center,
@@ -114,7 +114,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
         </Center>
       </HStack>
       <Box w="100%">
-        <Collapse in={isOpen}>
+        <Collapsible.Root open={isOpen}><Collapsible.Content>
           <AsyncSelect
             placeholder="タグを選択"
             menuPosition="fixed"
@@ -143,7 +143,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
               }),
             }}
           />
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
       {filteredEvents?.length ? (
         filteredEvents?.map((event) => (

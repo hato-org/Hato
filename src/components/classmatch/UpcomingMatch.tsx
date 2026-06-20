@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import {
   Box,
   Button,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Spacer,
@@ -67,16 +67,13 @@ const UpcomingMatch = React.memo(
           <Loading />
         ) : upcomingMatches?.length ? (
           <Box w="full">
-            <Collapse
-              startingHeight={(data?.length ?? 0) > 3 ? 220 : 0}
-              in={isOpen}
-            >
+            <Collapsible.Root open={isOpen}><Collapsible.Content>
               <VStack w="full" gap={0}>
                 {upcomingMatches?.map((upcoming) => (
                   <Match key={upcoming.matchId + upcoming.name} {...upcoming} />
                 ))}
               </VStack>
-            </Collapse>
+            </Collapsible.Content></Collapsible.Root>
           </Box>
         ) : (
           <Text pt={2} textStyle="description" fontWeight="bold">

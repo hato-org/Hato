@@ -5,7 +5,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   ListItem,
@@ -98,7 +98,7 @@ export default function Notification() {
             }}
           />
           <Box w="full">
-            <Collapse in={!isPushAvailable}>
+            <Collapsible.Root open={!isPushAvailable}><Collapsible.Content>
               <Alert status="warning" rounded="xl">
                 <VStack w="full" align="flex-start">
                   <HStack>
@@ -123,13 +123,13 @@ export default function Notification() {
                   </UnorderedList>
                 </VStack>
               </Alert>
-            </Collapse>
+            </Collapsible.Content></Collapsible.Root>
           </Box>
           <Suspense fallback={<Loading />}>
             <Box w="full">
-              <Collapse in={!!pushSubscription}>
+              <Collapsible.Root open={!!pushSubscription}><Collapsible.Content>
                 <NotificationDetail />
-              </Collapse>
+              </Collapsible.Content></Collapsible.Root>
             </Box>
           </Suspense>
         </VStack>

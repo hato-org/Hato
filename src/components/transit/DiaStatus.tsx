@@ -4,7 +4,7 @@ import {
   AlertIcon,
   Box,
   Center,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Skeleton,
@@ -89,13 +89,13 @@ const UnstableInfo = React.memo(
             />
           </HStack>
           <Box w="full">
-            <Collapse in={isOpen}>
+            <Collapsible.Root open={isOpen}><Collapsible.Content>
               <VStack mt={4} w="full" align="flex-start">
                 {unstableLines.map((diaInfo) => (
                   <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
                 ))}
               </VStack>
-            </Collapse>
+            </Collapsible.Content></Collapsible.Root>
           </Box>
         </VStack>
       </Alert>

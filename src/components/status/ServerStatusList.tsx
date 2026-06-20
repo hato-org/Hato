@@ -4,7 +4,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  Collapse,
+  Collapsible,
   HStack,
   Heading,
   Popover,
@@ -48,7 +48,7 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
         </VStack>
       </HStack>
       <Box w="full">
-        <Collapse in={isOpen}>
+        <Collapsible.Root open={isOpen}><Collapsible.Content>
           <VStack w="full" p={2} align="flex-start" gap={4}>
             <Alert
               status={ok ? 'success' : 'error'}
@@ -61,7 +61,7 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
 
             <ServerStatusHistoryStack id={id} />
           </VStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
     </VStack>
   );

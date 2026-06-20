@@ -1,6 +1,6 @@
 import {
   Box,
-  Collapse,
+  Collapsible,
   Heading,
   HStack,
   Icon,
@@ -99,7 +99,7 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
           onClick={onToggle}
         />
         <Box w="full">
-          <Collapse in={isOpen}>
+          <Collapsible.Root open={isOpen}><Collapsible.Content>
             {(upcoming?.length ?? 0) > 2 && (
               <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
@@ -116,7 +116,7 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
                 />
               </Stack>
             )}
-          </Collapse>
+          </Collapsible.Content></Collapsible.Root>
         </Box>
       </VStack>
     </Skeleton>

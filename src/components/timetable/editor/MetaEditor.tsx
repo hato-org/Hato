@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Box,
   Button,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Input,
@@ -64,7 +64,7 @@ export const UserScheduleMetaEditor = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapse in={isOpen}>
+          <Collapsible.Root open={isOpen}><Collapsible.Content>
             <VStack p={4} gap={4}>
               <Input
                 size="lg"
@@ -243,7 +243,7 @@ export const UserScheduleMetaEditor = React.memo(
                 </PopoverContent>
               </Popover>
             </VStack>
-          </Collapse>
+          </Collapsible.Content></Collapsible.Root>
         </Box>
       </VStack>
     );

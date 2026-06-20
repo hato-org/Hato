@@ -4,7 +4,7 @@ import {
   AlertIcon,
   Box,
   Button,
-  Collapse,
+  Collapsible,
   FormControl,
   FormLabel,
   HStack,
@@ -122,7 +122,7 @@ const SearchResult = React.memo(
     isLoading: boolean;
   }) => (
     <Box w="100%" h="100%">
-      <Collapse in={!!result || isLoading}>
+      <Collapsible.Root open={!!result || isLoading}><Collapsible.Content>
         {isLoading ? (
           <Loading />
         ) : result?.count ? (
@@ -177,7 +177,7 @@ const SearchResult = React.memo(
             </Text>
           </VStack>
         )}
-      </Collapse>
+      </Collapsible.Content></Collapsible.Root>
     </Box>
   ),
 );

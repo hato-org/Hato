@@ -3,7 +3,7 @@ import {
   Alert,
   AlertIcon,
   Box,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Modal,
@@ -81,7 +81,7 @@ const StatusAlert = React.memo(
             />
           </HStack>
           <Box w="full">
-            <Collapse in={isOpen}>
+            <Collapsible.Root open={isOpen}><Collapsible.Content>
               <VStack
                 p={{ base: 2, md: 4 }}
                 gap={0}
@@ -103,7 +103,7 @@ const StatusAlert = React.memo(
                     <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
                   ))}
               </VStack>
-            </Collapse>
+            </Collapsible.Content></Collapsible.Root>
           </Box>
         </VStack>
       </Alert>

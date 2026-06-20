@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Collapse,
+  Collapsible,
   HStack,
   Heading,
   Icon,
@@ -103,14 +103,14 @@ export function UserScheduleSearch() {
               <Switch checked={isFilterEnabled} onChange={toggle} />
             </HStack>
             <Box w="full">
-              <Collapse in={isFilterEnabled}>
+              <Collapsible.Root open={isFilterEnabled}><Collapsible.Content>
                 <GradeClassPicker
                   onGradeSelect={setGrade}
                   onClassSelect={setClass}
                   onCourseSelect={setCourse}
                   direction={{ base: 'column', md: 'row' }}
                 />
-              </Collapse>
+              </Collapsible.Content></Collapsible.Root>
             </Box>
             <Button
               type="submit"

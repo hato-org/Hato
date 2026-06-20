@@ -3,7 +3,7 @@ import {
   Box,
   Center,
   CenterProps,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   IconButton,
@@ -59,9 +59,9 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
         {children}
       </HStack>
       <Box w="100%" pos="absolute" bottom={0}>
-        <Collapse in={!!isFetching}>
+        <Collapsible.Root open={!!isFetching}><Collapsible.Content>
           <Progress w="100%" size="xs" isIndeterminate />
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box>
     </Center>
   );

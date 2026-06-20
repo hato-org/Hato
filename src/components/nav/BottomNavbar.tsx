@@ -85,12 +85,12 @@ function BottomNavbar() {
           ))}
         </HStack>
         {/* <Box w="100%">
-        <Collapse in={!onlineManager.isOnline()}>
+        <Collapsible.Root open={!onlineManager.isOnline()}><Collapsible.Content>
           <HStack w="100%" justify="center" py={1}>
             <Icon as={TbCloudOff} w={6} h={6} />
             <Text textStyle="title">オフライン</Text>
           </HStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box> */}
       </Box>
     </Slide>

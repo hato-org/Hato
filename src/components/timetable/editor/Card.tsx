@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Box,
   Button,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Spacer,
@@ -123,7 +123,7 @@ const Card = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapse in={isOpen}>
+          <Collapsible.Root open={isOpen}><Collapsible.Content>
             <VStack w="full" pt={8} gap={8}>
               <TableContainer w="full" overflowX="auto">
                 <Table size="sm">
@@ -236,7 +236,7 @@ const Card = React.memo(
                 </>
               )}
             </VStack>
-          </Collapse>
+          </Collapsible.Content></Collapsible.Root>
         </Box>
       </VStack>
     );

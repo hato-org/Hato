@@ -10,7 +10,7 @@ import {
   IconButton,
   Text,
   Link,
-  Collapse,
+  Collapsible,
   Progress,
   Spacer,
   Center,
@@ -103,9 +103,9 @@ const PDFViewer = React.memo(
               >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
             </HStack>
             <Box w="100%">
-              <Collapse in={!!isFetching}>
+              <Collapsible.Root open={!!isFetching}><Collapsible.Content>
                 <Progress w="100%" size="xs" isIndeterminate />
-              </Collapse>
+              </Collapsible.Content></Collapsible.Root>
             </Box>
           </DrawerHeader>
           <DrawerBody p={0} position="relative" zIndex={-5}>
