@@ -61,7 +61,7 @@ export default function Classroom() {
     return (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: Chakra UI doesn't support `dvh`
-      <VStack spacing={8} w="full" h={[['100dvh', '100vh']]} justify="center">
+      <VStack gap={8} w="full" h={[['100dvh', '100vh']]} justify="center">
         <Icon as={TbExclamationCircle} boxSize={24} color="yellow.400" />
         <Text textAlign="center" textStyle="title" fontSize="xl">
           Classroomと連携するには、

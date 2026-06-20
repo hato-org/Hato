@@ -166,8 +166,8 @@ const MenuBody = React.memo(() => {
   );
 
   return (
-    <VStack w="100%" h="100%" spacing={2} pb="env(safe-area-inset-bottom)">
-      <HStack w="100%" spacing={0}>
+    <VStack w="100%" h="100%" gap={2} pb="env(safe-area-inset-bottom)">
+      <HStack w="100%" gap={0}>
         <Image src="/logo_alpha.png" boxSize={12} alt="Hato ロゴ" />
         {breakPoint !== 1 && (
           <Heading
@@ -210,7 +210,7 @@ const MenuBody = React.memo(() => {
             p={2}
             key={menuItem.label}
             w="100%"
-            spacing={4}
+            gap={4}
             color={
               location.pathname.startsWith(menuItem.href)
                 ? 'blue.400'

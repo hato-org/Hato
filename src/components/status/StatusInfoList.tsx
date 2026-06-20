@@ -50,12 +50,12 @@ const StatusInfo = React.memo(
         w="full"
         rounded="xl"
         layerStyle="button"
-        spacing={0}
+        gap={0}
         p={2}
         borderColor={isOpen ? 'border' : undefined}
       >
-        <HStack w="full" spacing={4} onClick={onToggle}>
-          <VStack spacing={0} align="flex-end">
+        <HStack w="full" gap={4} onClick={onToggle}>
+          <VStack gap={0} align="flex-end">
             <Text textStyle="title" fontSize="md">
               {format(new Date(startAt), 'MM/dd')}
             </Text>
@@ -64,7 +64,7 @@ const StatusInfo = React.memo(
             </Text>
           </VStack>
           <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
-          <VStack align="flex-start" spacing={1}>
+          <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
             <Wrap>
               {scope.map((serverId) => (
@@ -83,9 +83,9 @@ const StatusInfo = React.memo(
         </HStack>
         <Box w="full">
           <Collapse in={isOpen}>
-            <VStack w="full" pt={6} spacing={4}>
+            <VStack w="full" pt={6} gap={4}>
               <HStack w="full" justify="space-evenly">
-                <VStack align="flex-start" spacing={0}>
+                <VStack align="flex-start" gap={0}>
                   <Text textStyle="title" fontSize="xs">
                     {format(new Date(startAt), 'MMMdo (ccc)', { locale: ja })}
                   </Text>
@@ -94,7 +94,7 @@ const StatusInfo = React.memo(
                   </Text>
                 </VStack>
                 <Icon as={TbChevronRight} color="description" boxSize={6} />
-                <VStack align="flex-start" spacing={0}>
+                <VStack align="flex-start" gap={0}>
                   <Text textStyle="title" fontSize="xs">
                     {format(new Date(endAt), 'MMMdo (ccc)', { locale: ja })}
                   </Text>
@@ -103,7 +103,7 @@ const StatusInfo = React.memo(
                   </Text>
                 </VStack>
               </HStack>
-              <HStack w="full" align="flex-start" spacing={6} px={2}>
+              <HStack w="full" align="flex-start" gap={6} px={2}>
                 <Heading flexShrink={0} size="sm">
                   説明
                 </Heading>

@@ -50,7 +50,7 @@ function Top() {
   return (
     <MotionVStack
       w="100%"
-      spacing={8}
+      gap={8}
       initial={{ x: '-100%', opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '-100%', opacity: 0 }}
@@ -66,18 +66,18 @@ function Top() {
         <HStack
           p={2}
           w="100%"
-          spacing={4}
+          gap={4}
           rounded="xl"
           as={RouterLink}
           to="account"
           layerStyle="button"
         >
           <Avatar src={user?.avatar} size="sm" />
-          <VStack align="flex-start" spacing={0} minW={0}>
+          <VStack align="flex-start" gap={0} minW={0}>
             <Text textStyle="title" fontSize="md">
               {user?.name}
             </Text>
-            <Text textStyle="description" fontSize="xs" noOfLines={1}>
+            <Text textStyle="description" fontSize="xs" lineClamp={1}>
               {user?.email}
             </Text>
           </VStack>
@@ -129,7 +129,7 @@ function Top() {
                   </VStack>
                 </ModalBody>
                 <ModalFooter>
-                  <HStack w="full" spacing={4}>
+                  <HStack w="full" gap={4}>
                     <Button
                       w="full"
                       variant="ghost"

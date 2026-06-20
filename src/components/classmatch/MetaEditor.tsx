@@ -60,7 +60,7 @@ function MetaEditor({
   }, [meta, participants]);
 
   return (
-    <VStack w="full" spacing={4}>
+    <VStack w="full" gap={4}>
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         試合結果
       </Text>
@@ -78,14 +78,14 @@ function MetaEditor({
             </Text>
           </Center>
         )}
-        <VStack w="full" p={2} spacing={0}>
-          <HStack w="full" justify="space-around" spacing={0}>
+        <VStack w="full" p={2} gap={0}>
+          <HStack w="full" justify="space-around" gap={0}>
             {Array.from({ length: 2 }).map((_, index) => (
               <VStack
                 key={`${JSON.stringify(participantsValue[index])}${index}`}
                 w="full"
                 rounded="xl"
-                spacing={4}
+                gap={4}
                 _first={{ pr: 2 }}
                 _last={{ pl: 2 }}
               >
@@ -185,7 +185,7 @@ function MetaEditor({
           }
         />
       </VStack>
-      <HStack w="full" spacing={4}>
+      <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
           icon={<Icon as={TbX} />}

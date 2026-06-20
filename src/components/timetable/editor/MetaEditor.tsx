@@ -50,7 +50,7 @@ export const UserScheduleMetaEditor = React.memo(
         border="1px solid"
         borderColor="border"
         overflow="hidden"
-        spacing={0}
+        gap={0}
       >
         <HStack w="full" p={4} onClick={onToggle} layerStyle="button">
           <Text textStyle="title" fontSize="xl">
@@ -65,7 +65,7 @@ export const UserScheduleMetaEditor = React.memo(
         </HStack>
         <Box w="full">
           <Collapse in={isOpen}>
-            <VStack p={4} spacing={4}>
+            <VStack p={4} gap={4}>
               <Input
                 size="lg"
                 textStyle="title"

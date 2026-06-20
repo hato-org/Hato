@@ -40,7 +40,7 @@ const AddStatusInfo = React.memo(
         <ModalContent bg="panel" rounded="xl">
           <ModalHeader>メンテナンス情報の追加</ModalHeader>
           <ModalBody>
-            <VStack spacing={8}>
+            <VStack gap={8}>
               <Input
                 rounded="lg"
                 placeholder="タイトル"
@@ -62,7 +62,7 @@ const AddStatusInfo = React.memo(
                 }
                 isInvalid={!statusInfo.description}
               />
-              <HStack w="full" spacing={4}>
+              <HStack w="full" gap={4}>
                 <Input
                   type="datetime-local"
                   value={

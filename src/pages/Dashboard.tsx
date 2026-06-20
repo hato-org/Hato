@@ -159,7 +159,7 @@ function Dashboard() {
               </SortableContext>
             </DndContext>
           ) : (
-            <Stack flex={1} p={4} pb={16} spacing={8}>
+            <Stack flex={1} p={4} pb={16} gap={8}>
               <CardElement.Info />
               {cardOrder.length ? (
                 cardOrder.map((cardId) => {

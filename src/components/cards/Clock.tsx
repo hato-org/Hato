@@ -18,9 +18,9 @@ export default function Clock() {
   const { data: division, isPending } = useDivision({ date });
 
   return (
-    <HStack w="full" p={2} spacing={4}>
+    <HStack w="full" p={2} gap={4}>
       <StackDivider borderWidth={2} rounded="full" borderColor="blue.400" />
-      <VStack spacing={0} align="flex-start">
+      <VStack gap={0} align="flex-start">
         {/* <HStack w="full">
           <Text textStyle="title">
             {format(date, 'yyyy')}
@@ -36,7 +36,7 @@ export default function Clock() {
             </Text>
           </Text>
         </HStack> */}
-        <HStack spacing={1} flexWrap="nowrap">
+        <HStack gap={1} flexWrap="nowrap">
           <Text textStyle="title" fontSize="3xl">
             {format(date, 'M')}
             <Text pl={1} as="span" textStyle="description">

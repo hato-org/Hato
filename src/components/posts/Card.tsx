@@ -126,7 +126,7 @@ const Card = React.memo(
             <VStack align="flex-start" w="100%" pl={2}>
               <HStack w="100%">
                 {isPinned && <Icon as={TbPin} color="blue.400" />}
-                <Text fontSize="lg" textStyle="title" noOfLines={1}>
+                <Text fontSize="lg" textStyle="title" lineClamp={1}>
                   {title}
                 </Text>
                 <Spacer />
@@ -137,7 +137,7 @@ const Card = React.memo(
                   {format(new Date(createdAt), 'MM/dd')}
                 </Text>
               </HStack>
-              {text && <Text noOfLines={1}>{text}</Text>}
+              {text && <Text lineClamp={1}>{text}</Text>}
               <Wrap>
                 {attachments.map((attachment) => (
                   <Tag variant="outline" rounded="full" key={attachment.id}>

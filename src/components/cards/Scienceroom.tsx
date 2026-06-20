@@ -7,7 +7,7 @@ export default function Scienceroom() {
   const date = new Date();
 
   return (
-    <VStack w="100%" p={2} align="flex-start" spacing={4}>
+    <VStack w="100%" p={2} align="flex-start" gap={4}>
       <HStack w="100%">
         <Heading as="h2" size="md">
           理科室割

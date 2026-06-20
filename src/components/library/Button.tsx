@@ -21,14 +21,14 @@ export default function LibraryCategoryButton({
       rounded="xl"
       layerStyle="button"
       p={4}
-      spacing={6}
+      gap={6}
       as={RouterLink}
       to={href}
     >
       {icon}
-      <VStack align="flex-start" spacing={1}>
+      <VStack align="flex-start" gap={1}>
         <Text textStyle="title">{label}</Text>
-        <Text textStyle="description" fontSize="xs" noOfLines={1}>
+        <Text textStyle="description" fontSize="xs" lineClamp={1}>
           {description}{' '}
         </Text>
       </VStack>

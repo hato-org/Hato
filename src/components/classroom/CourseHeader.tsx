@@ -11,7 +11,7 @@ const CourseHeader = React.memo(({ courseId }: { courseId?: string }) => {
     <VStack
       p={4}
       pt={8}
-      spacing={0}
+      gap={0}
       rounded="xl"
       align="flex-start"
       w="full"

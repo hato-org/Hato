@@ -102,7 +102,7 @@ const TournamentMetaPopover = React.memo(
 
                 default:
                   return (
-                    <VStack w="full" spacing={4}>
+                    <VStack w="full" gap={4}>
                       <Text
                         textStyle="description"
                         fontWeight="bold"
@@ -114,7 +114,7 @@ const TournamentMetaPopover = React.memo(
                         <HStack
                           w="full"
                           justify="space-around"
-                          spacing={0}
+                          gap={0}
                           divider={
                             <Text
                               fontSize="xl"
@@ -128,7 +128,7 @@ const TournamentMetaPopover = React.memo(
                           {participants.map((classInfo, index) => (
                             <VStack
                               key={JSON.stringify(`${classInfo} ${index}`)}
-                              spacing={0}
+                              gap={0}
                               flex={1}
                             >
                               <Text textStyle="title" fontSize="3xl">
@@ -160,10 +160,10 @@ const TournamentMetaPopover = React.memo(
                         w="full"
                         justify="space-evenly"
                         align="flex-start"
-                        spacing={4}
+                        gap={4}
                         divider={<StackDivider borderColor="border" />}
                       >
-                        <VStack spacing={1} align="flex-start">
+                        <VStack gap={1} align="flex-start">
                           <Text
                             textStyle="description"
                             fontWeight="bold"
@@ -181,7 +181,7 @@ const TournamentMetaPopover = React.memo(
                               : '不明'}
                           </Text>
                         </VStack>
-                        <VStack spacing={1} align="flex-start">
+                        <VStack gap={1} align="flex-start">
                           <Text
                             textStyle="description"
                             fontWeight="bold"

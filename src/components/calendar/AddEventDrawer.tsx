@@ -70,7 +70,7 @@ const AddEventDrawer = React.memo(
             イベントの追加
           </DrawerHeader>
           <DrawerBody w="full" maxW="container.lg" mx="auto">
-            <VStack spacing={8}>
+            <VStack gap={8}>
               <VStack w="100%">
                 <Input
                   value={title}

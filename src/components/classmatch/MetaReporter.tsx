@@ -53,7 +53,7 @@ export default function MetaReporter({
   });
 
   return (
-    <VStack w="full" align="flex-start" spacing={4}>
+    <VStack w="full" align="flex-start" gap={4}>
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         最後に編集したユーザー
       </Text>
@@ -63,13 +63,13 @@ export default function MetaReporter({
         ) : status === 'error' ? (
           <Error error={error} />
         ) : (
-          <HStack spacing={4} align="center">
+          <HStack gap={4} align="center">
             <Avatar src={data.avatar} size="sm" />
-            <VStack align="flex-start" spacing={0}>
-              <Text textStyle="title" noOfLines={1}>
+            <VStack align="flex-start" gap={0}>
+              <Text textStyle="title" lineClamp={1}>
                 {data.name}
               </Text>
-              <Text textStyle="description" fontSize="xs" noOfLines={1}>
+              <Text textStyle="description" fontSize="xs" lineClamp={1}>
                 {data.email}
               </Text>
             </VStack>
@@ -95,7 +95,7 @@ export default function MetaReporter({
         onChange={(e) => setDescription(e.target.value)}
         isInvalid={!description}
       />
-      <HStack w="full" spacing={4}>
+      <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
           icon={<Icon as={TbX} />}

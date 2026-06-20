@@ -34,11 +34,11 @@ function SettingButton({
       layerStyle="button"
       {...rest}
     >
-      <VStack align="flex-start" spacing={0} flexGrow={1}>
+      <VStack align="flex-start" gap={0} flexGrow={1}>
         <Text fontWeight="bold" fontSize="md" textStyle="title">
           {label}
         </Text>
-        <Text fontSize="xs" color="gray.400" noOfLines={1}>
+        <Text fontSize="xs" color="gray.400" lineClamp={1}>
           {description}
         </Text>
       </VStack>

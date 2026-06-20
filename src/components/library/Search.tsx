@@ -62,7 +62,7 @@ export default function Search() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <VStack pt={2} px={4} mb={24} w="100%" spacing={8}>
+    <VStack pt={2} px={4} mb={24} w="100%" gap={8}>
       <Card p={0} w="100%" overflow="hidden">
         <VStack>
           <Tabs
@@ -126,11 +126,11 @@ const SearchResult = React.memo(
         {isLoading ? (
           <Loading />
         ) : result?.count ? (
-          <VStack w="100%" h="100%" spacing={4}>
+          <VStack w="100%" h="100%" gap={4}>
             {result?.messages.length && (
               <Alert status="info" rounded="xl" shadow="xl">
                 <AlertIcon mr={4} />
-                <VStack align="flex-start" spacing={1}>
+                <VStack align="flex-start" gap={1}>
                   {result.messages.map((message) => (
                     <Text key={message} textStyle="title">
                       {message}
@@ -158,11 +158,11 @@ const SearchResult = React.memo(
             />
           </VStack>
         ) : (
-          <VStack w="100%" spacing={4}>
+          <VStack w="100%" gap={4}>
             {result?.messages.length && (
               <Alert status="info" rounded="xl" shadow="xl">
                 <AlertIcon mr={4} />
-                <VStack align="flex-start" spacing={1}>
+                <VStack align="flex-start" gap={1}>
                   {result.messages.map((message) => (
                     <Text key={message} textStyle="title">
                       {message}

@@ -104,7 +104,7 @@ export default function UserScheduleEditor() {
             ) : error ? (
               <Error error={error} />
             ) : (
-              <VStack w="full" pb={8} spacing={6}>
+              <VStack w="full" pb={8} gap={6}>
                 <UserScheduleMetaEditor
                   onVisibilityChange={(e) =>
                     setSchedule((val) => ({

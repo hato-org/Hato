@@ -15,7 +15,7 @@ export default function Classmatch() {
   const season = date.getMonth() > 6 ? 'autumn' : 'spring';
 
   return (
-    <VStack w="full" spacing={4} align="flex-start">
+    <VStack w="full" gap={4} align="flex-start">
       <LinkBox
         w="full"
         as={RouterLink}

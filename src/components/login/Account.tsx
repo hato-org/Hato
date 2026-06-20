@@ -28,17 +28,17 @@ function Account({ ...rest }: FlexProps) {
       to="/settings/account"
       {...rest}
     >
-      <HStack spacing={4}>
+      <HStack gap={4}>
         <Avatar src={user?.avatar} size="sm" icon={<TbUser />} />
         {breakPoint !== 1 && (
           <>
-            <VStack w="100%" align="flex-start" spacing={0}>
+            <VStack w="100%" align="flex-start" gap={0}>
               <Text textStyle="title">{user?.name}</Text>
               <Text
                 textStyle="description"
                 fontSize="xs"
                 wordBreak="break-all"
-                noOfLines={1}
+                lineClamp={1}
               >
                 {user?.email}
               </Text>

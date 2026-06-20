@@ -29,7 +29,7 @@ export default function Transit() {
   const { data: diaInfo, status, error } = useDiainfo();
 
   return (
-    <VStack spacing={4} w="100%" align="flex-start">
+    <VStack gap={4} w="100%" align="flex-start">
       <LinkBox w="100%" as={RouterLink} to="/transit">
         <HStack pt={2} pl={2} w="100%">
           <Heading as="h2" size="md">
@@ -92,7 +92,7 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
 
   return (
     <Skeleton w="full" rounded="xl" isLoaded={!isPending}>
-      <VStack spacing={0} layerStyle="button" rounded="xl">
+      <VStack gap={0} layerStyle="button" rounded="xl">
         <PrimaryUpcomingTrainCountdown
           date={date}
           train={upcoming?.[0]}
@@ -103,7 +103,7 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
             {(upcoming?.length ?? 0) > 2 && (
               <Stack
                 flexDirection={{ base: 'column', md: 'row' }}
-                spacing={{ base: 0, md: 2 }}
+                gap={{ base: 0, md: 2 }}
                 w="full"
               >
                 <SecondoryUpcomingTrainCountdown

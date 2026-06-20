@@ -51,7 +51,7 @@ export default function UserSubjectEditor({
         <DrawerCloseButton top={4} right={4} />
         <DrawerHeader>教科の編集</DrawerHeader>
         <DrawerBody>
-          <VStack align="flex-start" spacing={4}>
+          <VStack align="flex-start" gap={4}>
             <Text textStyle="title">教科名</Text>
             <Input
               textStyle="title"

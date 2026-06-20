@@ -33,14 +33,14 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <VStack w="full" spacing={0} rounded="xl" layerStyle="button">
-      <HStack w="full" p={2} spacing={4} onClick={onToggle}>
+    <VStack w="full" gap={0} rounded="xl" layerStyle="button">
+      <HStack w="full" p={2} gap={4} onClick={onToggle}>
         <StackDivider
           rounded="full"
           borderWidth={2}
           borderColor={ok ? 'success' : 'error'}
         />
-        <VStack align="flex-start" spacing={1}>
+        <VStack align="flex-start" gap={1}>
           <Heading as="h3" textStyle="title" fontSize="xl">
             {name}
           </Heading>
@@ -49,7 +49,7 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
       </HStack>
       <Box w="full">
         <Collapse in={isOpen}>
-          <VStack w="full" p={2} align="flex-start" spacing={4}>
+          <VStack w="full" p={2} align="flex-start" gap={4}>
             <Alert
               status={ok ? 'success' : 'error'}
               rounded="lg"
@@ -76,7 +76,7 @@ const ServerStatusHistoryStack = React.memo(({ id }: { id: string }) => {
       <Heading as="h4" size="sm">
         直近24時間の稼働状況
       </Heading>
-      <HStack w="full" spacing={1} flexDir="row-reverse">
+      <HStack w="full" gap={1} flexDir="row-reverse">
         {data?.pages
           .flat()
           .map(({ ok, status, statusText, responseTime, timestamp }) => (
@@ -94,7 +94,7 @@ const ServerStatusHistoryStack = React.memo(({ id }: { id: string }) => {
               <PopoverContent borderColor="border" bg="panel" rounded="2xl">
                 <PopoverArrow bg="panel" />
                 <PopoverBody p={6}>
-                  <VStack spacing={4}>
+                  <VStack gap={4}>
                     <Text textStyle="title" fontSize="xl">
                       {format(new Date(timestamp), 'MM/dd H:mm')}
                     </Text>

@@ -141,7 +141,7 @@ function Timetable() {
         }}
       >
         <Center w="100%" mb={32}>
-          <VStack w="100%" px={4} spacing={8}>
+          <VStack w="100%" px={4} gap={8}>
             <VStack w="100%">
               <DateSwitcher
                 onPrev={() => setDate(subDays(date, 1))}
@@ -154,8 +154,8 @@ function Timetable() {
               />
             </VStack>
             <Card w="100%">
-              <VStack w="100%" align="flex-start" p={2} spacing={6}>
-                <VStack w="100%" align="flex-start" spacing={4}>
+              <VStack w="100%" align="flex-start" p={2} gap={6}>
+                <VStack w="100%" align="flex-start" gap={4}>
                   <HStack w="100%" as={RouterLink} to="editor">
                     <Heading size="md">日課</Heading>
                     <Spacer />
@@ -226,7 +226,7 @@ function Timetable() {
               </VStack>
             </Card>
             <Card w="100%">
-              <VStack w="100%" p={2} align="flex-start" spacing={4}>
+              <VStack w="100%" p={2} align="flex-start" gap={4}>
                 <HStack w="100%">
                   <Heading size="md">理科室割</Heading>
                 </HStack>

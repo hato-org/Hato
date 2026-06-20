@@ -40,7 +40,7 @@ function Profile() {
     <HStack
       w="100%"
       justify="center"
-      spacing={4}
+      gap={4}
       divider={<StackDivider borderColor="blue.300" borderWidth={1} />}
       p={4}
       rounded="xl"
@@ -53,7 +53,7 @@ function Profile() {
       // shadow="xl"
     >
       <Avatar src={user?.avatar} size="lg" />
-      <VStack align="flex-start" spacing={0}>
+      <VStack align="flex-start" gap={0}>
         <HStack w="100%">
           <Text textStyle="title" fontSize="xl">
             {user?.name}

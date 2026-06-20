@@ -29,7 +29,7 @@ function Transit() {
           });
         }}
       >
-        <VStack w="100%" mb={32} p={4} spacing={8}>
+        <VStack w="100%" mb={32} p={4} gap={8}>
           <UpcomingTrains />
           <TransitSummary />
         </VStack>

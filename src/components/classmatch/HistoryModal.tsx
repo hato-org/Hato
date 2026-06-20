@@ -69,7 +69,7 @@ export default function HistoryModal({
                     }
                     rounded="full"
                   />
-                  <VStack align="flex-start" spacing={0}>
+                  <VStack align="flex-start" gap={0}>
                     <Text fontSize="xl" textStyle="title">
                       {year} {season === 'spring' ? '春' : '秋'}
                     </Text>

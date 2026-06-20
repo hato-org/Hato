@@ -122,16 +122,16 @@ export default function ClassroomAnnouncement() {
           pb={32}
           w="full"
           align="flex-start"
-          spacing={4}
+          gap={4}
           userSelect="text"
         >
-          <HStack w="full" spacing={4}>
+          <HStack w="full" gap={4}>
             <StackDivider
               rounded="full"
               borderWidth={2}
               borderColor="blue.400"
             />
-            <VStack w="full" align="flex-start" spacing={1}>
+            <VStack w="full" align="flex-start" gap={1}>
               <Skeleton
                 minH={8}
                 minW={40}
@@ -174,9 +174,9 @@ export default function ClassroomAnnouncement() {
           <SkeletonText
             w="full"
             mt={2}
-            noOfLines={3}
+            lineClamp={3}
             skeletonHeight={4}
-            spacing={2}
+            gap={2}
             isLoaded={!isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">

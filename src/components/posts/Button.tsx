@@ -29,13 +29,13 @@ function PostCategoryButton({
       w="100%"
       rounded="xl"
       p={2}
-      spacing={0}
+      gap={0}
       as={RouterLink}
       to={href}
       {...rest}
     >
       <Icon as={icon} w={8} h={8} mx={2} />
-      <VStack px={2} spacing={1} align="flex-start">
+      <VStack px={2} gap={1} align="flex-start">
         <Text textStyle="title" fontSize="lg">
           {label}
         </Text>

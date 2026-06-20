@@ -57,7 +57,7 @@ const StatusAlert = React.memo(
         p={0}
         _hover={{ cursor: 'pointer' }}
       >
-        <VStack w="full" spacing={0}>
+        <VStack w="full" gap={0}>
           <HStack
             w="full"
             px={4}
@@ -84,7 +84,7 @@ const StatusAlert = React.memo(
             <Collapse in={isOpen}>
               <VStack
                 p={{ base: 2, md: 4 }}
-                spacing={0}
+                gap={0}
                 w="full"
                 align="flex-start"
               >
@@ -132,7 +132,7 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
       <StackDivider borderWidth={2} borderColor={borderColor} rounded="full" />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
-      <Text textStyle="description" fontWeight="bold" noOfLines={1}>
+      <Text textStyle="description" fontWeight="bold" lineClamp={1}>
         {diaInfo.status.text}
       </Text>
       <Icon as={TbChevronRight} />
@@ -175,7 +175,7 @@ const StatusDetailModal = React.memo(
           <ModalCloseButton top={4} right={4} />
           <ModalHeader>{diaInfo.lineInfo.name}</ModalHeader>
           <ModalBody>
-            <VStack spacing={4} px={2}>
+            <VStack gap={4} px={2}>
               <VStack>
                 <Icon
                   color={statusIcon.color}

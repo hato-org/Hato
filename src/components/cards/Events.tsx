@@ -7,7 +7,7 @@ function Events() {
   const date = new Date();
 
   return (
-    <VStack w="100%" spacing={4}>
+    <VStack w="100%" gap={4}>
       <HStack w="100%" pt={2} pl={2} as={RouterLink} to="/events">
         <Heading as="h2" size="md">
           今日の予定

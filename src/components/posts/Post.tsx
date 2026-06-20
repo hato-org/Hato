@@ -50,7 +50,7 @@ function Post({ id }: { id: string }) {
         ]);
       }}
     >
-      <VStack w="100%" spacing={4} p={8}>
+      <VStack w="100%" gap={4} p={8}>
         <Heading>{data.title}</Heading>
         {data.text && <Text textStyle="description">{data.text}</Text>}
         <HStack textStyle="description">
@@ -60,7 +60,7 @@ function Post({ id }: { id: string }) {
           </Text>
         </HStack>
 
-        <HStack w="100%" spacing={4} pt={8}>
+        <HStack w="100%" gap={4} pt={8}>
           <Icon as={TbPaperclip} w={6} h={6} />
           <Wrap>
             {data.attachments.map((attachment) => (
@@ -90,7 +90,7 @@ function Post({ id }: { id: string }) {
             ))}
           </Wrap>
         </HStack>
-        <HStack w="100%" spacing={4}>
+        <HStack w="100%" gap={4}>
           <Icon as={TbTag} w={6} h={6} />
           <Wrap>
             {data.tags.map((tag) => (

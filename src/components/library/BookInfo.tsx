@@ -12,9 +12,9 @@ import {
   ButtonGroup,
   Button,
   Link,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '@/components/ui/color-mode';
 import { motion } from 'framer-motion';
 import { TbChevronDown, TbBook, TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
@@ -66,7 +66,7 @@ const BookInfo = React.memo(
         my={0}
         layerStyle="button"
         rounded="xl"
-        spacing={0}
+        gap={0}
         pos="relative"
         overflow="hidden"
         zIndex={0}
@@ -87,7 +87,7 @@ const BookInfo = React.memo(
           alt=""
         />
 
-        <HStack p={2} pr={4} w="100%" spacing={4} onClick={onToggle}>
+        <HStack p={2} pr={4} w="100%" gap={4} onClick={onToggle}>
           <Image
             boxSize={16}
             minW={16}
@@ -98,13 +98,13 @@ const BookInfo = React.memo(
             fallback={<Icon as={TbBook} boxSize={16} p={4} />}
             alt={`${title}の表紙`}
           />
-          <VStack align="flex-start" spacing={1}>
+          <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
             <HStack divider={<Text textStyle="description">・</Text>}>
               <Text textStyle="description" whiteSpace="nowrap">
                 {pubdate}
               </Text>
-              <Text textStyle="description" noOfLines={1}>
+              <Text textStyle="description" lineClamp={1}>
                 {author}
               </Text>
             </HStack>
@@ -119,26 +119,26 @@ const BookInfo = React.memo(
         </HStack>
         <Box w="100%">
           <Collapse in={isOpen}>
-            <VStack w="100%" p={2} spacing={1}>
-              <HStack w="100%" spacing={4}>
+            <VStack w="100%" p={2} gap={1}>
+              <HStack w="100%" gap={4}>
                 <Text w={16} textAlign="right" textStyle="title">
                   出版者
                 </Text>
                 <Text textStyle="description">{publisher}</Text>
               </HStack>
-              <HStack w="100%" spacing={4}>
+              <HStack w="100%" gap={4}>
                 <Text w={16} textAlign="right" textStyle="title">
                   ISBN
                 </Text>
                 <Text textStyle="description">{isbn}</Text>
               </HStack>
-              <HStack w="100%" spacing={4}>
+              <HStack w="100%" gap={4}>
                 <Text w={16} textAlign="right" textStyle="title">
                   所蔵
                 </Text>
                 <Text textStyle="description">{sourceName[source] ?? ''}</Text>
               </HStack>
-              <ButtonGroup w="100%" p={2} spacing={4}>
+              <ButtonGroup w="100%" p={2} gap={4}>
                 {isbn && (
                   <motion.div whileTap={{ scale: 0.9 }}>
                     <IconButton

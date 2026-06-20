@@ -54,7 +54,7 @@ const Calendar = React.memo(
     const { data: events } = useEvents({ year, month });
 
     return (
-      <VStack w="100%" spacing={4} {...rest}>
+      <VStack w="100%" gap={4} {...rest}>
         <MonthSwitcher date={date} onNext={onNextMonth} onPrev={onPrevMonth} />
         <Card w="100%" p={0}>
           <Center
@@ -64,8 +64,8 @@ const Calendar = React.memo(
             // dragSnapToOrigin
             // onDragEnd={(event: any, info: any) => console.log(event, info)}
           >
-            <VStack w="100%" h="100%" spacing={1} divider={<Divider />}>
-              <HStack w="100%" spacing={0}>
+            <VStack w="100%" h="100%" gap={1} divider={<Divider />}>
+              <HStack w="100%" gap={0}>
                 {dayOfWeek.map((day) => (
                   <Text
                     key={day}
@@ -79,7 +79,7 @@ const Calendar = React.memo(
                 ))}
               </HStack>
               {days.map((week) => (
-                <HStack key={week.toString()} w="100%" h="100%" spacing={0}>
+                <HStack key={week.toString()} w="100%" h="100%" gap={0}>
                   {week.map((day) => (
                     <VStack
                       key={day.toString()}
@@ -104,7 +104,7 @@ const Calendar = React.memo(
                       >
                         {day.getDate()}
                       </Text>
-                      <VStack spacing="2px" w="100%" px="1px" overflowY="auto">
+                      <VStack gap="2px" w="100%" px="1px" overflowY="auto">
                         {events
                           ?.filter(
                             (event) =>
@@ -170,7 +170,7 @@ const Calendar = React.memo(
                               to={`/events/${event._id}`}
                             >
                               <Text
-                                noOfLines={1}
+                                lineClamp={1}
                                 fontSize={{ base: 'xx-small', md: 'xs' }}
                                 fontWeight="bold"
                                 textAlign="center"

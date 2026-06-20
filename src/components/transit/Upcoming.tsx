@@ -81,7 +81,7 @@ const UpcomingTrains = React.memo(() => {
 
   return (
     <Card w="full">
-      <VStack p={2} align="flex-start" spacing={4}>
+      <VStack p={2} align="flex-start" gap={4}>
         <Heading size="md">これからの列車</Heading>
         <VStack align="flex-start" w="100%">
           <Text textStyle="title" fontSize="lg">
@@ -97,7 +97,7 @@ const UpcomingTrains = React.memo(() => {
               {(naganoUpcoming?.length ?? 0) > 2 && (
                 <Stack
                   direction={{ base: 'column', md: 'row' }}
-                  spacing={{ base: 0, md: 2 }}
+                  gap={{ base: 0, md: 2 }}
                   w="full"
                 >
                   <SecondoryUpcomingTrainCountdown
@@ -127,7 +127,7 @@ const UpcomingTrains = React.memo(() => {
               {(uedaUpcoming?.length ?? 0) > 2 && (
                 <Stack
                   flexDirection={{ base: 'column', md: 'row' }}
-                  spacing={{ base: 0, md: 2 }}
+                  gap={{ base: 0, md: 2 }}
                   w="full"
                 >
                   <SecondoryUpcomingTrainCountdown
@@ -175,7 +175,7 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
           {...rest}
         >
           <StackDivider borderWidth={2} borderColor="blue.400" rounded="full" />
-          <VStack spacing={0} align="flex-start">
+          <VStack gap={0} align="flex-start">
             <Text textStyle="title" fontSize="xl">
               {format(train.departAt, 'HH:mm')}
             </Text>
@@ -225,7 +225,7 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
           layerStyle={openModal ? 'button' : undefined}
         >
           <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
-          <VStack spacing={0} align="flex-start">
+          <VStack gap={0} align="flex-start">
             <Text fontSize="md">{format(train.departAt, 'HH:mm')}</Text>
             <Text textStyle="description" fontSize="2xs">
               {train.destination}行

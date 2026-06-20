@@ -76,7 +76,7 @@ export default function ICalendar() {
               <AccordionPanel>
                 <VStack
                   pt={4}
-                  spacing={4}
+                  gap={4}
                   divider={<Icon as={TbChevronDown} w={8} h={8} />}
                 >
                   <Text>「カレンダー」アプリ</Text>
@@ -124,7 +124,7 @@ export default function ICalendar() {
               <AccordionPanel>
                 <VStack
                   pt={4}
-                  spacing={4}
+                  gap={4}
                   divider={<Icon as={TbChevronDown} w={8} h={8} />}
                 >
                   <Button
@@ -175,7 +175,7 @@ export default function ICalendar() {
               <AccordionPanel>
                 <VStack
                   pt={4}
-                  spacing={4}
+                  gap={4}
                   divider={<Icon as={TbChevronDown} w={8} h={8} />}
                 >
                   <Text>上記2つのどちらかを完了させる</Text>

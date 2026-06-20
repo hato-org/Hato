@@ -9,8 +9,8 @@ import {
   IconButton,
   Progress,
   useBreakpointValue,
-  useColorModeValue,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '@/components/ui/color-mode';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbMenu2 } from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
@@ -46,7 +46,7 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
       {...rest}
     >
       <StatusBanner />
-      <HStack px={2} w="100%" spacing={0}>
+      <HStack px={2} w="100%" gap={0}>
         {withMenu && isMobile && (
           <IconButton
             aria-label="menu"

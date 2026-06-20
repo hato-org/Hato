@@ -24,7 +24,7 @@ const LiveStream = React.memo(({ type, name, url }: ClassmatchLiveStream) =>
       isExternal
       href={url}
       bgGradient="linear(to-r, #7928CA, #FF0080)"
-      spacing={4}
+      gap={4}
     >
       <Icon as={FaInstagram} boxSize={6} />
       <Text

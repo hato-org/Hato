@@ -9,8 +9,8 @@ import {
   ModalOverlay,
   VStack,
   Image,
-  useColorModeValue,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '@/components/ui/color-mode';
 import {
   useClassmatchSportInfo,
   useClassmatchSports,
@@ -59,7 +59,7 @@ const TournamentModal = React.memo(
             ) : status === 'error' ? (
               <Error error={error} />
             ) : (
-              <VStack spacing={0}>
+              <VStack gap={0}>
                 <Image
                   w="full"
                   aspectRatio="4 / 3"

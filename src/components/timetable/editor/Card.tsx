@@ -73,23 +73,23 @@ const Card = React.memo(
         bg={isOpen ? 'panel' : 'transparent'}
         rounded="xl"
         layerStyle={isOpen ? undefined : 'button'}
-        spacing={0}
+        gap={0}
         shadow={isOpen ? 'xl' : 'none'}
         border="1px solid"
         borderColor={isOpen ? 'border' : 'transparent'}
         transition="all .3s ease"
       >
-        <HStack w="full" onClick={onToggle} spacing={4}>
+        <HStack w="full" onClick={onToggle} gap={4}>
           <StackDivider
             borderWidth={2}
             borderColor={isSelected ? 'green.400' : 'blue.400'}
             rounded="full"
           />
-          <VStack align="flex-start" spacing={1}>
-            <Text textStyle="title" noOfLines={1}>
+          <VStack align="flex-start" gap={1}>
+            <Text textStyle="title" lineClamp={1}>
               {title}
             </Text>
-            <Text textStyle="description" noOfLines={1}>
+            <Text textStyle="description" lineClamp={1}>
               {description}
             </Text>
           </VStack>
@@ -124,7 +124,7 @@ const Card = React.memo(
         </HStack>
         <Box w="full">
           <Collapse in={isOpen}>
-            <VStack w="full" pt={8} spacing={8}>
+            <VStack w="full" pt={8} gap={8}>
               <TableContainer w="full" overflowX="auto">
                 <Table size="sm">
                   <Thead>

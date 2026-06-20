@@ -80,7 +80,7 @@ const PDFViewer = React.memo(
         <DrawerOverlay />
         <DrawerContent top={0} bg="bg">
           <DrawerHeader shadow="xl" p={0}>
-            <HStack align="center" w="100%" px={2} spacing={2}>
+            <HStack align="center" w="100%" px={2} gap={2}>
               <IconButton
                 aria-label="close"
                 icon={<Icon as={TbX} boxSize={6} />}
@@ -89,7 +89,7 @@ const PDFViewer = React.memo(
                 onClick={onClose}
                 isRound
               />
-              <Text textStyle="title" whiteSpace="nowrap" noOfLines={1} py={4}>
+              <Text textStyle="title" whiteSpace="nowrap" lineClamp={1} py={4}>
                 {attachment.name}
               </Text>
               <Spacer />
@@ -182,7 +182,7 @@ const ZoomControls = React.memo(
         py={2}
         rounded="xl"
         shadow="lg"
-        spacing={4}
+        gap={4}
         border="1px solid"
         borderColor="border"
       >

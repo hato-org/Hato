@@ -86,7 +86,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
   if (status === 'error') return <Error error={error} />;
 
   return (
-    <VStack w="100%" spacing={2}>
+    <VStack w="100%" gap={2}>
       <HStack w="100%" overflowX="auto">
         <Icon as={TbFilter} w={6} h={6} />
         {tags?.map((tag) => (
@@ -194,14 +194,14 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
               borderColor={event.external ? 'green.400' : 'blue.400'}
               borderWidth={1}
             />
-            <VStack align="flex-start" spacing={1} w="100%">
-              <Text textStyle="title" noOfLines={1}>
+            <VStack align="flex-start" gap={1} w="100%">
+              <Text textStyle="title" lineClamp={1}>
                 {event.title}
               </Text>
-              <Text textStyle="description" fontSize="xs" noOfLines={1}>
+              <Text textStyle="description" fontSize="xs" lineClamp={1}>
                 {event.description}
               </Text>
-              <HStack w="100%" flexGrow={0} noOfLines={1} align="flex-start">
+              <HStack w="100%" flexGrow={0} lineClamp={1} align="flex-start">
                 {event.tags?.map((tag) => (
                   <Tag key={tag.value} size="sm" whiteSpace="nowrap">
                     {tag.label}

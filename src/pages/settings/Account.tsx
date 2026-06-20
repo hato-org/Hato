@@ -63,7 +63,7 @@ function Account() {
       <Text fontSize='lg' fontWeight='bold' >{user?.contributionCount} pt</Text>
       </VStack> */}
 
-        <VStack spacing={8} align="flex-start" w="100%">
+        <VStack gap={8} align="flex-start" w="100%">
           <SettingCategory title="プロフィール">
             <Skeleton
               w="full"
@@ -142,7 +142,7 @@ function Account() {
             </Suspense>
           </SettingCategory>
           <SettingCategory title="開発者向け">
-            <VStack w="100%" spacing={1}>
+            <VStack w="100%" gap={1}>
               <SettingButton
                 label="APIキー"
                 description="Hato APIのAPIキーです。"

@@ -73,9 +73,9 @@ const UserSubjectPicker = React.memo(
         >
           <ModalHeader>時限の追加・置き換え</ModalHeader>
           <ModalBody>
-            <VStack w="full" align="flex-start" spacing={4}>
+            <VStack w="full" align="flex-start" gap={4}>
               {createMode ? (
-                <VStack w="full" align="flex-start" spacing={4}>
+                <VStack w="full" align="flex-start" gap={4}>
                   <Button
                     variant="link"
                     colorScheme="blue"
@@ -232,7 +232,7 @@ const UserSubjectSuggestion = React.memo(
       py={2}
       w="full"
       align="flex-start"
-      spacing={1}
+      gap={1}
       layerStyle="button"
       rounded="xl"
       onClick={onSelect}
@@ -248,26 +248,26 @@ const UserSubjectSuggestion = React.memo(
       )}
       <HStack wrap="wrap" rowGap={0.5}>
         {teacher && (
-          <HStack align="center" spacing={1}>
+          <HStack align="center" gap={1}>
             <Icon as={TbUser} />
             <Text
               color="description"
               fontSize="xs"
               fontWeight="normal"
-              noOfLines={1}
+              lineClamp={1}
             >
               {teacher}
             </Text>
           </HStack>
         )}
         {location && (
-          <HStack align="center" spacing={1}>
+          <HStack align="center" gap={1}>
             <Icon as={TbMapPin} />
             <Text
               color="description"
               fontSize="xs"
               fontWeight="normal"
-              noOfLines={1}
+              lineClamp={1}
             >
               {location}
             </Text>

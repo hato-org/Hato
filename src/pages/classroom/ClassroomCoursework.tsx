@@ -113,14 +113,14 @@ export default function ClassroomCoursework() {
       {error ? (
         <Error error={error} />
       ) : (
-        <VStack p={6} w="full" align="flex-start" spacing={4} userSelect="text">
-          <HStack w="full" spacing={4}>
+        <VStack p={6} w="full" align="flex-start" gap={4} userSelect="text">
+          <HStack w="full" gap={4}>
             <StackDivider
               rounded="full"
               borderWidth={2}
               borderColor="blue.400"
             />
-            <VStack w="full" align="flex-start" spacing={1}>
+            <VStack w="full" align="flex-start" gap={1}>
               <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!isPending}>
                 <Text textStyle="title" fontSize="2xl">
                   {data?.title}
@@ -139,9 +139,9 @@ export default function ClassroomCoursework() {
           <SkeletonText
             w="full"
             mt={2}
-            noOfLines={3}
+            lineClamp={3}
             skeletonHeight={4}
-            spacing={2}
+            gap={2}
             isLoaded={!isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">

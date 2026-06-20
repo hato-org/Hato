@@ -36,7 +36,7 @@ function ErrorFallback() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: Chakra UI doesn't support `dvh`
     <Center w="full" h={[['100vh', '100dvh']]} p={8}>
-      <VStack w="full" spacing={4} userSelect="text">
+      <VStack w="full" gap={4} userSelect="text">
         <Heading>エラーが発生しました</Heading>
         <Code rounded="md">{error.message}</Code>
         <Code

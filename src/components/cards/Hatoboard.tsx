@@ -29,7 +29,7 @@ function Hatoboard() {
   const [isLimited, setIsLimited] = useState(true);
 
   return (
-    <VStack w="100%" spacing={4}>
+    <VStack w="100%" gap={4}>
       <HStack w="100%" pt={2} pl={2} as={RouterLink} to="/posts/hatoboard">
         <Heading as="h2" size="md">
           はとボード
@@ -42,7 +42,7 @@ function Hatoboard() {
       ) : status === 'error' ? (
         <Error error={error} />
       ) : (
-        <VStack w="100%" align="flex-start" spacing={4}>
+        <VStack w="100%" align="flex-start" gap={4}>
           {pinnedPosts?.length ? (
             <VStack w="100%">
               {pinnedPosts.slice(0, isLimited ? 2 : undefined).map((post) => (

@@ -52,7 +52,7 @@ export default function ClassroomCourse() {
       <Header>
         <HStack w="full">
           <BackButton />
-          <Heading size="md" ml={2} py={4} noOfLines={1}>
+          <Heading size="md" ml={2} py={4} lineClamp={1}>
             {data?.name}
           </Heading>
           <Spacer />

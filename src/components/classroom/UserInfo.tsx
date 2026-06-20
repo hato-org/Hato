@@ -32,11 +32,11 @@ const UserInfo = React.memo(
     } = useGCUserInfo(userId);
 
     return (
-      <VStack spacing={0} align="flex-start">
+      <VStack gap={0} align="flex-start">
         <Skeleton minH={6} minW={32} rounded="md" isLoaded={!isUserPending}>
           {userError ? (
             <Tooltip label="権限の問題により、教師以外のユーザー情報は取得できません">
-              <HStack spacing={1}>
+              <HStack gap={1}>
                 <Icon as={TbAlertCircle} boxSize={6} color="yellow.400" />
                 <Text color="description" fontWeight="bold">
                   エラー
@@ -55,7 +55,7 @@ const UserInfo = React.memo(
           onClick={(e) => e.stopPropagation()}
         >
           {courseError ? (
-            <HStack spacing={1}>
+            <HStack gap={1}>
               <Icon as={TbAlertCircle} boxSize={4} color="yellow.400" />
               <Text textStyle="description" fontWeight="bold">
                 エラー
@@ -67,7 +67,7 @@ const UserInfo = React.memo(
               to={`/classroom/course/${course?.id}`}
               color="description"
               fontSize="xs"
-              noOfLines={1}
+              lineClamp={1}
             >
               {course?.name}
             </Link>

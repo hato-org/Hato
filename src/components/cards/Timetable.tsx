@@ -39,7 +39,7 @@ function Timetable() {
 
   return (
     <>
-      <VStack w="100%" spacing={4}>
+      <VStack w="100%" gap={4}>
         <LinkBox w="100%" as={RouterLink} to="/timetable">
           <HStack w="100%" pt={2} pl={2}>
             <Heading as="h2" size="md">

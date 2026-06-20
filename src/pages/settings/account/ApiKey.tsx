@@ -23,7 +23,7 @@ export default function AccountApiKey() {
       <Text
         fontFamily="monospace"
         wordBreak="break-all"
-        noOfLines={1}
+        lineClamp={1}
         textStyle="title"
       >
         {user.apiKey.slice(0, 4)}...

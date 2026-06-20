@@ -72,7 +72,7 @@ const Post = React.memo(
 
     return (
       <Card>
-        <VStack p={2} spacing={4} align="flex-start" w="full" userSelect="text">
+        <VStack p={2} gap={4} align="flex-start" w="full" userSelect="text">
           <HStack
             w="full"
             onClick={() =>
@@ -82,7 +82,7 @@ const Post = React.memo(
               cursor: 'pointer',
             }}
           >
-            <HStack spacing={4} align="center">
+            <HStack gap={4} align="center">
               <Tooltip label={typeText} fontSize="md" openDelay={300}>
                 <Avatar bg={iconColor} icon={<Icon as={icon} boxSize={7} />} />
               </Tooltip>
@@ -168,7 +168,7 @@ function PostPlaceholder() {
       <VStack w="full" align="flex-start" p={2}>
         <SkeletonCircle size="12" />
 
-        <SkeletonText noOfLines={4} skeletonHeight="4" />
+        <SkeletonText lineClamp={4} skeletonHeight="4" />
       </VStack>
     </Card>
   );

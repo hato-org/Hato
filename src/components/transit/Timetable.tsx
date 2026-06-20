@@ -29,11 +29,11 @@ export const TrainTimetableModal = React.memo(
         <ModalCloseButton top={4} right={4} />
         <ModalHeader>時刻表の詳細</ModalHeader>
         <ModalBody>
-          <VStack spacing={4}>
-            <VStack w="full" align="flex-start" spacing={2}>
+          <VStack gap={4}>
+            <VStack w="full" align="flex-start" gap={2}>
               <Text textStyle="description">列車詳細</Text>
               <HStack w="full" justify="space-evenly">
-                <VStack spacing={0}>
+                <VStack gap={0}>
                   <Text fontSize="2xl" lineHeight={1}>
                     {starting}
                   </Text>
@@ -45,7 +45,7 @@ export const TrainTimetableModal = React.memo(
                   </Text>
                 </VStack>
                 <Icon as={TbChevronRight} boxSize={6} />
-                <VStack spacing={0}>
+                <VStack gap={0}>
                   <Text fontSize="2xl" lineHeight={1}>
                     {destination}
                   </Text>
@@ -58,9 +58,9 @@ export const TrainTimetableModal = React.memo(
                 </VStack>
               </HStack>
             </VStack>
-            <VStack w="full" align="flex-start" spacing={0}>
+            <VStack w="full" align="flex-start" gap={0}>
               <Text textStyle="description">各駅発着時刻</Text>
-              <VStack w="full" spacing={0}>
+              <VStack w="full" gap={0}>
                 {stations.map((station) => (
                   <Station key={station.name} {...station} />
                 ))}
@@ -84,7 +84,7 @@ const Station = React.memo(
       w="full"
       p={2}
       py={2}
-      spacing={4}
+      gap={4}
       _first={{
         _after: {
           content: '""',
@@ -148,7 +148,7 @@ const Station = React.memo(
         shadow="sm"
         left={2}
       />
-      <VStack minW={28} pl={6} spacing={0} align="flex-start">
+      <VStack minW={28} pl={6} gap={0} align="flex-start">
         {arriveAt && (
           <Text textStyle="title" fontSize="sm" color="description">
             {arriveAt}{' '}
@@ -166,7 +166,7 @@ const Station = React.memo(
           </Text>
         )}
       </VStack>
-      <VStack align="flex-end" spacing={0}>
+      <VStack align="flex-end" gap={0}>
         <Text textStyle="title" fontSize="xl">
           {name}
         </Text>

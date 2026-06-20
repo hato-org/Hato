@@ -38,7 +38,7 @@ function Login() {
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
       {/* @ts-ignore: Chakra UI doesn't support `dvh` */}
       <Center h={[['100vh', '100dvh']]} w="100vw" flexDir="column" p={8}>
-        <VStack spacing={8} w="100%">
+        <VStack gap={8} w="100%">
           <Heading color="blue.500" as="h1" size="2xl" fontWeight="black">
             ログイン
           </Heading>

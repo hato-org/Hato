@@ -55,13 +55,13 @@ export default function Notification() {
       layout
     >
       <SettingCategory title="通知">
-        <VStack spacing={4} align="flex-start" w="100%">
+        <VStack gap={4} align="flex-start" w="100%">
           <SettingButton
             {...{
               label: 'プッシュ通知',
               description: 'プッシュ通知を有効にするか。',
               children: (
-                <HStack spacing={4}>
+                <HStack gap={4}>
                   {(subscribePending || unsubscribePending) && (
                     <Spinner size="sm" color="blue.400" />
                   )}
@@ -108,7 +108,7 @@ export default function Notification() {
                   <AlertDescription textStyle="description" fontWeight="bold">
                     以下をお試しください
                   </AlertDescription>
-                  <UnorderedList spacing={2}>
+                  <UnorderedList gap={2}>
                     {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
                       navigator.userAgent,
                     ) && (
@@ -196,7 +196,7 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
   );
 
   return (
-    <HStack spacing={4}>
+    <HStack gap={4}>
       {isPending && <Spinner color="blue.400" size="xs" />}
       {error && (
         <Icon as={TbExclamationCircle} color="yellow.400" boxSize={5} />

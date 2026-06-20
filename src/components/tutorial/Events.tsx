@@ -66,11 +66,11 @@ export default function Events() {
             </UnorderedList>
             <Divider />
             <Heading size="md">イベントの追加方法</Heading>
-            <OrderedList pl={4} textStyle="title" spacing={4}>
+            <OrderedList pl={4} textStyle="title" gap={4}>
               <ListItem>右下の「イベントを追加」をタップ</ListItem>
               <ListItem>
                 各項目を入力
-                <UnorderedList spacing={1}>
+                <UnorderedList gap={1}>
                   <ListItem>
                     タイトル
                     <Badge ml={1} colorScheme="red">

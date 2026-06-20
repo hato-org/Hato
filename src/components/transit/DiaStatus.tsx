@@ -75,7 +75,7 @@ const UnstableInfo = React.memo(
         onClick={onToggle}
         _hover={{ cursor: 'pointer' }}
       >
-        <VStack w="full" spacing={0}>
+        <VStack w="full" gap={0}>
           <HStack w="full">
             <AlertIcon mr={0} />
             <Text textStyle="title">
@@ -123,7 +123,7 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
       <StackDivider borderWidth={2} borderColor={borderColor} rounded="full" />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
-      <Text textStyle="description" fontWeight="bold" noOfLines={1}>
+      <Text textStyle="description" fontWeight="bold" lineClamp={1}>
         {diaInfo.status.text}
       </Text>
     </HStack>

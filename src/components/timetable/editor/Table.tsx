@@ -53,7 +53,7 @@ export const EditorTable = React.memo(
         rounded="xl"
         border="1px solid"
         borderColor="border"
-        spacing={0}
+        gap={0}
         overflow="hidden"
       >
         <HStack p={4} w="full" onClick={onToggle} layerStyle="button">
@@ -109,7 +109,7 @@ const EditorTableCol = React.memo(
     const [, setSchedule] = useUserScheduleContext();
 
     return (
-      <VStack key={JSON.stringify(schedule) + dayIndex} spacing={1}>
+      <VStack key={JSON.stringify(schedule) + dayIndex} gap={1}>
         <Text
           w="full"
           textAlign="center"
@@ -249,7 +249,7 @@ function EditorSubjectGrid({
         <PopoverContent p={0} bg="panel" rounded="xl" width="fit-content">
           <PopoverArrow bg="panel" />
           <PopoverBody p={4}>
-            <VStack spacing={1}>
+            <VStack gap={1}>
               <Button
                 variant="ghost"
                 rounded="lg"

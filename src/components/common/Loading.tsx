@@ -36,7 +36,7 @@ const Loading = React.memo(
     return (
       <VStack
         w="full"
-        spacing={4}
+        gap={4}
         flexGrow={1}
         p={4}
         onClick={() => setTip(tips[Math.floor(Math.random() * tips.length)])}

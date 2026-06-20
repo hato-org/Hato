@@ -26,7 +26,7 @@ export default function StatusBanner() {
   );
 
   return (
-    <VStack w="full" spacing={0}>
+    <VStack w="full" gap={0}>
       <Box w="full">
         <Collapse in={!!statusInfo?.length}>
           <HStack

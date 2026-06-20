@@ -34,7 +34,7 @@ function AddToHomeScreen() {
         <ModalBody>
           <VStack px={4} align="flex-start">
             <Heading size="md">iPhone (Safari)</Heading>
-            <OrderedList spacing={4} textStyle="title">
+            <OrderedList gap={4} textStyle="title">
               <ListItem>
                 共有メニューを開く
                 <Image
@@ -56,7 +56,7 @@ function AddToHomeScreen() {
               </ListItem>
             </OrderedList>
             <Heading size="md">Android (Chrome)</Heading>
-            <OrderedList spacing={4} textStyle="title">
+            <OrderedList gap={4} textStyle="title">
               <ListItem>
                 「<Icon as={TbDotsVertical} />
                 」メニューを開く

@@ -24,7 +24,7 @@ export default function AccountUsername({ username }: { username: string }) {
   return (
     <>
       <HStack id="modify-username" rounded="md" py={2} onClick={onOpen}>
-        <Text textStyle="title" noOfLines={1}>
+        <Text textStyle="title" lineClamp={1}>
           {username}
         </Text>
         <Icon as={TbEdit} />
