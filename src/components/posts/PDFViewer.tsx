@@ -1,25 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import {
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-  HStack,
-  IconButton,
-  Text,
-  Link,
-  Collapsible,
-  Progress,
-  Spacer,
-  Center,
-  useBreakpointValue,
-  Icon,
-  Editable,
-  EditablePreview,
-  EditableInput,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerContent, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
+import { Box, HStack, IconButton, Text, Link, Collapsible, Progress, Spacer, Center, useBreakpointValue, Icon, Editable, EditablePreview, EditableInput } from '@chakra-ui/react';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX, TbZoomIn, TbZoomOut } from 'react-icons/tb';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -70,14 +51,13 @@ const PDFViewer = React.memo(
     const [zoom, setZoom] = useState(100);
 
     return (
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
+      <DrawerRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && (onClose)()}
         placement="bottom"
         size="full"
         allowPinchZoom
       >
-        <DrawerOverlay />
         <DrawerContent top={0} bg="bg">
           <DrawerHeader shadow="xl" p={0}>
             <HStack align="center" w="100%" px={2} gap={2}>
@@ -153,7 +133,7 @@ const PDFViewer = React.memo(
             )}
           </DrawerBody>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     );
   },
 );

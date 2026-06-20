@@ -1,18 +1,6 @@
 import { useState } from 'react';
-import {
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Input,
-  Text,
-  VStack,
-  useToast,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
+import { Button, Input, Text, VStack, useToast } from '@chakra-ui/react';
 import { useUserSubjectMutation } from '@/services/timetable';
 import { useUser } from '@/services/user';
 import { useUserScheduleContext } from './context';
@@ -40,15 +28,14 @@ export default function UserSubjectEditor({
   const { mutate, isPending } = useUserSubjectMutation();
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
-      <DrawerOverlay zIndex={1400} />
+    <DrawerRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="bottom">
       <DrawerContent
         zIndex={1500}
         roundedTop="xl"
         bg="panel"
         pb="env(safe-area-inset-bottom)"
       >
-        <DrawerCloseButton top={4} right={4} />
+        <DrawerCloseTrigger top={4} right={4} />
         <DrawerHeader>教科の編集</DrawerHeader>
         <DrawerBody>
           <VStack align="flex-start" gap={4}>
@@ -144,6 +131,6 @@ export default function UserSubjectEditor({
           </Button>
         </DrawerFooter>
       </DrawerContent>
-    </Drawer>
+    </DrawerRoot>
   );
 }

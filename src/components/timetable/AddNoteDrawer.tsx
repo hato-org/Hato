@@ -1,28 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Heading,
-  Textarea,
-  VStack,
-  Text,
-  Spacer,
-  CheckboxGroup,
-  Checkbox,
-  Wrap,
-  useToast,
-  HStack,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
+import { Button, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Heading, Textarea, VStack, Text, Spacer, CheckboxGroup, Checkbox, Wrap, useToast, HStack } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -54,8 +32,7 @@ const AddNoteDrawer = React.memo(
     const { mutate, isPending } = useAddNoteMutation();
 
     return (
-      <Drawer placement="bottom" isOpen={isOpen} onClose={onClose} {...rest}>
-        <DrawerOverlay />
+      <DrawerRoot placement="bottom" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} {...rest}>
         <DrawerContent
           borderTopRadius="xl"
           pb="env(safe-area-inset-bottom)"
@@ -269,7 +246,7 @@ const AddNoteDrawer = React.memo(
             </Button>
           </DrawerFooter>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     );
   },
 );

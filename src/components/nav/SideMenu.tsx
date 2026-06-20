@@ -1,25 +1,6 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
-import {
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
-  Heading,
-  HStack,
-  Icon,
-  IconButton,
-  Image,
-  Portal,
-  Show,
-  Spacer,
-  StackSeparator,
-  StackProps,
-  Text,
-  useBreakpointValue,
-  VStack,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerRoot } from '@/components/ui/drawer';
+import { Box, Heading, HStack, Icon, IconButton, Image, Portal, Show, Spacer, StackSeparator, StackProps, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
 import {
   TbHome,
   TbClipboardList,
@@ -64,15 +45,14 @@ export function SideMenuDrawer() {
 
   return (
     <Portal>
-      <Drawer isOpen={menu} onClose={onClose} placement="left">
-        <DrawerOverlay />
+      <DrawerRoot open={menu} onOpenChange={(e) => !e.open && (onClose)()} placement="start">
         <DrawerContent bg="panel" roundedRight="2xl">
-          <DrawerCloseButton top={9} right={8} />
+          <DrawerCloseTrigger top={9} right={8} />
           <DrawerBody p={4}>
             <MenuBody />
           </DrawerBody>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     </Portal>
   );
 }

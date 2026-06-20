@@ -1,28 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerProps,
-  HStack,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Spacer,
-  Switch,
-  Text,
-  Textarea,
-  useBoolean,
-  useToast,
-  VStack,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
+import { Button, HStack, Icon, Input, InputGroup, InputLeftElement, Spacer, Switch, Text, Textarea, useBoolean, useToast, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 import ResizeTextArea from 'react-textarea-autosize';
 import { AsyncSelect } from 'chakra-react-select';
 import {
@@ -59,8 +37,7 @@ const AddEventDrawer = React.memo(
 
     // TODO: refactor with react-hook-form
     return (
-      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom" {...rest}>
-        <DrawerOverlay />
+      <DrawerRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="bottom" {...rest}>
         <DrawerContent
           borderTopRadius="xl"
           pb="env(safe-area-inset-bottom)"
@@ -259,7 +236,7 @@ const AddEventDrawer = React.memo(
             </Button>
           </DrawerFooter>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     );
   },
 );
