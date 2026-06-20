@@ -5,7 +5,7 @@ import { TbEdit } from 'react-icons/tb';
 import { useUserMutation } from '@/services/user';
 
 export default function AccountUsername({ username }: { username: string }) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { open: isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>

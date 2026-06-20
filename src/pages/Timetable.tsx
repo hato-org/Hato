@@ -50,14 +50,14 @@ function Timetable() {
   const { data: user } = useUser();
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: isDivisionEditorOpen,
+    open: isDivisionEditorOpen,
     onOpen: onDivisionEditorOpen,
     onClose: onDivisionEditorClose,
   } = useDisclosure();
   const {
-    isOpen: reportOpen,
+    open: reportOpen,
     onOpen: reportOnOpen,
     onClose: reportOnClose,
   } = useDisclosure();

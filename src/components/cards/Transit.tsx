@@ -64,7 +64,7 @@ export default function Transit() {
 }
 
 function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
-  const { isOpen, onToggle } = useDisclosure();
+  const { open: isOpen, onToggle } = useDisclosure();
   const [date] = useSeconds();
   const day = dayNumberToString(date.getDay());
 

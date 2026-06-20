@@ -42,12 +42,12 @@ function EventDetail() {
   });
 
   const {
-    isOpen: deleteOpen,
+    open: deleteOpen,
     onClose: deleteOnClose,
     onOpen: deleteOnOpen,
   } = useDisclosure();
   const {
-    isOpen: reportOpen,
+    open: reportOpen,
     onClose: reportOnClose,
     onOpen: reportOnOpen,
   } = useDisclosure();

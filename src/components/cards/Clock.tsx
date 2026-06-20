@@ -13,7 +13,7 @@ import { useDivision } from '@/services/timetable';
 import { days } from '@/utils/date';
 
 export default function Clock() {
-  const { isOpen: isSecondsShowed, onToggle } = useDisclosure();
+  const { open: isSecondsShowed, onToggle } = useDisclosure();
   const [date] = useSeconds();
   const { data: division, isPending } = useDivision({ date });
 

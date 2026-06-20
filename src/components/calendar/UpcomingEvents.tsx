@@ -32,7 +32,7 @@ interface UpcomingEventsProps {
 }
 
 function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open: isOpen, onToggle, onClose } = useDisclosure();
   const [tags, setTags] = useAtom(tagsAtom);
 
   const { data, status, error } = useEvents({ year, month, day });

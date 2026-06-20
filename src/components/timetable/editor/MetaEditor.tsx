@@ -32,7 +32,7 @@ export const UserScheduleMetaEditor = React.memo(
   }) => {
     const [schedule, setSchedule] = useUserScheduleContext();
     const { _id, title, description, meta, private: isPrivate } = schedule;
-    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
+    const { open: isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
     const { data: gradeList } = useGradeList();
     const { data: classList } = useClassList({
       type: meta.type,

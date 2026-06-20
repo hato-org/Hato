@@ -22,7 +22,7 @@ export default function UserScheduleEditor() {
     duration: 3000,
   });
   const {
-    isOpen: isDeleteModalOpen,
+    open: isDeleteModalOpen,
     onOpen: onDeletemodalOpen,
     onClose: onDeleteModalClose,
   } = useDisclosure();

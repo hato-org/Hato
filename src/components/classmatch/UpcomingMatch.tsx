@@ -24,7 +24,7 @@ const UpcomingMatch = React.memo(
   ({ year, season }: { year: number; season: ClassmatchSeason }) => {
     const { data: user } = useUser();
 
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
     const [type, setType] = useState(user.type);
     const [grade, setGrade] = useState(user.grade);
     const [classNum, setClass] = useState(user.class);

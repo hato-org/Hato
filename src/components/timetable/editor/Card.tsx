@@ -44,9 +44,9 @@ const Card = React.memo(
     meta,
     ...rest
   }: UserSchedule & { defaultIsOpen?: boolean }) => {
-    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen });
+    const { open: isOpen, onToggle } = useDisclosure({ defaultIsOpen });
     const {
-      isOpen: importModalOpen,
+      open: importModalOpen,
       onOpen: importModalOnOpen,
       onClose: importModalOnClose,
     } = useDisclosure();

@@ -27,7 +27,7 @@ function Status() {
   const { data: user } = useUser();
   const { data: status } = useHatoStatus();
   const { data: statusInfo } = useHatoStatusMaintenance();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>

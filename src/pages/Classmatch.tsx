@@ -34,7 +34,7 @@ import { queryKeys } from '@/services/queryKeys';
 export default function Classmatch() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const [year, setYear] = useState(
     Number(searchParams.get('year')) || new Date().getFullYear(),
   );

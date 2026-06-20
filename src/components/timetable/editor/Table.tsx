@@ -45,7 +45,7 @@ export const EditorTable = React.memo(
     isPrivate: UserSchedule['private'];
     week: Week;
   }) => {
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
 
     return (
       <VStack
@@ -105,7 +105,7 @@ const EditorTableCol = React.memo(
     week: Week;
     dayIndex: number;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
     const [, setSchedule] = useUserScheduleContext();
 
     return (
@@ -201,12 +201,12 @@ function EditorSubjectGrid({
   onDelete: () => void;
 }) {
   const {
-    isOpen: isEditorOpen,
+    open: isEditorOpen,
     onOpen: onEditorOpen,
     onClose: onEditorClose,
   } = useDisclosure();
   const {
-    isOpen: isPickerOpen,
+    open: isPickerOpen,
     onOpen: onPickerOpen,
     onClose: onPickerClose,
   } = useDisclosure();

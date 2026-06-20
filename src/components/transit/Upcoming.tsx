@@ -162,7 +162,7 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
     train?: UpcomingTrain;
     openModal?: boolean;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return train ? (
       <>
@@ -212,7 +212,7 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
     train?: UpcomingTrain;
     openModal?: boolean;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return train ? (
       <>

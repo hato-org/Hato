@@ -27,7 +27,7 @@ const StatusAlert = React.memo(
         ? 'warning'
         : 'success';
 
-    const { isOpen, onToggle } = useDisclosure({
+    const { open: isOpen, onToggle } = useDisclosure({
       defaultIsOpen: defaultOpen ?? statusSummary !== 'success',
     });
 
@@ -95,7 +95,7 @@ const StatusAlert = React.memo(
 StatusAlert.displayName = 'StatusAlert';
 
 const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const borderColor = (() => {
     switch (diaInfo.status.code) {
       case 'suspend':

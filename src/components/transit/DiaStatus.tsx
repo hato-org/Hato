@@ -65,7 +65,7 @@ const UnstableInfo = React.memo(
     isAllUnstable: boolean;
     unstableLines: DiaInfo[];
   }) => {
-    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
+    const { open: isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
     return (
       <Alert

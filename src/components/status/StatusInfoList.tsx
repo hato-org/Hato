@@ -42,7 +42,7 @@ StatusInfoList.displayName = 'StatusInfoList';
 
 const StatusInfo = React.memo(
   ({ title, description, startAt, endAt, scope }: StatusMaintenance) => {
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
     const { data } = useHatoStatusServerList();
 
     return (

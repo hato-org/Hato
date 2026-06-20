@@ -23,7 +23,7 @@ import { queryKeys } from '@/services/queryKeys';
 const PDFViewer = lazy(() => import('./PDFViewer'));
 
 function Post({ id }: { id: string }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const [selectedAttachment, setSelectedAttachment] = useState('');
   const queryClient = useQueryClient();
 

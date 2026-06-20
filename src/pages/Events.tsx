@@ -27,7 +27,7 @@ import { queryKeys } from '@/services/queryKeys';
 
 function Events() {
   const queryClient = useQueryClient();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const setTutorialModal = useSetAtom(tutorialModalAtom);
   const onHelpOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, events: true })),

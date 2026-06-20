@@ -22,7 +22,7 @@ import SettingCategory from './Category';
 function Top() {
   const { logout } = useAuth();
   const { data: user } = useUser();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const queryClient = useQueryClient();
   const setTutorial = useSetAtom(tutorialAtom);
   const setWhatsNew = useSetAtom(whatsNewAtom);

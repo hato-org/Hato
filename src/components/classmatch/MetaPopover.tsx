@@ -36,7 +36,7 @@ const TournamentMetaPopover = React.memo(
     season: ClassmatchSeason;
     sport: ClassmatchSportId;
   }) => {
-    const { isOpen, onToggle, onClose } = useDisclosure();
+    const { open: isOpen, onToggle, onClose } = useDisclosure();
     const [editMode, setEditMode] = useState<'editor' | 'reporter' | undefined>(
       undefined,
     );

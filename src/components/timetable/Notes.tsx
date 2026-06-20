@@ -253,7 +253,7 @@ const NotesMenu = React.memo(
   ({ note, onEdit, onDelete, ...rest }: NotesMenuProps) => {
     const { data: user } = useUser();
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return (
       <Menu>

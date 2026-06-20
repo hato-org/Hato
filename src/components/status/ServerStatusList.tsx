@@ -30,7 +30,7 @@ const ServerStatusList = React.memo(({ status }: { status?: Status }) => (
 ServerStatusList.displayName = 'ServerStatusList';
 
 const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { open: isOpen, onToggle } = useDisclosure();
 
   return (
     <VStack w="full" gap={0} rounded="xl" layerStyle="button">

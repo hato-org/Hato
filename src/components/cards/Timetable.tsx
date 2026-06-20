@@ -25,7 +25,7 @@ import DivisionEditor from '../timetable/DivisionEditor';
 function Timetable() {
   const date = new Date();
   const { data: user } = useUser();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { open: isOpen, onClose, onOpen } = useDisclosure();
   const { data, isPending: userSchedulePending } = useUserSchedule(
     user.userScheduleId ?? '',
     { enabled: !!user.userScheduleId },

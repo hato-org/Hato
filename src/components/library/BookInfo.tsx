@@ -36,7 +36,7 @@ const BookInfo = React.memo(
     source,
   }: Book) => {
     const [bookmarks, setBookmarks] = useAtom(libraryBookmarkAtom);
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
     const bgBrightness = useColorModeValue('100%', '40%');
     const bgOpacity = useColorModeValue(0.3, 0.9);
     const isBookmarked = bookmarks.includes(isbn);
