@@ -5,7 +5,7 @@ import {
   Box,
   StackProps,
   IconButton,
-  Divider,
+  Separator,
   Center,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
@@ -64,7 +64,7 @@ const Calendar = React.memo(
             // dragSnapToOrigin
             // onDragEnd={(event: any, info: any) => console.log(event, info)}
           >
-            <VStack w="100%" h="100%" gap={1} divider={<Divider />}>
+            <VStack w="100%" h="100%" gap={1} separator={<Separator />}>
               <HStack w="100%" gap={0}>
                 {dayOfWeek.map((day) => (
                   <Text

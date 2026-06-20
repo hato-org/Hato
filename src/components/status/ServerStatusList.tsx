@@ -12,7 +12,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
@@ -35,7 +35,7 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
   return (
     <VStack w="full" gap={0} rounded="xl" layerStyle="button">
       <HStack w="full" p={2} gap={4} onClick={onToggle}>
-        <StackDivider
+        <StackSeparator
           rounded="full"
           borderWidth={2}
           borderColor={ok ? 'success' : 'error'}

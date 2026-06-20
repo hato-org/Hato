@@ -100,7 +100,7 @@ const BookInfo = React.memo(
           />
           <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
-            <HStack divider={<Text textStyle="description">・</Text>}>
+            <HStack separator={<Text textStyle="description">・</Text>}>
               <Text textStyle="description" whiteSpace="nowrap">
                 {pubdate}
               </Text>

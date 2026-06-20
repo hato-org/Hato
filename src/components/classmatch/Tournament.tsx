@@ -4,7 +4,7 @@ import {
   Center,
   HStack,
   Icon,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -142,7 +142,7 @@ const TournamentSection = React.memo(
             match={match}
             editHistory={editHistory}
           />
-          <StackDivider
+          <StackSeparator
             borderColor={participants.length ? 'blue.400' : 'border'}
             borderWidth={2}
           />
@@ -175,7 +175,7 @@ const TournamentLeaf = React.memo(
         minW={{ base: 8, md: 12 }}
         flexGrow={1}
       >
-        <StackDivider
+        <StackSeparator
           borderColor={isWinner ? 'blue.400' : 'border'}
           borderWidth={2}
         />

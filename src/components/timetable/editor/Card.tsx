@@ -6,7 +6,7 @@ import {
   HStack,
   Icon,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Table,
   TableContainer,
   Tbody,
@@ -80,7 +80,7 @@ const Card = React.memo(
         transition="all .3s ease"
       >
         <HStack w="full" onClick={onToggle} gap={4}>
-          <StackDivider
+          <StackSeparator
             borderWidth={2}
             borderColor={isSelected ? 'green.400' : 'blue.400'}
             rounded="full"

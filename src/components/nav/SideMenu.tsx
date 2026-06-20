@@ -14,7 +14,7 @@ import {
   Portal,
   Show,
   Spacer,
-  StackDivider,
+  StackSeparator,
   StackProps,
   Text,
   useBreakpointValue,
@@ -183,7 +183,7 @@ const MenuBody = React.memo(() => {
       </HStack>
       {menu.map((menuItem, index) =>
         menuItem.type === 'divider' ? (
-          <StackDivider
+          <StackSeparator
             key={`${menuItem.type}-${index}`}
             borderWidth="1px"
             borderColor="border"

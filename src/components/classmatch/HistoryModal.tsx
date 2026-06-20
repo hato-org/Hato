@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -62,7 +62,7 @@ export default function HistoryModal({
                     onClose();
                   }}
                 >
-                  <StackDivider
+                  <StackSeparator
                     borderWidth={2}
                     borderColor={
                       season === 'spring' ? 'pink.300' : 'orange.500'

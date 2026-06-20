@@ -11,7 +11,7 @@ import {
   useDisclosure,
   Box,
   Center,
-  StackDivider,
+  StackSeparator,
   WrapItem,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
@@ -190,7 +190,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
                 </>
               )}
             </VStack>
-            <StackDivider
+            <StackSeparator
               borderColor={event.external ? 'green.400' : 'blue.400'}
               borderWidth={1}
             />

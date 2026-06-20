@@ -9,7 +9,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
@@ -115,7 +115,7 @@ const TournamentMetaPopover = React.memo(
                           w="full"
                           justify="space-around"
                           gap={0}
-                          divider={
+                          separator={
                             <Text
                               fontSize="xl"
                               color="description"
@@ -151,7 +151,7 @@ const TournamentMetaPopover = React.memo(
                           まだ結果が分かっていません
                         </Text>
                       )}
-                      <StackDivider
+                      <StackSeparator
                         borderWidth={1}
                         borderColor="border"
                         rounded="full"
@@ -161,7 +161,7 @@ const TournamentMetaPopover = React.memo(
                         justify="space-evenly"
                         align="flex-start"
                         gap={4}
-                        divider={<StackDivider borderColor="border" />}
+                        separator={<StackSeparator borderColor="border" />}
                       >
                         <VStack gap={1} align="flex-start">
                           <Text

@@ -2,7 +2,7 @@ import {
   HStack,
   Avatar,
   VStack,
-  StackDivider,
+  StackSeparator,
   Text,
   Spacer,
 } from '@chakra-ui/react';
@@ -41,7 +41,7 @@ function Profile() {
       w="100%"
       justify="center"
       gap={4}
-      divider={<StackDivider borderColor="blue.300" borderWidth={1} />}
+      separator={<StackSeparator borderColor="blue.300" borderWidth={1} />}
       p={4}
       rounded="xl"
       id="profile-image"

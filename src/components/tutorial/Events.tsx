@@ -13,7 +13,7 @@ import {
   UnorderedList,
   OrderedList,
   Badge,
-  Divider,
+  Separator,
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
@@ -64,7 +64,7 @@ export default function Events() {
                 </Text>
               </ListItem>
             </UnorderedList>
-            <Divider />
+            <Separator />
             <Heading size="md">イベントの追加方法</Heading>
             <OrderedList pl={4} textStyle="title" gap={4}>
               <ListItem>右下の「イベントを追加」をタップ</ListItem>

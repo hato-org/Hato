@@ -7,7 +7,7 @@ import {
   Skeleton,
   Spacer,
   Stack,
-  StackDivider,
+  StackSeparator,
   StackProps,
   Text,
   useDisclosure,
@@ -174,7 +174,7 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
           onClick={onOpen}
           {...rest}
         >
-          <StackDivider borderWidth={2} borderColor="blue.400" rounded="full" />
+          <StackSeparator borderWidth={2} borderColor="blue.400" rounded="full" />
           <VStack gap={0} align="flex-start">
             <Text textStyle="title" fontSize="xl">
               {format(train.departAt, 'HH:mm')}
@@ -224,7 +224,7 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
           onClick={onOpen}
           layerStyle={openModal ? 'button' : undefined}
         >
-          <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
+          <StackSeparator borderWidth={1} borderColor="blue.400" rounded="full" />
           <VStack gap={0} align="flex-start">
             <Text fontSize="md">{format(train.departAt, 'HH:mm')}</Text>
             <Text textStyle="description" fontSize="2xs">

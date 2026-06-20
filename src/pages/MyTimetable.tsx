@@ -7,7 +7,7 @@ import {
   Button,
   Icon,
   VStack,
-  StackDivider,
+  StackSeparator,
   Spacer,
   IconButton,
 } from '@chakra-ui/react';
@@ -61,7 +61,7 @@ function MyTimetable() {
         <Center mb={32} pt={4} px={4} flexDir="column">
           <VStack align="flex-start" w="full" gap={4}>
             <UserScheduleSearch />
-            <StackDivider border="1px solid" borderColor="border" />
+            <StackSeparator border="1px solid" borderColor="border" />
             <HStack px={4} w="full">
               <Heading as="h3" size="md">
                 作成・インポートした時間割

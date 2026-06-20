@@ -6,7 +6,7 @@ import {
   Icon,
   SimpleGrid,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
@@ -128,7 +128,7 @@ export default function Classmatch() {
             _hover={{ cursor: 'pointer' }}
           >
             <HStack gap={4}>
-              <StackDivider
+              <StackSeparator
                 rounded="full"
                 borderWidth={2}
                 borderColor={season === 'spring' ? 'pink.300' : 'orange.500'}

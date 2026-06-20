@@ -9,7 +9,7 @@ import {
   Icon,
   Skeleton,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   useDisclosure,
   VStack,
@@ -120,7 +120,7 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
 
   return (
     <HStack w="full">
-      <StackDivider borderWidth={2} borderColor={borderColor} rounded="full" />
+      <StackSeparator borderWidth={2} borderColor={borderColor} rounded="full" />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
       <Text textStyle="description" fontWeight="bold" lineClamp={1}>

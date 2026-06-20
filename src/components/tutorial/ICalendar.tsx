@@ -77,7 +77,7 @@ export default function ICalendar() {
                 <VStack
                   pt={4}
                   gap={4}
-                  divider={<Icon as={TbChevronDown} w={8} h={8} />}
+                  separator={<Icon as={TbChevronDown} w={8} h={8} />}
                 >
                   <Text>「カレンダー」アプリ</Text>
                   <Image
@@ -125,7 +125,7 @@ export default function ICalendar() {
                 <VStack
                   pt={4}
                   gap={4}
-                  divider={<Icon as={TbChevronDown} w={8} h={8} />}
+                  separator={<Icon as={TbChevronDown} w={8} h={8} />}
                 >
                   <Button
                     as={Link}
@@ -176,7 +176,7 @@ export default function ICalendar() {
                 <VStack
                   pt={4}
                   gap={4}
-                  divider={<Icon as={TbChevronDown} w={8} h={8} />}
+                  separator={<Icon as={TbChevronDown} w={8} h={8} />}
                 >
                   <Text>上記2つのどちらかを完了させる</Text>
                   <Image

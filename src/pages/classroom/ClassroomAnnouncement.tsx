@@ -5,7 +5,7 @@ import {
   Text,
   VStack,
   Icon,
-  StackDivider,
+  StackSeparator,
   Spacer,
   IconButton,
   Link,
@@ -126,7 +126,7 @@ export default function ClassroomAnnouncement() {
           userSelect="text"
         >
           <HStack w="full" gap={4}>
-            <StackDivider
+            <StackSeparator
               rounded="full"
               borderWidth={2}
               borderColor="blue.400"

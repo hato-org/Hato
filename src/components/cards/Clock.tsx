@@ -2,7 +2,7 @@ import {
   HStack,
   Skeleton,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
@@ -19,7 +19,7 @@ export default function Clock() {
 
   return (
     <HStack w="full" p={2} gap={4}>
-      <StackDivider borderWidth={2} rounded="full" borderColor="blue.400" />
+      <StackSeparator borderWidth={2} rounded="full" borderColor="blue.400" />
       <VStack gap={0} align="flex-start">
         {/* <HStack w="full">
           <Text textStyle="title">

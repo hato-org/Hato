@@ -6,7 +6,7 @@ import {
   Heading,
   Icon,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Tag,
   Text,
   VStack,
@@ -63,7 +63,7 @@ const StatusInfo = React.memo(
               {format(new Date(startAt), 'H:mm')}
             </Text>
           </VStack>
-          <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
+          <StackSeparator borderWidth={1} borderColor="blue.400" rounded="full" />
           <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
             <Wrap>

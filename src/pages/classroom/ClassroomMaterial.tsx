@@ -8,7 +8,7 @@ import {
   Skeleton,
   SkeletonText,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   Wrap,
@@ -111,7 +111,7 @@ export default function ClassroomMaterial() {
       ) : (
         <VStack p={6} w="full" align="flex-start" gap={4} userSelect="text">
           <HStack w="full" gap={4}>
-            <StackDivider
+            <StackSeparator
               rounded="full"
               borderWidth={2}
               borderColor="blue.400"
@@ -145,7 +145,7 @@ export default function ClassroomMaterial() {
             ))}
           </Wrap>
           {/* <Fade in={!!data} style={{ width: '100%' }}>
-						<StackDivider borderWidth={1} mb={4} />
+						<StackSeparator borderWidth={1} mb={4} />
 						<VStack align="flex-start">
 							<HStack>
 								<Text textStyle="title" fontSize="xl">
