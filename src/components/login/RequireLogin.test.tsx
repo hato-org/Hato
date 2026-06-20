@@ -1,9 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as ChakraUIProvider } from '@/components/ui/provider';
 import { Provider as JotaiProvider, createStore } from 'jotai';
-import { theme } from '@/theme';
 import { jwtAtom } from '@/store/auth';
 import RequireLogin from '@/components/login/RequireLogin';
 
@@ -51,7 +50,7 @@ function renderWithMemoryRouter(
 ) {
   render(
     <JotaiProvider store={store}>
-      <ChakraProvider theme={theme}>
+      <ChakraUIProvider defaultTheme="light">
         <MemoryRouter initialEntries={initialEntries}>
           <Routes>
             <Route path={protectedPath} element={<RequireLogin />}>
@@ -60,7 +59,7 @@ function renderWithMemoryRouter(
             <Route path="/login" element={<LoginCapture />} />
           </Routes>
         </MemoryRouter>
-      </ChakraProvider>
+      </ChakraUIProvider>
     </JotaiProvider>,
   );
 }

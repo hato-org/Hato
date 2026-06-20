@@ -3,7 +3,8 @@ import '@fontsource-variable/noto-sans-jp';
 import '@fontsource/inter';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { Provider } from '@/components/ui/provider';
+import { Toaster } from '@/components/ui/toaster';
 import { HelmetProvider } from 'react-helmet-async';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient } from '@tanstack/react-query';
@@ -12,7 +13,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { DevTools } from 'jotai-devtools';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import App from './App';
-import theme from './theme';
 import './global.css';
 
 import '@/utils/recoil_migration';
@@ -88,7 +88,7 @@ const persister = createIDBPersister();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      <ChakraProvider theme={theme}>
+      <Provider defaultTheme="system" enableSystem>
         <HelmetProvider>
           <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <PersistQueryClientProvider
@@ -98,14 +98,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 maxAge: 1000 * 60 * 60 * 24, // 24 hours
               }}
             >
-              <ColorModeScript />
               <App />
+              <Toaster />
               <ReactQueryDevtools initialIsOpen={false} />
               <DevTools />
             </PersistQueryClientProvider>
           </GoogleOAuthProvider>
         </HelmetProvider>
-      </ChakraProvider>
+      </Provider>
     </ErrorBoundary>
   </React.StrictMode>,
 );
