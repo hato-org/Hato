@@ -1,20 +1,6 @@
 import { useState } from 'react';
-import {
-  Button,
-  HStack,
-  Icon,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Button, HStack, Icon, Input, Text, VStack, useDisclosure, useToast } from '@chakra-ui/react';
 import { TbEdit } from 'react-icons/tb';
 import { useUserMutation } from '@/services/user';
 
@@ -51,11 +37,10 @@ function UsernameModal({
   const isFulfilled = username.length <= 20;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent bg="panel" rounded="xl">
-        <ModalHeader>アカウント名の変更</ModalHeader>
-        <ModalBody>
+    <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+      <DialogContent bg="panel" rounded="xl">
+        <DialogHeader>アカウント名の変更</DialogHeader>
+        <DialogBody>
           <VStack>
             <Input
               rounded="lg"
@@ -70,8 +55,8 @@ function UsernameModal({
               </Text>
             )}
           </VStack>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={onClose} mr={2} rounded="lg">
             キャンセル
           </Button>
@@ -107,8 +92,8 @@ function UsernameModal({
           >
             変更する
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 }

@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  HStack,
-  Icon,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Textarea,
-  VStack,
-} from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Button, HStack, Icon, Input, Textarea, VStack } from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
 import { Select } from 'chakra-react-select';
 import { format } from 'date-fns';
@@ -35,11 +23,10 @@ const AddStatusInfo = React.memo(
     });
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent bg="panel" rounded="xl">
-          <ModalHeader>メンテナンス情報の追加</ModalHeader>
-          <ModalBody>
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+        <DialogContent bg="panel" rounded="xl">
+          <DialogHeader>メンテナンス情報の追加</DialogHeader>
+          <DialogBody>
             <VStack gap={8}>
               <Input
                 rounded="lg"
@@ -122,8 +109,8 @@ const AddStatusInfo = React.memo(
                 }
               />
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button
               w="full"
               rounded="lg"
@@ -140,9 +127,9 @@ const AddStatusInfo = React.memo(
             >
               追加
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

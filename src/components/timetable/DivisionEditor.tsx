@@ -1,22 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Heading,
-  HStack,
-  Icon,
-  IconButton,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Spacer,
-  Switch,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Button, Heading, HStack, Icon, IconButton, Spacer, Switch, Text, useToast, VStack } from '@chakra-ui/react';
 import { format, startOfDay } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbX } from 'react-icons/tb';
@@ -58,10 +42,9 @@ const DivisionEditor = React.memo(
     }, [date, currentDivision]);
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent rounded="xl" bg="panel">
-          <ModalHeader>
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+        <DialogContent rounded="xl" bg="panel">
+          <DialogHeader>
             <HStack align="center">
               <Text>日課の編集</Text>
               <Spacer />
@@ -76,8 +59,8 @@ const DivisionEditor = React.memo(
                 onClick={onClose}
               >{<Icon as={TbX} boxSize={4} />}</IconButton>
             </HStack>
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             <VStack align="stretch">
               <Heading size="md">日課</Heading>
               <WeekDayPicker
@@ -102,8 +85,8 @@ const DivisionEditor = React.memo(
                 />
               </HStack>
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button
               w="100%"
               colorScheme="blue"
@@ -147,9 +130,9 @@ const DivisionEditor = React.memo(
             >
               更新
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

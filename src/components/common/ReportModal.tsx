@@ -1,18 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  HStack,
-  Text,
-  Textarea,
-  VStack,
-  Button,
-  ModalProps,
-} from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { HStack, Text, Textarea, VStack, Button } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { useReport } from '@/services/report';
 
@@ -47,11 +35,10 @@ const ReportModal = React.memo(
     const { mutate, isPending: reportPending } = useReport();
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent rounded="xl" bg="panel">
-          <ModalHeader>報告</ModalHeader>
-          <ModalBody>
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+        <DialogContent rounded="xl" bg="panel">
+          <DialogHeader>報告</DialogHeader>
+          <DialogBody>
             <VStack align="flex-start">
               <Text textStyle="title">タイプを選択</Text>
               <Select
@@ -78,8 +65,8 @@ const ReportModal = React.memo(
                 isInvalid={reportType === 'other' && !reportComment}
               />
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <HStack w="full">
               <Button w="full" variant="ghost" rounded="lg" onClick={onClose}>
                 キャンセル
@@ -104,9 +91,9 @@ const ReportModal = React.memo(
                 送信
               </Button>
             </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

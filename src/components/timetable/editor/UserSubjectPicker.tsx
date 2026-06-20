@@ -1,18 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  Button,
-  HStack,
-  Icon,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Button, HStack, Icon, Input, Text, VStack } from '@chakra-ui/react';
 import { useDebouncedCallback } from 'use-debounce';
 import { TbArrowLeft, TbMapPin, TbPlus, TbUser } from 'react-icons/tb';
 import {
@@ -63,16 +51,15 @@ const UserSubjectPicker = React.memo(
     }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-      <Modal isOpen={isOpen} onClose={onCancel} size="xl">
-        <ModalOverlay zIndex={1400} />
-        <ModalContent
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onCancel)()} size="xl">
+        <DialogContent
           zIndex={1500}
           bg="panel"
           rounded="xl"
           pb="env(safe-area-inset-bottom)"
         >
-          <ModalHeader>時限の追加・置き換え</ModalHeader>
-          <ModalBody>
+          <DialogHeader>時限の追加・置き換え</DialogHeader>
+          <DialogBody>
             <VStack w="full" align="flex-start" gap={4}>
               {createMode ? (
                 <VStack w="full" align="flex-start" gap={4}>
@@ -177,8 +164,8 @@ const UserSubjectPicker = React.memo(
                 )}
               </VStack>
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             {createMode ? (
               <Button
                 w="full"
@@ -208,9 +195,9 @@ const UserSubjectPicker = React.memo(
                 作成する
               </Button>
             )}
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

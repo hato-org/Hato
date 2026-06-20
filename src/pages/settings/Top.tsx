@@ -1,22 +1,6 @@
 import { useCallback } from 'react';
-import {
-  HStack,
-  VStack,
-  Avatar,
-  Text,
-  Icon,
-  Spacer,
-  Button,
-  Modal,
-  useDisclosure,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  ModalBody,
-  ModalFooter,
-  ButtonGroup,
-  Link,
-} from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { HStack, VStack, Avatar, Text, Icon, Spacer, Button, useDisclosure, ButtonGroup, Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
 import {
   TbActivity,
@@ -115,11 +99,10 @@ function Top() {
         <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
-            <Modal isCentered isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent rounded="xl" bg="panel">
-                <ModalHeader>キャッシュを削除しますか？</ModalHeader>
-                <ModalBody>
+            <DialogRoot placement="center" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+              <DialogContent rounded="xl" bg="panel">
+                <DialogHeader>キャッシュを削除しますか？</DialogHeader>
+                <DialogBody>
                   <VStack align="flex-start" w="100%" textStyle="title">
                     <Text w="full" textAlign="center">
                       現在アプリ内に保存されている
@@ -127,8 +110,8 @@ function Top() {
                       一時データが削除されます
                     </Text>
                   </VStack>
-                </ModalBody>
-                <ModalFooter>
+                </DialogBody>
+                <DialogFooter>
                   <HStack w="full" gap={4}>
                     <Button
                       w="full"
@@ -156,9 +139,9 @@ function Top() {
                       削除
                     </Button>
                   </HStack>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
             <Icon as={TbChevronRight} />
           </>
         </SettingButton>

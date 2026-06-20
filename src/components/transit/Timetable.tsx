@@ -1,17 +1,5 @@
-import {
-  Box,
-  HStack,
-  Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
 import React from 'react';
 import { TbChevronRight } from 'react-icons/tb';
 
@@ -23,12 +11,11 @@ export const TrainTimetableModal = React.memo(
     isOpen,
     onClose,
   }: TransitTimetable & { isOpen: boolean; onClose: () => void }) => (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <ModalOverlay />
-      <ModalContent rounded="xl" bg="panel">
-        <ModalCloseButton top={4} right={4} />
-        <ModalHeader>時刻表の詳細</ModalHeader>
-        <ModalBody>
+    <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+      <DialogContent rounded="xl" bg="panel">
+        <DialogCloseTrigger top={4} right={4} />
+        <DialogHeader>時刻表の詳細</DialogHeader>
+        <DialogBody>
           <VStack gap={4}>
             <VStack w="full" align="flex-start" gap={2}>
               <Text textStyle="description">列車詳細</Text>
@@ -67,10 +54,10 @@ export const TrainTimetableModal = React.memo(
               </VStack>
             </VStack>
           </VStack>
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+        <DialogFooter />
+      </DialogContent>
+    </DialogRoot>
   ),
 );
 TrainTimetableModal.displayName = 'TrainTimetableModal';

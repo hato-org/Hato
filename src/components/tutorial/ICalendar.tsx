@@ -1,30 +1,6 @@
 import { useMemo } from 'react';
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Button,
-  Icon,
-  IconButton,
-  Image,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Link,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Spacer,
-  Text,
-  useClipboard,
-  VStack,
-} from '@chakra-ui/react';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Button, Icon, IconButton, Image, Input, InputGroup, InputRightElement, Link, Spacer, Text, useClipboard, VStack } from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbCopy, TbExternalLink } from 'react-icons/tb';
 import { useAtom } from 'jotai';
 import { useUser } from '@/services/user';
@@ -43,17 +19,15 @@ export default function ICalendar() {
   const { onCopy, hasCopied } = useClipboard(iCalLink);
 
   return (
-    <Modal
-      isOpen={tutorialModal.iCal}
-      onClose={() =>
-        setTutorialModal((currVal) => ({ ...currVal, iCal: false }))
-      }
+    <DialogRoot
+      open={tutorialModal.iCal}
+      onOpenChange={(e) => !e.open && (() =>
+        setTutorialModal((currVal) => ({ ...currVal, iCal: false })))()}
     >
-      <ModalOverlay />
-      <ModalContent rounded="xl" bg="panel">
-        <ModalHeader>iCalフィード</ModalHeader>
-        <ModalCloseButton top={4} right={4} />
-        <ModalBody>
+      <DialogContent rounded="xl" bg="panel">
+        <DialogHeader>iCalフィード</DialogHeader>
+        <DialogCloseTrigger top={4} right={4} />
+        <DialogBody>
           <Accordion textStyle="title" allowToggle defaultIndex={0}>
             <AccordionItem>
               <AccordionButton textStyle="title">
@@ -198,9 +172,9 @@ export default function ICalendar() {
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+        <DialogFooter />
+      </DialogContent>
+    </DialogRoot>
   );
 }

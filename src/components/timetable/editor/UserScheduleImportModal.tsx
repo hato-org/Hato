@@ -1,21 +1,5 @@
-import {
-  Button,
-  HStack,
-  Icon,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Spacer,
-  Switch,
-  Text,
-  VStack,
-  useBoolean,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, HStack, Icon, Input, Spacer, Switch, Text, VStack, useBoolean, useToast } from '@chakra-ui/react';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { TbDownload } from 'react-icons/tb';
 import GradeClassPicker from '../GradeClassPicker';
@@ -46,11 +30,10 @@ export function UserScheduleImportModal({
   );
 
   return (
-    <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent rounded="xl" bg="panel">
-        <ModalHeader>時間割のインポート</ModalHeader>
-        <ModalBody>
+    <DialogRoot size="2xl" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+      <DialogContent rounded="xl" bg="panel">
+        <DialogHeader>時間割のインポート</DialogHeader>
+        <DialogBody>
           <VStack w="full" gap={8} py={4}>
             <VStack w="full">
               <Input
@@ -87,8 +70,8 @@ export function UserScheduleImportModal({
               onCourseSelect={(courseInfo) => setCourseCode(courseInfo.code)}
             />
           </VStack>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button
             w="full"
             rounded="lg"
@@ -130,8 +113,8 @@ export function UserScheduleImportModal({
           >{<Icon as={TbDownload} />} 
             インポート
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 }

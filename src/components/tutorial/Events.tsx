@@ -1,22 +1,6 @@
 import { useCallback } from 'react';
-import {
-  Heading,
-  Text,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  VStack,
-  ListItem,
-  UnorderedList,
-  OrderedList,
-  Badge,
-  Separator,
-  ModalFooter,
-  Button,
-} from '@chakra-ui/react';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Heading, Text, VStack, ListItem, UnorderedList, OrderedList, Badge, Separator, Button } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
@@ -28,16 +12,15 @@ export default function Events() {
   );
 
   return (
-    <Modal
-      isOpen={tutorialModal.events}
-      onClose={onClose}
+    <DialogRoot
+      open={tutorialModal.events}
+      onOpenChange={(e) => !e.open && (onClose)()}
       scrollBehavior="inside"
     >
-      <ModalOverlay />
-      <ModalContent rounded="xl" bg="panel">
-        <ModalHeader>使い方</ModalHeader>
-        <ModalCloseButton top={4} right={4} />
-        <ModalBody>
+      <DialogContent rounded="xl" bg="panel">
+        <DialogHeader>使い方</DialogHeader>
+        <DialogCloseTrigger top={4} right={4} />
+        <DialogBody>
           <VStack align="flex-start">
             {/* <Heading size='lg'>年間行事予定</Heading> */}
             <UnorderedList textStyle="title">
@@ -118,13 +101,13 @@ export default function Events() {
               <ListItem>完了！</ListItem>
             </OrderedList>
           </VStack>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button w="100%" colorScheme="blue" rounded="lg" onClick={onClose}>
             OK
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 }

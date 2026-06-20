@@ -1,24 +1,6 @@
 import React from 'react';
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Collapsible,
-  HStack,
-  Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Spacer,
-  StackSeparator,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Alert, AlertIcon, Box, Collapsible, HStack, Icon, Spacer, StackSeparator, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import {
   TbAlertTriangle,
   TbChevronDown,
@@ -169,12 +151,11 @@ const StatusDetailModal = React.memo(
     })();
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent rounded="xl" bg="panel">
-          <ModalCloseButton top={4} right={4} />
-          <ModalHeader>{diaInfo.lineInfo.name}</ModalHeader>
-          <ModalBody>
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+        <DialogContent rounded="xl" bg="panel">
+          <DialogCloseTrigger top={4} right={4} />
+          <DialogHeader>{diaInfo.lineInfo.name}</DialogHeader>
+          <DialogBody>
             <VStack gap={4} px={2}>
               <VStack>
                 <Icon
@@ -191,10 +172,10 @@ const StatusDetailModal = React.memo(
                 {format(new Date(diaInfo.updatedAt), 'MM/dd HH:mm')} 更新
               </Text>
             </VStack>
-          </ModalBody>
-          <ModalFooter />
-        </ModalContent>
-      </Modal>
+          </DialogBody>
+          <DialogFooter />
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

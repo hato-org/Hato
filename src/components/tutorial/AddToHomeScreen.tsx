@@ -1,19 +1,6 @@
 import { useCallback } from 'react';
-import {
-  Heading,
-  Image,
-  ListItem,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  OrderedList,
-  VStack,
-  Icon,
-  ModalCloseButton,
-} from '@chakra-ui/react';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Heading, Image, ListItem, OrderedList, VStack, Icon } from '@chakra-ui/react';
 import { TbDotsVertical } from 'react-icons/tb';
 import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
@@ -26,12 +13,11 @@ function AddToHomeScreen() {
   );
 
   return (
-    <Modal isOpen={tutorialModal.ATHS} onClose={onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent bg="panel" rounded="xl">
-        <ModalHeader>ホーム画面に追加</ModalHeader>
-        <ModalCloseButton top={4} right={4} />
-        <ModalBody>
+    <DialogRoot open={tutorialModal.ATHS} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+      <DialogContent bg="panel" rounded="xl">
+        <DialogHeader>ホーム画面に追加</DialogHeader>
+        <DialogCloseTrigger top={4} right={4} />
+        <DialogBody>
           <VStack px={4} align="flex-start">
             <Heading size="md">iPhone (Safari)</Heading>
             <OrderedList gap={4} textStyle="title">
@@ -64,10 +50,10 @@ function AddToHomeScreen() {
               <ListItem>「インストール」をタップ</ListItem>
             </OrderedList>
           </VStack>
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+        <DialogFooter />
+      </DialogContent>
+    </DialogRoot>
   );
 }
 

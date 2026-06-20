@@ -1,26 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  HStack,
-  Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, HStack, Icon, Text, VStack, useDisclosure, useToast } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { TbTrash } from 'react-icons/tb';
 import { UserScheduleContext } from './context';
@@ -86,19 +66,18 @@ export default function UserScheduleEditor() {
   }, [isLoading, userScheduleEditor]);
 
   return (
-    <Modal
-      isOpen={!!userScheduleEditor}
-      onClose={() => setUserScheduleEditor(false)}
+    <DialogRoot
+      open={!!userScheduleEditor}
+      onOpenChange={(e) => !e.open && (() => setUserScheduleEditor(false))()}
       size={{ base: 'full', md: '2xl' }}
     >
-      <ModalOverlay />
-      <ModalContent bg="panel" pb="env(safe-area-inset-bottom)">
+      <DialogContent bg="panel" pb="env(safe-area-inset-bottom)">
         <UserScheduleContext.Provider
           value={useMemo(() => [schedule, setSchedule], [schedule])}
         >
-          <ModalCloseButton top={4} right={4} />
-          <ModalHeader>マイ時間割の編集</ModalHeader>
-          <ModalBody px={4}>
+          <DialogCloseTrigger top={4} right={4} />
+          <DialogHeader>マイ時間割の編集</DialogHeader>
+          <DialogBody px={4}>
             {userScheduleEditor !== 'new' && isPending ? (
               <Loading />
             ) : error ? (
@@ -146,8 +125,8 @@ export default function UserScheduleEditor() {
                 )}
               </VStack>
             )}
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button
               w="full"
               rounded="lg"
@@ -179,10 +158,10 @@ export default function UserScheduleEditor() {
             >
               {userScheduleEditor === 'new' ? '追加' : '更新'}
             </Button>
-          </ModalFooter>
+          </DialogFooter>
         </UserScheduleContext.Provider>
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </DialogRoot>
   );
 }
 
