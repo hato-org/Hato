@@ -131,7 +131,7 @@ function Error({ error }: ErrorProps) {
               <Text
                 textStyle="link"
                 as={Link}
-                isExternal
+                target="_blank" rel="noreferrer"
                 href={import.meta.env.VITE_STATUSPAGE_URL}
               >
                 稼働状況

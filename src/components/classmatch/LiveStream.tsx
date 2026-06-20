@@ -21,7 +21,7 @@ const LiveStream = React.memo(({ type, name, url }: ClassmatchLiveStream) =>
       color="gray.100"
       rounded="xl"
       as={Link}
-      isExternal
+      target="_blank" rel="noreferrer"
       href={url}
       bgGradient="linear(to-r, #7928CA, #FF0080)"
       gap={4}

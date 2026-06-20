@@ -96,8 +96,8 @@ const ReportModal = React.memo(
                     url,
                   })
                 }
-                isLoading={reportPending}
-                isDisabled={
+                loading={reportPending}
+                disabled={
                   !reportType || (reportType === 'other' && !reportComment)
                 }
               >

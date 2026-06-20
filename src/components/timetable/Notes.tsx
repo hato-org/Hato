@@ -168,7 +168,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
               variant="solid"
               colorScheme="green"
               icon={<TbCheck />}
-              isLoading={isPending}
+              loading={isPending}
               onClick={() => {
                 mutate(
                   { action: 'edit', note: { ...note, message } },
@@ -270,7 +270,7 @@ const NotesMenu = React.memo(
           _active={{
             bg: 'whiteAlpha.500',
           }}
-          isRound
+          borderRadius="full"
           {...rest}
         />
         <MenuList textStyle="title" rounded="xl" shadow="lg">

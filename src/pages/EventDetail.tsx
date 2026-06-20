@@ -82,7 +82,7 @@ function EventDetail() {
                 size="lg"
                 aria-label="event menu"
                 icon={<TbDots />}
-                isRound
+                borderRadius="full"
               />
               <MenuList rounded="xl" shadow="lg">
                 {data?.owner === user.email || user.role === 'admin' ? (
@@ -170,7 +170,7 @@ function EventDetail() {
                                 },
                               )
                             }
-                            isLoading={isPending}
+                            loading={isPending}
                           >
                             削除
                           </Button>

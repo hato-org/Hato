@@ -32,7 +32,7 @@ export default function AccountGrade() {
           </HStack>
         ) : (
           <MenuButton
-            isDisabled={isPending}
+            disabled={isPending}
             as={Button}
             variant="unstyled"
             id="grade-select"

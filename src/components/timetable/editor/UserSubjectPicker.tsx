@@ -185,8 +185,8 @@ const UserSubjectPicker = React.memo(
                 w="full"
                 rounded="lg"
                 colorScheme="blue"
-                isDisabled={!subject.name}
-                isLoading={isPending}
+                disabled={!subject.name}
+                loading={isPending}
                 onClick={() =>
                   mutate(subject as UserSubject, {
                     onSuccess: (res) => {

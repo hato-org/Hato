@@ -18,7 +18,7 @@ const Material = React.memo(
           rounded="full"
           layerStyle="button"
           as={Link}
-          isExternal
+          target="_blank" rel="noreferrer"
           href={driveFile.driveFile?.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
@@ -37,7 +37,7 @@ const Material = React.memo(
           rounded="full"
           layerStyle="button"
           as={Link}
-          isExternal
+          target="_blank" rel="noreferrer"
           href={youtubeVideo.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
@@ -56,7 +56,7 @@ const Material = React.memo(
           rounded="full"
           layerStyle="button"
           as={Link}
-          isExternal
+          target="_blank" rel="noreferrer"
           href={link.url ?? ''}
           _hover={{ textDecor: 'none' }}
         >
@@ -76,7 +76,7 @@ const Material = React.memo(
           rounded="full"
           layerStyle="button"
           as={Link}
-          isExternal
+          target="_blank" rel="noreferrer"
           href={form.formUrl ?? ''}
           _hover={{ textDecor: 'none' }}
         >

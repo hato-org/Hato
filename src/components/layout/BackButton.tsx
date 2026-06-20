@@ -11,7 +11,7 @@ function BackButton() {
       icon={<Icon as={TbArrowNarrowLeft} w={6} h={6} />}
       variant="ghost"
       size="lg"
-      isRound
+      borderRadius="full"
       onClick={() => navigate(-1)}
     />
   );

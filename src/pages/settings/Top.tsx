@@ -177,7 +177,7 @@ function Top() {
           <Button
             leftIcon={<TbBrandGithub />}
             as={Link}
-            isExternal
+            target="_blank" rel="noreferrer"
             href={import.meta.env.VITE_REPO_URL}
           >
             GitHub

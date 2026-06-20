@@ -194,7 +194,7 @@ const MenuBody = React.memo(() => {
             icon={menuItem.icon}
             size="lg"
             variant="ghost"
-            isRound
+            borderRadius="full"
             color={
               menuItem.color ??
               (location.pathname === menuItem.href ? 'blue.400' : undefined)

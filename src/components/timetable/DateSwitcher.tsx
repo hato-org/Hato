@@ -20,7 +20,7 @@ const DateSwitcher = React.memo(
           aria-label="previous day"
           icon={<TbChevronLeft />}
           onClick={onPrev}
-          isRound
+          borderRadius="full"
           variant="ghost"
         />
         <Input
@@ -35,7 +35,7 @@ const DateSwitcher = React.memo(
           aria-label="next day"
           icon={<TbChevronRight />}
           onClick={onNext}
-          isRound
+          borderRadius="full"
           variant="ghost"
         />
       </HStack>

@@ -108,7 +108,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             aria-label="Add filter"
             icon={<TbPlus />}
             variant="ghost"
-            isRound
+            borderRadius="full"
             size="sm"
             onClick={onToggle}
           />
@@ -126,7 +126,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             value={null}
             options={tagSearchRes}
             loadOptions={(value) => mutateAsync(value)}
-            isLoading={isPending}
+            loading={isPending}
             chakraStyles={{
               container: (provided) => ({
                 ...provided,

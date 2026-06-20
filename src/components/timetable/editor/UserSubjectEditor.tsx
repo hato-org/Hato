@@ -89,8 +89,8 @@ export default function UserSubjectEditor({
             w="full"
             colorScheme="blue"
             rounded="lg"
-            isDisabled={!(name && subject)}
-            isLoading={isPending}
+            disabled={!(name && subject)}
+            loading={isPending}
             onClick={() => {
               if (name && subject)
                 mutate(

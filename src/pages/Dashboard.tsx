@@ -118,7 +118,7 @@ function Dashboard() {
               icon={<Icon as={TbPlus} boxSize={6} />}
               variant="ghost"
               size="lg"
-              isRound
+              borderRadius="full"
               onClick={() => setCardOrderDrawer(true)}
             />
           )}
@@ -128,7 +128,7 @@ function Dashboard() {
             color={editMode ? 'green.400' : undefined}
             variant="ghost"
             size="lg"
-            isRound
+            borderRadius="full"
             onClick={() => setEditMode(!editMode)}
           />
         </HStack>

@@ -75,7 +75,7 @@ function Status() {
                     onClick={onOpen}
                     variant="ghost"
                     colorScheme="blue"
-                    isRound
+                    borderRadius="full"
                   />
                 )}
               </HStack>

@@ -87,7 +87,7 @@ const PDFViewer = React.memo(
                 size="lg"
                 variant="ghost"
                 onClick={onClose}
-                isRound
+                borderRadius="full"
               />
               <Text textStyle="title" whiteSpace="nowrap" lineClamp={1} py={4}>
                 {attachment.name}
@@ -100,8 +100,8 @@ const PDFViewer = React.memo(
                 variant="ghost"
                 as={Link}
                 href={attachment.url ?? ''}
-                isExternal
-                isRound
+                target="_blank" rel="noreferrer"
+                borderRadius="full"
               />
             </HStack>
             <Box w="100%">

@@ -68,7 +68,7 @@ export default function SortableCard({ cardId }: { cardId: string }) {
         colorScheme="red"
         variant="ghost"
         size="lg"
-        isRound
+        borderRadius="full"
         transform="translate(-50%, -50%) scale(1.5)"
         onClick={() =>
           setCardOrder((currVal) => currVal.filter((id) => id !== card.id))

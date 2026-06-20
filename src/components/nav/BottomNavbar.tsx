@@ -80,7 +80,7 @@ function BottomNavbar() {
                 size="lg"
                 variant="ghost"
                 color={location.pathname === href ? 'blue.300' : 'title'}
-                isRound
+                borderRadius="full"
               />
             </Center>
           ))}

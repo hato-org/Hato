@@ -28,10 +28,10 @@ function Posts() {
             icon={<Icon as={TbExternalLink} w={6} h={6} />}
             size="lg"
             variant="ghost"
-            isRound
+            borderRadius="full"
             as={Link}
             href="https://sites.google.com/g.nagano-c.ed.jp/yashiro-board/"
-            isExternal
+            target="_blank" rel="noreferrer"
           />
         </HStack>
       </Header>

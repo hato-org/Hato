@@ -102,8 +102,8 @@ function UsernameModal({
                 : undefined
             }
             rounded="lg"
-            isDisabled={!isFulfilled}
-            isLoading={isPending}
+            disabled={!isFulfilled}
+            loading={isPending}
           >
             変更する
           </Button>

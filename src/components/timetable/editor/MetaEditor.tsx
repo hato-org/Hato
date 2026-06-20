@@ -103,7 +103,7 @@ export const UserScheduleMetaEditor = React.memo(
                       <Menu>
                         <MenuButton
                           as={Button}
-                          isDisabled={!!_id}
+                          disabled={!!_id}
                           rightIcon={<Icon as={TbChevronDown} />}
                           variant="ghost"
                           rounded="lg"
@@ -146,7 +146,7 @@ export const UserScheduleMetaEditor = React.memo(
                         <MenuButton
                           as={Button}
                           bg={!meta.class ? 'invalid' : undefined}
-                          isDisabled={!!_id}
+                          disabled={!!_id}
                           rightIcon={<Icon as={TbChevronDown} />}
                           variant="ghost"
                           rounded="lg"
@@ -191,7 +191,7 @@ export const UserScheduleMetaEditor = React.memo(
                           <MenuButton
                             as={Button}
                             bg={!meta.course ? 'invalid' : undefined}
-                            isDisabled={!!_id}
+                            disabled={!!_id}
                             rightIcon={<Icon as={TbChevronDown} />}
                             variant="ghost"
                             rounded="lg"

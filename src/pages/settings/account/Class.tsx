@@ -32,7 +32,7 @@ export default function AccountClass() {
           </HStack>
         ) : (
           <MenuButton
-            isDisabled={isPending}
+            disabled={isPending}
             as={Button}
             variant="unstyled"
             id="class-select"

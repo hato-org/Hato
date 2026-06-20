@@ -193,7 +193,7 @@ const AddEventDrawer = React.memo(
                     }}
                     options={searchRes}
                     loadOptions={(value) => searchTags(value || '*')}
-                    isLoading={searchPending}
+                    loading={searchPending}
                     value={tags}
                     onChange={(e: readonly Tag[]) => setTags(e as Tag[])}
                   />
@@ -207,8 +207,8 @@ const AddEventDrawer = React.memo(
               colorScheme="blue"
               rounded="xl"
               shadow="xl"
-              isLoading={isPending}
-              isDisabled={
+              loading={isPending}
+              disabled={
                 !title ||
                 !startAt ||
                 !endAt ||

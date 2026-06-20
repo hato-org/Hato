@@ -262,8 +262,8 @@ const AddNoteDrawer = React.memo(
                   },
                 )
               }
-              isDisabled={!date || !message || !targetClass.length}
-              isLoading={isPending}
+              disabled={!date || !message || !targetClass.length}
+              loading={isPending}
             >
               追加
             </Button>

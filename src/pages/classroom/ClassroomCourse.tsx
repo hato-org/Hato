@@ -62,8 +62,8 @@ export default function ClassroomCourse() {
             href={data?.alternateLink ?? ''}
             variant="ghost"
             size="lg"
-            isRound
-            isExternal
+            borderRadius="full"
+            target="_blank" rel="noreferrer"
             icon={<Icon as={TbExternalLink} boxSize={6} />}
           />
         </HStack>

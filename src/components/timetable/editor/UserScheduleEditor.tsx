@@ -153,13 +153,13 @@ export default function UserScheduleEditor() {
               w="full"
               rounded="lg"
               colorScheme="blue"
-              isDisabled={
+              disabled={
                 !schedule.title ||
                 !schedule.owner ||
                 !schedule.meta.grade ||
                 !schedule.meta.class
               }
-              isLoading={mutatePending}
+              loading={mutatePending}
               onClick={() => {
                 mutate(schedule, {
                   onSuccess: () => {

@@ -77,7 +77,7 @@ function Events() {
             aria-label="open help"
             icon={<Icon as={TbInfoCircle} w={6} h={6} />}
             onClick={onHelpOpen}
-            isRound
+            borderRadius="full"
             size="lg"
             variant="ghost"
           />

@@ -127,7 +127,7 @@ export function UserScheduleImportModal({
                 },
               );
             }}
-            isLoading={isPending}
+            loading={isPending}
           >
             インポート
           </Button>

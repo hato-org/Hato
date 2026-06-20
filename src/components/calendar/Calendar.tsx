@@ -207,7 +207,7 @@ const MonthSwitcher = React.memo(
         aria-label="previous month"
         icon={<TbChevronLeft />}
         onClick={onPrev}
-        isRound
+        borderRadius="full"
         variant="ghost"
       />
       <Text textStyle="title">{format(date, 'yyyy年M月')}</Text>
@@ -215,7 +215,7 @@ const MonthSwitcher = React.memo(
         aria-label="next month"
         icon={<TbChevronRight />}
         onClick={onNext}
-        isRound
+        borderRadius="full"
         variant="ghost"
       />
     </HStack>

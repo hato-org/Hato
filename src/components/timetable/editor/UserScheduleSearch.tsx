@@ -118,7 +118,7 @@ export function UserScheduleSearch() {
               w="full"
               rounded="lg"
               colorScheme="blue"
-              isLoading={isPending}
+              loading={isPending}
             >
               検索
             </Button>

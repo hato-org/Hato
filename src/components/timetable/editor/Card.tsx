@@ -203,7 +203,7 @@ const Card = React.memo(
                     onClick={() =>
                       mutate({ userScheduleId: isSelected ? null : _id })
                     }
-                    isLoading={isPending}
+                    loading={isPending}
                   >
                     {isSelected ? '使用をやめる' : '使用する'}
                   </Button>

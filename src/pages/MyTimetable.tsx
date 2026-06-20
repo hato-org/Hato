@@ -72,7 +72,7 @@ function MyTimetable() {
                 icon={<Icon as={TbPlus} />}
                 variant="ghost"
                 colorScheme="blue"
-                isRound
+                borderRadius="full"
                 onClick={() => setUserScheduleEditor('new')}
               />
             </HStack>

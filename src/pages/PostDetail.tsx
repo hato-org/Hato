@@ -44,7 +44,7 @@ function PostDetail() {
             }
             size="lg"
             variant="ghost"
-            isRound
+            borderRadius="full"
             onClick={() =>
               id &&
               setPinned((currVal) =>

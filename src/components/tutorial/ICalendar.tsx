@@ -130,7 +130,7 @@ export default function ICalendar() {
                   <Button
                     as={Link}
                     href="https://calendar.google.com/r"
-                    isExternal
+                    target="_blank" rel="noreferrer"
                     variant="link"
                     colorScheme="blue"
                     rightIcon={<TbExternalLink />}

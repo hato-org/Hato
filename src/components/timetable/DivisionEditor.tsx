@@ -141,10 +141,10 @@ const DivisionEditor = React.memo(
                     },
                   );
               }}
-              isDisabled={
+              disabled={
                 !(division.date && division.week && division.day !== undefined)
               }
-              isLoading={isPending}
+              loading={isPending}
             >
               更新
             </Button>

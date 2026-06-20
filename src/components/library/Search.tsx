@@ -101,14 +101,14 @@ export default function Search() {
               colorScheme="blue"
               rounded="lg"
               onClick={() => mutate(selected, {})}
-              isLoading={isPending}
+              loading={isPending}
             >
               検索
             </Button>
           </Box>
         </VStack>
       </Card>
-      <SearchResult result={data} isLoading={isPending} />
+      <SearchResult result={data} loading={isPending} />
     </VStack>
   );
 }

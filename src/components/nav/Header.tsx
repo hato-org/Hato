@@ -52,7 +52,7 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
             aria-label="menu"
             icon={<Icon as={TbMenu2} boxSize={6} />}
             variant="ghost"
-            isRound
+            borderRadius="full"
             size="lg"
             onClick={onMenuOpen}
           />

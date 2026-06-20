@@ -110,7 +110,7 @@ const AddCardDrawer = React.memo(() => {
             rounded="lg"
             colorScheme="blue"
             leftIcon={<Icon as={TbPlus} />}
-            isDisabled={!selectedCard}
+            disabled={!selectedCard}
             onClick={() => {
               setCardOrder((currVal) => [...currVal, selectedCard]);
               setSelectedCard('');

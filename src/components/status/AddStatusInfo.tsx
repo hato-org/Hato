@@ -129,8 +129,8 @@ const AddStatusInfo = React.memo(
               rounded="lg"
               colorScheme="blue"
               onClick={() => mutate(statusInfo, { onSuccess: onClose })}
-              isLoading={isPending}
-              isDisabled={
+              loading={isPending}
+              disabled={
                 !statusInfo.title ||
                 !statusInfo.description ||
                 !statusInfo.startAt ||

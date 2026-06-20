@@ -102,7 +102,7 @@ function Timetable() {
                 size="lg"
                 aria-label="event menu"
                 icon={<TbDots />}
-                isRound
+                borderRadius="full"
               />
               <MenuList shadow="lg" rounded="xl">
                 <MenuItem
@@ -211,7 +211,7 @@ function Timetable() {
                     aria-label="Add note"
                     icon={<TbPlus />}
                     variant="ghost"
-                    isRound
+                    borderRadius="full"
                     onClick={onOpen}
                   />
                 </HStack>

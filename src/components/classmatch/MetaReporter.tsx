@@ -133,8 +133,8 @@ export default function MetaReporter({
               },
             )
           }
-          isLoading={reportPending}
-          isDisabled={!description}
+          loading={reportPending}
+          disabled={!description}
         />
       </HStack>
     </VStack>

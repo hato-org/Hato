@@ -170,7 +170,7 @@ const BookInfo = React.memo(
                   rightIcon={<Icon as={TbExternalLink} />}
                   as={Link}
                   href={url[holdings[0]]}
-                  isExternal
+                  target="_blank" rel="noreferrer"
                 >
                   詳細を開く
                 </Button>
@@ -180,7 +180,7 @@ const BookInfo = React.memo(
                     rounded="lg"
                     shadow="lg"
                     colorScheme="blue"
-                    isDisabled={!detail?.raw_holdings[0]?.id}
+                    disabled={!detail?.raw_holdings[0]?.id}
                     onClick={() =>
                       window.open(
                         `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`,

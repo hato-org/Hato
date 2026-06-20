@@ -212,7 +212,7 @@ function MetaEditor({
               },
             )
           }
-          isLoading={isPending}
+          loading={isPending}
         />
       </HStack>
     </VStack>

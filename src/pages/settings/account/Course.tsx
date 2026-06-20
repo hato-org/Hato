@@ -32,7 +32,7 @@ export default function AccountCourse() {
           </HStack>
         ) : (
           <MenuButton
-            isDisabled={!courseList?.length || isPending}
+            disabled={!courseList?.length || isPending}
             as={Button}
             variant="unstyled"
             id="course-select"

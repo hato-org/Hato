@@ -67,7 +67,7 @@ export default function Notification() {
                   )}
                   <Switch
                     size="lg"
-                    isDisabled={
+                    disabled={
                       subscribePending || unsubscribePending || !isPushAvailable
                     }
                     isChecked={!!pushSubscription}
@@ -202,7 +202,7 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
         <Icon as={TbExclamationCircle} color="yellow.400" boxSize={5} />
       )}
       <Switch
-        isDisabled={isPending || !!error}
+        disabled={isPending || !!error}
         isChecked={settings?.notification.push.includes(id) ?? false}
         onChange={(e) =>
           mutate(

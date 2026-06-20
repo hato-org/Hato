@@ -66,7 +66,7 @@ export default function ClassroomCoursework() {
             aria-label="bookmark"
             variant="ghost"
             size="lg"
-            isRound
+            borderRadius="full"
             icon={
               <Icon
                 color={isBookmarked ? 'blue.400' : undefined}
@@ -101,10 +101,10 @@ export default function ClassroomCoursework() {
             aria-label="open in browser"
             as={Link}
             href={data?.alternateLink ?? ''}
-            isExternal
+            target="_blank" rel="noreferrer"
             size="lg"
             variant="ghost"
-            isRound
+            borderRadius="full"
             icon={<Icon as={TbExternalLink} boxSize={6} />}
           />
         </HStack>
