@@ -50,18 +50,16 @@ function ErrorFallback() {
           {error.stack}
         </Code>
         <Button
-          leftIcon={<TbRotate />}
           colorScheme="blue"
           rounded="xl"
           onClick={() => {
             if (!import.meta.env.DEV && sendReport) mutate(report);
             window.location.assign('/');
           }}
-        >
+        >{<TbRotate />} 
           再読み込み
         </Button>
         <Button
-          leftIcon={<TbLoader />}
           rounded="xl"
           onClick={async () => {
             if (!import.meta.env.DEV && sendReport) mutate(report);
@@ -73,7 +71,7 @@ function ErrorFallback() {
             window.localStorage.clear();
             window.location.replace('/');
           }}
-        >
+        >{<TbLoader />} 
           ログアウト・キャッシュ削除
         </Button>
         <Checkbox

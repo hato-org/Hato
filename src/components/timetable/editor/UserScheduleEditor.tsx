@@ -129,9 +129,8 @@ export default function UserScheduleEditor() {
                       rounded="lg"
                       colorScheme="red"
                       variant="outline"
-                      leftIcon={<Icon as={TbTrash} />}
                       onClick={onDeletemodalOpen}
-                    >
+                    >{<Icon as={TbTrash} />} 
                       時間割を削除する
                     </Button>
                     <UserScheduleDeleteDialog

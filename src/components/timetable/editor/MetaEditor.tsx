@@ -104,7 +104,6 @@ export const UserScheduleMetaEditor = React.memo(
                         <MenuButton
                           as={Button}
                           disabled={!!_id}
-                          rightIcon={<Icon as={TbChevronDown} />}
                           variant="ghost"
                           rounded="lg"
                         >
@@ -115,7 +114,7 @@ export const UserScheduleMetaEditor = React.memo(
                                 grade.gradeCode === meta.grade,
                             )?.name
                           }
-                        </MenuButton>
+                         {<Icon as={TbChevronDown} />}</MenuButton>
                         <MenuList shadow="lg" rounded="xl">
                           {gradeList?.map((gradeInfo) => (
                             <MenuItem
@@ -147,7 +146,6 @@ export const UserScheduleMetaEditor = React.memo(
                           as={Button}
                           bg={!meta.class ? 'invalid' : undefined}
                           disabled={!!_id}
-                          rightIcon={<Icon as={TbChevronDown} />}
                           variant="ghost"
                           rounded="lg"
                         >
@@ -159,7 +157,7 @@ export const UserScheduleMetaEditor = React.memo(
                                 classInfo.classCode === meta.class,
                             )?.name
                           }
-                        </MenuButton>
+                         {<Icon as={TbChevronDown} />}</MenuButton>
                         <MenuList shadow="lg" rounded="xl">
                           {classList?.map((classInfo) => (
                             <MenuItem
@@ -192,7 +190,6 @@ export const UserScheduleMetaEditor = React.memo(
                             as={Button}
                             bg={!meta.course ? 'invalid' : undefined}
                             disabled={!!_id}
-                            rightIcon={<Icon as={TbChevronDown} />}
                             variant="ghost"
                             rounded="lg"
                           >
@@ -201,7 +198,7 @@ export const UserScheduleMetaEditor = React.memo(
                                 (courseInfo) => courseInfo.code === meta.course,
                               )?.name
                             }
-                          </MenuButton>
+                           {<Icon as={TbChevronDown} />}</MenuButton>
                           <MenuList shadow="lg" rounded="xl">
                             {courseList?.map((courseInfo) => (
                               <MenuItem

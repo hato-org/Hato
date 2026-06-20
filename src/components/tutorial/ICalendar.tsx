@@ -132,10 +132,9 @@ export default function ICalendar() {
                     target="_blank" rel="noreferrer"
                     variant="link"
                     colorScheme="blue"
-                    rightIcon={<TbExternalLink />}
                   >
                     Googleカレンダー (Web版)
-                  </Button>
+                   {<TbExternalLink />}</Button>
                   <Image
                     shadow="md"
                     rounded="lg"

@@ -175,14 +175,13 @@ function Top() {
       <HStack w="100%" justify="center">
         <ButtonGroup rounded="lg" variant="ghost">
           <Button
-            leftIcon={<TbBrandGithub />}
             as={Link}
             target="_blank" rel="noreferrer"
             href={import.meta.env.VITE_REPO_URL}
-          >
+          >{<TbBrandGithub />} 
             GitHub
           </Button>
-          <Button as={RouterLink} to="/status" leftIcon={<TbActivity />}>
+          <Button as={RouterLink} to="/status">{<TbActivity />} 
             サービス稼働状況
           </Button>
         </ButtonGroup>

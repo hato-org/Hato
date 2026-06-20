@@ -143,9 +143,8 @@ function MetaEditor({
             rounded="lg"
             variant="outline"
             colorScheme="red"
-            leftIcon={<Icon as={TbX} />}
             onClick={() => setParticipantsValue([])}
-          >
+          >{<Icon as={TbX} />} 
             クリア
           </Button>
         </VStack>
@@ -233,7 +232,6 @@ function ClassSelectMenu({
         rounded="lg"
         w="full"
         variant="outline"
-        rightIcon={<Icon as={TbChevronDown} />}
         textStyle={currentClass?.from ? 'title' : 'description'}
       >
         {currentClass?.from
@@ -241,7 +239,7 @@ function ClassSelectMenu({
             ? '職員'
             : `${currentClass.grade}-${currentClass.class}`
           : 'クラス'}
-      </MenuButton>
+       {<Icon as={TbChevronDown} />}</MenuButton>
       <Box>
         <MenuList rounded="xl" shadow="xl">
           {match?.map((tournament) => (

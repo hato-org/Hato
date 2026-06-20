@@ -189,9 +189,8 @@ const Card = React.memo(
                     w="full"
                     rounded="lg"
                     variant="ghost"
-                    leftIcon={<Icon as={TbPencil} />}
                     onClick={() => setUserScheduleEditor(_id!)}
-                  >
+                  >{<Icon as={TbPencil} />} 
                     編集
                   </Button>
                   <Button
@@ -199,12 +198,11 @@ const Card = React.memo(
                     rounded="lg"
                     variant={isSelected ? 'outline' : 'solid'}
                     colorScheme={isSelected ? 'red' : 'blue'}
-                    leftIcon={<Icon as={isSelected ? TbX : TbCheck} />}
                     onClick={() =>
                       mutate({ userScheduleId: isSelected ? null : _id })
                     }
                     loading={isPending}
-                  >
+                  >{<Icon as={isSelected ? TbX : TbCheck} />} 
                     {isSelected ? '使用をやめる' : '使用する'}
                   </Button>
                 </HStack>
@@ -216,19 +214,17 @@ const Card = React.memo(
                       rounded="lg"
                       colorScheme={isSelected ? 'red' : 'blue'}
                       variant={isSelected ? 'outline' : 'solid'}
-                      leftIcon={<Icon as={isSelected ? TbX : TbCheck} />}
                       onClick={() =>
                         mutate({ userScheduleId: isSelected ? null : _id })
                       }
-                    >
+                    >{<Icon as={isSelected ? TbX : TbCheck} />} 
                       {isSelected ? '使用をやめる' : 'インポートせずに使用する'}
                     </Button>
                     <Button
                       w="full"
                       rounded="lg"
-                      leftIcon={<Icon as={TbDownload} />}
                       onClick={importModalOnOpen}
-                    >
+                    >{<Icon as={TbDownload} />} 
                       インポート
                     </Button>
                   </VStack>

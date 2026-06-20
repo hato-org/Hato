@@ -77,14 +77,13 @@ function Login() {
                     mt={2}
                     variant="ghost"
                     rounded="lg"
-                    leftIcon={
+                    onClick={onCopy}
+                  >{
                       <Icon
                         color={hasCopied ? 'green.400' : undefined}
                         as={hasCopied ? TbCheck : TbCopy}
                       />
-                    }
-                    onClick={onCopy}
-                  >
+                    } 
                     リンクをコピー
                   </Button>
                 </AlertDescription>
@@ -99,8 +98,7 @@ function Login() {
             variant="ghost"
             color="blue.500"
             textStyle="link"
-            leftIcon={<TbArrowNarrowLeft />}
-          >
+          >{<TbArrowNarrowLeft />} 
             <Text>ホームに戻る</Text>
           </Button>
         </VStack>

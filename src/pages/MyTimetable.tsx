@@ -89,9 +89,8 @@ function MyTimetable() {
               rounded="lg"
               variant="ghost"
               colorScheme="blue"
-              leftIcon={<Icon as={TbPlus} />}
               onClick={() => setUserScheduleEditor('new')}
-            >
+            >{<Icon as={TbPlus} />} 
               新しい時間割を作成
             </Button>
           </VStack>

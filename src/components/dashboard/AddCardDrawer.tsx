@@ -109,14 +109,13 @@ const AddCardDrawer = React.memo(() => {
             w="full"
             rounded="lg"
             colorScheme="blue"
-            leftIcon={<Icon as={TbPlus} />}
             disabled={!selectedCard}
             onClick={() => {
               setCardOrder((currVal) => [...currVal, selectedCard]);
               setSelectedCard('');
               onClose();
             }}
-          >
+          >{<Icon as={TbPlus} />} 
             カードを追加
           </Button>
         </DrawerFooter>

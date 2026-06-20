@@ -253,18 +253,16 @@ function EditorSubjectGrid({
                 variant="ghost"
                 rounded="lg"
                 w="full"
-                leftIcon={<Icon as={TbPencil} />}
                 onClick={onEditorOpen}
-              >
+              >{<Icon as={TbPencil} />} 
                 教科の編集
               </Button>
               <Button
                 variant="ghost"
                 rounded="lg"
                 w="full"
-                leftIcon={<Icon as={TbRepeat} />}
                 onClick={onPickerOpen}
-              >
+              >{<Icon as={TbRepeat} />} 
                 置き換え
               </Button>
               <Button
@@ -272,9 +270,8 @@ function EditorSubjectGrid({
                 rounded="lg"
                 w="full"
                 colorScheme="red"
-                leftIcon={<Icon as={TbTrash} />}
                 onClick={onDelete}
-              >
+              >{<Icon as={TbTrash} />} 
                 削除
               </Button>
             </VStack>

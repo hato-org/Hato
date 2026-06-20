@@ -79,11 +79,10 @@ const UserSubjectPicker = React.memo(
                   <Button
                     variant="link"
                     colorScheme="blue"
-                    leftIcon={<Icon as={TbArrowLeft} />}
                     onClick={() => {
                       setCreateMode(false);
                     }}
-                  >
+                  >{<Icon as={TbArrowLeft} />} 
                     検索に戻る
                   </Button>
                   <Input
@@ -201,12 +200,11 @@ const UserSubjectPicker = React.memo(
               <Button
                 w="full"
                 rounded="lg"
-                leftIcon={<Icon as={TbPlus} />}
                 onClick={() => {
                   setCreateMode(true);
                   setSubject((val) => ({ ...val, name: searchQuery }));
                 }}
-              >
+              >{<Icon as={TbPlus} />} 
                 作成する
               </Button>
             )}

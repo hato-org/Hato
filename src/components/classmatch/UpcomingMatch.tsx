@@ -89,15 +89,14 @@ const UpcomingMatch = React.memo(
           <Button
             w="full"
             rounded="lg"
-            leftIcon={
+            onClick={onToggle}
+          >{
               <Icon
                 as={TbChevronDown}
                 transform={`rotate(${isOpen ? '180deg' : '0deg'})`}
                 transition="all .2s ease"
               />
-            }
-            onClick={onToggle}
-          >
+            } 
             {isOpen ? '折りたたむ' : 'もっと見る'}
           </Button>
         )}

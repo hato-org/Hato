@@ -93,7 +93,6 @@ export function UserScheduleImportModal({
             w="full"
             rounded="lg"
             colorScheme="blue"
-            leftIcon={<Icon as={TbDownload} />}
             onClick={() => {
               mutate(
                 {
@@ -128,7 +127,7 @@ export function UserScheduleImportModal({
               );
             }}
             loading={isPending}
-          >
+          >{<Icon as={TbDownload} />} 
             インポート
           </Button>
         </ModalFooter>

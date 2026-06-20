@@ -114,12 +114,11 @@ export function UserScheduleSearch() {
             </Box>
             <Button
               type="submit"
-              leftIcon={<Icon as={TbSearch} />}
               w="full"
               rounded="lg"
               colorScheme="blue"
               loading={isPending}
-            >
+            >{<Icon as={TbSearch} />} 
               検索
             </Button>
           </VStack>

@@ -24,11 +24,10 @@ function NotFound() {
         <Button
           variant="ghost"
           textStyle="link"
-          // leftIcon={<TbArrowNarrowLeft />}
-          color="blue.500"
+          //          color="blue.500"
           as={RouterLink}
           to="/"
-        >
+        >{<TbArrowNarrowLeft />} 
           ホームに戻る
         </Button>
       </VStack>

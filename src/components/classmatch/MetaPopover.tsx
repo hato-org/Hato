@@ -197,18 +197,16 @@ const TournamentMetaPopover = React.memo(
                       <HStack w="full">
                         <Button
                           w="full"
-                          leftIcon={<Icon as={TbPencil} />}
                           rounded="lg"
                           onClick={() => setEditMode('editor')}
-                        >
+                        >{<Icon as={TbPencil} />} 
                           編集
                         </Button>
                         <Button
                           w="full"
-                          leftIcon={<Icon as={TbFlag} />}
                           rounded="lg"
                           onClick={() => setEditMode('reporter')}
-                        >
+                        >{<Icon as={TbFlag} />} 
                           報告
                         </Button>
                       </HStack>

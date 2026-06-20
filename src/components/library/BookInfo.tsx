@@ -166,13 +166,12 @@ const BookInfo = React.memo(
                   w="100%"
                   rounded="lg"
                   shadow="lg"
-                  rightIcon={<Icon as={TbExternalLink} />}
                   as={Link}
                   href={url[holdings[0]]}
                   target="_blank" rel="noreferrer"
                 >
                   詳細を開く
-                </Button>
+                 {<Icon as={TbExternalLink} />}</Button>
                 {source !== 'NDL' && (
                   <Button
                     w="100%"
