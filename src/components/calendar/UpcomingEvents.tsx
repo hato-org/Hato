@@ -2,10 +2,8 @@ import {
   HStack,
   VStack,
   Text,
-  Tag,
   Icon,
   Spacer,
-  TagCloseButton,
   IconButton,
   Collapsible,
   useDisclosure,
@@ -14,6 +12,7 @@ import {
   StackSeparator,
   WrapItem,
 } from '@chakra-ui/react';
+import { Tag as TagChip } from '@/components/ui/tag';
 import { Link as RouterLink } from 'react-router';
 import { format, isSameDay } from 'date-fns';
 import { TbChevronRight, TbFilter, TbPlus } from 'react-icons/tb';
@@ -91,16 +90,19 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
         <Icon as={TbFilter} w={6} h={6} />
         {tags?.map((tag) => (
           <WrapItem key={tag.value}>
-            <Tag size="md" rounded="full" whiteSpace="nowrap">
+            <TagChip
+              size="md"
+              rounded="full"
+              whiteSpace="nowrap"
+              closable
+              onClose={() => {
+                setTags((oldTags) =>
+                  oldTags.filter((oldTag) => oldTag.value !== tag.value),
+                );
+              }}
+            >
               {tag.label}
-              <TagCloseButton
-                onClick={() => {
-                  setTags((oldTags) =>
-                    oldTags.filter((oldTag) => oldTag.value !== tag.value),
-                  );
-                }}
-              />
-            </Tag>
+            </TagChip>
           </WrapItem>
         ))}
         <Center bg="inherit" position="sticky" right={0} pl={1}>
@@ -125,7 +127,7 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             value={null}
             options={tagSearchRes}
             loadOptions={(value) => mutateAsync(value)}
-            loading={isPending}
+            isLoading={isPending}
             chakraStyles={{
               container: (provided) => ({
                 ...provided,
@@ -154,10 +156,10 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
             // border="1px solid var(--chakra-colors-gray-100)"
             rounded="xl"
             // shadow="lg"
-            as={RouterLink}
-            to={`/events/${event._id}`}
+            asChild
             layerStyle="button"
           >
+            <RouterLink to={`/events/${event._id}`}>
             <VStack
               h="100%"
               minW={10}
@@ -202,14 +204,15 @@ function UpcomingEvents({ year, month, day }: UpcomingEventsProps) {
               </Text>
               <HStack w="100%" flexGrow={0} lineClamp={1} align="flex-start">
                 {event.tags?.map((tag) => (
-                  <Tag key={tag.value} size="sm" whiteSpace="nowrap">
+                  <TagChip key={tag.value} size="sm" whiteSpace="nowrap">
                     {tag.label}
-                  </Tag>
+                  </TagChip>
                 ))}
               </HStack>
             </VStack>
             <Spacer />
             <Icon as={TbChevronRight} />
+            </RouterLink>
           </HStack>
         ))
       ) : (
