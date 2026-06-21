@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, HStack, Icon, Text, VStack, useDisclosure, useToast } from '@chakra-ui/react';
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, HStack, Icon, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useAtom } from 'jotai';
 import { TbTrash } from 'react-icons/tb';
 import { UserScheduleContext } from './context';
@@ -17,10 +18,8 @@ import { UserScheduleMetaEditor } from './MetaEditor';
 import { EditorTable } from './Table';
 
 export default function UserScheduleEditor() {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 3000,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 3000, ...options });
   const {
     open: isDeleteModalOpen,
     onOpen: onDeletemodalOpen,
@@ -144,14 +143,14 @@ export default function UserScheduleEditor() {
                     setUserScheduleEditor(false);
                     toast({
                       title: '更新しました。',
-                      status: 'success',
+                      type: 'success',
                     });
                   },
                   onError: (mutationErr) =>
                     toast({
                       title: '更新に失敗しました',
                       description: mutationErr.message,
-                      status: 'error',
+                      type: 'error',
                     }),
                 });
               }}
@@ -176,10 +175,8 @@ function UserScheduleDeleteDialog({
   onDelete: () => void;
   onCancel: () => void;
 }) {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 3000,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 3000, ...options });
   const cancelRef = useRef<HTMLButtonElement>(null);
   const { mutate } = useDeleteUserScheduleMutation();
 
@@ -220,7 +217,7 @@ function UserScheduleDeleteDialog({
                   onSuccess: () => {
                     toast({
                       title: '削除しました。',
-                      status: 'success',
+                      type: 'success',
                     });
                     onDelete();
                   },
@@ -228,7 +225,7 @@ function UserScheduleDeleteDialog({
                     toast({
                       title: 'エラーが発生しました',
                       description: deleteErr.message,
-                      status: 'error',
+                      type: 'error',
                     });
                   },
                 })

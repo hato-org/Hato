@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Heading, Textarea, VStack, Text, Spacer, CheckboxGroup, Checkbox, Wrap, useToast, HStack } from '@chakra-ui/react';
+import { Button, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Heading, Textarea, VStack, Text, Spacer, CheckboxGroup, Checkbox, Wrap, HStack } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -16,10 +17,8 @@ interface AddNoteDrawerProps {
 
 const AddNoteDrawer = React.memo(
   ({ isOpen, onClose, date, ...rest }: AddNoteDrawerProps) => {
-    const toast = useToast({
-      position: 'top-right',
-      variant: 'left-accent',
-    });
+    const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create(options);
     const { data: user } = useUser();
     const [message, setMessage] = useState('');
     const { data: gradeList } = useGradeList({ enabled: isOpen });
@@ -224,14 +223,14 @@ const AddNoteDrawer = React.memo(
                   {
                     onSuccess: () => {
                       toast({
-                        status: 'success',
+                        type: 'success',
                         title: '追加しました。',
                       });
                       onClose();
                     },
                     onError: (error) => {
                       toast({
-                        status: 'error',
+                        type: 'error',
                         title: '追加に失敗しました。',
                         description: error.message,
                       });

@@ -1,4 +1,5 @@
-import { useToast } from '@chakra-ui/react';
+import {  } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import {
   UseQueryOptions,
   useMutation,
@@ -143,10 +144,8 @@ export const useClassmatchMutation = ({
   sport: ClassmatchSportId;
   id: string;
 }) => {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1000,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1000, ...options });
   const queryClient = useQueryClient();
   const { client } = useClient();
 
@@ -166,14 +165,14 @@ export const useClassmatchMutation = ({
       );
       toast({
         title: '更新しました。',
-        status: 'success',
+        type: 'success',
       });
     },
     onError: (error) => {
       toast({
         title: '更新に失敗しました',
         description: error.message,
-        status: 'error',
+        type: 'error',
       });
     },
   });

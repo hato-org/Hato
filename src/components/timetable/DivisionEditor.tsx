@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, Heading, HStack, Icon, IconButton, Spacer, Switch, Text, useToast, VStack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Icon, IconButton, Spacer, Switch, Text, VStack } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { format, startOfDay } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbX } from 'react-icons/tb';
@@ -15,10 +16,8 @@ interface DivisionEditorProps {
 
 const DivisionEditor = React.memo(
   ({ date, isOpen, onClose }: DivisionEditorProps) => {
-    const toast = useToast({
-      position: 'top-right',
-      duration: 1000,
-    });
+    const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1000, ...options });
 
     const [division, setDivision] = useState<Partial<Division>>({
       date: startOfDay(date),
@@ -110,14 +109,14 @@ const DivisionEditor = React.memo(
                         onClose();
                         toast({
                           title: '更新しました。',
-                          status: 'success',
+                          type: 'success',
                         });
                       },
                       onError: (error) => {
                         toast({
                           title: '更新に失敗しました。',
                           description: error.message,
-                          status: 'error',
+                          type: 'error',
                         });
                       },
                     },

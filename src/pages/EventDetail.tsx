@@ -15,12 +15,12 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   Button,
-  useToast,
   Center,
   Spacer,
   Box,
   Icon,
 } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { Helmet } from 'react-helmet-async';
 import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router';
@@ -36,10 +36,8 @@ import { useEvent, useEventMutation } from '@/services/calendar';
 function EventDetail() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const toast = useToast({
-    position: 'top-right',
-    variant: 'left-accent',
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create(options);
 
   const {
     open: deleteOpen,
@@ -154,7 +152,7 @@ function EventDetail() {
                                   onSuccess: () => {
                                     toast({
                                       title: 'イベントを削除しました。',
-                                      status: 'success',
+                                      type: 'success',
                                     });
                                     deleteOnClose();
                                     navigate(-1);
@@ -163,7 +161,7 @@ function EventDetail() {
                                     toast({
                                       title: 'イベントの削除に失敗しました。',
                                       description: e.message,
-                                      status: 'error',
+                                      type: 'error',
                                     });
                                     deleteOnClose();
                                   },

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, HStack, Icon, Input, Text, VStack, useDisclosure, useToast } from '@chakra-ui/react';
+import { Button, HStack, Icon, Input, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { TbEdit } from 'react-icons/tb';
 import { useUserMutation } from '@/services/user';
 
@@ -27,10 +28,8 @@ function UsernameModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1500,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const { mutate, isPending } = useUserMutation();
   const [username, setUsername] = useState('');
 
@@ -71,14 +70,14 @@ function UsernameModal({
                         onSuccess: () => {
                           toast({
                             title: '変更しました。',
-                            status: 'success',
+                            type: 'success',
                           });
                           onClose();
                         },
                         onError: () => {
                           toast({
                             title: 'エラーが発生しました',
-                            status: 'error',
+                            type: 'error',
                           });
                         },
                       },

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, HStack, Icon, Input, InputGroup, InputLeftElement, Spacer, Switch, Text, Textarea, useBoolean, useToast, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { Button, HStack, Icon, Input, InputGroup, InputLeftElement, Spacer, Switch, Text, Textarea, useBoolean, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
 import { AsyncSelect } from 'chakra-react-select';
 import {
@@ -14,10 +15,8 @@ import { useUser } from '@/services/user';
 
 const AddEventDrawer = React.memo(
   ({ isOpen, onClose, ...rest }: Omit<DrawerProps, 'children'>) => {
-    const toast = useToast({
-      position: 'top-right',
-      duration: 1500,
-    });
+    const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
     const { data: user } = useUser();
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
@@ -210,7 +209,7 @@ const AddEventDrawer = React.memo(
                         onClose();
                         toast({
                           title: '追加しました。',
-                          status: 'success',
+                          type: 'success',
                         });
                         setTitle('');
                         setDesc('');
@@ -224,7 +223,7 @@ const AddEventDrawer = React.memo(
                         toast({
                           title: 'エラーが発生しました',
                           description: e.message,
-                          status: 'error',
+                          type: 'error',
                         });
                       },
                     },

@@ -1,4 +1,5 @@
-import { useToast } from '@chakra-ui/react';
+import {  } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useCallback, useState } from 'react';
 import { useSetAtom } from 'jotai';
 import ky from 'ky';
@@ -14,10 +15,8 @@ export const useAuth = (scopes?: string[]) => {
   const setUser = useSetAtom(userAtom);
   const [loginLoading, setLoginLoading] = useState(false);
   const setJWT = useSetAtom(jwtAtom);
-  const toast = useToast({
-    position: 'top-right',
-    variant: 'left-accent',
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create(options);
   const navigate = useNavigate();
 
   const onFail = useCallback(
@@ -29,7 +28,7 @@ export const useAuth = (scopes?: string[]) => {
 
       toast({
         title: 'ログインでエラーが発生しました',
-        status: 'error',
+        type: 'error',
       });
     },
     [toast],
@@ -59,7 +58,7 @@ export const useAuth = (scopes?: string[]) => {
 
       toast({
         title: `${userData.name}でログインしました。`,
-        status: 'success',
+        type: 'success',
       });
       setLoginLoading(false);
     },

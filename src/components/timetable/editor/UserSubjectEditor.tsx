@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, Input, Text, VStack, useToast } from '@chakra-ui/react';
+import { Button, Input, Text, VStack } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useUserSubjectMutation } from '@/services/timetable';
 import { useUser } from '@/services/user';
 import { useUserScheduleContext } from './context';
@@ -15,9 +16,8 @@ export default function UserSubjectEditor({
   subject?: UserSubject;
 }) {
   const [, setSchedule] = useUserScheduleContext();
-  const toast = useToast({
-    position: 'top-right',
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create(options);
   const { data: user } = useUser();
   const [name, setName] = useState(subject?.name);
   const [shortName, setShortname] = useState(subject?.short_name);
@@ -118,7 +118,7 @@ export default function UserSubjectEditor({
                     },
                     onError: (error) => {
                       toast({
-                        status: 'error',
+                        type: 'error',
                         title: 'エラーが発生しました',
                         description: error.message,
                       });

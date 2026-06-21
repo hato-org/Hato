@@ -13,8 +13,8 @@ import {
   Switch,
   UnorderedList,
   VStack,
-  useToast,
 } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useAtomValue } from 'jotai';
 import { TbExclamationCircle } from 'react-icons/tb';
 import { MotionCenter } from '@/components/motion';
@@ -29,7 +29,8 @@ import {
 import { useSettings, useSettingsMutation } from '@/services/settings';
 
 export default function Notification() {
-  const toast = useToast({ position: 'top-right', duration: 1500 });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
 
   const pushSubscription = useAtomValue(pushSubscriptionSelector);
   const pushPermission = useAtomValue(pushPermissionSelector);
@@ -77,7 +78,7 @@ export default function Notification() {
                             onError: () => {
                               toast({
                                 title: '無効化に失敗しました',
-                                status: 'error',
+                                type: 'error',
                               });
                             },
                           })
@@ -87,7 +88,7 @@ export default function Notification() {
                                 title: '有効化に失敗しました',
                                 description:
                                   'システムの通知設定を確認してください',
-                                status: 'error',
+                                type: 'error',
                               });
                             },
                           })
@@ -177,7 +178,8 @@ function NotificationDetail() {
 }
 
 function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
-  const toast = useToast({ position: 'top-right', duration: 1500 });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const { data: settings, error } = useSettings();
   const { mutate, isPending } = useSettingsMutation();
 
@@ -212,7 +214,7 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
                 toast({
                   title: '更新に失敗しました',
                   description: err.message,
-                  status: 'error',
+                  type: 'error',
                 });
               },
             },

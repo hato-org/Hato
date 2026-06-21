@@ -1,4 +1,5 @@
-import { Button, HStack, Icon, Input, Spacer, Switch, Text, VStack, useBoolean, useToast } from '@chakra-ui/react';
+import { Button, HStack, Icon, Input, Spacer, Switch, Text, VStack, useBoolean } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { TbDownload } from 'react-icons/tb';
@@ -15,7 +16,8 @@ export function UserScheduleImportModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const toast = useToast({ position: 'top-right', duration: 1000 * 2 });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1000 * 2, ...options });
   const { data: user } = useUser();
   const { mutate, isPending } = useUserScheduleMutation();
 
@@ -95,7 +97,7 @@ export function UserScheduleImportModal({
                   onSuccess: () => {
                     toast({
                       title: 'インポートしました。',
-                      status: 'success',
+                      type: 'success',
                     });
                     onClose();
                   },
@@ -103,7 +105,7 @@ export function UserScheduleImportModal({
                     toast({
                       title: 'インポートに失敗しました',
                       description: e.name,
-                      status: 'error',
+                      type: 'error',
                     });
                   },
                 },

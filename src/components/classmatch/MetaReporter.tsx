@@ -7,8 +7,8 @@ import {
   Text,
   Textarea,
   VStack,
-  useToast,
 } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { TbCheck, TbX } from 'react-icons/tb';
 import { useAtomValue } from 'jotai';
 import { useUserInfo } from '@/services/user';
@@ -26,10 +26,8 @@ export default function MetaReporter({
   history: ClassmatchTournament['editHistory'];
   onSubmit: () => void;
 }) {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1500,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const classmatchTournament = useAtomValue(classmatchTournamentAtom);
   const [description, setDescription] = useState('');
   const { data, status, error } = useUserInfo(history?.at(-1)?.userId ?? '', {
@@ -40,14 +38,14 @@ export default function MetaReporter({
     onSuccess: () => {
       toast({
         title: '送信しました。',
-        status: 'success',
+        type: 'success',
       });
     },
     onError: (e) => {
       toast({
         title: '送信に失敗しました。',
         description: e.message,
-        status: 'error',
+        type: 'error',
       });
     },
   });

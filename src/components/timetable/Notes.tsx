@@ -9,7 +9,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  useToast,
   Textarea,
   MenuButtonProps,
   useDisclosure,
@@ -19,6 +18,7 @@ import {
   Tag,
   Box,
 } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
 import {
   TbCheck,
@@ -110,10 +110,8 @@ const Notes = React.memo(
 Notes.displayName = 'Notes';
 
 const NoteCard = React.memo(({ note }: { note: Note }) => {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1500,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const { data: user } = useUser();
   const [editMode, setEditMode] = useState(false);
   const [message, setMessage] = useState(note.message);
@@ -174,13 +172,13 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                     onSuccess: () => {
                       setEditMode(false);
                       toast({
-                        status: 'success',
+                        type: 'success',
                         title: '保存しました。',
                       });
                     },
                     onError: (e) => {
                       toast({
-                        status: 'error',
+                        type: 'error',
                         title: '保存に失敗しました。',
                         description: e.message,
                       });
@@ -204,13 +202,13 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                 {
                   onSuccess: () => {
                     toast({
-                      status: 'success',
+                      type: 'success',
                       title: '削除しました。',
                     });
                   },
                   onError: (e) => {
                     toast({
-                      status: 'error',
+                      type: 'error',
                       title: '削除に失敗しました。',
                       description: e.message,
                     });
