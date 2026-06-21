@@ -1,6 +1,7 @@
 import React from 'react';
 import type { classroom_v1 } from 'googleapis';
-import { Link, Tag, TagLabel, TagLeftIcon } from '@chakra-ui/react';
+import { Icon, Link, Text } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import {
   TbBrandGoogleDrive,
   TbBrandYoutube,
@@ -12,79 +13,87 @@ const Material = React.memo(
   ({ driveFile, youtubeVideo, form, link }: classroom_v1.Schema$Material) => {
     if (driveFile) {
       return (
-        <Tag
-          size="lg"
-          variant="outline"
-          rounded="full"
-          layerStyle="button"
-          as={Link}
+        <Link
           target="_blank" rel="noreferrer"
           href={driveFile.driveFile?.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
-          <TagLeftIcon as={TbBrandGoogleDrive} />
-          <TagLabel fontSize="sm" fontWeight="bold">
-            {driveFile.driveFile?.title}
-          </TagLabel>
-        </Tag>
+          <Tag
+            size="lg"
+            variant="outline"
+            rounded="full"
+            layerStyle="button"
+            startElement={<Icon as={TbBrandGoogleDrive} />}
+          >
+            <Text as="span" fontSize="sm" fontWeight="bold">
+              {driveFile.driveFile?.title}
+            </Text>
+          </Tag>
+        </Link>
       );
     }
     if (youtubeVideo) {
       return (
-        <Tag
-          size="lg"
-          variant="outline"
-          rounded="full"
-          layerStyle="button"
-          as={Link}
+        <Link
           target="_blank" rel="noreferrer"
           href={youtubeVideo.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
-          <TagLeftIcon as={TbBrandYoutube} />
-          <TagLabel fontSize="sm" fontWeight="bold">
-            {youtubeVideo.title}
-          </TagLabel>
-        </Tag>
+          <Tag
+            size="lg"
+            variant="outline"
+            rounded="full"
+            layerStyle="button"
+            startElement={<Icon as={TbBrandYoutube} />}
+          >
+            <Text as="span" fontSize="sm" fontWeight="bold">
+              {youtubeVideo.title}
+            </Text>
+          </Tag>
+        </Link>
       );
     }
     if (link) {
       return (
-        <Tag
-          size="lg"
-          variant="outline"
-          rounded="full"
-          layerStyle="button"
-          as={Link}
+        <Link
           target="_blank" rel="noreferrer"
           href={link.url ?? ''}
           _hover={{ textDecor: 'none' }}
         >
-          <TagLeftIcon as={TbLink} />
-          <TagLabel fontSize="sm" fontWeight="bold">
-            {link.title}
-          </TagLabel>
-        </Tag>
+          <Tag
+            size="lg"
+            variant="outline"
+            rounded="full"
+            layerStyle="button"
+            startElement={<Icon as={TbLink} />}
+          >
+            <Text as="span" fontSize="sm" fontWeight="bold">
+              {link.title}
+            </Text>
+          </Tag>
+        </Link>
       );
     }
 
     if (form) {
       return (
-        <Tag
-          size="lg"
-          variant="outline"
-          rounded="full"
-          layerStyle="button"
-          as={Link}
+        <Link
           target="_blank" rel="noreferrer"
           href={form.formUrl ?? ''}
           _hover={{ textDecor: 'none' }}
         >
-          <TagLeftIcon as={TbReport} />
-          <TagLabel fontSize="sm" fontWeight="bold">
-            {form.title}
-          </TagLabel>
-        </Tag>
+          <Tag
+            size="lg"
+            variant="outline"
+            rounded="full"
+            layerStyle="button"
+            startElement={<Icon as={TbReport} />}
+          >
+            <Text as="span" fontSize="sm" fontWeight="bold">
+              {form.title}
+            </Text>
+          </Tag>
+        </Link>
       );
     }
 

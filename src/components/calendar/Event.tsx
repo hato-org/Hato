@@ -4,9 +4,9 @@ import {
   HStack,
   Text,
   Icon,
-  Tag,
   Wrap,
 } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbChevronRight, TbMapPin, TbTag, TbWorld } from 'react-icons/tb';

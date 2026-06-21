@@ -6,11 +6,9 @@ import {
   Text,
   Icon,
   Wrap,
-  Tag,
-  TagLeftIcon,
-  TagLabel,
   useDisclosure,
 } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { TbClock, TbFile, TbPaperclip, TbTag } from 'react-icons/tb';
@@ -74,18 +72,20 @@ function Post({ id }: { id: string }) {
                     setSelectedAttachment(attachment.id);
                   }}
                   layerStyle="button"
+                  startElement={<Icon as={TbFile} />}
                 >
-                  <TagLeftIcon as={TbFile} />
-                  <TagLabel fontWeight="bold">{attachment.name}</TagLabel>
-                  <PDFViewer
-                    isOpen={isOpen && selectedAttachment === attachment.id}
-                    onClose={() => {
-                      onClose();
-                      setSelectedAttachment('');
-                    }}
-                    attachment={attachment}
-                  />
+                  <Text as="span" fontWeight="bold">
+                    {attachment.name}
+                  </Text>
                 </Tag>
+                <PDFViewer
+                  isOpen={isOpen && selectedAttachment === attachment.id}
+                  onClose={() => {
+                    onClose();
+                    setSelectedAttachment('');
+                  }}
+                  attachment={attachment}
+                />
               </Suspense>
             ))}
           </Wrap>
@@ -95,7 +95,7 @@ function Post({ id }: { id: string }) {
           <Wrap>
             {data.tags.map((tag) => (
               <Tag key={tag.value} size="lg" variant="subtle">
-                <TagLabel>{tag.label}</TagLabel>
+                {tag.label}
               </Tag>
             ))}
           </Wrap>

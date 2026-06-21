@@ -7,12 +7,12 @@ import {
   Icon,
   Spacer,
   StackSeparator,
-  Tag,
   Text,
   VStack,
   Wrap,
   useDisclosure,
 } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbChevronDown, TbChevronRight } from 'react-icons/tb';

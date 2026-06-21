@@ -5,13 +5,11 @@ import {
   HStack,
   Icon,
   Spacer,
-  Tag,
-  TagLabel,
-  TagLeftIcon,
   Text,
   VStack,
   Wrap,
 } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import { Link as RouterLink } from 'react-router';
 import { format } from 'date-fns';
 import {
@@ -62,7 +60,7 @@ const Card = React.memo(
         overflow="hidden"
         position="relative"
         zIndex={0}
-        sx={{
+        css={{
           ':hover': {
             touchAction: 'none',
           },
@@ -116,13 +114,13 @@ const Card = React.memo(
           <HStack
             w="100%"
             bg={bg}
-            as={RouterLink}
-            to={`/posts/${_id}`}
+            asChild
             px={2}
             py={4}
             layerStyle="button"
             onPointerDown={(e) => controls.start(e, { snapToCursor: false })}
           >
+            <RouterLink to={`/posts/${_id}`}>
             <VStack align="flex-start" w="100%" pl={2}>
               <HStack w="100%">
                 {isPinned && <Icon as={TbPin} color="blue.400" />}
@@ -140,15 +138,20 @@ const Card = React.memo(
               {text && <Text lineClamp={1}>{text}</Text>}
               <Wrap>
                 {attachments.map((attachment) => (
-                  <Tag variant="outline" rounded="full" key={attachment.id}>
-                    <TagLeftIcon as={TbFile} />
-                    <TagLabel>{attachment.name}</TagLabel>
+                  <Tag
+                    variant="outline"
+                    rounded="full"
+                    key={attachment.id}
+                    startElement={<Icon as={TbFile} />}
+                  >
+                    {attachment.name}
                   </Tag>
                 ))}
               </Wrap>
             </VStack>
             <Spacer />
             <Icon as={TbChevronRight} />
+            </RouterLink>
           </HStack>
         </MotionFlex>
       </Flex>
