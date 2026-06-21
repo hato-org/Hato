@@ -39,7 +39,7 @@ const TournamentModal = React.memo(
     return (
       <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
         <DialogContent overflow="hidden" bg="panel" rounded="xl">
-          <DialogCloseTrigger top={4} right={4} size="lg" />
+          <DialogCloseTrigger top={4} right={4} />
           <DialogHeader>
             {sports?.find(({ id }) => id === sport)?.name}
           </DialogHeader>

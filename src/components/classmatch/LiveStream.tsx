@@ -1,18 +1,18 @@
 import React from 'react';
-import { Box, HStack, Icon, Link, Spacer, Text } from '@chakra-ui/react';
+import { chakra, HStack, Icon, Link, Spacer, Text } from '@chakra-ui/react';
 import { TbExternalLink } from 'react-icons/tb';
 import { FaInstagram } from 'react-icons/fa';
 import { getYouTubeID } from '@/utils/youtube';
 
 const LiveStream = React.memo(({ type, name, url }: ClassmatchLiveStream) =>
   type === 'youtube' ? (
-    <Box
-      as="iframe"
+    <chakra.iframe
       title={name}
       src={`https://youtube.com/embed/${getYouTubeID(url)}`}
       w="full"
       shadow="md"
-      css={{ aspectRatio: '16/9', rounded: 'xl' }}
+      aspectRatio={16 / 9}
+      rounded="xl"
     />
   ) : (
     <HStack

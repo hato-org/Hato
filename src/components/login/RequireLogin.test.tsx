@@ -7,7 +7,7 @@ import { jwtAtom } from '@/store/auth';
 import RequireLogin from '@/components/login/RequireLogin';
 
 // Navigate の遷移先を記録するためのモック
-const navigatedTo = vi.fn<[string]>();
+const navigatedTo = vi.fn<(path: string) => void>();
 
 vi.mock('@/hooks/common/ga4', () => ({
   default: vi.fn(),

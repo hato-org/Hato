@@ -75,7 +75,6 @@ const BookInfo = React.memo(
           w="100%"
           h="100%"
           src={imgSrc}
-          fallback={<Box />}
           pos="absolute"
           zIndex={-1}
           objectFit="cover"
@@ -88,16 +87,19 @@ const BookInfo = React.memo(
         />
 
         <HStack p={2} pr={4} w="100%" gap={4} onClick={onToggle}>
-          <Image
-            boxSize={16}
-            minW={16}
-            shadow="md"
-            objectFit="cover"
-            rounded="lg"
-            src={imgSrc}
-            fallback={<Icon as={TbBook} boxSize={16} p={4} />}
-            alt={`${title}の表紙`}
-          />
+          {imgSrc ? (
+            <Image
+              boxSize={16}
+              minW={16}
+              shadow="md"
+              objectFit="cover"
+              rounded="lg"
+              src={imgSrc}
+              alt={`${title}の表紙`}
+            />
+          ) : (
+            <Icon as={TbBook} boxSize={16} p={4} />
+          )}
           <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
             <HStack separator={<Text textStyle="description">・</Text>}>
