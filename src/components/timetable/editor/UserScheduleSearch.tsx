@@ -8,11 +8,10 @@ import {
   Icon,
   Input,
   Spacer,
-  Switch,
   Text,
   VStack,
-  useBoolean,
 } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
 import { TbSearch } from 'react-icons/tb';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import Card from '@/components/layout/Card';
@@ -30,7 +29,8 @@ export function UserScheduleSearch() {
   const { data: user } = useUser();
   const { mutate, data, isPending, error } = useUserScheduleSearch();
 
-  const [isFilterEnabled, { toggle }] = useBoolean(false);
+  const [isFilterEnabled, setFilterEnabled] = useState(false);
+  const toggle = () => setFilterEnabled((v) => !v);
 
   const [inputVal, setInputVal] = useState(searchParams.get('q') ?? '');
   const [grade, setGrade] = useState<GradeInfo>();
@@ -100,7 +100,7 @@ export function UserScheduleSearch() {
             <HStack w="full">
               <Text fontWeight="bold">学年・クラス・講座で絞り込む</Text>
               <Spacer />
-              <Switch checked={isFilterEnabled} onChange={toggle} />
+              <Switch checked={isFilterEnabled} onCheckedChange={toggle} />
             </HStack>
             <Box w="full">
               <Collapsible.Root open={isFilterEnabled}><Collapsible.Content>

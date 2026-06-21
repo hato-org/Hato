@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, Heading, HStack, Icon, IconButton, Spacer, Switch, Text, VStack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Icon, IconButton, Spacer, Text, VStack } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
 import { format, startOfDay } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -74,11 +75,11 @@ const DivisionEditor = React.memo(
                 <Text textStyle="title">特編</Text>
                 <Spacer />
                 <Switch
-                  isChecked={division.irregular}
-                  onChange={(e) =>
+                  checked={division.irregular}
+                  onCheckedChange={(e) =>
                     setDivision((val) => ({
                       ...val,
-                      irregular: e.target.checked,
+                      irregular: e.checked,
                     }))
                   }
                 />

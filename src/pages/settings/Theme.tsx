@@ -1,4 +1,5 @@
-import { Switch, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
 import { useColorMode } from '@/components/ui/color-mode';
 import { MotionCenter } from '@/components/motion';
 import SettingButton from './Button';
@@ -14,8 +15,8 @@ function Theme() {
       children: (
         <Switch
           size="lg"
-          isChecked={colorMode === 'dark'}
-          onChange={toggleColorMode}
+          checked={colorMode === 'dark'}
+          onCheckedChange={toggleColorMode}
         />
       ),
     },

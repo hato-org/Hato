@@ -1,7 +1,8 @@
-import { Button, HStack, Icon, Input, Spacer, Switch, Text, VStack, useBoolean } from '@chakra-ui/react';
+import { Button, HStack, Icon, Input, Spacer, Text, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { useState } from 'react';
 import { TbDownload } from 'react-icons/tb';
 import GradeClassPicker from '../GradeClassPicker';
 import { useUserScheduleMutation } from '@/services/timetable';
@@ -23,7 +24,8 @@ export function UserScheduleImportModal({
 
   const [title, setTitle] = useState(schedule.title);
   const [description, setDescription] = useState(schedule.description);
-  const [isPrivate, { toggle }] = useBoolean(true);
+  const [isPrivate, setPrivate] = useState(true);
+  const toggle = () => setPrivate((v) => !v);
   const [type, setType] = useState<Type>(schedule.meta.type);
   const [gradeCode, setGradeCode] = useState<GradeCode>(schedule.meta.grade);
   const [classCode, setClassCode] = useState<ClassCode>(schedule.meta.class);
@@ -32,7 +34,7 @@ export function UserScheduleImportModal({
   );
 
   return (
-    <DialogRoot size="2xl" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+    <DialogRoot size="xl" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
       <DialogContent rounded="xl" bg="panel">
         <DialogHeader>時間割のインポート</DialogHeader>
         <DialogBody>
@@ -56,7 +58,7 @@ export function UserScheduleImportModal({
             <HStack w="full" px={4}>
               <Text textStyle="title">非公開</Text>
               <Spacer />
-              <Switch isChecked={isPrivate} onChange={toggle} />
+              <Switch checked={isPrivate} onCheckedChange={toggle} />
             </HStack>
             <GradeClassPicker
               direction={{ base: 'column', md: 'row' }}
