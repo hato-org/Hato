@@ -4,20 +4,23 @@ import {
   Text,
   StackProps,
   IconButton,
+  IconButtonProps,
   HStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Textarea,
-  MenuButtonProps,
   useDisclosure,
   Portal,
   Heading,
   Wrap,
-  Tag,
   Box,
+  Field,
 } from '@chakra-ui/react';
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
+import { Tag } from '@/components/ui/tag';
 import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
 import {
@@ -134,17 +137,21 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
     >
       {editMode ? (
         <VStack w="100%">
-          <Textarea
-            value={message}
-            placeholder="説明"
-            as={ResizeTextArea}
-            resize="none"
-            variant="outline"
-            minH="unset"
-            // maxRows={5}
-            onChange={(e) => setMessage(e.target.value)}
-            isInvalid={!message}
-          />
+          <Field.Root invalid={!message}>
+            <Textarea
+              asChild
+              resize="none"
+              variant="outline"
+              minH="unset"
+              // maxRows={5}
+            >
+              <ResizeTextArea
+                value={message}
+                placeholder="説明"
+                onChange={(e) => setMessage(e.target.value)}
+              />
+            </Textarea>
+          </Field.Root>
           <HStack w="100%">
             <IconButton
               aria-label="abort changes"
@@ -241,7 +248,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
 });
 NoteCard.displayName = 'NoteCard';
 
-interface NotesMenuProps extends MenuButtonProps {
+interface NotesMenuProps extends IconButtonProps {
   note: Note;
   onEdit: () => void;
   onDelete: () => void;
@@ -254,26 +261,30 @@ const NotesMenu = React.memo(
     const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return (
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          icon={<TbDotsVertical />}
-          variant="ghost"
-          size="sm"
-          _hover={{
-            bg: 'whiteAlpha.500',
-          }}
-          _active={{
-            bg: 'whiteAlpha.500',
-          }}
-          borderRadius="full"
-          {...rest}
-        />
-        <MenuList textStyle="title" rounded="xl" shadow="lg">
+      <MenuRoot>
+        <MenuTrigger asChild>
+          <IconButton
+            aria-label="note menu"
+            variant="ghost"
+            size="sm"
+            _hover={{
+              bg: 'whiteAlpha.500',
+            }}
+            _active={{
+              bg: 'whiteAlpha.500',
+            }}
+            borderRadius="full"
+            {...rest}
+          >
+            <TbDotsVertical />
+          </IconButton>
+        </MenuTrigger>
+        <MenuContent textStyle="title" rounded="xl" shadow="lg">
           {note.owner === user.email || user.role === 'admin' ? (
             <>
               {user.role === 'admin' && (
-                <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
+                <MenuItem value="report" textStyle="title" onClick={onOpen}>
+                  <TbFlag />
                   報告
                   <Portal>
                     <ReportModal
@@ -282,20 +293,23 @@ const NotesMenu = React.memo(
                   </Portal>
                 </MenuItem>
               )}
-              <MenuItem textStyle="title" icon={<TbEdit />} onClick={onEdit}>
+              <MenuItem value="edit" textStyle="title" onClick={onEdit}>
+                <TbEdit />
                 編集
               </MenuItem>
               <MenuItem
+                value="delete"
                 textStyle="title"
-                icon={<TbTrash />}
                 onClick={onDelete}
                 color="red.500"
               >
+                <TbTrash />
                 削除
               </MenuItem>
             </>
           ) : (
-            <MenuItem textStyle="title" icon={<TbFlag />} onClick={onOpen}>
+            <MenuItem value="report" textStyle="title" onClick={onOpen}>
+              <TbFlag />
               報告
               <Portal>
                 <ReportModal
@@ -304,8 +318,8 @@ const NotesMenu = React.memo(
               </Portal>
             </MenuItem>
           )}
-        </MenuList>
-      </Menu>
+        </MenuContent>
+      </MenuRoot>
     );
   },
 );
