@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, HStack, Icon, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import { useEffect, useMemo, useState } from 'react';
+import { DialogBackdrop, DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import { Button, HStack, Icon, Text, VStack, useDisclosure } from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { useAtom } from 'jotai';
 import { TbTrash } from 'react-icons/tb';
@@ -68,7 +68,7 @@ export default function UserScheduleEditor() {
     <DialogRoot
       open={!!userScheduleEditor}
       onOpenChange={(e) => !e.open && (() => setUserScheduleEditor(false))()}
-      size={{ base: 'full', md: '2xl' }}
+      size={{ base: 'full', md: 'xl' }}
     >
       <DialogContent bg="panel" pb="env(safe-area-inset-bottom)">
         <UserScheduleContext.Provider
@@ -177,30 +177,28 @@ function UserScheduleDeleteDialog({
 }) {
   const toast = (options: Parameters<typeof toaster.create>[0]) =>
     toaster.create({ duration: 3000, ...options });
-  const cancelRef = useRef<HTMLButtonElement>(null);
   const { mutate } = useDeleteUserScheduleMutation();
 
   return (
-    <AlertDialog
-      leastDestructiveRef={cancelRef}
-      isOpen={isOpen}
-      onClose={onCancel}
-      isCentered
+    <DialogRoot
+      role="alertdialog"
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onCancel()}
+      placement="center"
     >
-      <AlertDialogOverlay />
-      <AlertDialogContent bg="panel" p={2} rounded="xl">
-        <AlertDialogHeader>時間割の削除</AlertDialogHeader>
-        <AlertDialogBody>
+      <DialogBackdrop />
+      <DialogContent bg="panel" p={2} rounded="xl">
+        <DialogHeader>時間割の削除</DialogHeader>
+        <DialogBody>
           <Text textAlign="center" textStyle="title">
             本当に削除しますか？
             <br />
             この操作は取り消せません。
           </Text>
-        </AlertDialogBody>
-        <AlertDialogFooter>
+        </DialogBody>
+        <DialogFooter>
           <HStack w="full">
             <Button
-              ref={cancelRef}
               w="full"
               variant="ghost"
               rounded="lg"
@@ -234,8 +232,8 @@ function UserScheduleDeleteDialog({
               削除
             </Button>
           </HStack>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 }

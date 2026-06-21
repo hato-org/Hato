@@ -1,22 +1,16 @@
 import React from 'react';
 import {
   Alert,
-  AlertIcon,
-  AlertTitle,
   Box,
   Collapsible,
   HStack,
   Heading,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   StackSeparator,
   Text,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
 import { format } from 'date-fns';
 import { useHatoStatusHistory } from '@/services/status';
 
@@ -50,14 +44,14 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
       <Box w="full">
         <Collapsible.Root open={isOpen}><Collapsible.Content>
           <VStack w="full" p={2} align="flex-start" gap={4}>
-            <Alert
+            <Alert.Root
               status={ok ? 'success' : 'error'}
               rounded="lg"
               justifyContent="center"
             >
-              <AlertIcon />
-              <AlertTitle>{ok ? '正常稼働中' : '異常発生'}</AlertTitle>
-            </Alert>
+              <Alert.Indicator />
+              <Alert.Title>{ok ? '正常稼働中' : '異常発生'}</Alert.Title>
+            </Alert.Root>
 
             <ServerStatusHistoryStack id={id} />
           </VStack>
@@ -80,50 +74,54 @@ const ServerStatusHistoryStack = React.memo(({ id }: { id: string }) => {
         {data?.pages
           .flat()
           .map(({ ok, status, statusText, responseTime, timestamp }) => (
-            <Popover key={timestamp} trigger="hover">
-              <PopoverTrigger>
-                <Box
-                  w="full"
-                  h={8}
-                  rounded="sm"
-                  bg={ok ? 'success' : 'error'}
-                  _hover={{ bg: ok ? 'green.300' : 'red.400' }}
-                  transition="all .2s ease"
-                />
-              </PopoverTrigger>
-              <PopoverContent borderColor="border" bg="panel" rounded="2xl">
-                <PopoverArrow bg="panel" />
-                <PopoverBody p={6}>
-                  <VStack gap={4}>
-                    <Text textStyle="title" fontSize="xl">
-                      {format(new Date(timestamp), 'MM/dd H:mm')}
+            <Tooltip
+              key={timestamp}
+              showArrow
+              contentProps={{
+                borderColor: 'border',
+                bg: 'panel',
+                rounded: '2xl',
+                p: 6,
+              }}
+              content={
+                <VStack gap={4}>
+                  <Text textStyle="title" fontSize="xl">
+                    {format(new Date(timestamp), 'MM/dd H:mm')}
+                  </Text>
+                  <Alert.Root
+                    status={ok ? 'success' : 'error'}
+                    rounded="lg"
+                    justifyContent="center"
+                  >
+                    <Alert.Indicator />
+                    <Alert.Title>{ok ? '正常稼働' : '異常発生'}</Alert.Title>
+                  </Alert.Root>
+                  <HStack w="full" justify="space-between">
+                    <Text textStyle="description" fontWeight="bold">
+                      HTTPステータス
                     </Text>
-                    <Alert
-                      status={ok ? 'success' : 'error'}
-                      rounded="lg"
-                      justifyContent="center"
-                    >
-                      <AlertIcon />
-                      <AlertTitle>{ok ? '正常稼働' : '異常発生'}</AlertTitle>
-                    </Alert>
-                    <HStack w="full" justify="space-between">
-                      <Text textStyle="description" fontWeight="bold">
-                        HTTPステータス
-                      </Text>
-                      <Text textStyle="title">
-                        {status} {statusText}
-                      </Text>
-                    </HStack>
-                    <HStack w="full" justify="space-between">
-                      <Text textStyle="description" fontWeight="bold">
-                        応答時間
-                      </Text>
-                      <Text textStyle="title">{responseTime}ms</Text>
-                    </HStack>
-                  </VStack>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+                    <Text textStyle="title">
+                      {status} {statusText}
+                    </Text>
+                  </HStack>
+                  <HStack w="full" justify="space-between">
+                    <Text textStyle="description" fontWeight="bold">
+                      応答時間
+                    </Text>
+                    <Text textStyle="title">{responseTime}ms</Text>
+                  </HStack>
+                </VStack>
+              }
+            >
+              <Box
+                w="full"
+                h={8}
+                rounded="sm"
+                bg={ok ? 'success' : 'error'}
+                _hover={{ bg: ok ? 'green.300' : 'red.400' }}
+                transition="all .2s ease"
+              />
+            </Tooltip>
           ))}
       </HStack>
       <HStack w="full" justify="space-between">
