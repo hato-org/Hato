@@ -30,7 +30,8 @@ export default function Transit() {
 
   return (
     <VStack gap={4} w="100%" align="flex-start">
-      <LinkBox w="100%" as={RouterLink} to="/transit">
+      <LinkBox w="100%" asChild>
+        <RouterLink to="/transit">
         <HStack pt={2} pl={2} w="100%">
           <Heading as="h2" size="md">
             交通情報
@@ -41,12 +42,13 @@ export default function Transit() {
           </Text>
           <Icon as={TbChevronRight} boxSize={5} />
         </HStack>
+        </RouterLink>
       </LinkBox>
       <VStack p={2} align="flex-start" w="100%">
         {status === 'error' ? (
           <Error error={error} />
         ) : (
-          <Skeleton w="full" rounded="xl" isLoaded={status !== 'pending'}>
+          <Skeleton w="full" rounded="xl" loading={status === 'pending'}>
             <StatusAlert lines={diaInfo} />
           </Skeleton>
         )}
@@ -91,7 +93,7 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
     .filter(({ departAt }) => departAt > date);
 
   return (
-    <Skeleton w="full" rounded="xl" isLoaded={!isPending}>
+    <Skeleton w="full" rounded="xl" loading={isPending}>
       <VStack gap={0} layerStyle="button" rounded="xl">
         <PrimaryUpcomingTrainCountdown
           date={date}

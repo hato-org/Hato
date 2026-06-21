@@ -16,18 +16,16 @@ export default function Classmatch() {
 
   return (
     <VStack w="full" gap={4} align="flex-start">
-      <LinkBox
-        w="full"
-        as={RouterLink}
-        to={`/classmatch/${date.getFullYear()}`}
-      >
-        <HStack pt={2} pl={2} w="full">
-          <Heading as="h2" size="md">
-            クラスマッチ
-          </Heading>
-          <Spacer />
-          <Icon as={TbChevronRight} boxSize={5} />
-        </HStack>
+      <LinkBox w="full" asChild>
+        <RouterLink to={`/classmatch/${date.getFullYear()}`}>
+          <HStack pt={2} pl={2} w="full">
+            <Heading as="h2" size="md">
+              クラスマッチ
+            </Heading>
+            <Spacer />
+            <Icon as={TbChevronRight} boxSize={5} />
+          </HStack>
+        </RouterLink>
       </LinkBox>
       <VStack w="full" p={2}>
         <UpcomingMatch year={date.getFullYear()} season={season} />

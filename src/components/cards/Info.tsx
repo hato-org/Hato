@@ -27,10 +27,10 @@ function Info() {
           {!isInfoSet && (
             <>
               <Icon as={TbInfoCircle} w={16} h={16} color="blue.500" />
-              <Text textStyle="title" align="center">
+              <Text textStyle="title" textAlign="center">
                 学年・クラス等の情報を
-                <Text as={RouterLink} to="/settings/account" textStyle="link">
-                  設定
+                <Text asChild textStyle="link">
+                  <RouterLink to="/settings/account">設定</RouterLink>
                 </Text>
                 してください。
               </Text>
@@ -54,12 +54,10 @@ function Info() {
                   「ホーム画面に追加」
                 </Text>
                 と
-                <Text
-                  textStyle="link"
-                  as={RouterLink}
-                  to="/settings/notification"
-                >
-                  プッシュ通知
+                <Text asChild textStyle="link">
+                  <RouterLink to="/settings/notification">
+                    プッシュ通知
+                  </RouterLink>
                 </Text>
                 で、
                 <br />

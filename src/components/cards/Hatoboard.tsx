@@ -30,12 +30,14 @@ function Hatoboard() {
 
   return (
     <VStack w="100%" gap={4}>
-      <HStack w="100%" pt={2} pl={2} as={RouterLink} to="/posts/hatoboard">
-        <Heading as="h2" size="md">
-          はとボード
-        </Heading>
-        <Spacer />
-        <Icon as={TbChevronRight} w={5} h={5} />
+      <HStack w="100%" pt={2} pl={2} asChild>
+        <RouterLink to="/posts/hatoboard">
+          <Heading as="h2" size="md">
+            はとボード
+          </Heading>
+          <Spacer />
+          <Icon as={TbChevronRight} w={5} h={5} />
+        </RouterLink>
       </HStack>
       {status === 'pending' ? (
         <Loading />
