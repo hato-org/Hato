@@ -1,20 +1,21 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Box,
   Button,
   HStack,
   Icon,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   StackSeparator,
   Text,
   VStack,
   useDisclosure,
-  useOutsideClick,
 } from '@chakra-ui/react';
+import {
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverRoot,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { TbFlag, TbPencil } from 'react-icons/tb';
 
@@ -40,18 +41,15 @@ const TournamentMetaPopover = React.memo(
     const [editMode, setEditMode] = useState<'editor' | 'reporter' | undefined>(
       undefined,
     );
-    const popoverRef = useRef<HTMLDivElement>(null);
-
-    useOutsideClick({
-      ref: popoverRef,
-      handler: onClose,
-    });
 
     const onSubmit = useCallback(() => setEditMode(undefined), []);
 
     return (
-      <Popover isOpen={!!editMode || isOpen}>
-        <PopoverTrigger>
+      <PopoverRoot
+        open={!!editMode || isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+      >
+        <PopoverTrigger asChild>
           <Box
             role="button"
             pos="absolute"
@@ -71,7 +69,6 @@ const TournamentMetaPopover = React.memo(
           rounded="2xl"
           shadow="xl"
           borderColor="border"
-          ref={popoverRef}
         >
           <PopoverArrow bg="panel" borderColor="border" />
           <PopoverBody>
@@ -216,7 +213,7 @@ const TournamentMetaPopover = React.memo(
             })()}
           </PopoverBody>
         </PopoverContent>
-      </Popover>
+      </PopoverRoot>
     );
   },
 );

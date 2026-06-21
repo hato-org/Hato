@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, HStack, Icon, Input, Textarea, VStack } from '@chakra-ui/react';
+import { Button, Field, HStack, Icon, Input, Textarea, VStack } from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
 import { Select } from 'chakra-react-select';
 import { format } from 'date-fns';
@@ -28,63 +28,70 @@ const AddStatusInfo = React.memo(
           <DialogHeader>メンテナンス情報の追加</DialogHeader>
           <DialogBody>
             <VStack gap={8}>
-              <Input
-                rounded="lg"
-                placeholder="タイトル"
-                value={statusInfo.title}
-                onChange={(e) =>
-                  setStatusInfo((curr) => ({ ...curr, title: e.target.value }))
-                }
-                isInvalid={!statusInfo.title}
-              />
-              <Textarea
-                rounded="lg"
-                placeholder="説明"
-                value={statusInfo.description}
-                onChange={(e) =>
-                  setStatusInfo((curr) => ({
-                    ...curr,
-                    description: e.target.value,
-                  }))
-                }
-                isInvalid={!statusInfo.description}
-              />
+              <Field.Root invalid={!statusInfo.title}>
+                <Input
+                  rounded="lg"
+                  placeholder="タイトル"
+                  value={statusInfo.title}
+                  onChange={(e) =>
+                    setStatusInfo((curr) => ({ ...curr, title: e.target.value }))
+                  }
+                />
+              </Field.Root>
+              <Field.Root invalid={!statusInfo.description}>
+                <Textarea
+                  rounded="lg"
+                  placeholder="説明"
+                  value={statusInfo.description}
+                  onChange={(e) =>
+                    setStatusInfo((curr) => ({
+                      ...curr,
+                      description: e.target.value,
+                    }))
+                  }
+                />
+              </Field.Root>
               <HStack w="full" gap={4}>
-                <Input
-                  type="datetime-local"
-                  value={
-                    statusInfo.startAt
-                      ? format(new Date(statusInfo.startAt), 'yyyy-MM-dd HH:mm')
-                      : undefined
-                  }
-                  onChange={(e) =>
-                    setStatusInfo((curr) => ({
-                      ...curr,
-                      startAt: new Date(e.target.value).toISOString() ?? '',
-                    }))
-                  }
-                  isInvalid={!statusInfo.startAt}
-                />
+                <Field.Root invalid={!statusInfo.startAt}>
+                  <Input
+                    type="datetime-local"
+                    value={
+                      statusInfo.startAt
+                        ? format(
+                            new Date(statusInfo.startAt),
+                            'yyyy-MM-dd HH:mm',
+                          )
+                        : undefined
+                    }
+                    onChange={(e) =>
+                      setStatusInfo((curr) => ({
+                        ...curr,
+                        startAt: new Date(e.target.value).toISOString() ?? '',
+                      }))
+                    }
+                  />
+                </Field.Root>
                 <Icon as={TbChevronRight} boxSize={6} />
-                <Input
-                  type="datetime-local"
-                  value={
-                    statusInfo.endAt
-                      ? format(new Date(statusInfo.endAt), 'yyyy-MM-dd HH:mm')
-                      : undefined
-                  }
-                  onChange={(e) =>
-                    setStatusInfo((curr) => ({
-                      ...curr,
-                      endAt: new Date(e.target.value).toISOString() ?? '',
-                    }))
-                  }
-                  isInvalid={!statusInfo.endAt}
-                />
+                <Field.Root invalid={!statusInfo.endAt}>
+                  <Input
+                    type="datetime-local"
+                    value={
+                      statusInfo.endAt
+                        ? format(new Date(statusInfo.endAt), 'yyyy-MM-dd HH:mm')
+                        : undefined
+                    }
+                    onChange={(e) =>
+                      setStatusInfo((curr) => ({
+                        ...curr,
+                        endAt: new Date(e.target.value).toISOString() ?? '',
+                      }))
+                    }
+                  />
+                </Field.Root>
               </HStack>
               <Select
                 isMulti
-                isInvalid={!statusInfo.scope.length}
+                invalid={!statusInfo.scope.length}
                 placeholder="影響範囲"
                 chakraStyles={{
                   container: (provided) => ({
