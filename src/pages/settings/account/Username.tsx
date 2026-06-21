@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, HStack, Icon, Input, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import { Button, Field, HStack, Icon, Input, Text, VStack, useDisclosure } from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { TbEdit } from 'react-icons/tb';
 import { useUserMutation } from '@/services/user';
@@ -41,13 +41,14 @@ function UsernameModal({
         <DialogHeader>アカウント名の変更</DialogHeader>
         <DialogBody>
           <VStack>
-            <Input
-              rounded="lg"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              isInvalid={!isFulfilled}
-              placeholder="新しいアカウント名（20文字以内）"
-            />
+            <Field.Root invalid={!isFulfilled}>
+              <Input
+                rounded="lg"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="新しいアカウント名（20文字以内）"
+              />
+            </Field.Root>
             {!isFulfilled && (
               <Text fontWeight="bold" color="red.500" fontSize="sm">
                 ユーザー名は20文字以内にしてください。

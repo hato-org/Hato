@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, HStack, Icon, Input, Text, VStack } from '@chakra-ui/react';
+import { Button, Field, HStack, Icon, Input, Text, VStack } from '@chakra-ui/react';
 import { useDebouncedCallback } from 'use-debounce';
 import { TbArrowLeft, TbMapPin, TbPlus, TbUser } from 'react-icons/tb';
 import {
@@ -64,27 +64,28 @@ const UserSubjectPicker = React.memo(
               {createMode ? (
                 <VStack w="full" align="flex-start" gap={4}>
                   <Button
-                    variant="link"
+                    variant="plain"
                     colorScheme="blue"
                     onClick={() => {
                       setCreateMode(false);
                     }}
-                  >{<Icon as={TbArrowLeft} />} 
+                  >{<Icon as={TbArrowLeft} />}
                     検索に戻る
                   </Button>
-                  <Input
-                    variant="flushed"
-                    textStyle="title"
-                    placeholder="教科名"
-                    defaultValue={searchQuery}
-                    isInvalid={!subject.name}
-                    onChange={(e) =>
-                      setSubject((val) => ({
-                        ...val,
-                        name: e.target.value || undefined,
-                      }))
-                    }
-                  />
+                  <Field.Root invalid={!subject.name}>
+                    <Input
+                      variant="flushed"
+                      textStyle="title"
+                      placeholder="教科名"
+                      defaultValue={searchQuery}
+                      onChange={(e) =>
+                        setSubject((val) => ({
+                          ...val,
+                          name: e.target.value || undefined,
+                        }))
+                      }
+                    />
+                  </Field.Root>
                   <Input
                     variant="flushed"
                     textStyle="title"

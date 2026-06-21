@@ -129,8 +129,8 @@ function Events() {
         mb={16}
         mr={4}
         onClick={onOpen}
-        leftIcon={<TbPlus />}
       >
+        <TbPlus />
         <Text>イベントを追加</Text>
       </FloatButton>
       <AddEventDrawer isOpen={isOpen} onClose={onClose} />

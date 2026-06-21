@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Heading, Text, VStack, ListItem, UnorderedList, OrderedList, Badge, Separator, Button } from '@chakra-ui/react';
+import { Heading, Text, VStack, List, Badge, Separator, Button } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
@@ -23,49 +23,49 @@ export default function Events() {
         <DialogBody>
           <VStack align="flex-start">
             {/* <Heading size='lg'>年間行事予定</Heading> */}
-            <UnorderedList textStyle="title">
-              <ListItem>生徒による生徒のための年間行事予定表です</ListItem>
-              <ListItem>どんな規模のイベントでもOKです</ListItem>
-              <ListItem>
+            <List.Root textStyle="title">
+              <List.Item>生徒による生徒のための年間行事予定表です</List.Item>
+              <List.Item>どんな規模のイベントでもOKです</List.Item>
+              <List.Item>
                 誰でもイベントの追加・編集ができます
                 <Text textStyle="description">
                   イベントを追加するとポイントがたまります
                 </Text>
-              </ListItem>
-              <ListItem>
+              </List.Item>
+              <List.Item>
                 あなたの貢献が全校の生徒の役に立ちます
                 <Text textStyle="description">
                   積極的に貢献してくださると嬉しいです
                 </Text>
-              </ListItem>
-              <ListItem>
+              </List.Item>
+              <List.Item>
                 <Text color="red.500">
                   予定を追加すると利用者全員に公開されます
                 </Text>
                 <Text textStyle="description">
                   個人的な予定を追加しないようご注意ください
                 </Text>
-              </ListItem>
-            </UnorderedList>
+              </List.Item>
+            </List.Root>
             <Separator />
             <Heading size="md">イベントの追加方法</Heading>
-            <OrderedList pl={4} textStyle="title" gap={4}>
-              <ListItem>右下の「イベントを追加」をタップ</ListItem>
-              <ListItem>
+            <List.Root as="ol" pl={4} textStyle="title" gap={4}>
+              <List.Item>右下の「イベントを追加」をタップ</List.Item>
+              <List.Item>
                 各項目を入力
-                <UnorderedList gap={1}>
-                  <ListItem>
+                <List.Root gap={1}>
+                  <List.Item>
                     タイトル
                     <Badge ml={1} colorScheme="red">
                       必須
                     </Badge>
                     <Text textStyle="description">イベントのタイトル。</Text>
-                  </ListItem>
-                  <ListItem>
+                  </List.Item>
+                  <List.Item>
                     説明
                     <Text textStyle="description">イベントの詳細な説明。</Text>
-                  </ListItem>
-                  <ListItem>
+                  </List.Item>
+                  <List.Item>
                     開始日時・終了日時
                     <Badge ml={1} colorScheme="red">
                       必須
@@ -75,14 +75,14 @@ export default function Events() {
                       <br />
                       「終日」をオンにすると、日単位になります。
                     </Text>
-                  </ListItem>
-                  <ListItem>
+                  </List.Item>
+                  <List.Item>
                     場所
                     <Text textStyle="description">
                       イベントが行われる場所。
                     </Text>
-                  </ListItem>
-                  <ListItem>
+                  </List.Item>
+                  <List.Item>
                     タグ
                     <Badge ml={1} colorScheme="red">
                       必須
@@ -94,12 +94,12 @@ export default function Events() {
                         タグを正確に設定しないと、正常に表示されません。
                       </Text>
                     </Text>
-                  </ListItem>
-                </UnorderedList>
-              </ListItem>
-              <ListItem>「追加する」をタップ</ListItem>
-              <ListItem>完了！</ListItem>
-            </OrderedList>
+                  </List.Item>
+                </List.Root>
+              </List.Item>
+              <List.Item>「追加する」をタップ</List.Item>
+              <List.Item>完了！</List.Item>
+            </List.Root>
           </VStack>
         </DialogBody>
         <DialogFooter>

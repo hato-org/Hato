@@ -5,14 +5,14 @@ import { useUser } from '@/services/user';
 
 export default function AccountApiKey() {
   const { data: user } = useUser();
-  const { onCopy, hasCopied } = useClipboard(user.apiKey);
+  const { copy, copied } = useClipboard({ value: user.apiKey });
   const toast = (options: Parameters<typeof toaster.create>[0]) =>
     toaster.create({ duration: 1500, ...options });
 
   return (
     <HStack
       onClick={() => {
-        onCopy();
+        copy();
         toast({
           title: 'コピーしました。',
           type: 'success',
@@ -29,8 +29,8 @@ export default function AccountApiKey() {
       </Text>
       <Icon
         transition="all .2s ease"
-        color={hasCopied ? 'green.400' : undefined}
-        as={hasCopied ? TbCheck : TbCopy}
+        color={copied ? 'green.400' : undefined}
+        as={copied ? TbCheck : TbCopy}
       />
     </HStack>
   );

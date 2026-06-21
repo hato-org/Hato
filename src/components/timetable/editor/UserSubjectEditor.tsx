@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, Input, Text, VStack } from '@chakra-ui/react';
+import { Button, Field, Input, Text, VStack } from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { useUserSubjectMutation } from '@/services/timetable';
 import { useUser } from '@/services/user';
@@ -40,14 +40,15 @@ export default function UserSubjectEditor({
         <DrawerBody>
           <VStack align="flex-start" gap={4}>
             <Text textStyle="title">教科名</Text>
-            <Input
-              textStyle="title"
-              variant="flushed"
-              placeholder={subject?.name}
-              isInvalid={!name}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Field.Root invalid={!name}>
+              <Input
+                textStyle="title"
+                variant="flushed"
+                placeholder={subject?.name}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Field.Root>
             <Text textStyle="title">教科名（略称）</Text>
             <Input
               textStyle="title"
