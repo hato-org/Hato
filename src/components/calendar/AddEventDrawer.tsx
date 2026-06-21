@@ -1,6 +1,25 @@
 import React, { useState } from 'react';
-import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, Field, HStack, Icon, Input, InputGroup, Spacer, Text, Textarea, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Button,
+  Field,
+  HStack,
+  Icon,
+  Input,
+  InputGroup,
+  Spacer,
+  Text,
+  Textarea,
+  VStack,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
@@ -26,7 +45,7 @@ interface AddEventDrawerProps
 const AddEventDrawer = React.memo(
   ({ isOpen, onClose, ...rest }: AddEventDrawerProps) => {
     const toast = (options: Parameters<typeof toaster.create>[0]) =>
-    toaster.create({ duration: 1500, ...options });
+      toaster.create({ duration: 1500, ...options });
     const { data: user } = useUser();
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
@@ -46,7 +65,12 @@ const AddEventDrawer = React.memo(
 
     // TODO: refactor with react-hook-form
     return (
-      <DrawerRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="bottom" {...rest}>
+      <DrawerRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        placement="bottom"
+        {...rest}
+      >
         <DrawerContent
           borderTopRadius="xl"
           pb="env(safe-area-inset-bottom)"
@@ -68,12 +92,7 @@ const AddEventDrawer = React.memo(
                     size="lg"
                   />
                 </Field.Root>
-                <Textarea
-                  asChild
-                  resize="none"
-                  variant="flushed"
-                  minH="unset"
-                >
+                <Textarea asChild resize="none" variant="flushed" minH="unset">
                   <ResizeTextArea
                     value={desc}
                     placeholder="説明（任意）"
@@ -125,7 +144,9 @@ const AddEventDrawer = React.memo(
                         (startAt && startAt?.getTime() > endAt.getTime())
                       }
                     >
-                      <InputGroup startElement={<Icon as={TbArrowBarToRight} />}>
+                      <InputGroup
+                        startElement={<Icon as={TbArrowBarToRight} />}
+                      >
                         <Input
                           onChange={(e) => setEndAt(new Date(e.target.value))}
                           variant="flushed"

@@ -1,6 +1,25 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
-import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerRoot } from '@/components/ui/drawer';
-import { Box, Heading, HStack, Icon, IconButton, Image, Portal, Spacer, StackSeparator, StackProps, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
+import {
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Box,
+  Heading,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  Portal,
+  Spacer,
+  StackSeparator,
+  StackProps,
+  Text,
+  useBreakpointValue,
+  VStack,
+} from '@chakra-ui/react';
 import {
   TbHome,
   TbClipboardList,
@@ -43,7 +62,11 @@ export function SideMenuDrawer() {
 
   return (
     <Portal>
-      <DrawerRoot open={menu} onOpenChange={(e) => !e.open && (onClose)()} placement="start">
+      <DrawerRoot
+        open={menu}
+        onOpenChange={(e) => !e.open && onClose()}
+        placement="start"
+      >
         <DrawerContent bg="panel" roundedRight="2xl">
           <DrawerCloseTrigger top={9} right={8} />
           <DrawerBody p={4}>
@@ -204,19 +227,19 @@ const MenuBody = React.memo(() => {
                 menuItem.onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>
               }
             >
-            {menuItem.icon}
-            <Text
-              color={
-                menuItem.color ??
-                (location.pathname.startsWith(menuItem.href)
-                  ? 'blue.400'
-                  : undefined)
-              }
-              textStyle="title"
-              fontSize="lg"
-            >
-              {menuItem.label}
-            </Text>
+              {menuItem.icon}
+              <Text
+                color={
+                  menuItem.color ??
+                  (location.pathname.startsWith(menuItem.href)
+                    ? 'blue.400'
+                    : undefined)
+                }
+                textStyle="title"
+                fontSize="lg"
+              >
+                {menuItem.label}
+              </Text>
             </RouterLink>
           </HStack>
         ),

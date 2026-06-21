@@ -42,35 +42,33 @@ function Timetable() {
       <VStack w="100%" gap={4}>
         <LinkBox w="100%" asChild>
           <RouterLink to="/timetable">
-          <HStack w="100%" pt={2} pl={2}>
-            <Heading as="h2" size="md">
-              時間割
-            </Heading>
-            <Spacer />
-            {notes?.length && (
-              <Tooltip
-                content={`備考・特記事項が${notes?.length}件あります`}
-              >
-                <Flex as="span" align="center">
-                  <Icon as={TbPoint} color="blue.500" w={5} h={5} />
-                </Flex>
-              </Tooltip>
-            )}
-            <Skeleton rounded="md" loading={isPending}>
-              <Text textStyle="title" color="description">
-                {division
-                  ? `${division.week}週 ${format(
-                      setDay(date, division.day),
-                      'E',
-                      {
-                        locale: ja,
-                      },
-                    )}曜日課`
-                  : '日課未設定'}
-              </Text>
-            </Skeleton>
-            <Icon as={TbChevronRight} boxSize={5} />
-          </HStack>
+            <HStack w="100%" pt={2} pl={2}>
+              <Heading as="h2" size="md">
+                時間割
+              </Heading>
+              <Spacer />
+              {notes?.length && (
+                <Tooltip content={`備考・特記事項が${notes?.length}件あります`}>
+                  <Flex as="span" align="center">
+                    <Icon as={TbPoint} color="blue.500" w={5} h={5} />
+                  </Flex>
+                </Tooltip>
+              )}
+              <Skeleton rounded="md" loading={isPending}>
+                <Text textStyle="title" color="description">
+                  {division
+                    ? `${division.week}週 ${format(
+                        setDay(date, division.day),
+                        'E',
+                        {
+                          locale: ja,
+                        },
+                      )}曜日課`
+                    : '日課未設定'}
+                </Text>
+              </Skeleton>
+              <Icon as={TbChevronRight} boxSize={5} />
+            </HStack>
           </RouterLink>
         </LinkBox>
         {isPending || userSchedulePending ? (

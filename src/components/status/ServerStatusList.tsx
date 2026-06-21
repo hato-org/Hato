@@ -42,20 +42,22 @@ const ServerStatus = React.memo(({ id, name, ok }: StatusServerInfo) => {
         </VStack>
       </HStack>
       <Box w="full">
-        <Collapsible.Root open={isOpen}><Collapsible.Content>
-          <VStack w="full" p={2} align="flex-start" gap={4}>
-            <Alert.Root
-              status={ok ? 'success' : 'error'}
-              rounded="lg"
-              justifyContent="center"
-            >
-              <Alert.Indicator />
-              <Alert.Title>{ok ? '正常稼働中' : '異常発生'}</Alert.Title>
-            </Alert.Root>
+        <Collapsible.Root open={isOpen}>
+          <Collapsible.Content>
+            <VStack w="full" p={2} align="flex-start" gap={4}>
+              <Alert.Root
+                status={ok ? 'success' : 'error'}
+                rounded="lg"
+                justifyContent="center"
+              >
+                <Alert.Indicator />
+                <Alert.Title>{ok ? '正常稼働中' : '異常発生'}</Alert.Title>
+              </Alert.Root>
 
-            <ServerStatusHistoryStack id={id} />
-          </VStack>
-        </Collapsible.Content></Collapsible.Root>
+              <ServerStatusHistoryStack id={id} />
+            </VStack>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
     </VStack>
   );

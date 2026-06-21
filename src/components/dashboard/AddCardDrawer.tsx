@@ -1,6 +1,20 @@
 import React, { useState, useCallback } from 'react';
-import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Box, Button, Center, Flex, Icon, Text, VStack } from '@chakra-ui/react';
+import {
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Icon,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { TbPlus } from 'react-icons/tb';
 import Card from '../layout/Card';
@@ -21,7 +35,11 @@ const AddCardDrawer = React.memo(() => {
   );
 
   return (
-    <DrawerRoot placement="bottom" open={cardOrderDrawer} onOpenChange={(e) => !e.open && (onClose)()}>
+    <DrawerRoot
+      placement="bottom"
+      open={cardOrderDrawer}
+      onOpenChange={(e) => !e.open && onClose()}
+    >
       <DrawerContent bg="panel" roundedTop="xl">
         <DrawerHeader w="full" maxW="container.lg" mx="auto">
           カードの追加
@@ -101,7 +119,8 @@ const AddCardDrawer = React.memo(() => {
               setSelectedCard('');
               onClose();
             }}
-          >{<Icon as={TbPlus} />} 
+          >
+            {<Icon as={TbPlus} />}
             カードを追加
           </Button>
         </DrawerFooter>

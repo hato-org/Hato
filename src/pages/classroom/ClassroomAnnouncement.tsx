@@ -93,13 +93,15 @@ export default function ClassroomAnnouncement() {
                     ],
               )
             }
-          >{
+          >
+            {
               <Icon
                 color={isBookmarked ? 'blue.400' : undefined}
                 as={isBookmarked ? IoBookmark : IoBookmarkOutline}
                 boxSize={5}
               />
-            }</IconButton>
+            }
+          </IconButton>
           <IconButton
             aria-label="open in browser"
             size="lg"
@@ -109,7 +111,8 @@ export default function ClassroomAnnouncement() {
           >
             <Link
               href={data?.alternateLink ?? ''}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               <Icon as={TbExternalLink} boxSize={6} />
             </Link>
@@ -135,12 +138,7 @@ export default function ClassroomAnnouncement() {
               borderColor="blue.400"
             />
             <VStack w="full" align="flex-start" gap={1}>
-              <Skeleton
-                minH={8}
-                minW={40}
-                rounded="lg"
-                loading={isUserPending}
-              >
+              <Skeleton minH={8} minW={40} rounded="lg" loading={isUserPending}>
                 {userError ? (
                   <HStack>
                     <Icon

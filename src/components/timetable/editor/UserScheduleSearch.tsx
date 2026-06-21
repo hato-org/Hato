@@ -103,14 +103,16 @@ export function UserScheduleSearch() {
               <Switch checked={isFilterEnabled} onCheckedChange={toggle} />
             </HStack>
             <Box w="full">
-              <Collapsible.Root open={isFilterEnabled}><Collapsible.Content>
-                <GradeClassPicker
-                  onGradeSelect={setGrade}
-                  onClassSelect={setClass}
-                  onCourseSelect={setCourse}
-                  direction={{ base: 'column', md: 'row' }}
-                />
-              </Collapsible.Content></Collapsible.Root>
+              <Collapsible.Root open={isFilterEnabled}>
+                <Collapsible.Content>
+                  <GradeClassPicker
+                    onGradeSelect={setGrade}
+                    onClassSelect={setClass}
+                    onCourseSelect={setCourse}
+                    direction={{ base: 'column', md: 'row' }}
+                  />
+                </Collapsible.Content>
+              </Collapsible.Root>
             </Box>
             <Button
               type="submit"
@@ -118,7 +120,8 @@ export function UserScheduleSearch() {
               rounded="lg"
               colorScheme="blue"
               loading={isPending}
-            >{<Icon as={TbSearch} />} 
+            >
+              {<Icon as={TbSearch} />}
               検索
             </Button>
           </VStack>

@@ -64,190 +64,189 @@ export const UserScheduleMetaEditor = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapsible.Root open={isOpen}><Collapsible.Content>
-            <VStack p={4} gap={4}>
-              <Field.Root invalid={!title}>
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <VStack p={4} gap={4}>
+                <Field.Root invalid={!title}>
+                  <Input
+                    size="lg"
+                    textStyle="title"
+                    placeholder="時間割の名前"
+                    variant="flushed"
+                    value={title}
+                    onChange={(e) =>
+                      setSchedule((val) => ({ ...val, title: e.target.value }))
+                    }
+                  />
+                </Field.Root>
                 <Input
-                  size="lg"
                   textStyle="title"
-                  placeholder="時間割の名前"
+                  placeholder="時間割の説明"
                   variant="flushed"
-                  value={title}
+                  value={description ?? ''}
                   onChange={(e) =>
-                    setSchedule((val) => ({ ...val, title: e.target.value }))
+                    setSchedule((val) => ({
+                      ...val,
+                      description: e.target.value,
+                    }))
                   }
                 />
-              </Field.Root>
-              <Input
-                textStyle="title"
-                placeholder="時間割の説明"
-                variant="flushed"
-                value={description ?? ''}
-                onChange={(e) =>
-                  setSchedule((val) => ({
-                    ...val,
-                    description: e.target.value,
-                  }))
-                }
-              />
-              <HStack w="full">
-                <Text textStyle="title">非公開</Text>
-                <Spacer />
-                <Switch
-                  checked={isPrivate}
-                  onCheckedChange={onVisibilityChange}
-                />
-              </HStack>
-              <Tooltip
-                content={
-                  <HStack w="full" justify="center">
-                    <Icon
-                      as={TbExclamationCircle}
-                      boxSize={6}
-                      color="yellow.400"
-                    />
-                    <Text textStyle="title">作成後は変更できません。</Text>
-                  </HStack>
-                }
-              >
-                <VStack w="full">
-                  <HStack w="full">
-                    <Text textStyle="title">学年</Text>
-                    <Spacer />
-                    <MenuRoot>
-                      <MenuTrigger asChild>
-                        <Button
-                          disabled={!!_id}
-                          variant="ghost"
-                          rounded="lg"
-                        >
-                          {
-                            gradeList?.find(
-                              (grade) =>
-                                grade.type === meta.type &&
-                                grade.gradeCode === meta.grade,
-                            )?.name
-                          }
-                          <Icon as={TbChevronDown} />
-                        </Button>
-                      </MenuTrigger>
-                      <MenuContent shadow="lg" rounded="xl">
-                        {gradeList?.map((gradeInfo) => (
-                          <MenuItem
-                            key={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
-                            value={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
-                            textStyle="title"
-                            onClick={() =>
-                              setSchedule((val) => ({
-                                ...val,
-                                meta: {
-                                  ...val.meta,
-                                  type: gradeInfo.type,
-                                  grade: gradeInfo.gradeCode,
-                                  course: undefined,
-                                },
-                              }))
-                            }
-                          >
-                            {gradeInfo.name}
-                          </MenuItem>
-                        ))}
-                      </MenuContent>
-                    </MenuRoot>
-                  </HStack>
-                  <HStack w="full">
-                    <Text textStyle="title">クラス</Text>
-                    <Spacer />
-                    <MenuRoot>
-                      <MenuTrigger asChild>
-                        <Button
-                          bg={!meta.class ? 'invalid' : undefined}
-                          disabled={!!_id}
-                          variant="ghost"
-                          rounded="lg"
-                        >
-                          {
-                            classList?.find(
-                              (classInfo) =>
-                                classInfo.type === meta.type &&
-                                classInfo.gradeCode === meta.grade &&
-                                classInfo.classCode === meta.class,
-                            )?.name
-                          }
-                          <Icon as={TbChevronDown} />
-                        </Button>
-                      </MenuTrigger>
-                      <MenuContent shadow="lg" rounded="xl">
-                        {classList?.map((classInfo) => (
-                          <MenuItem
-                            key={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
-                            value={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
-                            textStyle="title"
-                            onClick={() =>
-                              setSchedule((val) => ({
-                                ...val,
-                                meta: {
-                                  ...val.meta,
-                                  type: classInfo.type,
-                                  grade: classInfo.gradeCode,
-                                  class: classInfo.classCode,
-                                },
-                              }))
-                            }
-                          >
-                            {classInfo.name}
-                          </MenuItem>
-                        ))}
-                      </MenuContent>
-                    </MenuRoot>
-                  </HStack>
-                  {courseList?.length && (
+                <HStack w="full">
+                  <Text textStyle="title">非公開</Text>
+                  <Spacer />
+                  <Switch
+                    checked={isPrivate}
+                    onCheckedChange={onVisibilityChange}
+                  />
+                </HStack>
+                <Tooltip
+                  content={
+                    <HStack w="full" justify="center">
+                      <Icon
+                        as={TbExclamationCircle}
+                        boxSize={6}
+                        color="yellow.400"
+                      />
+                      <Text textStyle="title">作成後は変更できません。</Text>
+                    </HStack>
+                  }
+                >
+                  <VStack w="full">
                     <HStack w="full">
-                      <Text textStyle="title">コース</Text>
+                      <Text textStyle="title">学年</Text>
                       <Spacer />
                       <MenuRoot>
                         <MenuTrigger asChild>
-                          <Button
-                            bg={!meta.course ? 'invalid' : undefined}
-                            disabled={!!_id}
-                            variant="ghost"
-                            rounded="lg"
-                          >
+                          <Button disabled={!!_id} variant="ghost" rounded="lg">
                             {
-                              courseList?.find(
-                                (courseInfo) => courseInfo.code === meta.course,
+                              gradeList?.find(
+                                (grade) =>
+                                  grade.type === meta.type &&
+                                  grade.gradeCode === meta.grade,
                               )?.name
                             }
                             <Icon as={TbChevronDown} />
                           </Button>
                         </MenuTrigger>
                         <MenuContent shadow="lg" rounded="xl">
-                          {courseList?.map((courseInfo) => (
+                          {gradeList?.map((gradeInfo) => (
                             <MenuItem
-                              key={courseInfo.code}
-                              value={courseInfo.code}
+                              key={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
+                              value={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
                               textStyle="title"
                               onClick={() =>
                                 setSchedule((val) => ({
                                   ...val,
                                   meta: {
                                     ...val.meta,
-                                    course: courseInfo.code,
+                                    type: gradeInfo.type,
+                                    grade: gradeInfo.gradeCode,
+                                    course: undefined,
                                   },
                                 }))
                               }
                             >
-                              {courseInfo.name}
+                              {gradeInfo.name}
                             </MenuItem>
                           ))}
                         </MenuContent>
                       </MenuRoot>
                     </HStack>
-                  )}
-                </VStack>
-              </Tooltip>
-            </VStack>
-          </Collapsible.Content></Collapsible.Root>
+                    <HStack w="full">
+                      <Text textStyle="title">クラス</Text>
+                      <Spacer />
+                      <MenuRoot>
+                        <MenuTrigger asChild>
+                          <Button
+                            bg={!meta.class ? 'invalid' : undefined}
+                            disabled={!!_id}
+                            variant="ghost"
+                            rounded="lg"
+                          >
+                            {
+                              classList?.find(
+                                (classInfo) =>
+                                  classInfo.type === meta.type &&
+                                  classInfo.gradeCode === meta.grade &&
+                                  classInfo.classCode === meta.class,
+                              )?.name
+                            }
+                            <Icon as={TbChevronDown} />
+                          </Button>
+                        </MenuTrigger>
+                        <MenuContent shadow="lg" rounded="xl">
+                          {classList?.map((classInfo) => (
+                            <MenuItem
+                              key={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
+                              value={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
+                              textStyle="title"
+                              onClick={() =>
+                                setSchedule((val) => ({
+                                  ...val,
+                                  meta: {
+                                    ...val.meta,
+                                    type: classInfo.type,
+                                    grade: classInfo.gradeCode,
+                                    class: classInfo.classCode,
+                                  },
+                                }))
+                              }
+                            >
+                              {classInfo.name}
+                            </MenuItem>
+                          ))}
+                        </MenuContent>
+                      </MenuRoot>
+                    </HStack>
+                    {courseList?.length && (
+                      <HStack w="full">
+                        <Text textStyle="title">コース</Text>
+                        <Spacer />
+                        <MenuRoot>
+                          <MenuTrigger asChild>
+                            <Button
+                              bg={!meta.course ? 'invalid' : undefined}
+                              disabled={!!_id}
+                              variant="ghost"
+                              rounded="lg"
+                            >
+                              {
+                                courseList?.find(
+                                  (courseInfo) =>
+                                    courseInfo.code === meta.course,
+                                )?.name
+                              }
+                              <Icon as={TbChevronDown} />
+                            </Button>
+                          </MenuTrigger>
+                          <MenuContent shadow="lg" rounded="xl">
+                            {courseList?.map((courseInfo) => (
+                              <MenuItem
+                                key={courseInfo.code}
+                                value={courseInfo.code}
+                                textStyle="title"
+                                onClick={() =>
+                                  setSchedule((val) => ({
+                                    ...val,
+                                    meta: {
+                                      ...val.meta,
+                                      course: courseInfo.code,
+                                    },
+                                  }))
+                                }
+                              >
+                                {courseInfo.name}
+                              </MenuItem>
+                            ))}
+                          </MenuContent>
+                        </MenuRoot>
+                      </HStack>
+                    )}
+                  </VStack>
+                </Tooltip>
+              </VStack>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );

@@ -50,7 +50,8 @@ function ErrorFallback() {
             if (!import.meta.env.DEV && sendReport) mutate(report);
             window.location.assign('/');
           }}
-        >{<TbRotate />} 
+        >
+          {<TbRotate />}
           再読み込み
         </Button>
         <Button
@@ -65,7 +66,8 @@ function ErrorFallback() {
             window.localStorage.clear();
             window.location.replace('/');
           }}
-        >{<TbLoader />} 
+        >
+          {<TbLoader />}
           ログアウト・キャッシュ削除
         </Button>
         <Checkbox

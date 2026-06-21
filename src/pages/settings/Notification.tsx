@@ -95,38 +95,47 @@ export default function Notification() {
             }}
           />
           <Box w="full">
-            <Collapsible.Root open={!isPushAvailable}><Collapsible.Content>
-              <Alert.Root status="warning" rounded="xl">
-                <VStack w="full" align="flex-start">
-                  <HStack>
-                    <Alert.Indicator />
-                    <Alert.Title>プッシュ通知を有効にできません</Alert.Title>
-                  </HStack>
-                  <Alert.Description textStyle="description" fontWeight="bold">
-                    以下をお試しください
-                  </Alert.Description>
-                  <List.Root gap={2}>
-                    {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
-                      navigator.userAgent,
-                    ) && (
+            <Collapsible.Root open={!isPushAvailable}>
+              <Collapsible.Content>
+                <Alert.Root status="warning" rounded="xl">
+                  <VStack w="full" align="flex-start">
+                    <HStack>
+                      <Alert.Indicator />
+                      <Alert.Title>プッシュ通知を有効にできません</Alert.Title>
+                    </HStack>
+                    <Alert.Description
+                      textStyle="description"
+                      fontWeight="bold"
+                    >
+                      以下をお試しください
+                    </Alert.Description>
+                    <List.Root gap={2}>
+                      {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
+                        navigator.userAgent,
+                      ) && (
+                        <List.Item textStyle="title">
+                          iOSをアップデートする（16.4+）
+                        </List.Item>
+                      )}
                       <List.Item textStyle="title">
-                        iOSをアップデートする（16.4+）
+                        ホーム画面に追加する
                       </List.Item>
-                    )}
-                    <List.Item textStyle="title">ホーム画面に追加する</List.Item>
-                    <List.Item textStyle="title">
-                      OSの設定で通知を許可する
-                    </List.Item>
-                  </List.Root>
-                </VStack>
-              </Alert.Root>
-            </Collapsible.Content></Collapsible.Root>
+                      <List.Item textStyle="title">
+                        OSの設定で通知を許可する
+                      </List.Item>
+                    </List.Root>
+                  </VStack>
+                </Alert.Root>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
           <Suspense fallback={<Loading />}>
             <Box w="full">
-              <Collapsible.Root open={!!pushSubscription}><Collapsible.Content>
-                <NotificationDetail />
-              </Collapsible.Content></Collapsible.Root>
+              <Collapsible.Root open={!!pushSubscription}>
+                <Collapsible.Content>
+                  <NotificationDetail />
+                </Collapsible.Content>
+              </Collapsible.Root>
             </Box>
           </Suspense>
         </VStack>
@@ -203,18 +212,15 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
         disabled={isPending || !!error}
         checked={settings?.notification.push.includes(id) ?? false}
         onCheckedChange={(e) =>
-          mutate(
-            notifySettingReducer(id, e.checked ? 'add' : 'remove'),
-            {
-              onError: (err) => {
-                toast({
-                  title: '更新に失敗しました',
-                  description: err.message,
-                  type: 'error',
-                });
-              },
+          mutate(notifySettingReducer(id, e.checked ? 'add' : 'remove'), {
+            onError: (err) => {
+              toast({
+                title: '更新に失敗しました',
+                description: err.message,
+                type: 'error',
+              });
             },
-          )
+          })
         }
       />
     </HStack>

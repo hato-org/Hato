@@ -1,5 +1,12 @@
 import { useCallback } from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import { Image } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
@@ -12,7 +19,10 @@ export default function Pin() {
   );
 
   return (
-    <DialogRoot open={tutorialModal.pin} onOpenChange={(e) => !e.open && (onClose)()}>
+    <DialogRoot
+      open={tutorialModal.pin}
+      onOpenChange={(e) => !e.open && onClose()}
+    >
       <DialogContent rounded="xl" bg="panel">
         <DialogCloseTrigger top={4} right={4} />
         <DialogHeader>投稿のピン留め</DialogHeader>

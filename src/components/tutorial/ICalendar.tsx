@@ -1,6 +1,26 @@
 import { useMemo } from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Accordion, Button, Icon, IconButton, Image, Input, InputGroup, Link, Spacer, Text, useClipboard, VStack } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Accordion,
+  Button,
+  Icon,
+  IconButton,
+  Image,
+  Input,
+  InputGroup,
+  Link,
+  Spacer,
+  Text,
+  useClipboard,
+  VStack,
+} from '@chakra-ui/react';
 import { TbCheck, TbChevronDown, TbCopy, TbExternalLink } from 'react-icons/tb';
 import { useAtom } from 'jotai';
 import { useUser } from '@/services/user';
@@ -21,14 +41,20 @@ export default function ICalendar() {
   return (
     <DialogRoot
       open={tutorialModal.iCal}
-      onOpenChange={(e) => !e.open && (() =>
-        setTutorialModal((currVal) => ({ ...currVal, iCal: false })))()}
+      onOpenChange={(e) =>
+        !e.open &&
+        (() => setTutorialModal((currVal) => ({ ...currVal, iCal: false })))()
+      }
     >
       <DialogContent rounded="xl" bg="panel">
         <DialogHeader>iCalフィード</DialogHeader>
         <DialogCloseTrigger top={4} right={4} />
         <DialogBody>
-          <Accordion.Root textStyle="title" collapsible defaultValue={['item-0']}>
+          <Accordion.Root
+            textStyle="title"
+            collapsible
+            defaultValue={['item-0']}
+          >
             <Accordion.Item value="item-0">
               <Accordion.ItemTrigger textStyle="title">
                 iCalとは？
@@ -77,7 +103,9 @@ export default function ICalendar() {
                             variant="outline"
                             colorScheme={copied ? 'green' : 'gray'}
                             onClick={copy}
-                          >{copied ? <TbCheck /> : <TbCopy />}</IconButton>
+                          >
+                            {copied ? <TbCheck /> : <TbCopy />}
+                          </IconButton>
                         }
                       >
                         <Input variant="subtle" readOnly value={iCalLink} />
@@ -106,14 +134,11 @@ export default function ICalendar() {
                     gap={4}
                     separator={<Icon as={TbChevronDown} w={8} h={8} />}
                   >
-                    <Button
-                      asChild
-                      variant="plain"
-                      colorScheme="blue"
-                    >
+                    <Button asChild variant="plain" colorScheme="blue">
                       <Link
                         href="https://calendar.google.com/r"
-                        target="_blank" rel="noreferrer"
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         Googleカレンダー (Web版)
                         {<TbExternalLink />}
@@ -133,7 +158,9 @@ export default function ICalendar() {
                             variant="outline"
                             colorScheme={copied ? 'green' : 'gray'}
                             onClick={copy}
-                          >{copied ? <TbCheck /> : <TbCopy />}</IconButton>
+                          >
+                            {copied ? <TbCheck /> : <TbCopy />}
+                          </IconButton>
                         }
                       >
                         <Input variant="subtle" readOnly value={iCalLink} />

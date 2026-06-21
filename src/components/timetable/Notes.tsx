@@ -164,7 +164,9 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                 setEditMode(false);
                 setMessage(note.message);
               }}
-            >{<TbX />}</IconButton>
+            >
+              {<TbX />}
+            </IconButton>
             <IconButton
               aria-label="apply changes"
               flex={3}
@@ -193,7 +195,9 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
                   },
                 );
               }}
-            >{<TbCheck />}</IconButton>
+            >
+              {<TbCheck />}
+            </IconButton>
           </HStack>
         </VStack>
       ) : (

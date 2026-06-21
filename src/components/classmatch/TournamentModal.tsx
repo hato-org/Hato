@@ -1,5 +1,12 @@
 import React from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import { VStack, Image } from '@chakra-ui/react';
 import { useColorModeValue } from '@/components/ui/color-mode';
 import {
@@ -37,7 +44,11 @@ const TournamentModal = React.memo(
     );
 
     return (
-      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        size="xl"
+      >
         <DialogContent overflow="hidden" bg="panel" rounded="xl">
           <DialogCloseTrigger top={4} right={4} />
           <DialogHeader>

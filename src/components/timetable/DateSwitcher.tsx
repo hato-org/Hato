@@ -21,7 +21,9 @@ const DateSwitcher = React.memo(
           onClick={onPrev}
           borderRadius="full"
           variant="ghost"
-        >{<TbChevronLeft />}</IconButton>
+        >
+          {<TbChevronLeft />}
+        </IconButton>
         <Input
           textStyle="title"
           type="date"
@@ -35,7 +37,9 @@ const DateSwitcher = React.memo(
           onClick={onNext}
           borderRadius="full"
           variant="ghost"
-        >{<TbChevronRight />}</IconButton>
+        >
+          {<TbChevronRight />}
+        </IconButton>
       </HStack>
     );
   },

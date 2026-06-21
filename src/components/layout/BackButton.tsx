@@ -12,7 +12,9 @@ function BackButton() {
       size="lg"
       borderRadius="full"
       onClick={() => navigate(-1)}
-    >{<Icon as={TbArrowNarrowLeft} w={6} h={6} />}</IconButton>
+    >
+      {<Icon as={TbArrowNarrowLeft} w={6} h={6} />}
+    </IconButton>
   );
 }
 

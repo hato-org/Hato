@@ -1,11 +1,4 @@
-import {
-  VStack,
-  Heading,
-  HStack,
-  Text,
-  Icon,
-  Wrap,
-} from '@chakra-ui/react';
+import { VStack, Heading, HStack, Text, Icon, Wrap } from '@chakra-ui/react';
 import { Tag } from '@/components/ui/tag';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';

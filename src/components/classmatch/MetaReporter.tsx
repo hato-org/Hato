@@ -103,7 +103,9 @@ export default function MetaReporter({
           rounded="lg"
           flex={1}
           onClick={onSubmit}
-        >{<Icon as={TbX} />}</IconButton>
+        >
+          {<Icon as={TbX} />}
+        </IconButton>
         <IconButton
           aria-label="confirm changes"
           rounded="lg"
@@ -133,7 +135,9 @@ export default function MetaReporter({
           }
           loading={reportPending}
           disabled={!description}
-        >{<Icon as={TbCheck} />}</IconButton>
+        >
+          {<Icon as={TbCheck} />}
+        </IconButton>
       </HStack>
     </VStack>
   );

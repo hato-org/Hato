@@ -70,22 +70,24 @@ export const EditorTable = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapsible.Root open={isOpen}><Collapsible.Content>
-            <SimpleGrid w="full" p={4} pt={8} columns={5} gap={1}>
-              {schedules
-                ?.slice(1, 6)
-                .map((weekSchedule, index) => (
-                  <EditorTableCol
-                    key={`schedule-day${index}`}
-                    schedule={weekSchedule}
-                    meta={meta}
-                    isPrivate={isPrivate}
-                    week={week}
-                    dayIndex={index + 1}
-                  />
-                ))}
-            </SimpleGrid>
-          </Collapsible.Content></Collapsible.Root>
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <SimpleGrid w="full" p={4} pt={8} columns={5} gap={1}>
+                {schedules
+                  ?.slice(1, 6)
+                  .map((weekSchedule, index) => (
+                    <EditorTableCol
+                      key={`schedule-day${index}`}
+                      schedule={weekSchedule}
+                      meta={meta}
+                      isPrivate={isPrivate}
+                      week={week}
+                      dayIndex={index + 1}
+                    />
+                  ))}
+              </SimpleGrid>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );
@@ -163,7 +165,9 @@ const EditorTableCol = React.memo(
           rounded="lg"
           variant="outline"
           onClick={onOpen}
-        >{<Icon as={TbPlus} />}</IconButton>
+        >
+          {<Icon as={TbPlus} />}
+        </IconButton>
         <UserSubjectPicker
           isOpen={isOpen}
           onSelect={(subjectId) => {
@@ -256,7 +260,8 @@ function EditorSubjectGrid({
                 rounded="lg"
                 w="full"
                 onClick={onEditorOpen}
-              >{<Icon as={TbPencil} />} 
+              >
+                {<Icon as={TbPencil} />}
                 教科の編集
               </Button>
               <Button
@@ -264,7 +269,8 @@ function EditorSubjectGrid({
                 rounded="lg"
                 w="full"
                 onClick={onPickerOpen}
-              >{<Icon as={TbRepeat} />} 
+              >
+                {<Icon as={TbRepeat} />}
                 置き換え
               </Button>
               <Button
@@ -273,7 +279,8 @@ function EditorSubjectGrid({
                 w="full"
                 colorScheme="red"
                 onClick={onDelete}
-              >{<Icon as={TbTrash} />} 
+              >
+                {<Icon as={TbTrash} />}
                 削除
               </Button>
             </VStack>

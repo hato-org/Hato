@@ -88,13 +88,15 @@ const UnstableInfo = React.memo(
             />
           </HStack>
           <Box w="full">
-            <Collapsible.Root open={isOpen}><Collapsible.Content>
-              <VStack mt={4} w="full" align="flex-start">
-                {unstableLines.map((diaInfo) => (
-                  <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
-                ))}
-              </VStack>
-            </Collapsible.Content></Collapsible.Root>
+            <Collapsible.Root open={isOpen}>
+              <Collapsible.Content>
+                <VStack mt={4} w="full" align="flex-start">
+                  {unstableLines.map((diaInfo) => (
+                    <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
+                  ))}
+                </VStack>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
         </VStack>
       </Alert.Root>
@@ -119,7 +121,11 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
 
   return (
     <HStack w="full">
-      <StackSeparator borderWidth={2} borderColor={borderColor} rounded="full" />
+      <StackSeparator
+        borderWidth={2}
+        borderColor={borderColor}
+        rounded="full"
+      />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
       <Text textStyle="description" fontWeight="bold" lineClamp={1}>

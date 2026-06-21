@@ -32,16 +32,16 @@ export default function Transit() {
     <VStack gap={4} w="100%" align="flex-start">
       <LinkBox w="100%" asChild>
         <RouterLink to="/transit">
-        <HStack pt={2} pl={2} w="100%">
-          <Heading as="h2" size="md">
-            交通情報
-          </Heading>
-          <Spacer />
-          <Text textStyle="description" color="description" fontWeight="bold">
-            Yahoo! 路線情報提供
-          </Text>
-          <Icon as={TbChevronRight} boxSize={5} />
-        </HStack>
+          <HStack pt={2} pl={2} w="100%">
+            <Heading as="h2" size="md">
+              交通情報
+            </Heading>
+            <Spacer />
+            <Text textStyle="description" color="description" fontWeight="bold">
+              Yahoo! 路線情報提供
+            </Text>
+            <Icon as={TbChevronRight} boxSize={5} />
+          </HStack>
         </RouterLink>
       </LinkBox>
       <VStack p={2} align="flex-start" w="100%">
@@ -101,24 +101,26 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
           onClick={onToggle}
         />
         <Box w="full">
-          <Collapsible.Root open={isOpen}><Collapsible.Content>
-            {(upcoming?.length ?? 0) > 2 && (
-              <Stack
-                flexDirection={{ base: 'column', md: 'row' }}
-                gap={{ base: 0, md: 2 }}
-                w="full"
-              >
-                <SecondoryUpcomingTrainCountdown
-                  date={date}
-                  train={upcoming?.[1]}
-                />
-                <SecondoryUpcomingTrainCountdown
-                  date={date}
-                  train={upcoming?.[2]}
-                />
-              </Stack>
-            )}
-          </Collapsible.Content></Collapsible.Root>
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              {(upcoming?.length ?? 0) > 2 && (
+                <Stack
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  gap={{ base: 0, md: 2 }}
+                  w="full"
+                >
+                  <SecondoryUpcomingTrainCountdown
+                    date={date}
+                    train={upcoming?.[1]}
+                  />
+                  <SecondoryUpcomingTrainCountdown
+                    date={date}
+                    train={upcoming?.[2]}
+                  />
+                </Stack>
+              )}
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     </Skeleton>

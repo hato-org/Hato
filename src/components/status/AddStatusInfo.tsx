@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
-import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, Field, HStack, Icon, Input, Textarea, VStack } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Button,
+  Field,
+  HStack,
+  Icon,
+  Input,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
 import { TbChevronRight } from 'react-icons/tb';
 import { Select } from 'chakra-react-select';
 import { format } from 'date-fns';
@@ -23,7 +37,11 @@ const AddStatusInfo = React.memo(
     });
 
     return (
-      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        size="xl"
+      >
         <DialogContent bg="panel" rounded="xl">
           <DialogHeader>メンテナンス情報の追加</DialogHeader>
           <DialogBody>
@@ -34,7 +52,10 @@ const AddStatusInfo = React.memo(
                   placeholder="タイトル"
                   value={statusInfo.title}
                   onChange={(e) =>
-                    setStatusInfo((curr) => ({ ...curr, title: e.target.value }))
+                    setStatusInfo((curr) => ({
+                      ...curr,
+                      title: e.target.value,
+                    }))
                   }
                 />
               </Field.Root>

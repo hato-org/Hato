@@ -106,11 +106,7 @@ function EventDetail() {
                         />
                       </>
                     )}
-                    <MenuItem
-                      value="edit"
-                      textStyle="title"
-                      disabled
-                    >
+                    <MenuItem value="edit" textStyle="title" disabled>
                       <Icon as={TbEdit} boxSize={4} />
                       編集
                     </MenuItem>

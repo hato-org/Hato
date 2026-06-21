@@ -14,7 +14,8 @@ const Material = React.memo(
     if (driveFile) {
       return (
         <Link
-          target="_blank" rel="noreferrer"
+          target="_blank"
+          rel="noreferrer"
           href={driveFile.driveFile?.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
@@ -35,7 +36,8 @@ const Material = React.memo(
     if (youtubeVideo) {
       return (
         <Link
-          target="_blank" rel="noreferrer"
+          target="_blank"
+          rel="noreferrer"
           href={youtubeVideo.alternateLink ?? ''}
           _hover={{ textDecor: 'none' }}
         >
@@ -56,7 +58,8 @@ const Material = React.memo(
     if (link) {
       return (
         <Link
-          target="_blank" rel="noreferrer"
+          target="_blank"
+          rel="noreferrer"
           href={link.url ?? ''}
           _hover={{ textDecor: 'none' }}
         >
@@ -78,7 +81,8 @@ const Material = React.memo(
     if (form) {
       return (
         <Link
-          target="_blank" rel="noreferrer"
+          target="_blank"
+          rel="noreferrer"
           href={form.formUrl ?? ''}
           _hover={{ textDecor: 'none' }}
         >

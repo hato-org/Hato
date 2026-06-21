@@ -73,12 +73,7 @@ function Login() {
                   正常にログインできません。
                   <br />
                   他のブラウザで開いてみてください。
-                  <Button
-                    mt={2}
-                    variant="ghost"
-                    rounded="lg"
-                    onClick={copy}
-                  >
+                  <Button mt={2} variant="ghost" rounded="lg" onClick={copy}>
                     <Icon
                       color={copied ? 'green.400' : undefined}
                       as={copied ? TbCheck : TbCopy}
@@ -91,12 +86,7 @@ function Login() {
           ) : (
             <LoginButton />
           )}
-          <Button
-            asChild
-            variant="ghost"
-            color="blue.500"
-            textStyle="link"
-          >
+          <Button asChild variant="ghost" color="blue.500" textStyle="link">
             <RouterLink to="/">
               <TbArrowNarrowLeft />
               <Text>ホームに戻る</Text>

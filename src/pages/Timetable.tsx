@@ -164,23 +164,27 @@ function Timetable() {
                 <VStack w="100%" align="flex-start" gap={4}>
                   <HStack w="100%" asChild>
                     <RouterLink to="editor">
-                    <Heading size="md">日課</Heading>
-                    <Spacer />
-                    <HStack rounded="lg" color="description" fontWeight="bold">
-                      {division ? (
-                        <Text>
-                          {division.week}週{' '}
-                          {division.irregular
-                            ? '特編日課'
-                            : `${format(setDay(date, division.day), 'E', {
-                                locale: ja,
-                              })}曜日課`}
-                        </Text>
-                      ) : (
-                        <Text>日課未設定</Text>
-                      )}
-                    </HStack>
-                    <Icon as={TbChevronRight} />
+                      <Heading size="md">日課</Heading>
+                      <Spacer />
+                      <HStack
+                        rounded="lg"
+                        color="description"
+                        fontWeight="bold"
+                      >
+                        {division ? (
+                          <Text>
+                            {division.week}週{' '}
+                            {division.irregular
+                              ? '特編日課'
+                              : `${format(setDay(date, division.day), 'E', {
+                                  locale: ja,
+                                })}曜日課`}
+                          </Text>
+                        ) : (
+                          <Text>日課未設定</Text>
+                        )}
+                      </HStack>
+                      <Icon as={TbChevronRight} />
                     </RouterLink>
                   </HStack>
                   {user.userScheduleId ? (
@@ -220,7 +224,9 @@ function Timetable() {
                     variant="ghost"
                     borderRadius="full"
                     onClick={onOpen}
-                  >{<TbPlus />}</IconButton>
+                  >
+                    {<TbPlus />}
+                  </IconButton>
                 </HStack>
                 <Suspense fallback={<Loading />}>
                   <Notes

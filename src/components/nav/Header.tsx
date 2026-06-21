@@ -54,16 +54,20 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
             borderRadius="full"
             size="lg"
             onClick={onMenuOpen}
-          >{<Icon as={TbMenu2} boxSize={6} />}</IconButton>
+          >
+            {<Icon as={TbMenu2} boxSize={6} />}
+          </IconButton>
         )}
         {children}
       </HStack>
       <Box w="100%" pos="absolute" bottom={0}>
-        <Collapsible.Root open={!!isFetching}><Collapsible.Content>
-          <ProgressRoot w="100%" size="xs" value={null}>
-            <ProgressBar />
-          </ProgressRoot>
-        </Collapsible.Content></Collapsible.Root>
+        <Collapsible.Root open={!!isFetching}>
+          <Collapsible.Content>
+            <ProgressRoot w="100%" size="xs" value={null}>
+              <ProgressBar />
+            </ProgressRoot>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
     </Center>
   );

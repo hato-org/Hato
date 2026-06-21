@@ -1,12 +1,12 @@
-import { Drawer as ChakraDrawer, Portal } from "@chakra-ui/react"
-import { CloseButton } from "./close-button"
-import * as React from "react"
+import { Drawer as ChakraDrawer, Portal } from '@chakra-ui/react';
+import { CloseButton } from './close-button';
+import * as React from 'react';
 
 interface DrawerContentProps extends ChakraDrawer.ContentProps {
-  portalled?: boolean
-  portalRef?: React.RefObject<HTMLElement | null>
-  offset?: ChakraDrawer.ContentProps["padding"]
-  backdrop?: boolean
+  portalled?: boolean;
+  portalRef?: React.RefObject<HTMLElement | null>;
+  offset?: ChakraDrawer.ContentProps['padding'];
+  backdrop?: boolean;
 }
 
 export const DrawerContent = React.forwardRef<
@@ -20,7 +20,7 @@ export const DrawerContent = React.forwardRef<
     offset,
     backdrop = true,
     ...rest
-  } = props
+  } = props;
   return (
     <Portal disabled={!portalled} container={portalRef}>
       {backdrop && <ChakraDrawer.Backdrop />}
@@ -30,8 +30,8 @@ export const DrawerContent = React.forwardRef<
         </ChakraDrawer.Content>
       </ChakraDrawer.Positioner>
     </Portal>
-  )
-})
+  );
+});
 
 export const DrawerCloseTrigger = React.forwardRef<
   HTMLButtonElement,
@@ -47,15 +47,15 @@ export const DrawerCloseTrigger = React.forwardRef<
     >
       <CloseButton size="sm" ref={ref} />
     </ChakraDrawer.CloseTrigger>
-  )
-})
+  );
+});
 
-export const DrawerTrigger = ChakraDrawer.Trigger
-export const DrawerRoot = ChakraDrawer.Root
-export const DrawerFooter = ChakraDrawer.Footer
-export const DrawerHeader = ChakraDrawer.Header
-export const DrawerBody = ChakraDrawer.Body
-export const DrawerBackdrop = ChakraDrawer.Backdrop
-export const DrawerDescription = ChakraDrawer.Description
-export const DrawerTitle = ChakraDrawer.Title
-export const DrawerActionTrigger = ChakraDrawer.ActionTrigger
+export const DrawerTrigger = ChakraDrawer.Trigger;
+export const DrawerRoot = ChakraDrawer.Root;
+export const DrawerFooter = ChakraDrawer.Footer;
+export const DrawerHeader = ChakraDrawer.Header;
+export const DrawerBody = ChakraDrawer.Body;
+export const DrawerBackdrop = ChakraDrawer.Backdrop;
+export const DrawerDescription = ChakraDrawer.Description;
+export const DrawerTitle = ChakraDrawer.Title;
+export const DrawerActionTrigger = ChakraDrawer.ActionTrigger;

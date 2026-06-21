@@ -137,7 +137,8 @@ function MetaEditor({
             variant="outline"
             colorScheme="red"
             onClick={() => setParticipantsValue([])}
-          >{<Icon as={TbX} />} 
+          >
+            {<Icon as={TbX} />}
             クリア
           </Button>
         </VStack>
@@ -185,7 +186,9 @@ function MetaEditor({
           rounded="lg"
           flex={1}
           onClick={onSubmit}
-        >{<Icon as={TbX} />}</IconButton>
+        >
+          {<Icon as={TbX} />}
+        </IconButton>
         <IconButton
           aria-label="confirm changes"
           rounded="lg"
@@ -203,7 +206,9 @@ function MetaEditor({
             )
           }
           loading={isPending}
-        >{<Icon as={TbCheck} />}</IconButton>
+        >
+          {<Icon as={TbCheck} />}
+        </IconButton>
       </HStack>
     </VStack>
   );

@@ -120,78 +120,85 @@ const BookInfo = React.memo(
           />
         </HStack>
         <Box w="100%">
-          <Collapsible.Root open={isOpen}><Collapsible.Content>
-            <VStack w="100%" p={2} gap={1}>
-              <HStack w="100%" gap={4}>
-                <Text w={16} textAlign="right" textStyle="title">
-                  出版者
-                </Text>
-                <Text textStyle="description">{publisher}</Text>
-              </HStack>
-              <HStack w="100%" gap={4}>
-                <Text w={16} textAlign="right" textStyle="title">
-                  ISBN
-                </Text>
-                <Text textStyle="description">{isbn}</Text>
-              </HStack>
-              <HStack w="100%" gap={4}>
-                <Text w={16} textAlign="right" textStyle="title">
-                  所蔵
-                </Text>
-                <Text textStyle="description">{sourceName[source] ?? ''}</Text>
-              </HStack>
-              <ButtonGroup w="100%" p={2} gap={4}>
-                {isbn && (
-                  <motion.div whileTap={{ scale: 0.9 }}>
-                    <IconButton
-                      aria-label="bookmark"
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <VStack w="100%" p={2} gap={1}>
+                <HStack w="100%" gap={4}>
+                  <Text w={16} textAlign="right" textStyle="title">
+                    出版者
+                  </Text>
+                  <Text textStyle="description">{publisher}</Text>
+                </HStack>
+                <HStack w="100%" gap={4}>
+                  <Text w={16} textAlign="right" textStyle="title">
+                    ISBN
+                  </Text>
+                  <Text textStyle="description">{isbn}</Text>
+                </HStack>
+                <HStack w="100%" gap={4}>
+                  <Text w={16} textAlign="right" textStyle="title">
+                    所蔵
+                  </Text>
+                  <Text textStyle="description">
+                    {sourceName[source] ?? ''}
+                  </Text>
+                </HStack>
+                <ButtonGroup w="100%" p={2} gap={4}>
+                  {isbn && (
+                    <motion.div whileTap={{ scale: 0.9 }}>
+                      <IconButton
+                        aria-label="bookmark"
+                        rounded="lg"
+                        shadow="lg"
+                        onClick={() =>
+                          setBookmarks((currVal) =>
+                            isBookmarked
+                              ? currVal.filter(
+                                  (markedIsbn) => markedIsbn !== isbn,
+                                )
+                              : [...currVal, isbn],
+                          )
+                        }
+                      >
+                        {
+                          <Icon
+                            as={isBookmarked ? IoBookmark : IoBookmarkOutline}
+                            color={isBookmarked ? 'blue.400' : undefined}
+                          />
+                        }
+                      </IconButton>
+                    </motion.div>
+                  )}
+                  <Button w="100%" rounded="lg" shadow="lg" asChild>
+                    <Link
+                      href={url[holdings[0]]}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      詳細を開く
+                      <Icon as={TbExternalLink} />
+                    </Link>
+                  </Button>
+                  {source !== 'NDL' && (
+                    <Button
+                      w="100%"
                       rounded="lg"
                       shadow="lg"
+                      colorScheme="blue"
+                      disabled={!detail?.raw_holdings[0]?.id}
                       onClick={() =>
-                        setBookmarks((currVal) =>
-                          isBookmarked
-                            ? currVal.filter(
-                                (markedIsbn) => markedIsbn !== isbn,
-                              )
-                            : [...currVal, isbn],
+                        window.open(
+                          `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`,
                         )
                       }
-                    >{
-                        <Icon
-                          as={isBookmarked ? IoBookmark : IoBookmarkOutline}
-                          color={isBookmarked ? 'blue.400' : undefined}
-                        />
-                      }</IconButton>
-                  </motion.div>
-                )}
-                <Button w="100%" rounded="lg" shadow="lg" asChild>
-                  <Link
-                    href={url[holdings[0]]}
-                    target="_blank" rel="noreferrer"
-                  >
-                    詳細を開く
-                    <Icon as={TbExternalLink} />
-                  </Link>
-                </Button>
-                {source !== 'NDL' && (
-                  <Button
-                    w="100%"
-                    rounded="lg"
-                    shadow="lg"
-                    colorScheme="blue"
-                    disabled={!detail?.raw_holdings[0]?.id}
-                    onClick={() =>
-                      window.open(
-                        `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`,
-                      )
-                    }
-                  >
-                    予約
-                  </Button>
-                )}
-              </ButtonGroup>
-            </VStack>
-          </Collapsible.Content></Collapsible.Root>
+                    >
+                      予約
+                    </Button>
+                  )}
+                </ButtonGroup>
+              </VStack>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );

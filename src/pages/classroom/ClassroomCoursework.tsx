@@ -88,13 +88,15 @@ export default function ClassroomCoursework() {
                     ],
               )
             }
-          >{
+          >
+            {
               <Icon
                 color={isBookmarked ? 'blue.400' : undefined}
                 as={isBookmarked ? IoBookmark : IoBookmarkOutline}
                 boxSize={5}
               />
-            }</IconButton>
+            }
+          </IconButton>
           <IconButton
             aria-label="open in browser"
             size="lg"
@@ -104,7 +106,8 @@ export default function ClassroomCoursework() {
           >
             <Link
               href={data?.alternateLink ?? ''}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               <Icon as={TbExternalLink} boxSize={6} />
             </Link>
@@ -128,12 +131,7 @@ export default function ClassroomCoursework() {
                   {data?.title}
                 </Text>
               </Skeleton>
-              <Skeleton
-                minH={6}
-                minW={20}
-                rounded="md"
-                loading={isUserPending}
-              >
+              <Skeleton minH={6} minW={20} rounded="md" loading={isUserPending}>
                 <Text textStyle="description">{userInfo?.name?.fullName}</Text>
               </Skeleton>
             </VStack>

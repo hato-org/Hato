@@ -1,6 +1,22 @@
 import { useCallback } from 'react';
-import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { HStack, VStack, Text, Icon, Spacer, Button, useDisclosure, ButtonGroup, Link } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  HStack,
+  VStack,
+  Text,
+  Icon,
+  Spacer,
+  Button,
+  useDisclosure,
+  ButtonGroup,
+  Link,
+} from '@chakra-ui/react';
 import { Avatar } from '@/components/ui/avatar';
 import { Link as RouterLink } from 'react-router';
 import {
@@ -48,29 +64,22 @@ function Top() {
       layout
     >
       <SettingCategory title="アカウント">
-        <HStack
-          p={2}
-          w="100%"
-          gap={4}
-          rounded="xl"
-          asChild
-          layerStyle="button"
-        >
+        <HStack p={2} w="100%" gap={4} rounded="xl" asChild layerStyle="button">
           <RouterLink to="account">
-          <Avatar src={user?.avatar} size="sm" />
-          <VStack align="flex-start" gap={0} minW={0}>
-            <Text textStyle="title" fontSize="md">
-              {user?.name}
+            <Avatar src={user?.avatar} size="sm" />
+            <VStack align="flex-start" gap={0} minW={0}>
+              <Text textStyle="title" fontSize="md">
+                {user?.name}
+              </Text>
+              <Text textStyle="description" fontSize="xs" lineClamp={1}>
+                {user?.email}
+              </Text>
+            </VStack>
+            <Spacer />
+            <Text textStyle="description" fontWeight="bold" whiteSpace="nowrap">
+              {user?.contributionCount} pt
             </Text>
-            <Text textStyle="description" fontSize="xs" lineClamp={1}>
-              {user?.email}
-            </Text>
-          </VStack>
-          <Spacer />
-          <Text textStyle="description" fontWeight="bold" whiteSpace="nowrap">
-            {user?.contributionCount} pt
-          </Text>
-          <Icon as={TbChevronRight} />
+            <Icon as={TbChevronRight} />
           </RouterLink>
         </HStack>
       </SettingCategory>
@@ -101,7 +110,11 @@ function Top() {
         <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
-            <DialogRoot placement="center" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+            <DialogRoot
+              placement="center"
+              open={isOpen}
+              onOpenChange={(e) => !e.open && onClose()}
+            >
               <DialogContent rounded="xl" bg="panel">
                 <DialogHeader>キャッシュを削除しますか？</DialogHeader>
                 <DialogBody>
@@ -161,7 +174,8 @@ function Top() {
         <ButtonGroup rounded="lg" variant="ghost">
           <Button asChild>
             <Link
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
               href={import.meta.env.VITE_REPO_URL}
             >
               <TbBrandGithub />

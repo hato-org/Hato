@@ -1,6 +1,24 @@
 import React from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Alert, Box, Collapsible, HStack, Icon, Spacer, StackSeparator, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Alert,
+  Box,
+  Collapsible,
+  HStack,
+  Icon,
+  Spacer,
+  StackSeparator,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import {
   TbAlertTriangle,
   TbChevronDown,
@@ -63,29 +81,31 @@ const StatusAlert = React.memo(
             />
           </HStack>
           <Box w="full">
-            <Collapsible.Root open={isOpen}><Collapsible.Content>
-              <VStack
-                p={{ base: 2, md: 4 }}
-                gap={0}
-                w="full"
-                align="flex-start"
-              >
-                {lines
-                  ?.toSorted((a, b) =>
-                    a.status.code !== 'normal'
-                      ? -1
-                      : b.status.code !== 'normal'
-                        ? 1
-                        : 0,
-                  )
-                  .filter(({ status }) =>
-                    filterUnstableLines ? status.code !== 'normal' : true,
-                  )
-                  .map((diaInfo) => (
-                    <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
-                  ))}
-              </VStack>
-            </Collapsible.Content></Collapsible.Root>
+            <Collapsible.Root open={isOpen}>
+              <Collapsible.Content>
+                <VStack
+                  p={{ base: 2, md: 4 }}
+                  gap={0}
+                  w="full"
+                  align="flex-start"
+                >
+                  {lines
+                    ?.toSorted((a, b) =>
+                      a.status.code !== 'normal'
+                        ? -1
+                        : b.status.code !== 'normal'
+                          ? 1
+                          : 0,
+                    )
+                    .filter(({ status }) =>
+                      filterUnstableLines ? status.code !== 'normal' : true,
+                    )
+                    .map((diaInfo) => (
+                      <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
+                    ))}
+                </VStack>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
         </VStack>
       </Alert.Root>
@@ -111,7 +131,11 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
 
   return (
     <HStack w="full" layerStyle="button" p={2} rounded="lg" onClick={onOpen}>
-      <StackSeparator borderWidth={2} borderColor={borderColor} rounded="full" />
+      <StackSeparator
+        borderWidth={2}
+        borderColor={borderColor}
+        rounded="full"
+      />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
       <Text textStyle="description" fontWeight="bold" lineClamp={1}>
@@ -151,7 +175,11 @@ const StatusDetailModal = React.memo(
     })();
 
     return (
-      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        placement="center"
+      >
         <DialogContent rounded="xl" bg="panel">
           <DialogCloseTrigger top={4} right={4} />
           <DialogHeader>{diaInfo.lineInfo.name}</DialogHeader>

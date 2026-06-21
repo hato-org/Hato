@@ -3,16 +3,16 @@ import {
   IconButton,
   type IconButtonProps,
   Portal,
-} from "@chakra-ui/react"
-import * as React from "react"
-import { HiOutlineInformationCircle } from "react-icons/hi"
+} from '@chakra-ui/react';
+import * as React from 'react';
+import { HiOutlineInformationCircle } from 'react-icons/hi';
 
 export interface ToggleTipProps extends ChakraPopover.RootProps {
-  showArrow?: boolean
-  portalled?: boolean
-  portalRef?: React.RefObject<HTMLElement | null>
-  content?: React.ReactNode
-  contentProps?: ChakraPopover.ContentProps
+  showArrow?: boolean;
+  portalled?: boolean;
+  portalRef?: React.RefObject<HTMLElement | null>;
+  content?: React.ReactNode;
+  contentProps?: ChakraPopover.ContentProps;
 }
 
 export const ToggleTip = React.forwardRef<HTMLDivElement, ToggleTipProps>(
@@ -25,7 +25,7 @@ export const ToggleTip = React.forwardRef<HTMLDivElement, ToggleTipProps>(
       contentProps,
       portalRef,
       ...rest
-    } = props
+    } = props;
 
     return (
       <ChakraPopover.Root
@@ -54,17 +54,17 @@ export const ToggleTip = React.forwardRef<HTMLDivElement, ToggleTipProps>(
           </ChakraPopover.Positioner>
         </Portal>
       </ChakraPopover.Root>
-    )
+    );
   },
-)
+);
 
 export interface InfoTipProps extends Partial<ToggleTipProps> {
-  buttonProps?: IconButtonProps | undefined
+  buttonProps?: IconButtonProps | undefined;
 }
 
 export const InfoTip = React.forwardRef<HTMLDivElement, InfoTipProps>(
   function InfoTip(props, ref) {
-    const { children, buttonProps, ...rest } = props
+    const { children, buttonProps, ...rest } = props;
     return (
       <ToggleTip content={children} {...rest} ref={ref}>
         <IconButton
@@ -77,6 +77,6 @@ export const InfoTip = React.forwardRef<HTMLDivElement, InfoTipProps>(
           <HiOutlineInformationCircle />
         </IconButton>
       </ToggleTip>
-    )
+    );
   },
-)
+);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { VStack, HStack, Flex, Center } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 

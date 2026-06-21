@@ -58,13 +58,14 @@ function Hatoboard() {
                   variant="ghost"
                   color="description"
                   onClick={() => setIsLimited((oldVal) => !oldVal)}
-                >{
+                >
+                  {
                     <Icon
                       as={TbChevronDown}
                       transform={`rotate(${isLimited ? '0deg' : '180deg'})`}
                       transition="all .2s ease"
                     />
-                  } 
+                  }
                   {isLimited ? ' さらに表示' : '一部を表示'}
                 </Button>
               )}

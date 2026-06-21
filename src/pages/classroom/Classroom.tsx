@@ -108,7 +108,8 @@ export default function Classroom() {
         >
           <Link
             href={`https://classroom.google.com/u/${user.email}`}
-            target="_blank" rel="noreferrer"
+            target="_blank"
+            rel="noreferrer"
           >
             <Icon as={TbExternalLink} boxSize={6} />
           </Link>

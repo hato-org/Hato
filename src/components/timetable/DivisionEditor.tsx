@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, Heading, HStack, Icon, IconButton, Spacer, Text, VStack } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Button,
+  Heading,
+  HStack,
+  Icon,
+  IconButton,
+  Spacer,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
 import { format, startOfDay } from 'date-fns';
@@ -18,7 +33,7 @@ interface DivisionEditorProps {
 const DivisionEditor = React.memo(
   ({ date, isOpen, onClose }: DivisionEditorProps) => {
     const toast = (options: Parameters<typeof toaster.create>[0]) =>
-    toaster.create({ duration: 1000, ...options });
+      toaster.create({ duration: 1000, ...options });
 
     const [division, setDivision] = useState<Partial<Division>>({
       date: startOfDay(date),
@@ -42,7 +57,7 @@ const DivisionEditor = React.memo(
     }, [date, currentDivision]);
 
     return (
-      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && onClose()}>
         <DialogContent rounded="xl" bg="panel">
           <DialogHeader>
             <HStack align="center">
@@ -57,7 +72,9 @@ const DivisionEditor = React.memo(
                 rounded="lg"
                 size="sm"
                 onClick={onClose}
-              >{<Icon as={TbX} boxSize={4} />}</IconButton>
+              >
+                {<Icon as={TbX} boxSize={4} />}
+              </IconButton>
             </HStack>
           </DialogHeader>
           <DialogBody>

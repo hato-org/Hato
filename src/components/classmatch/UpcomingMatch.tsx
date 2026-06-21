@@ -67,13 +67,18 @@ const UpcomingMatch = React.memo(
           <Loading />
         ) : upcomingMatches?.length ? (
           <Box w="full">
-            <Collapsible.Root open={isOpen}><Collapsible.Content>
-              <VStack w="full" gap={0}>
-                {upcomingMatches?.map((upcoming) => (
-                  <Match key={upcoming.matchId + upcoming.name} {...upcoming} />
-                ))}
-              </VStack>
-            </Collapsible.Content></Collapsible.Root>
+            <Collapsible.Root open={isOpen}>
+              <Collapsible.Content>
+                <VStack w="full" gap={0}>
+                  {upcomingMatches?.map((upcoming) => (
+                    <Match
+                      key={upcoming.matchId + upcoming.name}
+                      {...upcoming}
+                    />
+                  ))}
+                </VStack>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
         ) : (
           <Text pt={2} textStyle="description" fontWeight="bold">
@@ -83,17 +88,14 @@ const UpcomingMatch = React.memo(
           </Text>
         )}
         {(upcomingMatches?.length ?? 0) > 3 && (
-          <Button
-            w="full"
-            rounded="lg"
-            onClick={onToggle}
-          >{
+          <Button w="full" rounded="lg" onClick={onToggle}>
+            {
               <Icon
                 as={TbChevronDown}
                 transform={`rotate(${isOpen ? '180deg' : '0deg'})`}
                 transition="all .2s ease"
               />
-            } 
+            }
             {isOpen ? '折りたたむ' : 'もっと見る'}
           </Button>
         )}

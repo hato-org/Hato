@@ -130,7 +130,8 @@ function Error({ error }: ErrorProps) {
               <br />
               <Text asChild textStyle="link">
                 <Link
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                   href={import.meta.env.VITE_STATUSPAGE_URL}
                 >
                   稼働状況

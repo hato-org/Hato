@@ -1,6 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, Field, HStack, Icon, Input, Text, VStack } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Button,
+  Field,
+  HStack,
+  Icon,
+  Input,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useDebouncedCallback } from 'use-debounce';
 import { TbArrowLeft, TbMapPin, TbPlus, TbUser } from 'react-icons/tb';
 import {
@@ -51,7 +65,11 @@ const UserSubjectPicker = React.memo(
     }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onCancel)()} size="xl">
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onCancel()}
+        size="xl"
+      >
         <DialogContent
           zIndex={1500}
           bg="panel"
@@ -69,7 +87,8 @@ const UserSubjectPicker = React.memo(
                     onClick={() => {
                       setCreateMode(false);
                     }}
-                  >{<Icon as={TbArrowLeft} />}
+                  >
+                    {<Icon as={TbArrowLeft} />}
                     検索に戻る
                   </Button>
                   <Field.Root invalid={!subject.name}>
@@ -192,7 +211,8 @@ const UserSubjectPicker = React.memo(
                   setCreateMode(true);
                   setSubject((val) => ({ ...val, name: searchQuery }));
                 }}
-              >{<Icon as={TbPlus} />} 
+              >
+                {<Icon as={TbPlus} />}
                 作成する
               </Button>
             )}

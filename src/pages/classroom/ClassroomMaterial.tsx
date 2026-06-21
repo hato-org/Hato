@@ -86,13 +86,15 @@ export default function ClassroomMaterial() {
                     ],
               )
             }
-          >{
+          >
+            {
               <Icon
                 color={isBookmarked ? 'blue.400' : undefined}
                 as={isBookmarked ? IoBookmark : IoBookmarkOutline}
                 boxSize={5}
               />
-            }</IconButton>
+            }
+          </IconButton>
           <IconButton
             aria-label="open in browser"
             size="lg"
@@ -102,7 +104,8 @@ export default function ClassroomMaterial() {
           >
             <Link
               href={data?.alternateLink ?? ''}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               <Icon as={TbExternalLink} boxSize={6} />
             </Link>

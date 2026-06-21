@@ -1,6 +1,19 @@
 import React, { useState, useMemo } from 'react';
-import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Field, HStack, Text, Textarea, VStack, Button } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Field,
+  HStack,
+  Text,
+  Textarea,
+  VStack,
+  Button,
+} from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { useReport } from '@/services/report';
 
@@ -37,7 +50,11 @@ const ReportModal = React.memo(
     const { mutate, isPending: reportPending } = useReport();
 
     return (
-      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        placement="center"
+      >
         <DialogContent rounded="xl" bg="panel">
           <DialogHeader>報告</DialogHeader>
           <DialogBody>

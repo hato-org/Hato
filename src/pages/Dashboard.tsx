@@ -119,7 +119,9 @@ function Dashboard() {
               size="lg"
               borderRadius="full"
               onClick={() => setCardOrderDrawer(true)}
-            >{<Icon as={TbPlus} boxSize={6} />}</IconButton>
+            >
+              {<Icon as={TbPlus} boxSize={6} />}
+            </IconButton>
           )}
           <IconButton
             aria-label="Edit dashboard"
@@ -128,7 +130,9 @@ function Dashboard() {
             size="lg"
             borderRadius="full"
             onClick={() => setEditMode(!editMode)}
-          >{<Icon as={editMode ? TbCheck : TbPencil} boxSize={6} />}</IconButton>
+          >
+            {<Icon as={editMode ? TbCheck : TbPencil} boxSize={6} />}
+          </IconButton>
         </HStack>
       </Header>
 

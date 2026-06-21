@@ -1,6 +1,24 @@
 import React, { useState } from 'react';
-import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, Accordion, Heading, Textarea, VStack, Text, Spacer, CheckboxGroup, Wrap, HStack, Field } from '@chakra-ui/react';
+import {
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Button,
+  Accordion,
+  Heading,
+  Textarea,
+  VStack,
+  Text,
+  Spacer,
+  CheckboxGroup,
+  Wrap,
+  HStack,
+  Field,
+} from '@chakra-ui/react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
@@ -19,7 +37,7 @@ interface AddNoteDrawerProps {
 const AddNoteDrawer = React.memo(
   ({ isOpen, onClose, date, ...rest }: AddNoteDrawerProps) => {
     const toast = (options: Parameters<typeof toaster.create>[0]) =>
-    toaster.create(options);
+      toaster.create(options);
     const { data: user } = useUser();
     const [message, setMessage] = useState('');
     const { data: gradeList } = useGradeList({ enabled: isOpen });
@@ -32,7 +50,12 @@ const AddNoteDrawer = React.memo(
     const { mutate, isPending } = useAddNoteMutation();
 
     return (
-      <DrawerRoot placement="bottom" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} {...rest}>
+      <DrawerRoot
+        placement="bottom"
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        {...rest}
+      >
         <DrawerContent
           borderTopRadius="xl"
           pb="env(safe-area-inset-bottom)"
@@ -65,11 +88,7 @@ const AddNoteDrawer = React.memo(
                   </Accordion.ItemTrigger>
                   <Accordion.ItemContent>
                     <Accordion.ItemBody px={4} py={0}>
-                      <Accordion.Root
-                        w="100%"
-                        collapsible
-                        borderColor="border"
-                      >
+                      <Accordion.Root w="100%" collapsible borderColor="border">
                         {gradeList?.map((grade) => {
                           const classList = classListList.find(
                             (clList) =>
@@ -82,7 +101,8 @@ const AddNoteDrawer = React.memo(
                                 targetClassInfo.type === classInfo.type &&
                                 targetClassInfo.gradeCode ===
                                   classInfo.gradeCode &&
-                                targetClassInfo.classCode === classInfo.classCode,
+                                targetClassInfo.classCode ===
+                                  classInfo.classCode,
                             ),
                           );
                           const isIndeterminate =

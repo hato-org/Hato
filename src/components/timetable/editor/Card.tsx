@@ -119,120 +119,138 @@ const Card = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapsible.Root open={isOpen}><Collapsible.Content>
-            <VStack w="full" pt={8} gap={8}>
-              <Table.ScrollArea w="full">
-                <Table.Root size="sm">
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.ColumnHeader>A週</Table.ColumnHeader>
-                      {days.slice(1, 6).map((day) => (
-                        <Table.ColumnHeader key={day}>{day}</Table.ColumnHeader>
-                      ))}
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {Array.from({
-                      length: Math.max(
-                        ...schedules.A.map((daySchedule) => daySchedule.length),
-                      ),
-                    }).map((_, index) => (
-                      <Table.Row key={index}>
-                        <Table.Cell textStyle="title">{index + 1}</Table.Cell>
-                        {schedules.A.slice(1, 6).map((daySchedule, idx) => (
-                          <TablePeriod
-                            key={`${days[index]}-${idx}`}
-                            subjectId={daySchedule[index]?.subjectId}
-                          />
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <VStack w="full" pt={8} gap={8}>
+                <Table.ScrollArea w="full">
+                  <Table.Root size="sm">
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.ColumnHeader>A週</Table.ColumnHeader>
+                        {days.slice(1, 6).map((day) => (
+                          <Table.ColumnHeader key={day}>
+                            {day}
+                          </Table.ColumnHeader>
                         ))}
                       </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table.Root>
-              </Table.ScrollArea>
-              <Table.ScrollArea w="full">
-                <Table.Root size="sm">
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.ColumnHeader>B週</Table.ColumnHeader>
-                      {days.slice(1, 6).map((day) => (
-                        <Table.ColumnHeader key={day}>{day}</Table.ColumnHeader>
+                    </Table.Header>
+                    <Table.Body>
+                      {Array.from({
+                        length: Math.max(
+                          ...schedules.A.map(
+                            (daySchedule) => daySchedule.length,
+                          ),
+                        ),
+                      }).map((_, index) => (
+                        <Table.Row key={index}>
+                          <Table.Cell textStyle="title">{index + 1}</Table.Cell>
+                          {schedules.A.slice(1, 6).map((daySchedule, idx) => (
+                            <TablePeriod
+                              key={`${days[index]}-${idx}`}
+                              subjectId={daySchedule[index]?.subjectId}
+                            />
+                          ))}
+                        </Table.Row>
                       ))}
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {Array.from({
-                      length: Math.max(
-                        ...schedules.B.map((daySchedule) => daySchedule.length),
-                      ),
-                    }).map((_, index) => (
-                      <Table.Row key={index}>
-                        <Table.Cell textStyle="title">{index + 1}</Table.Cell>
-                        {schedules.B.slice(1, 6).map((daySchedule, idx) => (
-                          <TablePeriod
-                            key={`${days[index]}-${idx}`}
-                            subjectId={daySchedule[index]?.subjectId}
-                          />
+                    </Table.Body>
+                  </Table.Root>
+                </Table.ScrollArea>
+                <Table.ScrollArea w="full">
+                  <Table.Root size="sm">
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.ColumnHeader>B週</Table.ColumnHeader>
+                        {days.slice(1, 6).map((day) => (
+                          <Table.ColumnHeader key={day}>
+                            {day}
+                          </Table.ColumnHeader>
                         ))}
                       </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table.Root>
-              </Table.ScrollArea>
-              {owner === user._id ? (
-                <HStack w="full">
-                  <Button
-                    w="full"
-                    rounded="lg"
-                    variant="ghost"
-                    onClick={() => setUserScheduleEditor(_id!)}
-                  >{<Icon as={TbPencil} />} 
-                    編集
-                  </Button>
-                  <Button
-                    w="full"
-                    rounded="lg"
-                    variant={isSelected ? 'outline' : 'solid'}
-                    colorScheme={isSelected ? 'red' : 'blue'}
-                    onClick={() =>
-                      mutate({ userScheduleId: isSelected ? null : _id })
-                    }
-                    loading={isPending}
-                  >{<Icon as={isSelected ? TbX : TbCheck} />} 
-                    {isSelected ? '使用をやめる' : '使用する'}
-                  </Button>
-                </HStack>
-              ) : (
-                <>
-                  <VStack w="full" gap={4}>
+                    </Table.Header>
+                    <Table.Body>
+                      {Array.from({
+                        length: Math.max(
+                          ...schedules.B.map(
+                            (daySchedule) => daySchedule.length,
+                          ),
+                        ),
+                      }).map((_, index) => (
+                        <Table.Row key={index}>
+                          <Table.Cell textStyle="title">{index + 1}</Table.Cell>
+                          {schedules.B.slice(1, 6).map((daySchedule, idx) => (
+                            <TablePeriod
+                              key={`${days[index]}-${idx}`}
+                              subjectId={daySchedule[index]?.subjectId}
+                            />
+                          ))}
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table.Root>
+                </Table.ScrollArea>
+                {owner === user._id ? (
+                  <HStack w="full">
                     <Button
                       w="full"
                       rounded="lg"
-                      colorScheme={isSelected ? 'red' : 'blue'}
+                      variant="ghost"
+                      onClick={() => setUserScheduleEditor(_id!)}
+                    >
+                      {<Icon as={TbPencil} />}
+                      編集
+                    </Button>
+                    <Button
+                      w="full"
+                      rounded="lg"
                       variant={isSelected ? 'outline' : 'solid'}
+                      colorScheme={isSelected ? 'red' : 'blue'}
                       onClick={() =>
                         mutate({ userScheduleId: isSelected ? null : _id })
                       }
-                    >{<Icon as={isSelected ? TbX : TbCheck} />} 
-                      {isSelected ? '使用をやめる' : 'インポートせずに使用する'}
+                      loading={isPending}
+                    >
+                      {<Icon as={isSelected ? TbX : TbCheck} />}
+                      {isSelected ? '使用をやめる' : '使用する'}
                     </Button>
-                    <Button
-                      w="full"
-                      rounded="lg"
-                      onClick={importModalOnOpen}
-                    >{<Icon as={TbDownload} />} 
-                      インポート
-                    </Button>
-                  </VStack>
-                  <UserScheduleImportModal
-                    schedule={{ title, description, schedules, meta, ...rest }}
-                    isOpen={importModalOpen}
-                    onClose={importModalOnClose}
-                  />
-                </>
-              )}
-            </VStack>
-          </Collapsible.Content></Collapsible.Root>
+                  </HStack>
+                ) : (
+                  <>
+                    <VStack w="full" gap={4}>
+                      <Button
+                        w="full"
+                        rounded="lg"
+                        colorScheme={isSelected ? 'red' : 'blue'}
+                        variant={isSelected ? 'outline' : 'solid'}
+                        onClick={() =>
+                          mutate({ userScheduleId: isSelected ? null : _id })
+                        }
+                      >
+                        {<Icon as={isSelected ? TbX : TbCheck} />}
+                        {isSelected
+                          ? '使用をやめる'
+                          : 'インポートせずに使用する'}
+                      </Button>
+                      <Button w="full" rounded="lg" onClick={importModalOnOpen}>
+                        {<Icon as={TbDownload} />}
+                        インポート
+                      </Button>
+                    </VStack>
+                    <UserScheduleImportModal
+                      schedule={{
+                        title,
+                        description,
+                        schedules,
+                        meta,
+                        ...rest,
+                      }}
+                      isOpen={importModalOpen}
+                      onClose={importModalOnClose}
+                    />
+                  </>
+                )}
+              </VStack>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );

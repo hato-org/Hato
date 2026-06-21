@@ -50,42 +50,42 @@ export const useClient = () => {
     const afterResponse: AfterResponseHook = async ({ request, response }) => {
       if (response.status !== 401) return;
 
-              // リフレッシュ済みリクエストの再 401 はログイン画面へ
-              if (request.headers.get('X-Token-Refreshed')) {
-                clearAuth();
-                navigateToLogin();
-                return;
-              }
+      // リフレッシュ済みリクエストの再 401 はログイン画面へ
+      if (request.headers.get('X-Token-Refreshed')) {
+        clearAuth();
+        navigateToLogin();
+        return;
+      }
 
-              if (!jwt) {
-                clearAuth();
-                navigateToLogin();
-                return;
-              }
+      if (!jwt) {
+        clearAuth();
+        navigateToLogin();
+        return;
+      }
 
-              const newJwt = await refreshToken(jwt);
-              if (!newJwt) {
-                clearAuth();
-                navigateToLogin();
-                return;
-              }
+      const newJwt = await refreshToken(jwt);
+      if (!newJwt) {
+        clearAuth();
+        navigateToLogin();
+        return;
+      }
 
-              // 新しいトークンでリトライ
-              const retryHeaders = new Headers(request.headers);
-              retryHeaders.set('Authorization', `Bearer ${newJwt}`);
-              retryHeaders.set('X-Token-Refreshed', 'true');
+      // 新しいトークンでリトライ
+      const retryHeaders = new Headers(request.headers);
+      retryHeaders.set('Authorization', `Bearer ${newJwt}`);
+      retryHeaders.set('X-Token-Refreshed', 'true');
 
-              const retryResponse = await fetch(request.url, {
-                method: request.method,
-                headers: retryHeaders,
-                body: request.body,
-                signal: request.signal,
-              });
+      const retryResponse = await fetch(request.url, {
+        method: request.method,
+        headers: retryHeaders,
+        body: request.body,
+        signal: request.signal,
+      });
 
-              if (retryResponse.status === 401) {
-                clearAuth();
-                navigateToLogin();
-              }
+      if (retryResponse.status === 401) {
+        clearAuth();
+        navigateToLogin();
+      }
 
       return retryResponse;
     };

@@ -65,7 +65,8 @@ export default function ClassroomCourse() {
           >
             <Link
               href={data?.alternateLink ?? ''}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               <Icon as={TbExternalLink} boxSize={6} />
             </Link>

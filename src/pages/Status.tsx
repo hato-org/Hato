@@ -75,7 +75,9 @@ function Status() {
                     variant="ghost"
                     colorScheme="blue"
                     borderRadius="full"
-                  >{<Icon as={TbPlus} />}</IconButton>
+                  >
+                    {<Icon as={TbPlus} />}
+                  </IconButton>
                 )}
               </HStack>
               <StatusInfoList statusInfo={statusInfo} />

@@ -116,66 +116,68 @@ const SearchResult = React.memo(
     isLoading: boolean;
   }) => (
     <Box w="100%" h="100%">
-      <Collapsible.Root open={!!result || isLoading}><Collapsible.Content>
-        {isLoading ? (
-          <Loading />
-        ) : result?.count ? (
-          <VStack w="100%" h="100%" gap={4}>
-            {result?.messages.length && (
-              <Alert.Root status="info" rounded="xl" shadow="xl">
-                <Alert.Indicator />
-                <Alert.Content>
-                  <VStack align="flex-start" gap={1}>
-                    {result.messages.map((message) => (
-                      <Text key={message} textStyle="title">
-                        {message}
-                      </Text>
-                    ))}
-                  </VStack>
-                </Alert.Content>
-              </Alert.Root>
-            )}
-            <HStack w="100%" px={2}>
-              <Skeleton loading={isLoading} rounded="lg" w={24}>
-                <Text textStyle="title" color="description">
-                  {result?.count}件
-                </Text>
-              </Skeleton>
-            </HStack>
-            <Virtuoso
-              useWindowScroll
-              data={result?.books ?? []}
-              itemContent={(index, book) => (
-                <Box py={2}>
-                  <BookInfo {...book} />
-                </Box>
+      <Collapsible.Root open={!!result || isLoading}>
+        <Collapsible.Content>
+          {isLoading ? (
+            <Loading />
+          ) : result?.count ? (
+            <VStack w="100%" h="100%" gap={4}>
+              {result?.messages.length && (
+                <Alert.Root status="info" rounded="xl" shadow="xl">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <VStack align="flex-start" gap={1}>
+                      {result.messages.map((message) => (
+                        <Text key={message} textStyle="title">
+                          {message}
+                        </Text>
+                      ))}
+                    </VStack>
+                  </Alert.Content>
+                </Alert.Root>
               )}
-              style={{ width: '100%' }}
-            />
-          </VStack>
-        ) : (
-          <VStack w="100%" gap={4}>
-            {result?.messages.length && (
-              <Alert.Root status="info" rounded="xl" shadow="xl">
-                <Alert.Indicator />
-                <Alert.Content>
-                  <VStack align="flex-start" gap={1}>
-                    {result.messages.map((message) => (
-                      <Text key={message} textStyle="title">
-                        {message}
-                      </Text>
-                    ))}
-                  </VStack>
-                </Alert.Content>
-              </Alert.Root>
-            )}
-            <Icon as={TbMoodSad} boxSize={16} color="description" />
-            <Text textStyle="description" fontWeight="bold">
-              本が見つかりませんでした
-            </Text>
-          </VStack>
-        )}
-      </Collapsible.Content></Collapsible.Root>
+              <HStack w="100%" px={2}>
+                <Skeleton loading={isLoading} rounded="lg" w={24}>
+                  <Text textStyle="title" color="description">
+                    {result?.count}件
+                  </Text>
+                </Skeleton>
+              </HStack>
+              <Virtuoso
+                useWindowScroll
+                data={result?.books ?? []}
+                itemContent={(index, book) => (
+                  <Box py={2}>
+                    <BookInfo {...book} />
+                  </Box>
+                )}
+                style={{ width: '100%' }}
+              />
+            </VStack>
+          ) : (
+            <VStack w="100%" gap={4}>
+              {result?.messages.length && (
+                <Alert.Root status="info" rounded="xl" shadow="xl">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <VStack align="flex-start" gap={1}>
+                      {result.messages.map((message) => (
+                        <Text key={message} textStyle="title">
+                          {message}
+                        </Text>
+                      ))}
+                    </VStack>
+                  </Alert.Content>
+                </Alert.Root>
+              )}
+              <Icon as={TbMoodSad} boxSize={16} color="description" />
+              <Text textStyle="description" fontWeight="bold">
+                本が見つかりませんでした
+              </Text>
+            </VStack>
+          )}
+        </Collapsible.Content>
+      </Collapsible.Root>
     </Box>
   ),
 );

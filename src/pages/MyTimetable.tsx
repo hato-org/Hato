@@ -73,7 +73,9 @@ function MyTimetable() {
                 colorScheme="blue"
                 borderRadius="full"
                 onClick={() => setUserScheduleEditor('new')}
-              >{<Icon as={TbPlus} />}</IconButton>
+              >
+                {<Icon as={TbPlus} />}
+              </IconButton>
             </HStack>
             {isPending ? (
               <Loading />
@@ -90,7 +92,8 @@ function MyTimetable() {
               variant="ghost"
               colorScheme="blue"
               onClick={() => setUserScheduleEditor('new')}
-            >{<Icon as={TbPlus} />} 
+            >
+              {<Icon as={TbPlus} />}
               新しい時間割を作成
             </Button>
           </VStack>

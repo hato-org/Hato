@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
+import {
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+} from '@/components/ui/drawer';
 import { Button, Field, Input, Text, VStack } from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { useUserSubjectMutation } from '@/services/timetable';
@@ -28,7 +35,11 @@ export default function UserSubjectEditor({
   const { mutate, isPending } = useUserSubjectMutation();
 
   return (
-    <DrawerRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} placement="bottom">
+    <DrawerRoot
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+      placement="bottom"
+    >
       <DrawerContent
         zIndex={1500}
         roundedTop="xl"

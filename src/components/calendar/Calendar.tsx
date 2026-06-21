@@ -209,14 +209,18 @@ const MonthSwitcher = React.memo(
         onClick={onPrev}
         borderRadius="full"
         variant="ghost"
-      >{<TbChevronLeft />}</IconButton>
+      >
+        {<TbChevronLeft />}
+      </IconButton>
       <Text textStyle="title">{format(date, 'yyyy年M月')}</Text>
       <IconButton
         aria-label="next month"
         onClick={onNext}
         borderRadius="full"
         variant="ghost"
-      >{<TbChevronRight />}</IconButton>
+      >
+        {<TbChevronRight />}
+      </IconButton>
     </HStack>
   ),
 );

@@ -72,7 +72,9 @@ export default function SortableCard({ cardId }: { cardId: string }) {
         onClick={() =>
           setCardOrder((currVal) => currVal.filter((id) => id !== card.id))
         }
-      >{<Icon as={TbTrash} boxSize={6} />}</IconButton>
+      >
+        {<Icon as={TbTrash} boxSize={6} />}
+      </IconButton>
     </Card>
   ) : null;
 }

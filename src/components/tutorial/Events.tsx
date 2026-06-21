@@ -1,6 +1,21 @@
 import { useCallback } from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Heading, Text, VStack, List, Badge, Separator, Button } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Heading,
+  Text,
+  VStack,
+  List,
+  Badge,
+  Separator,
+  Button,
+} from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
@@ -14,7 +29,7 @@ export default function Events() {
   return (
     <DialogRoot
       open={tutorialModal.events}
-      onOpenChange={(e) => !e.open && (onClose)()}
+      onOpenChange={(e) => !e.open && onClose()}
       scrollBehavior="inside"
     >
       <DialogContent rounded="xl" bg="panel">

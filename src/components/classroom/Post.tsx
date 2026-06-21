@@ -1,12 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  HStack,
-  Spacer,
-  Icon,
-  Text,
-  VStack,
-  Wrap,
-} from '@chakra-ui/react';
+import { HStack, Spacer, Icon, Text, VStack, Wrap } from '@chakra-ui/react';
 import { SkeletonCircle, SkeletonText } from '@/components/ui/skeleton';
 import { Tooltip } from '@/components/ui/tooltip';
 import { Avatar } from '@/components/ui/avatar';

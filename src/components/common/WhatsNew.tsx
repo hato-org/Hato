@@ -1,5 +1,12 @@
 import React, { Suspense, useCallback } from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 
 import { useAtom } from 'jotai';
 import { whatsNewAtom } from '@/store/overlay';
@@ -16,7 +23,11 @@ export default function WhatsNew() {
   }, [setWhatsNew]);
 
   return (
-    <DialogRoot open={whatsNew} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+    <DialogRoot
+      open={whatsNew}
+      onOpenChange={(e) => !e.open && onClose()}
+      size="xl"
+    >
       <DialogContent
         bg="panel"
         top={8}

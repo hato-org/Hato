@@ -1,5 +1,19 @@
-import { HStack, Icon, Spacer, StackSeparator, Text, VStack } from '@chakra-ui/react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  HStack,
+  Icon,
+  Spacer,
+  StackSeparator,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import { format } from 'date-fns';
 import { TbChevronRight } from 'react-icons/tb';
 import Error from '../cards/Error';
@@ -24,7 +38,11 @@ export default function HistoryModal({
   const { data, isPending, error } = useClassmatchHistory();
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+      size="xl"
+    >
       <DialogContent bg="panel" rounded="xl">
         <DialogCloseTrigger top={4} right={4} />
         <DialogHeader>過去のクラスマッチ</DialogHeader>

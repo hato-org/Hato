@@ -1,5 +1,12 @@
 import { useCallback } from 'react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import { Heading, Image, List, VStack, Icon } from '@chakra-ui/react';
 import { TbDotsVertical } from 'react-icons/tb';
 import { useAtom } from 'jotai';
@@ -13,7 +20,11 @@ function AddToHomeScreen() {
   );
 
   return (
-    <DialogRoot open={tutorialModal.ATHS} onOpenChange={(e) => !e.open && (onClose)()} placement="center">
+    <DialogRoot
+      open={tutorialModal.ATHS}
+      onOpenChange={(e) => !e.open && onClose()}
+      placement="center"
+    >
       <DialogContent bg="panel" rounded="xl">
         <DialogHeader>ホーム画面に追加</DialogHeader>
         <DialogCloseTrigger top={4} right={4} />

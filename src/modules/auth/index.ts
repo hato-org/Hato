@@ -1,4 +1,3 @@
-import {  } from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { useCallback, useState } from 'react';
 import { useSetAtom } from 'jotai';
@@ -10,13 +9,14 @@ import { jwtAtom, userAtom } from '@/store/auth';
 import { unregister } from '@/utils/serviceWorker';
 import { API_URL } from '@/config/api';
 
+const toast = (options: Parameters<typeof toaster.create>[0]) =>
+  toaster.create(options);
+
 export const useAuth = (scopes?: string[]) => {
   const queryClient = useQueryClient();
   const setUser = useSetAtom(userAtom);
   const [loginLoading, setLoginLoading] = useState(false);
   const setJWT = useSetAtom(jwtAtom);
-  const toast = (options: Parameters<typeof toaster.create>[0]) =>
-    toaster.create(options);
   const navigate = useNavigate();
 
   const onFail = useCallback(
@@ -31,7 +31,7 @@ export const useAuth = (scopes?: string[]) => {
         type: 'error',
       });
     },
-    [toast],
+    [],
   );
 
   const login = useGoogleLogin({

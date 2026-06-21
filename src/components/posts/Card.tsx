@@ -121,36 +121,36 @@ const Card = React.memo(
             onPointerDown={(e) => controls.start(e, { snapToCursor: false })}
           >
             <RouterLink to={`/posts/${_id}`}>
-            <VStack align="flex-start" w="100%" pl={2}>
-              <HStack w="100%">
-                {isPinned && <Icon as={TbPin} color="blue.400" />}
-                <Text fontSize="lg" textStyle="title" lineClamp={1}>
-                  {title}
-                </Text>
-                <Spacer />
-                {attachmentQueries.every((queryState) => queryState?.data) && (
-                  <Icon as={TbCircleArrowDown} />
-                )}
-                <Text textStyle="description" fontSize="xs">
-                  {format(new Date(createdAt), 'MM/dd')}
-                </Text>
-              </HStack>
-              {text && <Text lineClamp={1}>{text}</Text>}
-              <Wrap>
-                {attachments.map((attachment) => (
-                  <Tag
-                    variant="outline"
-                    rounded="full"
-                    key={attachment.id}
-                    startElement={<Icon as={TbFile} />}
-                  >
-                    {attachment.name}
-                  </Tag>
-                ))}
-              </Wrap>
-            </VStack>
-            <Spacer />
-            <Icon as={TbChevronRight} />
+              <VStack align="flex-start" w="100%" pl={2}>
+                <HStack w="100%">
+                  {isPinned && <Icon as={TbPin} color="blue.400" />}
+                  <Text fontSize="lg" textStyle="title" lineClamp={1}>
+                    {title}
+                  </Text>
+                  <Spacer />
+                  {attachmentQueries.every(
+                    (queryState) => queryState?.data,
+                  ) && <Icon as={TbCircleArrowDown} />}
+                  <Text textStyle="description" fontSize="xs">
+                    {format(new Date(createdAt), 'MM/dd')}
+                  </Text>
+                </HStack>
+                {text && <Text lineClamp={1}>{text}</Text>}
+                <Wrap>
+                  {attachments.map((attachment) => (
+                    <Tag
+                      variant="outline"
+                      rounded="full"
+                      key={attachment.id}
+                      startElement={<Icon as={TbFile} />}
+                    >
+                      {attachment.name}
+                    </Tag>
+                  ))}
+                </Wrap>
+              </VStack>
+              <Spacer />
+              <Icon as={TbChevronRight} />
             </RouterLink>
           </HStack>
         </MotionFlex>

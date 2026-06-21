@@ -7,7 +7,7 @@ import {
 import { useAtom, useSetAtom } from 'jotai';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
-import {  } from '@chakra-ui/react';
+import {} from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { queryKeys } from '../queryKeys';
 

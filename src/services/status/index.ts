@@ -1,4 +1,4 @@
-import {  } from '@chakra-ui/react';
+import {} from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import ky, { HTTPError } from 'ky';

@@ -1,5 +1,12 @@
 import { useMemo } from 'react';
-import { HStack, Icon, Center, Box, IconButton, Presence } from '@chakra-ui/react';
+import {
+  HStack,
+  Icon,
+  Center,
+  Box,
+  IconButton,
+  Presence,
+} from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 import { useAtomValue } from 'jotai';
 import {
@@ -85,7 +92,9 @@ function BottomNavbar() {
                   variant="ghost"
                   color={location.pathname === href ? 'blue.300' : 'title'}
                   borderRadius="full"
-                >{icon}</IconButton>
+                >
+                  {icon}
+                </IconButton>
               </Link>
             </Center>
           ))}

@@ -79,7 +79,9 @@ function Events() {
             borderRadius="full"
             size="lg"
             variant="ghost"
-          >{<Icon as={TbInfoCircle} w={6} h={6} />}</IconButton>
+          >
+            {<Icon as={TbInfoCircle} w={6} h={6} />}
+          </IconButton>
         </HStack>
       </Header>
       <ChakraPullToRefresh
@@ -110,7 +112,9 @@ function Events() {
                       iCal: true,
                     }))
                   }
-                >{<TbX />}</IconButton>
+                >
+                  {<TbX />}
+                </IconButton>
               </VStack>
             </Card>
           )}

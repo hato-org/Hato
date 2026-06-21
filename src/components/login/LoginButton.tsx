@@ -12,7 +12,8 @@ const LoginButton = React.memo(({ scopes }: { scopes?: string[] }) => {
       colorScheme="blue"
       rounded="lg"
       onClick={() => login()}
-    >{<Icon as={TbBrandGoogle} />} 
+    >
+      {<Icon as={TbBrandGoogle} />}
       Googleでログイン
     </Button>
   );

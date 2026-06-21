@@ -1,8 +1,22 @@
-import { Button, HStack, Icon, Input, Spacer, Text, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  HStack,
+  Icon,
+  Input,
+  Spacer,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
-import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import { TbDownload } from 'react-icons/tb';
 import GradeClassPicker from '../GradeClassPicker';
 import { useUserScheduleMutation } from '@/services/timetable';
@@ -34,7 +48,11 @@ export function UserScheduleImportModal({
   );
 
   return (
-    <DialogRoot size="xl" open={isOpen} onOpenChange={(e) => !e.open && (onClose)()}>
+    <DialogRoot
+      size="xl"
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+    >
       <DialogContent rounded="xl" bg="panel">
         <DialogHeader>時間割のインポート</DialogHeader>
         <DialogBody>
@@ -114,7 +132,8 @@ export function UserScheduleImportModal({
               );
             }}
             loading={isPending}
-          >{<Icon as={TbDownload} />} 
+          >
+            {<Icon as={TbDownload} />}
             インポート
           </Button>
         </DialogFooter>

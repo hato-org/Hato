@@ -55,12 +55,7 @@ const UserInfo = React.memo(
               </Text>
             </HStack>
           ) : (
-            <Link
-              asChild
-              color="description"
-              fontSize="xs"
-              lineClamp={1}
-            >
+            <Link asChild color="description" fontSize="xs" lineClamp={1}>
               <RouterLink to={`/classroom/course/${course?.id}`}>
                 {course?.name}
               </RouterLink>

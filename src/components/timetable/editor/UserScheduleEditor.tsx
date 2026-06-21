@@ -1,6 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
-import { DialogBackdrop, DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Button, HStack, Icon, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import {
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
+  Button,
+  HStack,
+  Icon,
+  Text,
+  VStack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { toaster } from '@/components/ui/toaster';
 import { useAtom } from 'jotai';
 import { TbTrash } from 'react-icons/tb';
@@ -108,7 +123,8 @@ export default function UserScheduleEditor() {
                       colorScheme="red"
                       variant="outline"
                       onClick={onDeletemodalOpen}
-                    >{<Icon as={TbTrash} />} 
+                    >
+                      {<Icon as={TbTrash} />}
                       時間割を削除する
                     </Button>
                     <UserScheduleDeleteDialog
@@ -198,12 +214,7 @@ function UserScheduleDeleteDialog({
         </DialogBody>
         <DialogFooter>
           <HStack w="full">
-            <Button
-              w="full"
-              variant="ghost"
-              rounded="lg"
-              onClick={onCancel}
-            >
+            <Button w="full" variant="ghost" rounded="lg" onClick={onCancel}>
               キャンセル
             </Button>
             <Button

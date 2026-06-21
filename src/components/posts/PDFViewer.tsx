@@ -1,6 +1,23 @@
 import React, { useMemo, useState } from 'react';
-import { DrawerBody, DrawerContent, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Box, HStack, IconButton, Text, Link, Collapsible, Spacer, Center, useBreakpointValue, Icon, Editable } from '@chakra-ui/react';
+import {
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Box,
+  HStack,
+  IconButton,
+  Text,
+  Link,
+  Collapsible,
+  Spacer,
+  Center,
+  useBreakpointValue,
+  Icon,
+  Editable,
+} from '@chakra-ui/react';
 import { ProgressBar, ProgressRoot } from '@/components/ui/progress';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX, TbZoomIn, TbZoomOut } from 'react-icons/tb';
@@ -54,7 +71,7 @@ const PDFViewer = React.memo(
     return (
       <DrawerRoot
         open={isOpen}
-        onOpenChange={(e) => !e.open && (onClose)()}
+        onOpenChange={(e) => !e.open && onClose()}
         placement="bottom"
         size="full"
       >
@@ -67,7 +84,9 @@ const PDFViewer = React.memo(
                 variant="ghost"
                 onClick={onClose}
                 borderRadius="full"
-              >{<Icon as={TbX} boxSize={6} />}</IconButton>
+              >
+                {<Icon as={TbX} boxSize={6} />}
+              </IconButton>
               <Text textStyle="title" whiteSpace="nowrap" lineClamp={1} py={4}>
                 {attachment.name}
               </Text>
@@ -81,18 +100,21 @@ const PDFViewer = React.memo(
               >
                 <Link
                   href={attachment.url ?? ''}
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <Icon as={TbExternalLink} boxSize={6} />
                 </Link>
               </IconButton>
             </HStack>
             <Box w="100%">
-              <Collapsible.Root open={!!isFetching}><Collapsible.Content>
-                <ProgressRoot w="100%" size="xs" value={null}>
-                  <ProgressBar />
-                </ProgressRoot>
-              </Collapsible.Content></Collapsible.Root>
+              <Collapsible.Root open={!!isFetching}>
+                <Collapsible.Content>
+                  <ProgressRoot w="100%" size="xs" value={null}>
+                    <ProgressBar />
+                  </ProgressRoot>
+                </Collapsible.Content>
+              </Collapsible.Root>
             </Box>
           </DrawerHeader>
           <DrawerBody p={0} position="relative" zIndex={-5}>
@@ -171,11 +193,9 @@ const ZoomControls = React.memo(
         border="1px solid"
         borderColor="border"
       >
-        <IconButton
-          aria-label="Zoom out"
-          rounded="lg"
-          onClick={onZoomOut}
-        >{<Icon boxSize={6} as={TbZoomOut} />}</IconButton>
+        <IconButton aria-label="Zoom out" rounded="lg" onClick={onZoomOut}>
+          {<Icon boxSize={6} as={TbZoomOut} />}
+        </IconButton>
         <HStack textStyle="title">
           <Editable.Root
             value={zoom.toString()}
@@ -186,11 +206,9 @@ const ZoomControls = React.memo(
           </Editable.Root>
           <Text>%</Text>
         </HStack>
-        <IconButton
-          aria-label="Zoom in"
-          rounded="lg"
-          onClick={onZoomIn}
-        >{<Icon boxSize={6} as={TbZoomIn} />}</IconButton>
+        <IconButton aria-label="Zoom in" rounded="lg" onClick={onZoomIn}>
+          {<Icon boxSize={6} as={TbZoomIn} />}
+        </IconButton>
       </HStack>
     </Center>
   ),

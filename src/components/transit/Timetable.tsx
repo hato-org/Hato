@@ -1,5 +1,12 @@
 import { Box, HStack, Icon, Text, VStack } from '@chakra-ui/react';
-import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import React from 'react';
 import { TbChevronRight } from 'react-icons/tb';
 
@@ -11,7 +18,11 @@ export const TrainTimetableModal = React.memo(
     isOpen,
     onClose,
   }: TransitTimetable & { isOpen: boolean; onClose: () => void }) => (
-    <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && (onClose)()} size="xl">
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+      size="xl"
+    >
       <DialogContent rounded="xl" bg="panel">
         <DialogCloseTrigger top={4} right={4} />
         <DialogHeader>時刻表の詳細</DialogHeader>

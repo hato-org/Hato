@@ -63,7 +63,11 @@ const StatusInfo = React.memo(
               {format(new Date(startAt), 'H:mm')}
             </Text>
           </VStack>
-          <StackSeparator borderWidth={1} borderColor="blue.400" rounded="full" />
+          <StackSeparator
+            borderWidth={1}
+            borderColor="blue.400"
+            rounded="full"
+          />
           <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
             <Wrap>
@@ -82,35 +86,37 @@ const StatusInfo = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapsible.Root open={isOpen}><Collapsible.Content>
-            <VStack w="full" pt={6} gap={4}>
-              <HStack w="full" justify="space-evenly">
-                <VStack align="flex-start" gap={0}>
-                  <Text textStyle="title" fontSize="xs">
-                    {format(new Date(startAt), 'MMMdo (ccc)', { locale: ja })}
-                  </Text>
-                  <Text textStyle="title" fontSize="xl">
-                    {format(new Date(startAt), 'HH:mm', { locale: ja })}
-                  </Text>
-                </VStack>
-                <Icon as={TbChevronRight} color="description" boxSize={6} />
-                <VStack align="flex-start" gap={0}>
-                  <Text textStyle="title" fontSize="xs">
-                    {format(new Date(endAt), 'MMMdo (ccc)', { locale: ja })}
-                  </Text>
-                  <Text textStyle="title" fontSize="xl">
-                    {format(new Date(endAt), 'HH:mm', { locale: ja })}
-                  </Text>
-                </VStack>
-              </HStack>
-              <HStack w="full" align="flex-start" gap={6} px={2}>
-                <Heading flexShrink={0} size="sm">
-                  説明
-                </Heading>
-                <Text textStyle="description">{description}</Text>
-              </HStack>
-            </VStack>
-          </Collapsible.Content></Collapsible.Root>
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <VStack w="full" pt={6} gap={4}>
+                <HStack w="full" justify="space-evenly">
+                  <VStack align="flex-start" gap={0}>
+                    <Text textStyle="title" fontSize="xs">
+                      {format(new Date(startAt), 'MMMdo (ccc)', { locale: ja })}
+                    </Text>
+                    <Text textStyle="title" fontSize="xl">
+                      {format(new Date(startAt), 'HH:mm', { locale: ja })}
+                    </Text>
+                  </VStack>
+                  <Icon as={TbChevronRight} color="description" boxSize={6} />
+                  <VStack align="flex-start" gap={0}>
+                    <Text textStyle="title" fontSize="xs">
+                      {format(new Date(endAt), 'MMMdo (ccc)', { locale: ja })}
+                    </Text>
+                    <Text textStyle="title" fontSize="xl">
+                      {format(new Date(endAt), 'HH:mm', { locale: ja })}
+                    </Text>
+                  </VStack>
+                </HStack>
+                <HStack w="full" align="flex-start" gap={6} px={2}>
+                  <Heading flexShrink={0} size="sm">
+                    説明
+                  </Heading>
+                  <Text textStyle="description">{description}</Text>
+                </HStack>
+              </VStack>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );
