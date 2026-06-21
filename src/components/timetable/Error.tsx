@@ -36,8 +36,8 @@ function Error({ type, onOpen }: ErrorProps) {
             <Text textAlign="center" textStyle="title">
               時間割が設定されていません。
               <br />
-              <Text as={RouterLink} to="/timetable/editor" textStyle="link">
-                設定ページ
+              <Text asChild textStyle="link">
+                <RouterLink to="/timetable/editor">設定ページ</RouterLink>
               </Text>
               から、マイ時間割を作成
               <br />

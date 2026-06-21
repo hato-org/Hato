@@ -52,10 +52,9 @@ function Home() {
           colorScheme="blue"
           rounded="xl"
           shadow="xl"
-          as={RouterLink}
-          to="/login"
+          asChild
         >
-          ログイン
+          <RouterLink to="/login">ログイン</RouterLink>
         </Button>
       </Center>
     </>

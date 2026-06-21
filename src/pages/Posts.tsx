@@ -28,10 +28,15 @@ function Posts() {
             size="lg"
             variant="ghost"
             borderRadius="full"
-            as={Link}
-            href="https://sites.google.com/g.nagano-c.ed.jp/yashiro-board/"
-            target="_blank" rel="noreferrer"
-          >{<Icon as={TbExternalLink} w={6} h={6} />}</IconButton>
+            asChild
+          >
+            <Link
+              href="https://sites.google.com/g.nagano-c.ed.jp/yashiro-board/"
+              target="_blank" rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} w={6} h={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
       <Outlet />

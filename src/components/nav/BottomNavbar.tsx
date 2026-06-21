@@ -66,21 +66,16 @@ function BottomNavbar() {
       >
         <HStack w="100%" justify="space-around">
           {menu.map(({ icon, label, href }) => (
-            <Center
-              w="100%"
-              flexGrow={1}
-              as={Link}
-              to={href}
-              key={label}
-              py={1}
-            >
-              <IconButton
-                aria-label={label}
-                size="lg"
-                variant="ghost"
-                color={location.pathname === href ? 'blue.300' : 'title'}
-                borderRadius="full"
-              >{icon}</IconButton>
+            <Center w="100%" flexGrow={1} key={label} py={1} asChild>
+              <Link to={href}>
+                <IconButton
+                  aria-label={label}
+                  size="lg"
+                  variant="ghost"
+                  color={location.pathname === href ? 'blue.300' : 'title'}
+                  borderRadius="full"
+                >{icon}</IconButton>
+              </Link>
             </Center>
           ))}
         </HStack>

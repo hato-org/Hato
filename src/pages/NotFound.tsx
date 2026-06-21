@@ -1,5 +1,6 @@
 import { Heading, HStack, VStack, Text, Button, Box } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
+import { TbArrowNarrowLeft } from 'react-icons/tb';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/nav/Header';
 import BackButton from '@/components/layout/BackButton';
@@ -21,14 +22,11 @@ function NotFound() {
       <VStack w="100%" pt={4}>
         <Heading>404</Heading>
         <Text textStyle="title">お探しのページは見つかりませんでした。</Text>
-        <Button
-          variant="ghost"
-          textStyle="link"
-          //          color="blue.500"
-          as={RouterLink}
-          to="/"
-        >{<TbArrowNarrowLeft />} 
-          ホームに戻る
+        <Button variant="ghost" textStyle="link" asChild>
+          <RouterLink to="/">
+            <TbArrowNarrowLeft />
+            ホームに戻る
+          </RouterLink>
         </Button>
       </VStack>
     </Box>

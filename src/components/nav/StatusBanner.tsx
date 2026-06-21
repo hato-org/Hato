@@ -34,15 +34,16 @@ export default function StatusBanner() {
             justify="center"
             py={2}
             bg="warning"
-            as={RouterLink}
-            to="/status"
+            asChild
             color="white"
           >
-            <Icon as={TbTool} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              メンテナンス情報あり
-            </Text>
-            <Icon as={TbChevronRight} />
+            <RouterLink to="/status">
+              <Icon as={TbTool} boxSize={6} />
+              <Text textStyle="title" color="inherit">
+                メンテナンス情報あり
+              </Text>
+              <Icon as={TbChevronRight} />
+            </RouterLink>
           </HStack>
         </Collapsible.Content></Collapsible.Root>
       </Box>
@@ -53,15 +54,16 @@ export default function StatusBanner() {
             justify="center"
             py={2}
             bg="error"
-            as={RouterLink}
-            to="/status"
+            asChild
             color="white"
           >
-            <Icon as={TbAlertTriangle} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              メンテナンス中
-            </Text>
-            <Icon as={TbChevronRight} />
+            <RouterLink to="/status">
+              <Icon as={TbAlertTriangle} boxSize={6} />
+              <Text textStyle="title" color="inherit">
+                メンテナンス中
+              </Text>
+              <Icon as={TbChevronRight} />
+            </RouterLink>
           </HStack>
         </Collapsible.Content></Collapsible.Root>
       </Box>
@@ -72,15 +74,16 @@ export default function StatusBanner() {
             justify="center"
             py={2}
             bg="error"
-            as={RouterLink}
-            to="/status"
+            asChild
             color="white"
           >
-            <Icon as={TbAlertTriangle} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              障害発生中
-            </Text>
-            <Icon as={TbChevronRight} />
+            <RouterLink to="/status">
+              <Icon as={TbAlertTriangle} boxSize={6} />
+              <Text textStyle="title" color="inherit">
+                障害発生中
+              </Text>
+              <Icon as={TbChevronRight} />
+            </RouterLink>
           </HStack>
         </Collapsible.Content></Collapsible.Root>
       </Box>
