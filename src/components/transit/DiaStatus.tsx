@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import {
   Alert,
-  AlertIcon,
   Box,
   Center,
   Collapsible,
@@ -65,10 +64,10 @@ const UnstableInfo = React.memo(
     isAllUnstable: boolean;
     unstableLines: DiaInfo[];
   }) => {
-    const { open: isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
+    const { open: isOpen, onToggle } = useDisclosure({ defaultOpen: true });
 
     return (
-      <Alert
+      <Alert.Root
         // bg='transparent'
         status={isAllUnstable ? 'error' : 'warning'}
         rounded="xl"
@@ -77,7 +76,7 @@ const UnstableInfo = React.memo(
       >
         <VStack w="full" gap={0}>
           <HStack w="full">
-            <AlertIcon mr={0} />
+            <Alert.Indicator mr={0} />
             <Text textStyle="title">
               {isAllUnstable ? '大規模な障害あり' : '一部路線に情報あり'}
             </Text>
@@ -98,7 +97,7 @@ const UnstableInfo = React.memo(
             </Collapsible.Content></Collapsible.Root>
           </Box>
         </VStack>
-      </Alert>
+      </Alert.Root>
     );
   },
 );

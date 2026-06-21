@@ -1,6 +1,6 @@
 import React from 'react';
 import { DialogBody, DialogCloseTrigger, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { Alert, AlertIcon, Box, Collapsible, HStack, Icon, Spacer, StackSeparator, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Alert, Box, Collapsible, HStack, Icon, Spacer, StackSeparator, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import {
   TbAlertTriangle,
   TbChevronDown,
@@ -28,11 +28,11 @@ const StatusAlert = React.memo(
         : 'success';
 
     const { open: isOpen, onToggle } = useDisclosure({
-      defaultIsOpen: defaultOpen ?? statusSummary !== 'success',
+      defaultOpen: defaultOpen ?? statusSummary !== 'success',
     });
 
     return (
-      <Alert
+      <Alert.Root
         // bg='transparent'
         status={statusSummary}
         rounded="xl"
@@ -47,7 +47,7 @@ const StatusAlert = React.memo(
             onClick={onToggle}
             layerStyle="button"
           >
-            <AlertIcon mr={0} />
+            <Alert.Indicator mr={0} />
             <Text textStyle="title">
               {statusSummary === 'error'
                 ? '大規模な障害あり'
@@ -88,7 +88,7 @@ const StatusAlert = React.memo(
             </Collapsible.Content></Collapsible.Root>
           </Box>
         </VStack>
-      </Alert>
+      </Alert.Root>
     );
   },
 );
