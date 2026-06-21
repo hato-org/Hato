@@ -7,19 +7,20 @@ import {
   Icon,
   IconButton,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { TbCheck, TbChevronDown, TbChevronUp, TbX } from 'react-icons/tb';
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
+import {
+  NumberInputField,
+  NumberInputRoot,
+} from '@/components/ui/number-input';
+import { TbCheck, TbChevronDown, TbX } from 'react-icons/tb';
 import { format } from 'date-fns';
 import { useClassmatchMutation } from '@/services/classmatch';
 
@@ -89,18 +90,18 @@ function MetaEditor({
                 _first={{ pr: 2 }}
                 _last={{ pl: 2 }}
               >
-                <NumberInput
+                <NumberInputRoot
                   w="full"
                   min={0}
                   size="lg"
                   borderColor="border"
-                  value={participantsValue[index]?.point ?? ''}
-                  onChange={(__, value) =>
+                  value={String(participantsValue[index]?.point ?? '')}
+                  onValueChange={({ valueAsNumber }) =>
                     setParticipantsValue((prev) => {
                       const newParticipants = structuredClone(prev);
                       newParticipants[index] = {
                         ...newParticipants[index],
-                        point: Number.isNaN(value) ? 0 : value,
+                        point: Number.isNaN(valueAsNumber) ? 0 : valueAsNumber,
                       };
                       return newParticipants;
                     })
@@ -112,15 +113,7 @@ function MetaEditor({
                     textStyle="title"
                     textAlign="center"
                   />
-                  <NumberInputStepper borderColor="border">
-                    <NumberIncrementStepper>
-                      <Icon as={TbChevronUp} />
-                    </NumberIncrementStepper>
-                    <NumberDecrementStepper>
-                      <Icon as={TbChevronDown} />
-                    </NumberDecrementStepper>
-                  </NumberInputStepper>
-                </NumberInput>
+                </NumberInputRoot>
                 <ClassSelectMenu
                   currentClass={participantsValue[index]}
                   match={match}
@@ -226,32 +219,32 @@ function ClassSelectMenu({
   onSelect: (classInfo: Omit<ClassmatchParticipant, 'point'>) => void;
 }) {
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rounded="lg"
-        w="full"
-        variant="outline"
-        textStyle={currentClass?.from ? 'title' : 'description'}
-      >
-        {currentClass?.from
-          ? currentClass.type === 'teacher'
-            ? '職員'
-            : `${currentClass.grade}-${currentClass.class}`
-          : 'クラス'}
-       {<Icon as={TbChevronDown} />}</MenuButton>
-      <Box>
-        <MenuList rounded="xl" shadow="xl">
-          {match?.map((tournament) => (
-            <ClassSelectMenuItem
-              key={tournament.id}
-              onSelect={onSelect}
-              tournament={tournament}
-            />
-          ))}
-        </MenuList>
-      </Box>
-    </Menu>
+    <MenuRoot>
+      <MenuTrigger asChild>
+        <Button
+          rounded="lg"
+          w="full"
+          variant="outline"
+          textStyle={currentClass?.from ? 'title' : 'description'}
+        >
+          {currentClass?.from
+            ? currentClass.type === 'teacher'
+              ? '職員'
+              : `${currentClass.grade}-${currentClass.class}`
+            : 'クラス'}
+          <Icon as={TbChevronDown} />
+        </Button>
+      </MenuTrigger>
+      <MenuContent rounded="xl" shadow="xl">
+        {match?.map((tournament) => (
+          <ClassSelectMenuItem
+            key={tournament.id}
+            onSelect={onSelect}
+            tournament={tournament}
+          />
+        ))}
+      </MenuContent>
+    </MenuRoot>
   );
 }
 
@@ -282,6 +275,7 @@ function ClassSelectMenuItem({
 
   return (
     <MenuItem
+      value={tournament.id}
       textStyle="title"
       onClick={() =>
         onSelect({
