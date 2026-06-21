@@ -11,7 +11,6 @@ import {
   Link,
   Wrap,
   Skeleton,
-  Fade,
   SkeletonText,
   Center,
 } from '@chakra-ui/react';
@@ -142,8 +141,7 @@ export default function ClassroomCoursework() {
           <SkeletonText
             w="full"
             mt={2}
-            lineClamp={3}
-            skeletonHeight={4}
+            noOfLines={3}
             gap={2}
             loading={isPending}
           >
@@ -156,7 +154,7 @@ export default function ClassroomCoursework() {
               <Material key={JSON.stringify(material)} {...material} />
             ))}
           </Wrap>
-          <Fade in={!!data} style={{ width: '100%' }}>
+          <Box w="100%" hidden={!data} animation="fade-in 0.4s ease">
             <StackSeparator borderWidth={1} mb={4} />
             <VStack align="flex-start">
               <HStack>
@@ -191,7 +189,7 @@ export default function ClassroomCoursework() {
                 </Text>
               </Center>
             </VStack>
-          </Fade>
+          </Box>
         </VStack>
       )}
     </Box>

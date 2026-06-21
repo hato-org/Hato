@@ -1,4 +1,4 @@
-import { VStack, Text, Button, Slide, IconButton } from '@chakra-ui/react';
+import { VStack, Text, Button, Presence, IconButton } from '@chakra-ui/react';
 import { TbX } from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
 import { useRegisterSW } from 'virtual:pwa-register/react';
@@ -33,7 +33,18 @@ function UpdatePrompt() {
   });
 
   return (
-    <Slide direction="top" in={needRefresh} style={{ zIndex: 10000 }}>
+    <Presence
+      present={needRefresh}
+      position="fixed"
+      top={0}
+      insetX={0}
+      zIndex={10000}
+      animationName={{
+        _open: 'slide-from-top-full',
+        _closed: 'slide-to-top-full',
+      }}
+      animationDuration="moderate"
+    >
       <VStack
         position="relative"
         bg="panel"
@@ -67,7 +78,7 @@ function UpdatePrompt() {
           再読み込み
         </Button>
       </VStack>
-    </Slide>
+    </Presence>
   );
 }
 

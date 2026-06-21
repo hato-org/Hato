@@ -30,7 +30,7 @@ const AddCardDrawer = React.memo(() => {
           <Flex
             w="full"
             overflowX="auto"
-            sx={{ scrollSnapType: 'x mandatory' }}
+            css={{ scrollSnapType: 'x mandatory' }}
           >
             {unlistedCards.length ? (
               unlistedCards.map((card) => (

@@ -39,7 +39,7 @@ export default function SortableCard({ cardId }: { cardId: string }) {
       pos="relative"
       style={style}
       my={4}
-      sx={{
+      css={{
         touchAction: isDragging ? 'manipulation' : 'auto',
       }}
       zIndex={isDragging ? 1 : 0}

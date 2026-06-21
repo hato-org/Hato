@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { HStack, Icon, Center, Box, IconButton, Slide } from '@chakra-ui/react';
+import { HStack, Icon, Center, Box, IconButton, Presence } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 import { useAtomValue } from 'jotai';
 import {
@@ -54,7 +54,18 @@ function BottomNavbar() {
   );
 
   return (
-    <Slide direction="bottom" in={!editMode}>
+    <Presence
+      present={!editMode}
+      position="fixed"
+      bottom={0}
+      insetX={0}
+      zIndex={10}
+      animationName={{
+        _open: 'slide-from-bottom-full',
+        _closed: 'slide-to-bottom-full',
+      }}
+      animationDuration="moderate"
+    >
       <Box
         w="100%"
         pb="env(safe-area-inset-bottom)"
@@ -88,7 +99,7 @@ function BottomNavbar() {
         </Collapsible.Content></Collapsible.Root>
       </Box> */}
       </Box>
-    </Slide>
+    </Presence>
   );
 }
 

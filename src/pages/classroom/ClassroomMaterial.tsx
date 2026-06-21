@@ -133,8 +133,7 @@ export default function ClassroomMaterial() {
           <SkeletonText
             w="full"
             mt={2}
-            lineClamp={3}
-            skeletonHeight={4}
+            noOfLines={3}
             gap={2}
             loading={isLoading}
           >

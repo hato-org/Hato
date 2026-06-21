@@ -68,7 +68,7 @@ function Account() {
             <Skeleton
               w="full"
               rounded="xl"
-              sx={{ aspectRatio: '16 / 9' }}
+              css={{ aspectRatio: '16 / 9' }}
               loading={isProfileLoading}
             >
               {profileError ? (

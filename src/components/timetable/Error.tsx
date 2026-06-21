@@ -53,7 +53,7 @@ function Error({ type, onOpen }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               エラーが発生しました。
               <br />
               原因不明のため、再起動をお試しください。
