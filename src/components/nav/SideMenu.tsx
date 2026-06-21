@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerRoot } from '@/components/ui/drawer';
-import { Box, Heading, HStack, Icon, IconButton, Image, Portal, Show, Spacer, StackSeparator, StackProps, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
+import { Box, Heading, HStack, Icon, IconButton, Image, Portal, Spacer, StackSeparator, StackProps, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
 import {
   TbHome,
   TbClipboardList,
@@ -22,14 +22,12 @@ import Account from '../login/Account';
 export default function SideMenu() {
   return (
     <>
-      <Show below="md">
+      <Box hideFrom="md">
         <SideMenuDrawer />
-      </Show>
-      <Show above="md">
-        <Box px={2}>
-          <MenuBody />
-        </Box>
-      </Show>
+      </Box>
+      <Box hideBelow="md" px={2}>
+        <MenuBody />
+      </Box>
     </>
   );
 }
@@ -178,12 +176,13 @@ const MenuBody = React.memo(() => {
               menuItem.color ??
               (location.pathname === menuItem.href ? 'blue.400' : undefined)
             }
-            as={RouterLink}
-            to={menuItem.href}
+            asChild
             onClick={
               menuItem.onClick as unknown as React.MouseEventHandler<HTMLButtonElement>
             }
-          >{menuItem.icon}</IconButton>
+          >
+            <RouterLink to={menuItem.href}>{menuItem.icon}</RouterLink>
+          </IconButton>
         ) : (
           <HStack
             p={2}
@@ -197,10 +196,14 @@ const MenuBody = React.memo(() => {
             }
             layerStyle="button"
             rounded="xl"
-            as={RouterLink}
-            to={menuItem.href}
-            {...menuItem}
+            asChild
           >
+            <RouterLink
+              to={menuItem.href}
+              onClick={
+                menuItem.onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>
+              }
+            >
             {menuItem.icon}
             <Text
               color={
@@ -214,6 +217,7 @@ const MenuBody = React.memo(() => {
             >
               {menuItem.label}
             </Text>
+            </RouterLink>
           </HStack>
         ),
       )}

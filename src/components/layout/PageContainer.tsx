@@ -1,4 +1,4 @@
-import { Center, Container, Flex, Portal, Show } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Portal } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import Loading from '../common/Loading';
 import UpdatePrompt from '../common/UpdatePrompt';
@@ -16,9 +16,9 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
         <Tutorial />
         <WhatsNew />
         <AddCardDrawer />
-        <Show below="md">
+        <Box hideFrom="md">
           <BottomNavbar />
-        </Show>
+        </Box>
       </Portal>
       <Container
         maxW={{ base: '100%', md: 'container.sm', lg: 'container.lg' }}
