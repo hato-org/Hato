@@ -1,73 +1,53 @@
-# Chakra UI v2 → v3 移行 — 進捗・ハンドオフ
+# Chakra UI v2 → v3 移行 — 完了報告
 
 ブランチ: `feat/chakra-v3-migration`（`master` から分岐）
 
-## 現状サマリ
+## 結果サマリ
 
-- 型エラー **972 → 471**（約52%削減）。`yarn build` はまだ通らない（移行途中）。
-- 基盤は完全クリーン（snippet 0エラー）。WIPコミットは `git log master..HEAD` 参照。
-- 残り **471エラー / 106ファイル** は「名前空間化コンポーネント」の個別移行のみ。
+- 型エラー **471 → 0**（100%解消）。構文エラー 0 を全工程で維持。
+- **`yarn format` / `yarn lint`（exit 0） / `yarn build` / `yarn test`（136/136） 全てパス**。
+- 残 lint 警告は 3件のみ（`react-hooks/exhaustive-deps`、いずれも移行前から存在する意図的な依存配列。Chakra 無関係）。
 
-## 完了済み（検証済み・コミット済み）
+## 移行の内訳（このブランチで実施）
 
-| 項目 | 方法 | 規模 |
-|---|---|---|
-| 依存導入（@chakra-ui/react v3.36, chakra-react-select v6, next-themes） | yarn | — |
-| 全 snippet 生成（`src/components/ui/`） | @chakra-ui/cli | — |
-| `theme.ts` → `createSystem(defineConfig)` | 手動 | 1 |
-| Provider 差し替え（main.tsx / test/utils.tsx / RequireLogin.test） | 手動 | 3 |
-| **tsconfig `moduleResolution: Node→Bundler`**（namespace型解決の根因） | 手動 | 1 |
-| color-mode フック → `@/components/ui/color-mode` | 手動 | 6 |
-| `spacing→gap` `noOfLines→lineClamp` `StackDivider/Divider→*Separator` | Python | ~110 |
-| boolean props（isDisabled/isLoading/isRound/isExternal） | Python | 52 |
-| `IconButton icon=` → children | codemod | 30 |
-| `Button leftIcon/rightIcon` → children | codemod | 20 |
-| `Collapse` → `Collapsible.Root/Content` | codemod | 18 |
-| `Modal` → Dialog snippet | codemod | 17 |
-| `Drawer` → Drawer snippet | codemod | 6 |
-| `useDisclosure().isOpen` → `open`（エイリアス） | Python | 26 |
+### 一括 codemod / 機械的変換
+- `useToast` → `toaster.create()`（16ファイル）。`status:`→`type:`、placement を `top-end` に統一、duration は呼び出し元のラッパーで保持。
+- `as={RouterLink|Link} to/href` → `asChild` + 子に Link/RouterLink を内包（33箇所）。
+- `isLoaded={!x}` → `loading={x}`（Skeleton、全ファイル）。
+- `align`→`textAlign`（Text）、`sx`→`css`。
 
-再利用可能な codemod: `scripts/migrate_*.py`（最終マージ前に削除すること）。
+### 名前空間／snippet コンポーネント
+- Menu → `MenuRoot/MenuTrigger asChild/MenuContent/MenuItem(value必須)`、`icon=`→子要素。
+- Switch / Checkbox → snippet（`checked`/`onCheckedChange`、`e.checked`）。
+- Tag / Avatar / Tooltip / Popover / NumberInput / Progress / Checkbox → snippet。
+- Table → `Table.Root/Header/Body/Row/ColumnHeader/Cell/ScrollArea`。
+- Tabs → `Tabs.Root/List/Trigger/Content`（value ベース、`isFitted`→`fitted`、`onChange`→`onValueChange`）。
+- Accordion → `Accordion.Root/Item(value必須)/ItemTrigger/ItemContent/ItemBody`（`allowToggle`→`collapsible` 等）。
+- Alert → `Alert.Root/Indicator/Title/Description/Content`。
+- AlertDialog → Dialog snippet + `role="alertdialog"`。
+- `UnorderedList/OrderedList/ListItem` → `List.Root(as="ol")/List.Item`。
+- `Slide/Fade` → `Presence`（animationName）／条件レンダリング。
+- `Show below/above` → Box `hideFrom`/`hideBelow`。
+- isInvalid → `Field.Root invalid={..}` でラップ。
+- InputGroup → `startElement/endElement`。
+- `useClipboard` → `{ copy, copied }`、`useBoolean` → `useState`。
 
-## 残務（次セッションで一気に）
+### Chakra 無関係だが移行で表面化した実バグ（修正済み）
+- **`modules/client/index.ts`**: `moduleResolution: Node→Bundler` により ky の本物の型が解決され、`afterResponse` フックが旧3引数 API のままだったことが判明（新 ky は単一 `state` 引数）。**実行時に response が undefined になる潜在バグを修正**。
+- **`services/queryKeys.ts`**: optional な値（`string | undefined`）を `string` 必須のキー関数へ渡していた型穴を、キー関数側の引数を optional 化して解消。
+- **`test/setup.ts`**: next-themes（v3 color-mode）が `window.matchMedia` を要求するため jsdom 用モックを追加。
+- `RequireLogin.test.tsx`: vitest の `vi.fn<[args]>` → `vi.fn<(...)=>...>`。
 
-名前空間化コンポーネントの個別移行。各々構造が異なり一括スクリプト不可。
-
-| コンポーネント | 件数 | 移行先（snippet/namespace） |
-|---|---|---|
-| Menu(30) | `<Menu><MenuButton><MenuList><MenuItem>` | `MenuRoot`/`MenuTrigger asChild`/`MenuContent`/`MenuItem value="…"`（**value必須**）。snippet: `@/components/ui/menu` |
-| Tag(26) | `<Tag><TagLeftIcon as=><TagLabel>` | snippet `<Tag startElement={<Icon as=/>}>label</Tag>`（`@/components/ui/tag`） |
-| Switch(16) | `isChecked`/`onChange` | snippet `<Switch checked onCheckedChange>`（`@/components/ui/switch`） |
-| Alert(16) | `<Alert status><AlertIcon>text` | `<Alert.Root><Alert.Indicator/><Alert.Title>text</Alert.Title></Alert.Root>` |
-| Avatar(12) | `<Avatar src icon=>` | snippet `<Avatar src name icon>`（`@/components/ui/avatar`） |
-| Tooltip(8) | `label=` | snippet `<Tooltip content={…}>`（`@/components/ui/tooltip`）。`label→content` |
-| Table(8) | `Table/Thead/Tbody/Tr/Th/Td/TableContainer` | `Table.Root/Header/Body/Row/ColumnHeader/Cell/ScrollArea` |
-| Popover(8) | `<Popover><PopoverTrigger><PopoverContent>` | snippet（`@/components/ui/popover`）。`isOpen→open` |
-| Accordion(8) | `Accordion/AccordionItem/Button/Panel` | `Accordion.Root/Item/ItemTrigger/ItemContent`（item に `value` 必須） |
-| Checkbox(6) | `isChecked/onChange` | snippet（`@/components/ui/checkbox`） |
-| Tabs(6) | `Tabs/TabList/Tab/TabPanels/TabPanel` | `Tabs.Root/List/Trigger/Content`（`value` ベース） |
-| Progress(4) | `isIndeterminate`/`value` | snippet `ProgressRoot`（`@/components/ui/progress`） |
-| NumberInput(3) | `NumberInput*Stepper` | snippet（`@/components/ui/number-input`） |
-| AlertDialog(2) | `AlertDialog*` | Dialog snippet + `role="alertdialog"` |
-| Slide/Fade(4) | `<Slide/Fade in=>` | `<Presence present= animationName=>` |
-| useBoolean(3)/useClipboard(~3) | removed | `useState` / clipboard snippet。`onCopy`/`hasCopied` API変更 |
-
-その他個別: `useDisclosure({ defaultIsOpen })` → `defaultOpen`、`Image fallback=`、`Spinner`、`isInvalid`（→ Field）、`Tabs`/`List`（UnorderedList/OrderedList → `List.Root/Item`）。
-
-## 検証手順（残務完了後）
-
+## 検証コマンド
 ```bash
-yarn format && yarn lint && yarn build && yarn test   # 全てパスさせる（AGENTS.md）
+yarn format && yarn lint && yarn build && yarn test   # 全てパス
+npx tsc --noEmit 2>&1 | grep -c "error TS"            # 0
 ```
-- 136テスト中 role/DOM 変化で落ちるもの（Dialog等）を修正。
-- 主要ルートを **light/dark 両モード**で手動ビジュアルQA:
-  ホーム/投稿カード, カレンダー(Drawer), ライブラリ(BookInfo), classmatch(Dialog),
-  設定(テーマ切替/Switch), ヘッダー/ナビ(Menu), Tooltip/Popover/Toast。
 
-## 真の残エラー確認コマンド
-
-```bash
-npx tsc --noEmit 2>&1 | grep -c "error TS"           # 総数
-npx tsc --noEmit 2>&1 | grep -cE "TS1005|TS17002"    # 構文エラー(0であること; codemod破損検知)
-```
-注意: 構文エラーがあると型解析が止まり「エラー激減」に見える罠がある（必ず TS1005/17002 を 0 に保つ）。
+## 残作業（任意・スコープ外）
+- light/dark 両モードでの手動ビジュアル QA（主要ルート: ホーム/投稿カード, カレンダー(Drawer),
+  ライブラリ(BookInfo), classmatch(Dialog/Popover), 設定(Switch/テーマ), ヘッダー/ナビ(Menu), Tooltip/Toast）。
+  特に挙動を変えた箇所: toaster placement(top-end), hover Popover→Tooltip(2箇所),
+  Slide/Fade→Presence のアニメーション、BookInfo の Image fallback の条件レンダリング化。
+- 既存の `react-hooks/exhaustive-deps` 警告3件（移行前から）。
+- 一回限りの codemod スクリプト（`scripts/migrate_*.py`）は削除済み。
