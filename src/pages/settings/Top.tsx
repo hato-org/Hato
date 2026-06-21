@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { HStack, VStack, Avatar, Text, Icon, Spacer, Button, useDisclosure, ButtonGroup, Link } from '@chakra-ui/react';
+import { HStack, VStack, Text, Icon, Spacer, Button, useDisclosure, ButtonGroup, Link } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import { Link as RouterLink } from 'react-router';
 import {
   TbActivity,
@@ -52,10 +53,10 @@ function Top() {
           w="100%"
           gap={4}
           rounded="xl"
-          as={RouterLink}
-          to="account"
+          asChild
           layerStyle="button"
         >
+          <RouterLink to="account">
           <Avatar src={user?.avatar} size="sm" />
           <VStack align="flex-start" gap={0} minW={0}>
             <Text textStyle="title" fontSize="md">
@@ -70,6 +71,7 @@ function Top() {
             {user?.contributionCount} pt
           </Text>
           <Icon as={TbChevronRight} />
+          </RouterLink>
         </HStack>
       </SettingCategory>
       <SettingCategory title="画面表示">
@@ -157,15 +159,20 @@ function Top() {
       </Button>
       <HStack w="100%" justify="center">
         <ButtonGroup rounded="lg" variant="ghost">
-          <Button
-            as={Link}
-            target="_blank" rel="noreferrer"
-            href={import.meta.env.VITE_REPO_URL}
-          >{<TbBrandGithub />} 
-            GitHub
+          <Button asChild>
+            <Link
+              target="_blank" rel="noreferrer"
+              href={import.meta.env.VITE_REPO_URL}
+            >
+              <TbBrandGithub />
+              GitHub
+            </Link>
           </Button>
-          <Button as={RouterLink} to="/status">{<TbActivity />} 
-            サービス稼働状況
+          <Button asChild>
+            <RouterLink to="/status">
+              <TbActivity />
+              サービス稼働状況
+            </RouterLink>
           </Button>
         </ButtonGroup>
       </HStack>

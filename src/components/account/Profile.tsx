@@ -1,11 +1,11 @@
 import {
   HStack,
-  Avatar,
   VStack,
   StackSeparator,
   Text,
   Spacer,
 } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import html2canvas from 'html2canvas';
 import { useUser } from '@/services/user';
 import { useClassList, useCourseList, useGradeList } from '@/services/info';

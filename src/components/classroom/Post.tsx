@@ -6,11 +6,10 @@ import {
   Text,
   VStack,
   Wrap,
-  Tooltip,
-  Avatar,
-  SkeletonCircle,
-  SkeletonText,
 } from '@chakra-ui/react';
+import { SkeletonCircle, SkeletonText } from '@/components/ui/skeleton';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Avatar } from '@/components/ui/avatar';
 import { format, isThisYear } from 'date-fns';
 import { useNavigate } from 'react-router';
 import {
@@ -83,7 +82,7 @@ const Post = React.memo(
             }}
           >
             <HStack gap={4} align="center">
-              <Tooltip label={typeText} fontSize="md" openDelay={300}>
+              <Tooltip content={typeText} openDelay={300}>
                 <Avatar bg={iconColor} icon={<Icon as={icon} boxSize={7} />} />
               </Tooltip>
             </HStack>
@@ -168,7 +167,7 @@ function PostPlaceholder() {
       <VStack w="full" align="flex-start" p={2}>
         <SkeletonCircle size="12" />
 
-        <SkeletonText lineClamp={4} skeletonHeight="4" />
+        <SkeletonText noOfLines={4} />
       </VStack>
     </Card>
   );

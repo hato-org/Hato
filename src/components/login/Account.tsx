@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   FlexProps,
   HStack,
@@ -8,6 +7,7 @@ import {
   useBreakpointValue,
   VStack,
 } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import { TbUser } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router';
 import { useUser } from '@/services/user';
@@ -24,10 +24,10 @@ function Account({ ...rest }: FlexProps) {
       layerStyle="button"
       rounded="xl"
       direction="column"
-      as={RouterLink}
-      to="/settings/account"
+      asChild
       {...rest}
     >
+      <RouterLink to="/settings/account">
       <HStack gap={4}>
         <Avatar src={user?.avatar} size="sm" icon={<TbUser />} />
         {breakPoint !== 1 && (
@@ -55,17 +55,18 @@ function Account({ ...rest }: FlexProps) {
           </>
         )}
       </HStack>
+      </RouterLink>
     </Flex>
   ) : (
-    <Avatar
-      src={user.avatar}
-      size="md"
-      icon={<TbUser />}
-      p={2}
-      layerStyle="button"
-      as={RouterLink}
-      to="/settings/account"
-    />
+    <RouterLink to="/settings/account">
+      <Avatar
+        src={user.avatar}
+        size="md"
+        icon={<TbUser />}
+        p={2}
+        layerStyle="button"
+      />
+    </RouterLink>
   );
 }
 

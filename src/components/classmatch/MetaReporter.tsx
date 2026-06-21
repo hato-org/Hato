@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Avatar,
+  Field,
   HStack,
   Icon,
   IconButton,
@@ -8,6 +8,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import { toaster } from '@/components/ui/toaster';
 import { TbCheck, TbX } from 'react-icons/tb';
 import { useAtomValue } from 'jotai';
@@ -86,13 +87,14 @@ export default function MetaReporter({
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         報告理由
       </Text>
-      <Textarea
-        rounded="lg"
-        placeholder="例：荒らし"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        isInvalid={!description}
-      />
+      <Field.Root invalid={!description}>
+        <Textarea
+          rounded="lg"
+          placeholder="例：荒らし"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Field.Root>
       <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
