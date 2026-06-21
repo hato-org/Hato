@@ -8,13 +8,7 @@ import {
   Spacer,
   StackSeparator,
   Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -44,7 +38,9 @@ const Card = React.memo(
     meta,
     ...rest
   }: UserSchedule & { defaultIsOpen?: boolean }) => {
-    const { open: isOpen, onToggle } = useDisclosure({ defaultIsOpen });
+    const { open: isOpen, onToggle } = useDisclosure({
+      defaultOpen: defaultIsOpen,
+    });
     const {
       open: importModalOpen,
       onOpen: importModalOnOpen,
@@ -125,64 +121,64 @@ const Card = React.memo(
         <Box w="full">
           <Collapsible.Root open={isOpen}><Collapsible.Content>
             <VStack w="full" pt={8} gap={8}>
-              <TableContainer w="full" overflowX="auto">
-                <Table size="sm">
-                  <Thead>
-                    <Tr>
-                      <Th>A週</Th>
+              <Table.ScrollArea w="full">
+                <Table.Root size="sm">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>A週</Table.ColumnHeader>
                       {days.slice(1, 6).map((day) => (
-                        <Th key={day}>{day}</Th>
+                        <Table.ColumnHeader key={day}>{day}</Table.ColumnHeader>
                       ))}
-                    </Tr>
-                  </Thead>
-                  <Tbody>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     {Array.from({
                       length: Math.max(
                         ...schedules.A.map((daySchedule) => daySchedule.length),
                       ),
                     }).map((_, index) => (
-                      <Tr key={index}>
-                        <Td textStyle="title">{index + 1}</Td>
+                      <Table.Row key={index}>
+                        <Table.Cell textStyle="title">{index + 1}</Table.Cell>
                         {schedules.A.slice(1, 6).map((daySchedule, idx) => (
                           <TablePeriod
                             key={`${days[index]}-${idx}`}
                             subjectId={daySchedule[index]?.subjectId}
                           />
                         ))}
-                      </Tr>
+                      </Table.Row>
                     ))}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-              <TableContainer w="full" overflowX="auto">
-                <Table size="sm">
-                  <Thead>
-                    <Tr>
-                      <Th>B週</Th>
+                  </Table.Body>
+                </Table.Root>
+              </Table.ScrollArea>
+              <Table.ScrollArea w="full">
+                <Table.Root size="sm">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>B週</Table.ColumnHeader>
                       {days.slice(1, 6).map((day) => (
-                        <Th key={day}>{day}</Th>
+                        <Table.ColumnHeader key={day}>{day}</Table.ColumnHeader>
                       ))}
-                    </Tr>
-                  </Thead>
-                  <Tbody>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     {Array.from({
                       length: Math.max(
                         ...schedules.B.map((daySchedule) => daySchedule.length),
                       ),
                     }).map((_, index) => (
-                      <Tr key={index}>
-                        <Td textStyle="title">{index + 1}</Td>
+                      <Table.Row key={index}>
+                        <Table.Cell textStyle="title">{index + 1}</Table.Cell>
                         {schedules.B.slice(1, 6).map((daySchedule, idx) => (
                           <TablePeriod
                             key={`${days[index]}-${idx}`}
                             subjectId={daySchedule[index]?.subjectId}
                           />
                         ))}
-                      </Tr>
+                      </Table.Row>
                     ))}
-                  </Tbody>
-                </Table>
-              </TableContainer>
+                  </Table.Body>
+                </Table.Root>
+              </Table.ScrollArea>
               {owner === user._id ? (
                 <HStack w="full">
                   <Button
@@ -249,9 +245,9 @@ const TablePeriod = React.memo(
     const { data } = useUserSubject(subjectId ?? '', { enabled: !!subjectId });
 
     return (
-      <Td textStyle="title" fontSize="lg">
+      <Table.Cell textStyle="title" fontSize="lg">
         {data?.short_name ?? data?.name ?? '-'}
-      </Td>
+      </Table.Cell>
     );
   },
 );
