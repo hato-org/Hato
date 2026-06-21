@@ -36,7 +36,7 @@ const DiaStatus = React.memo(() => {
       <Text textStyle="title" fontSize="lg">
         運転状況
       </Text>
-      <Skeleton w="100%" minH={8} rounded="xl" isLoaded={!isPending}>
+      <Skeleton w="100%" minH={8} rounded="xl" loading={isPending}>
         <Center w="full">
           {error ? (
             <Error error={error} />

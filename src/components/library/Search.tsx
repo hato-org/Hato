@@ -140,7 +140,7 @@ const SearchResult = React.memo(
               </Alert>
             )}
             <HStack w="100%" px={2}>
-              <Skeleton isLoaded={!isLoading} rounded="lg" w={24}>
+              <Skeleton loading={isLoading} rounded="lg" w={24}>
                 <Text textStyle="title" color="description">
                   {result?.count}件
                 </Text>

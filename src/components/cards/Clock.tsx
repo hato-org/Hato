@@ -68,7 +68,7 @@ export default function Clock() {
             </Text>
           </HStack>
         ) : (
-          <Skeleton rounded="md" isLoaded={!isPending}>
+          <Skeleton rounded="md" loading={isPending}>
             <Text textStyle="description" fontWeight="bold">
               日課未設定
             </Text>

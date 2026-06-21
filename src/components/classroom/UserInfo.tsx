@@ -33,7 +33,7 @@ const UserInfo = React.memo(
 
     return (
       <VStack gap={0} align="flex-start">
-        <Skeleton minH={6} minW={32} rounded="md" isLoaded={!isUserPending}>
+        <Skeleton minH={6} minW={32} rounded="md" loading={isUserPending}>
           {userError ? (
             <Tooltip label="権限の問題により、教師以外のユーザー情報は取得できません">
               <HStack gap={1}>
@@ -51,7 +51,7 @@ const UserInfo = React.memo(
           minH={4}
           minW={20}
           rounded="md"
-          isLoaded={!isCoursePending}
+          loading={isCoursePending}
           onClick={(e) => e.stopPropagation()}
         >
           {courseError ? (

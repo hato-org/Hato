@@ -88,7 +88,7 @@ const UpcomingTrains = React.memo(() => {
             長野方面
           </Text>
           <VStack w="full">
-            <Skeleton w="full" rounded="xl" isLoaded={!isNaganoPending}>
+            <Skeleton w="full" rounded="xl" loading={isNaganoPending}>
               <PrimaryUpcomingTrainCountdown
                 date={date}
                 train={naganoUpcoming?.[0]}
@@ -118,7 +118,7 @@ const UpcomingTrains = React.memo(() => {
             上田方面
           </Text>
           <VStack w="full">
-            <Skeleton w="full" rounded="xl" isLoaded={!isUedaPending}>
+            <Skeleton w="full" rounded="xl" loading={isUedaPending}>
               <PrimaryUpcomingTrainCountdown
                 date={date}
                 train={uedaUpcoming?.[0]}

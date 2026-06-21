@@ -115,12 +115,12 @@ export default function ClassroomMaterial() {
               borderColor="blue.400"
             />
             <VStack w="full" align="flex-start" gap={1}>
-              <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!isLoading}>
+              <Skeleton minH={8} minW={40} rounded="lg" loading={isLoading}>
                 <Text textStyle="title" fontSize="2xl">
                   {data?.title}
                 </Text>
               </Skeleton>
-              <Skeleton minH={6} minW={20} rounded="md" isLoaded={!userLoading}>
+              <Skeleton minH={6} minW={20} rounded="md" loading={userLoading}>
                 <Text textStyle="description">{userInfo?.name?.fullName}</Text>
               </Skeleton>
             </VStack>
@@ -131,7 +131,7 @@ export default function ClassroomMaterial() {
             lineClamp={3}
             skeletonHeight={4}
             gap={2}
-            isLoaded={!isLoading}
+            loading={isLoading}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.description}

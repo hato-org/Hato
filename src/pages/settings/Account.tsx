@@ -69,7 +69,7 @@ function Account() {
               w="full"
               rounded="xl"
               sx={{ aspectRatio: '16 / 9' }}
-              isLoaded={!isProfileLoading}
+              loading={isProfileLoading}
             >
               {profileError ? (
                 <Error error={profileError} />

@@ -134,7 +134,7 @@ export default function ClassroomAnnouncement() {
                 minH={8}
                 minW={40}
                 rounded="lg"
-                isLoaded={!isUserPending}
+                loading={isUserPending}
               >
                 {userError ? (
                   <HStack>
@@ -157,7 +157,7 @@ export default function ClassroomAnnouncement() {
                 minH={6}
                 minW={20}
                 rounded="md"
-                isLoaded={!isCoursePending}
+                loading={isCoursePending}
               >
                 <Link
                   as={RouterLink}
@@ -175,7 +175,7 @@ export default function ClassroomAnnouncement() {
             lineClamp={3}
             skeletonHeight={4}
             gap={2}
-            isLoaded={!isPending}
+            loading={isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.text}

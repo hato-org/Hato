@@ -119,7 +119,7 @@ export default function ClassroomCoursework() {
               borderColor="blue.400"
             />
             <VStack w="full" align="flex-start" gap={1}>
-              <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!isPending}>
+              <Skeleton minH={8} minW={40} rounded="lg" loading={isPending}>
                 <Text textStyle="title" fontSize="2xl">
                   {data?.title}
                 </Text>
@@ -128,7 +128,7 @@ export default function ClassroomCoursework() {
                 minH={6}
                 minW={20}
                 rounded="md"
-                isLoaded={!isUserPending}
+                loading={isUserPending}
               >
                 <Text textStyle="description">{userInfo?.name?.fullName}</Text>
               </Skeleton>
@@ -140,7 +140,7 @@ export default function ClassroomCoursework() {
             lineClamp={3}
             skeletonHeight={4}
             gap={2}
-            isLoaded={!isPending}
+            loading={isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.description}

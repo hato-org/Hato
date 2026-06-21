@@ -82,7 +82,7 @@ function Timetable() {
               week={division?.week}
               day={division?.day}
               schedules={data?.schedules}
-              loading={isPending}
+              isLoading={isPending}
               error={error ?? undefined}
             />
           ) : (
