@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { DrawerBody, DrawerContent, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Box, HStack, IconButton, Text, Link, Collapsible, Progress, Spacer, Center, useBreakpointValue, Icon, Editable, EditablePreview, EditableInput } from '@chakra-ui/react';
+import { Box, HStack, IconButton, Text, Link, Collapsible, Spacer, Center, useBreakpointValue, Icon, Editable } from '@chakra-ui/react';
+import { ProgressBar, ProgressRoot } from '@/components/ui/progress';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX, TbZoomIn, TbZoomOut } from 'react-icons/tb';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -56,7 +57,6 @@ const PDFViewer = React.memo(
         onOpenChange={(e) => !e.open && (onClose)()}
         placement="bottom"
         size="full"
-        allowPinchZoom
       >
         <DrawerContent top={0} bg="bg">
           <DrawerHeader shadow="xl" p={0}>
@@ -89,7 +89,9 @@ const PDFViewer = React.memo(
             </HStack>
             <Box w="100%">
               <Collapsible.Root open={!!isFetching}><Collapsible.Content>
-                <Progress w="100%" size="xs" isIndeterminate />
+                <ProgressRoot w="100%" size="xs" value={null}>
+                  <ProgressBar />
+                </ProgressRoot>
               </Collapsible.Content></Collapsible.Root>
             </Box>
           </DrawerHeader>
@@ -175,10 +177,13 @@ const ZoomControls = React.memo(
           onClick={onZoomOut}
         >{<Icon boxSize={6} as={TbZoomOut} />}</IconButton>
         <HStack textStyle="title">
-          <Editable value={zoom.toString()} onChange={onSetZoom}>
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <Editable.Root
+            value={zoom.toString()}
+            onValueChange={(e) => onSetZoom(e.value)}
+          >
+            <Editable.Preview />
+            <Editable.Input />
+          </Editable.Root>
           <Text>%</Text>
         </HStack>
         <IconButton
