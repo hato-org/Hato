@@ -21,8 +21,8 @@ export const queryKeys = {
     all: ['timetable'] as const,
     division: (date: { year: number; month: number; day: number }) =>
       ['timetable', 'division', date] as const,
-    userSubject: (id: string) => ['timetable', 'usersubject', id] as const,
-    userSchedule: (id: string) => ['timetable', 'userschedule', id] as const,
+    userSubject: (id?: string) => ['timetable', 'usersubject', id] as const,
+    userSchedule: (id?: string) => ['timetable', 'userschedule', id] as const,
     myUserSchedules: (userId: string) =>
       ['timetable', 'userschedule', 'user', userId] as const,
     note: (date: { year: number; month: number; day: number }) =>
@@ -66,11 +66,11 @@ export const queryKeys = {
 
   info: {
     grade: () => ['info', 'grade'] as const,
-    classList: (type: string, grade: string) =>
+    classList: (type?: string, grade?: string) =>
       ['info', 'class', type, grade] as const,
-    courseList: (type: string, grade: string) =>
+    courseList: (type?: string, grade?: string) =>
       ['info', 'course', type, grade] as const,
-    subjectList: (type: string, grade: string) =>
+    subjectList: (type?: string, grade?: string) =>
       ['info', 'subject', type, grade] as const,
   },
 
@@ -86,20 +86,21 @@ export const queryKeys = {
   google: {
     all: ['google'] as const,
     timeline: () => ['google', 'timeline'] as const,
-    courseTimeline: (courseId: string) =>
+    courseTimeline: (courseId?: string | null) =>
       ['google', courseId, 'timeline'] as const,
     courses: () => ['google', 'courses'] as const,
-    course: (courseId: string) => ['google', 'course', courseId] as const,
-    announcements: (courseId: string) =>
+    course: (courseId?: string | null) =>
+      ['google', 'course', courseId] as const,
+    announcements: (courseId?: string | null) =>
       ['google', courseId, 'announcements'] as const,
-    announcement: (courseId: string, id: string) =>
+    announcement: (courseId?: string | null, id?: string | null) =>
       ['google', 'announcement', courseId, id] as const,
     myAnnouncements: () => ['google', 'me', 'announcements'] as const,
-    courseWork: (courseId: string, id: string) =>
+    courseWork: (courseId?: string | null, id?: string | null) =>
       ['google', 'courseWork', { courseId, id }] as const,
-    courseWorkMaterial: (courseId: string, id: string) =>
+    courseWorkMaterial: (courseId?: string | null, id?: string | null) =>
       ['google', 'courseWorkMaterial', { courseId, id }] as const,
-    user: (userId: string) => ['google', 'user', userId] as const,
+    user: (userId?: string | null) => ['google', 'user', userId] as const,
   },
 
   classmatch: {
@@ -107,7 +108,7 @@ export const queryKeys = {
       ['classmatch', year, season] as const,
     sports: (year: number, season: string) =>
       ['classmatch', year, season, 'sports'] as const,
-    sport: (year: number, season: string, sport: string) =>
+    sport: (year: number, season: string, sport?: string) =>
       ['classmatch', year, season, sport] as const,
     livestreams: (year: number, season: string) =>
       ['classmatch', year, season, 'livestreams'] as const,
@@ -115,7 +116,11 @@ export const queryKeys = {
     upcoming: (
       year: number,
       season: string,
-      filter: { type: string; grade: string; class: string },
+      filter: {
+        type?: string;
+        grade?: string;
+        class?: string;
+      },
     ) => ['classmatch', year, season, 'upcoming', filter] as const,
   },
 } as const;

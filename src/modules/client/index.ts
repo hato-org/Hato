@@ -1,4 +1,4 @@
-import ky from 'ky';
+import ky, { type AfterResponseHook } from 'ky';
 import { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 import { jwtAtom, clearAuth, updateAuth } from '@/store/auth';
@@ -46,18 +46,9 @@ const navigateToLogin = async () => {
 export const useClient = () => {
   const jwt = useAtomValue(jwtAtom);
 
-  const client = useMemo(
-    () =>
-      ky.create({
-        prefix: API_URL,
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-        timeout: 1000 * 15,
-        hooks: {
-          afterResponse: [
-            async (request, _options, response) => {
-              if (response.status !== 401) return;
+  const client = useMemo(() => {
+    const afterResponse: AfterResponseHook = async ({ request, response }) => {
+      if (response.status !== 401) return;
 
               // リフレッシュ済みリクエストの再 401 はログイン画面へ
               if (request.headers.get('X-Token-Refreshed')) {
@@ -96,13 +87,20 @@ export const useClient = () => {
                 navigateToLogin();
               }
 
-              return retryResponse;
-            },
-          ],
-        },
-      }),
-    [jwt],
-  );
+      return retryResponse;
+    };
+
+    return ky.create({
+      prefix: API_URL,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+      timeout: 1000 * 15,
+      hooks: {
+        afterResponse: [afterResponse],
+      },
+    });
+  }, [jwt]);
 
   return {
     client,

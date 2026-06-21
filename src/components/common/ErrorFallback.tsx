@@ -1,12 +1,6 @@
 import { useMemo, useState } from 'react';
-import {
-  Button,
-  Center,
-  Checkbox,
-  Code,
-  Heading,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Center, Code, Heading, VStack } from '@chakra-ui/react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { TbLoader, TbRotate } from 'react-icons/tb';
 import { useRouteError } from 'react-router';
 import { useAuth } from '@/modules/auth';
@@ -75,8 +69,8 @@ function ErrorFallback() {
           ログアウト・キャッシュ削除
         </Button>
         <Checkbox
-          isChecked={sendReport}
-          onChange={(e) => setSendReport(e.target.checked)}
+          checked={sendReport}
+          onCheckedChange={(e) => setSendReport(!!e.checked)}
           textStyle="title"
         >
           エラーレポートを送信する

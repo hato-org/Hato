@@ -7,9 +7,9 @@ import {
   HStack,
   Icon,
   IconButton,
-  Progress,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { ProgressBar, ProgressRoot } from '@/components/ui/progress';
 import { useColorModeValue } from '@/components/ui/color-mode';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbMenu2 } from 'react-icons/tb';
@@ -60,7 +60,9 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
       </HStack>
       <Box w="100%" pos="absolute" bottom={0}>
         <Collapsible.Root open={!!isFetching}><Collapsible.Content>
-          <Progress w="100%" size="xs" isIndeterminate />
+          <ProgressRoot w="100%" size="xs" value={null}>
+            <ProgressBar />
+          </ProgressRoot>
         </Collapsible.Content></Collapsible.Root>
       </Box>
     </Center>

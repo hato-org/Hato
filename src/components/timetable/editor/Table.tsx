@@ -6,17 +6,19 @@ import {
   HStack,
   Icon,
   IconButton,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   SimpleGrid,
   Spacer,
   Text,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
+import {
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverRoot,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import React from 'react';
 import {
   TbChevronDown,
@@ -216,8 +218,8 @@ function EditorSubjectGrid({
 
   return (
     <>
-      <Popover>
-        <PopoverTrigger>
+      <PopoverRoot>
+        <PopoverTrigger asChild>
           <Center
             bg="accent"
             p={1}
@@ -277,7 +279,7 @@ function EditorSubjectGrid({
             </VStack>
           </PopoverBody>
         </PopoverContent>
-      </Popover>
+      </PopoverRoot>
       <UserSubjectPicker
         isOpen={isPickerOpen}
         onSelect={onReplace}

@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  HStack,
-  Skeleton,
-  Text,
-  VStack,
-  Icon,
-  Link,
-  Tooltip,
-} from '@chakra-ui/react';
+import { HStack, Skeleton, Text, VStack, Icon, Link } from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
 import { TbAlertCircle } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router';
 import { useGCUserInfo, useGCCourseInfo } from '@/services/classroom';
@@ -35,7 +28,7 @@ const UserInfo = React.memo(
       <VStack gap={0} align="flex-start">
         <Skeleton minH={6} minW={32} rounded="md" loading={isUserPending}>
           {userError ? (
-            <Tooltip label="権限の問題により、教師以外のユーザー情報は取得できません">
+            <Tooltip content="権限の問題により、教師以外のユーザー情報は取得できません">
               <HStack gap={1}>
                 <Icon as={TbAlertCircle} boxSize={6} color="yellow.400" />
                 <Text color="description" fontWeight="bold">
