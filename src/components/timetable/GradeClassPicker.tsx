@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
+  Button,
   HStack,
   Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Spacer,
   Stack,
   StackProps,
   Text,
 } from '@chakra-ui/react';
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
 import { TbChevronDown } from 'react-icons/tb';
 import { useClassList, useCourseList, useGradeList } from '@/services/info';
 
@@ -93,34 +96,38 @@ const GradeClassPicker = React.memo(
     return (
       <Stack w="100%" {...rest}>
         <Box w="100%">
-          <Menu>
-            <MenuButton
-              type="button"
-              w="100%"
-              h="full"
-              rounded="lg"
-              layerStyle="button"
-              border="1px solid"
-              borderColor="border"
-            >
-              <HStack w="100%" px={4} py={2} textStyle="title">
-                <Text>
-                  {grade?.shortName ??
-                    gradeList?.find(
-                      (gradeInfo) =>
-                        defaultType === gradeInfo.type &&
-                        defaultGrade === gradeInfo.gradeCode,
-                    )?.shortName ??
-                    '学年'}
-                </Text>
-                <Spacer />
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList shadow="lg" rounded="xl">
+          <MenuRoot>
+            <MenuTrigger asChild>
+              <Button
+                type="button"
+                variant="plain"
+                w="100%"
+                h="full"
+                rounded="lg"
+                layerStyle="button"
+                border="1px solid"
+                borderColor="border"
+              >
+                <HStack w="100%" px={4} py={2} textStyle="title">
+                  <Text>
+                    {grade?.shortName ??
+                      gradeList?.find(
+                        (gradeInfo) =>
+                          defaultType === gradeInfo.type &&
+                          defaultGrade === gradeInfo.gradeCode,
+                      )?.shortName ??
+                      '学年'}
+                  </Text>
+                  <Spacer />
+                  <Icon as={TbChevronDown} />
+                </HStack>
+              </Button>
+            </MenuTrigger>
+            <MenuContent shadow="lg" rounded="xl">
               {gradeList?.map((gradeInfo) => (
                 <MenuItem
                   key={gradeInfo.name}
+                  value={gradeInfo.name}
                   fontWeight="bold"
                   onClick={() => {
                     setGrade(gradeInfo);
@@ -130,37 +137,41 @@ const GradeClassPicker = React.memo(
                   {gradeInfo.name}
                 </MenuItem>
               ))}
-            </MenuList>
-          </Menu>
+            </MenuContent>
+          </MenuRoot>
         </Box>
         <Box w="100%">
-          <Menu>
-            <MenuButton
-              type="button"
-              w="100%"
-              h="full"
-              rounded="lg"
-              layerStyle="button"
-              border="1px solid"
-              borderColor="border"
-            >
-              <HStack w="100%" px={4} py={2} textStyle="title">
-                <Text>
-                  {schoolClass?.name ??
-                    classList?.find(
-                      ({ classCode }) => classCode === defaultClass,
-                    )?.name ??
-                    'クラス'}
-                </Text>
-                <Spacer />
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList shadow="lg" rounded="xl">
+          <MenuRoot>
+            <MenuTrigger asChild>
+              <Button
+                type="button"
+                variant="plain"
+                w="100%"
+                h="full"
+                rounded="lg"
+                layerStyle="button"
+                border="1px solid"
+                borderColor="border"
+              >
+                <HStack w="100%" px={4} py={2} textStyle="title">
+                  <Text>
+                    {schoolClass?.name ??
+                      classList?.find(
+                        ({ classCode }) => classCode === defaultClass,
+                      )?.name ??
+                      'クラス'}
+                  </Text>
+                  <Spacer />
+                  <Icon as={TbChevronDown} />
+                </HStack>
+              </Button>
+            </MenuTrigger>
+            <MenuContent shadow="lg" rounded="xl">
               {grade ? (
                 classList?.map((classInfo) => (
                   <MenuItem
                     key={classInfo.name}
+                    value={classInfo.name}
                     fontWeight="bold"
                     onClick={() => {
                       setClass(classInfo);
@@ -181,37 +192,41 @@ const GradeClassPicker = React.memo(
                   最初に学年を選択
                 </Text>
               )}
-            </MenuList>
-          </Menu>
+            </MenuContent>
+          </MenuRoot>
         </Box>
         {onCourseSelect && (
           <Box w="100%">
-            <Menu>
-              <MenuButton
-                type="button"
-                w="100%"
-                h="full"
-                rounded="lg"
-                layerStyle="button"
-                border="1px solid"
-                borderColor="border"
-              >
-                <HStack w="100%" px={4} py={2} textStyle="title">
-                  <Text>
-                    {course?.name ??
-                      courseList?.find(({ code }) => code === defaultCourse)
-                        ?.name ??
-                      '講座'}
-                  </Text>
-                  <Spacer />
-                  <Icon as={TbChevronDown} />
-                </HStack>
-              </MenuButton>
-              <MenuList shadow="lg" rounded="xl">
+            <MenuRoot>
+              <MenuTrigger asChild>
+                <Button
+                  type="button"
+                  variant="plain"
+                  w="100%"
+                  h="full"
+                  rounded="lg"
+                  layerStyle="button"
+                  border="1px solid"
+                  borderColor="border"
+                >
+                  <HStack w="100%" px={4} py={2} textStyle="title">
+                    <Text>
+                      {course?.name ??
+                        courseList?.find(({ code }) => code === defaultCourse)
+                          ?.name ??
+                        '講座'}
+                    </Text>
+                    <Spacer />
+                    <Icon as={TbChevronDown} />
+                  </HStack>
+                </Button>
+              </MenuTrigger>
+              <MenuContent shadow="lg" rounded="xl">
                 {grade ? (
                   courseList?.map((courseInfo) => (
                     <MenuItem
                       key={courseInfo.name}
+                      value={courseInfo.name}
                       fontWeight="bold"
                       onClick={() => {
                         setCourse(courseInfo);
@@ -232,8 +247,8 @@ const GradeClassPicker = React.memo(
                     最初に学年を選択
                   </Text>
                 )}
-              </MenuList>
-            </Menu>
+              </MenuContent>
+            </MenuRoot>
           </Box>
         )}
       </Stack>
