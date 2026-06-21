@@ -87,7 +87,7 @@ export default function UserScheduleEditor() {
                   onVisibilityChange={(e) =>
                     setSchedule((val) => ({
                       ...val,
-                      private: e.target.checked,
+                      private: e.checked,
                     }))
                   }
                 />

@@ -3,23 +3,23 @@ import {
   Box,
   Button,
   Collapsible,
+  Field,
   HStack,
   Icon,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Spacer,
-  Switch,
   Text,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
+import { Switch } from '@/components/ui/switch';
+import { Tooltip } from '@/components/ui/tooltip';
 import { TbChevronDown, TbExclamationCircle } from 'react-icons/tb';
 import { useClassList, useCourseList, useGradeList } from '@/services/info';
 import { useUserScheduleContext } from './context';
@@ -28,11 +28,11 @@ export const UserScheduleMetaEditor = React.memo(
   ({
     onVisibilityChange,
   }: {
-    onVisibilityChange: React.ChangeEventHandler<HTMLInputElement>;
+    onVisibilityChange: (details: { checked: boolean }) => void;
   }) => {
     const [schedule, setSchedule] = useUserScheduleContext();
     const { _id, title, description, meta, private: isPrivate } = schedule;
-    const { open: isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
+    const { open: isOpen, onToggle } = useDisclosure({ defaultOpen: true });
     const { data: gradeList } = useGradeList();
     const { data: classList } = useClassList({
       type: meta.type,
@@ -66,17 +66,18 @@ export const UserScheduleMetaEditor = React.memo(
         <Box w="full">
           <Collapsible.Root open={isOpen}><Collapsible.Content>
             <VStack p={4} gap={4}>
-              <Input
-                size="lg"
-                textStyle="title"
-                placeholder="時間割の名前"
-                variant="flushed"
-                value={title}
-                onChange={(e) =>
-                  setSchedule((val) => ({ ...val, title: e.target.value }))
-                }
-                isInvalid={!title}
-              />
+              <Field.Root invalid={!title}>
+                <Input
+                  size="lg"
+                  textStyle="title"
+                  placeholder="時間割の名前"
+                  variant="flushed"
+                  value={title}
+                  onChange={(e) =>
+                    setSchedule((val) => ({ ...val, title: e.target.value }))
+                  }
+                />
+              </Field.Root>
               <Input
                 textStyle="title"
                 placeholder="時間割の説明"
@@ -92,17 +93,30 @@ export const UserScheduleMetaEditor = React.memo(
               <HStack w="full">
                 <Text textStyle="title">非公開</Text>
                 <Spacer />
-                <Switch isChecked={isPrivate} onChange={onVisibilityChange} />
+                <Switch
+                  checked={isPrivate}
+                  onCheckedChange={onVisibilityChange}
+                />
               </HStack>
-              <Popover trigger="hover">
-                <PopoverTrigger>
-                  <VStack w="full">
-                    <HStack w="full">
-                      <Text textStyle="title">学年</Text>
-                      <Spacer />
-                      <Menu>
-                        <MenuButton
-                          as={Button}
+              <Tooltip
+                content={
+                  <HStack w="full" justify="center">
+                    <Icon
+                      as={TbExclamationCircle}
+                      boxSize={6}
+                      color="yellow.400"
+                    />
+                    <Text textStyle="title">作成後は変更できません。</Text>
+                  </HStack>
+                }
+              >
+                <VStack w="full">
+                  <HStack w="full">
+                    <Text textStyle="title">学年</Text>
+                    <Spacer />
+                    <MenuRoot>
+                      <MenuTrigger asChild>
+                        <Button
                           disabled={!!_id}
                           variant="ghost"
                           rounded="lg"
@@ -114,36 +128,39 @@ export const UserScheduleMetaEditor = React.memo(
                                 grade.gradeCode === meta.grade,
                             )?.name
                           }
-                         {<Icon as={TbChevronDown} />}</MenuButton>
-                        <MenuList shadow="lg" rounded="xl">
-                          {gradeList?.map((gradeInfo) => (
-                            <MenuItem
-                              key={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
-                              textStyle="title"
-                              onClick={() =>
-                                setSchedule((val) => ({
-                                  ...val,
-                                  meta: {
-                                    ...val.meta,
-                                    type: gradeInfo.type,
-                                    grade: gradeInfo.gradeCode,
-                                    course: undefined,
-                                  },
-                                }))
-                              }
-                            >
-                              {gradeInfo.name}
-                            </MenuItem>
-                          ))}
-                        </MenuList>
-                      </Menu>
-                    </HStack>
-                    <HStack w="full">
-                      <Text textStyle="title">クラス</Text>
-                      <Spacer />
-                      <Menu>
-                        <MenuButton
-                          as={Button}
+                          <Icon as={TbChevronDown} />
+                        </Button>
+                      </MenuTrigger>
+                      <MenuContent shadow="lg" rounded="xl">
+                        {gradeList?.map((gradeInfo) => (
+                          <MenuItem
+                            key={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
+                            value={`${gradeInfo.type}-${gradeInfo.gradeCode}`}
+                            textStyle="title"
+                            onClick={() =>
+                              setSchedule((val) => ({
+                                ...val,
+                                meta: {
+                                  ...val.meta,
+                                  type: gradeInfo.type,
+                                  grade: gradeInfo.gradeCode,
+                                  course: undefined,
+                                },
+                              }))
+                            }
+                          >
+                            {gradeInfo.name}
+                          </MenuItem>
+                        ))}
+                      </MenuContent>
+                    </MenuRoot>
+                  </HStack>
+                  <HStack w="full">
+                    <Text textStyle="title">クラス</Text>
+                    <Spacer />
+                    <MenuRoot>
+                      <MenuTrigger asChild>
+                        <Button
                           bg={!meta.class ? 'invalid' : undefined}
                           disabled={!!_id}
                           variant="ghost"
@@ -157,37 +174,40 @@ export const UserScheduleMetaEditor = React.memo(
                                 classInfo.classCode === meta.class,
                             )?.name
                           }
-                         {<Icon as={TbChevronDown} />}</MenuButton>
-                        <MenuList shadow="lg" rounded="xl">
-                          {classList?.map((classInfo) => (
-                            <MenuItem
-                              key={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
-                              textStyle="title"
-                              onClick={() =>
-                                setSchedule((val) => ({
-                                  ...val,
-                                  meta: {
-                                    ...val.meta,
-                                    type: classInfo.type,
-                                    grade: classInfo.gradeCode,
-                                    class: classInfo.classCode,
-                                  },
-                                }))
-                              }
-                            >
-                              {classInfo.name}
-                            </MenuItem>
-                          ))}
-                        </MenuList>
-                      </Menu>
-                    </HStack>
-                    {courseList?.length && (
-                      <HStack w="full">
-                        <Text textStyle="title">コース</Text>
-                        <Spacer />
-                        <Menu>
-                          <MenuButton
-                            as={Button}
+                          <Icon as={TbChevronDown} />
+                        </Button>
+                      </MenuTrigger>
+                      <MenuContent shadow="lg" rounded="xl">
+                        {classList?.map((classInfo) => (
+                          <MenuItem
+                            key={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
+                            value={`${classInfo.type}-${classInfo.gradeCode}-${classInfo.classCode}`}
+                            textStyle="title"
+                            onClick={() =>
+                              setSchedule((val) => ({
+                                ...val,
+                                meta: {
+                                  ...val.meta,
+                                  type: classInfo.type,
+                                  grade: classInfo.gradeCode,
+                                  class: classInfo.classCode,
+                                },
+                              }))
+                            }
+                          >
+                            {classInfo.name}
+                          </MenuItem>
+                        ))}
+                      </MenuContent>
+                    </MenuRoot>
+                  </HStack>
+                  {courseList?.length && (
+                    <HStack w="full">
+                      <Text textStyle="title">コース</Text>
+                      <Spacer />
+                      <MenuRoot>
+                        <MenuTrigger asChild>
+                          <Button
                             bg={!meta.course ? 'invalid' : undefined}
                             disabled={!!_id}
                             variant="ghost"
@@ -198,50 +218,34 @@ export const UserScheduleMetaEditor = React.memo(
                                 (courseInfo) => courseInfo.code === meta.course,
                               )?.name
                             }
-                           {<Icon as={TbChevronDown} />}</MenuButton>
-                          <MenuList shadow="lg" rounded="xl">
-                            {courseList?.map((courseInfo) => (
-                              <MenuItem
-                                key={courseInfo.code}
-                                textStyle="title"
-                                onClick={() =>
-                                  setSchedule((val) => ({
-                                    ...val,
-                                    meta: {
-                                      ...val.meta,
-                                      course: courseInfo.code,
-                                    },
-                                  }))
-                                }
-                              >
-                                {courseInfo.name}
-                              </MenuItem>
-                            ))}
-                          </MenuList>
-                        </Menu>
-                      </HStack>
-                    )}
-                  </VStack>
-                </PopoverTrigger>
-                <PopoverContent
-                  p={4}
-                  bg="panel"
-                  shadow="lg"
-                  rounded="xl"
-                  borderColor="border"
-                >
-                  <PopoverBody>
-                    <HStack w="full" justify="center">
-                      <Icon
-                        as={TbExclamationCircle}
-                        boxSize={6}
-                        color="yellow.400"
-                      />
-                      <Text textStyle="title">作成後は変更できません。</Text>
+                            <Icon as={TbChevronDown} />
+                          </Button>
+                        </MenuTrigger>
+                        <MenuContent shadow="lg" rounded="xl">
+                          {courseList?.map((courseInfo) => (
+                            <MenuItem
+                              key={courseInfo.code}
+                              value={courseInfo.code}
+                              textStyle="title"
+                              onClick={() =>
+                                setSchedule((val) => ({
+                                  ...val,
+                                  meta: {
+                                    ...val.meta,
+                                    course: courseInfo.code,
+                                  },
+                                }))
+                              }
+                            >
+                              {courseInfo.name}
+                            </MenuItem>
+                          ))}
+                        </MenuContent>
+                      </MenuRoot>
                     </HStack>
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
+                  )}
+                </VStack>
+              </Tooltip>
             </VStack>
           </Collapsible.Content></Collapsible.Root>
         </Box>

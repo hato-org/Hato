@@ -14,17 +14,17 @@ function Error({ error }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text fontSize="sm" color="gray.400" align="center">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               {error.message}
               <br />
               {error.response.statusText}
             </Text>
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               データの取得に失敗しました。
               <br />
               学年・クラス・コースを
-              <Text as={RouterLink} to="/settings/account" textStyle="link">
-                設定
+              <Text asChild textStyle="link">
+                <RouterLink to="/settings/account">設定</RouterLink>
               </Text>
               してください。
             </Text>
@@ -38,12 +38,12 @@ function Error({ error }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text fontSize="sm" color="gray.400" align="center">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               {error.message}
               <br />
               {error.response.statusText}
             </Text>
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               データの取得に失敗しました。
               <br />
               ログインし直してみてください。
@@ -58,12 +58,12 @@ function Error({ error }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text fontSize="sm" color="gray.400" align="center">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               {error.message}
               <br />
               {error.response.statusText}
             </Text>
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               データの取得に失敗しました。
               <br />
               データが存在しません。
@@ -78,12 +78,12 @@ function Error({ error }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text fontSize="sm" color="gray.400" align="center">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               {error.message}
               <br />
               {error.response.statusText}
             </Text>
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               データの取得に失敗しました。
               <br />
               更新頻度が高すぎます。
@@ -98,12 +98,12 @@ function Error({ error }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="red.500" />
-            <Text fontSize="sm" color="gray.400" align="center">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               {error.message}
               <br />
               {error.response.statusText}
             </Text>
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               データの取得に失敗しました。
               <br />
               しばらくしてからもう一度お試しください。
@@ -118,23 +118,23 @@ function Error({ error }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text fontSize="sm" color="gray.400" align="center">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               {error?.message}
               <br />
               {error?.response?.statusText}
             </Text>
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               データの取得に失敗しました。
               <br />
               障害が起こっている可能性があります。
               <br />
-              <Text
-                textStyle="link"
-                as={Link}
-                target="_blank" rel="noreferrer"
-                href={import.meta.env.VITE_STATUSPAGE_URL}
-              >
-                稼働状況
+              <Text asChild textStyle="link">
+                <Link
+                  target="_blank" rel="noreferrer"
+                  href={import.meta.env.VITE_STATUSPAGE_URL}
+                >
+                  稼働状況
+                </Link>
               </Text>
               をご確認ください。
             </Text>
