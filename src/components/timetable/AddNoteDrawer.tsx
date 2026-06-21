@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Heading, Textarea, VStack, Text, Spacer, CheckboxGroup, Checkbox, Wrap, HStack } from '@chakra-ui/react';
+import { Button, Accordion, Heading, Textarea, VStack, Text, Spacer, CheckboxGroup, Wrap, HStack, Field } from '@chakra-ui/react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
 import { format } from 'date-fns';
@@ -48,163 +49,178 @@ const AddNoteDrawer = React.memo(
           </DrawerHeader>
           <DrawerBody w="full" maxW="container.lg" mx="auto" px={0}>
             <VStack w="100%" textStyle="title">
-              <Accordion
+              <Accordion.Root
                 w="100%"
-                allowToggle
-                defaultIndex={0}
+                collapsible
+                defaultValue={['target']}
                 border="0px solid"
                 borderColor="border"
                 rounded="lg"
               >
-                <AccordionItem>
-                  <AccordionButton px={6}>
+                <Accordion.Item value="target">
+                  <Accordion.ItemTrigger px={6}>
                     <Heading size="md">対象</Heading>
                     <Spacer />
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel px={4} py={0}>
-                    <Accordion
-                      w="100%"
-                      // allowMultiple
-                      allowToggle
-                      // border="0px solid transparent"
-                      borderColor="border"
-                    >
-                      {gradeList?.map((grade) => {
-                        const classList = classListList.find(
-                          (clList) =>
-                            clList[0].type === grade.type &&
-                            clList[0].gradeCode === grade.gradeCode,
-                        );
-                        const allChecked = classList?.every((classInfo) =>
-                          targetClass.some(
-                            (targetClassInfo) =>
-                              targetClassInfo.type === classInfo.type &&
-                              targetClassInfo.gradeCode ===
-                                classInfo.gradeCode &&
-                              targetClassInfo.classCode === classInfo.classCode,
-                          ),
-                        );
-                        const isIndeterminate =
-                          classList?.some((classInfo) =>
+                    <Accordion.ItemIndicator />
+                  </Accordion.ItemTrigger>
+                  <Accordion.ItemContent>
+                    <Accordion.ItemBody px={4} py={0}>
+                      <Accordion.Root
+                        w="100%"
+                        collapsible
+                        borderColor="border"
+                      >
+                        {gradeList?.map((grade) => {
+                          const classList = classListList.find(
+                            (clList) =>
+                              clList[0].type === grade.type &&
+                              clList[0].gradeCode === grade.gradeCode,
+                          );
+                          const allChecked = classList?.every((classInfo) =>
                             targetClass.some(
                               (targetClassInfo) =>
                                 targetClassInfo.type === classInfo.type &&
                                 targetClassInfo.gradeCode ===
                                   classInfo.gradeCode &&
-                                targetClassInfo.classCode ===
-                                  classInfo.classCode,
+                                targetClassInfo.classCode === classInfo.classCode,
                             ),
-                          ) && !allChecked;
+                          );
+                          const isIndeterminate =
+                            classList?.some((classInfo) =>
+                              targetClass.some(
+                                (targetClassInfo) =>
+                                  targetClassInfo.type === classInfo.type &&
+                                  targetClassInfo.gradeCode ===
+                                    classInfo.gradeCode &&
+                                  targetClassInfo.classCode ===
+                                    classInfo.classCode,
+                              ),
+                            ) && !allChecked;
 
-                        return (
-                          <AccordionItem key={grade.name}>
-                            <AccordionButton py={1}>
-                              <Checkbox
-                                isChecked={allChecked}
-                                isIndeterminate={isIndeterminate}
-                                onChange={(e) =>
-                                  e.target.checked
-                                    ? setTargetClass((oldTargetClass) => [
-                                        ...oldTargetClass,
-                                        ...(classList ?? []),
-                                      ])
-                                    : setTargetClass((oldTargetClass) => {
-                                        const newTargetClassList = [
+                          return (
+                            <Accordion.Item key={grade.name} value={grade.name}>
+                              <Accordion.ItemTrigger py={1}>
+                                <Checkbox
+                                  checked={
+                                    isIndeterminate
+                                      ? 'indeterminate'
+                                      : allChecked
+                                  }
+                                  onCheckedChange={(e) =>
+                                    e.checked
+                                      ? setTargetClass((oldTargetClass) => [
                                           ...oldTargetClass,
-                                        ];
-                                        return newTargetClassList.filter(
-                                          (newTargetClassInfo) =>
-                                            !classList?.some(
-                                              (classInfo) =>
-                                                newTargetClassInfo.type ===
-                                                  classInfo.type &&
-                                                newTargetClassInfo.gradeCode ===
-                                                  classInfo.gradeCode &&
-                                                newTargetClassInfo.classCode ===
-                                                  classInfo.classCode,
-                                            ),
-                                        );
-                                      })
-                                }
-                              >
-                                <Text textStyle="title">{grade.name}</Text>
-                              </Checkbox>
-                              <Spacer />
-                              <AccordionIcon />
-                            </AccordionButton>
-                            <AccordionPanel>
-                              <CheckboxGroup>
-                                <Wrap>
-                                  {classList?.map((classInfo) => (
-                                    <Checkbox
-                                      key={classInfo.name}
-                                      isChecked={targetClass.some(
-                                        (targetClassInfo) =>
-                                          targetClassInfo.type ===
-                                            classInfo.type &&
-                                          targetClassInfo.gradeCode ===
-                                            classInfo.gradeCode &&
-                                          targetClassInfo.classCode ===
-                                            classInfo.classCode,
-                                      )}
-                                      onChange={(e) =>
-                                        e.target.checked
-                                          ? setTargetClass((oldTargetClass) => [
-                                              ...oldTargetClass,
-                                              classInfo,
-                                            ])
-                                          : setTargetClass((oldTargetClass) => {
-                                              const newTargetClassList = [
-                                                ...oldTargetClass,
-                                              ];
-                                              return newTargetClassList.filter(
-                                                (newTargetClassInfo) =>
-                                                  !(
-                                                    newTargetClassInfo.type ===
-                                                      classInfo.type &&
-                                                    newTargetClassInfo.gradeCode ===
-                                                      classInfo.gradeCode &&
-                                                    newTargetClassInfo.classCode ===
-                                                      classInfo.classCode
-                                                  ),
-                                              );
-                                            })
-                                      }
-                                    >
-                                      {classInfo.name}
-                                    </Checkbox>
-                                  ))}
-                                </Wrap>
-                              </CheckboxGroup>
-                            </AccordionPanel>
-                          </AccordionItem>
-                        );
-                      })}
-                    </Accordion>
-                  </AccordionPanel>
-                </AccordionItem>
-                <AccordionItem>
-                  <AccordionButton px={6}>
+                                          ...(classList ?? []),
+                                        ])
+                                      : setTargetClass((oldTargetClass) => {
+                                          const newTargetClassList = [
+                                            ...oldTargetClass,
+                                          ];
+                                          return newTargetClassList.filter(
+                                            (newTargetClassInfo) =>
+                                              !classList?.some(
+                                                (classInfo) =>
+                                                  newTargetClassInfo.type ===
+                                                    classInfo.type &&
+                                                  newTargetClassInfo.gradeCode ===
+                                                    classInfo.gradeCode &&
+                                                  newTargetClassInfo.classCode ===
+                                                    classInfo.classCode,
+                                              ),
+                                          );
+                                        })
+                                  }
+                                >
+                                  <Text textStyle="title">{grade.name}</Text>
+                                </Checkbox>
+                                <Spacer />
+                                <Accordion.ItemIndicator />
+                              </Accordion.ItemTrigger>
+                              <Accordion.ItemContent>
+                                <Accordion.ItemBody>
+                                  <CheckboxGroup>
+                                    <Wrap>
+                                      {classList?.map((classInfo) => (
+                                        <Checkbox
+                                          key={classInfo.name}
+                                          checked={targetClass.some(
+                                            (targetClassInfo) =>
+                                              targetClassInfo.type ===
+                                                classInfo.type &&
+                                              targetClassInfo.gradeCode ===
+                                                classInfo.gradeCode &&
+                                              targetClassInfo.classCode ===
+                                                classInfo.classCode,
+                                          )}
+                                          onCheckedChange={(e) =>
+                                            e.checked
+                                              ? setTargetClass(
+                                                  (oldTargetClass) => [
+                                                    ...oldTargetClass,
+                                                    classInfo,
+                                                  ],
+                                                )
+                                              : setTargetClass(
+                                                  (oldTargetClass) => {
+                                                    const newTargetClassList = [
+                                                      ...oldTargetClass,
+                                                    ];
+                                                    return newTargetClassList.filter(
+                                                      (newTargetClassInfo) =>
+                                                        !(
+                                                          newTargetClassInfo.type ===
+                                                            classInfo.type &&
+                                                          newTargetClassInfo.gradeCode ===
+                                                            classInfo.gradeCode &&
+                                                          newTargetClassInfo.classCode ===
+                                                            classInfo.classCode
+                                                        ),
+                                                    );
+                                                  },
+                                                )
+                                          }
+                                        >
+                                          {classInfo.name}
+                                        </Checkbox>
+                                      ))}
+                                    </Wrap>
+                                  </CheckboxGroup>
+                                </Accordion.ItemBody>
+                              </Accordion.ItemContent>
+                            </Accordion.Item>
+                          );
+                        })}
+                      </Accordion.Root>
+                    </Accordion.ItemBody>
+                  </Accordion.ItemContent>
+                </Accordion.Item>
+                <Accordion.Item value="description">
+                  <Accordion.ItemTrigger px={6}>
                     <Heading size="md">説明</Heading>
                     <Spacer />
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel px={6}>
-                    <Textarea
-                      value={message}
-                      placeholder="説明"
-                      as={ResizeTextArea}
-                      resize="none"
-                      variant="flushed"
-                      minH="unset"
-                      maxRows={5}
-                      onChange={(e) => setMessage(e.target.value)}
-                      isInvalid={!message}
-                    />
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
+                    <Accordion.ItemIndicator />
+                  </Accordion.ItemTrigger>
+                  <Accordion.ItemContent>
+                    <Accordion.ItemBody px={6}>
+                      <Field.Root invalid={!message}>
+                        <Textarea
+                          asChild
+                          resize="none"
+                          variant="flushed"
+                          minH="unset"
+                        >
+                          <ResizeTextArea
+                            value={message}
+                            placeholder="説明"
+                            maxRows={5}
+                            onChange={(e) => setMessage(e.target.value)}
+                          />
+                        </Textarea>
+                      </Field.Root>
+                    </Accordion.ItemBody>
+                  </Accordion.ItemContent>
+                </Accordion.Item>
+              </Accordion.Root>
             </VStack>
           </DrawerBody>
           <DrawerFooter w="full" maxW="container.lg" mx="auto">
