@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from '@/components/ui/dialog';
-import { HStack, Text, Textarea, VStack, Button } from '@chakra-ui/react';
+import { Field, HStack, Text, Textarea, VStack, Button } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import { useReport } from '@/services/report';
 
-interface ReportModalProps extends Omit<ModalProps, 'children'> {
+interface ReportModalProps {
+  isOpen: boolean;
+  onClose: () => void;
   placeholder?: string;
   url: string;
 }
@@ -58,12 +60,13 @@ const ReportModal = React.memo(
                 }
               />
               <Text textStyle="title">コメント</Text>
-              <Textarea
-                placeholder={placeholder}
-                rounded="lg"
-                onChange={(e) => setReportComment(e.target.value)}
-                isInvalid={reportType === 'other' && !reportComment}
-              />
+              <Field.Root invalid={reportType === 'other' && !reportComment}>
+                <Textarea
+                  placeholder={placeholder}
+                  rounded="lg"
+                  onChange={(e) => setReportComment(e.target.value)}
+                />
+              </Field.Root>
             </VStack>
           </DialogBody>
           <DialogFooter>

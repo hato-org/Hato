@@ -8,13 +8,15 @@ import {
   Text,
   useDisclosure,
   VStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Box,
   Icon,
 } from '@chakra-ui/react';
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
 import { useQueryClient } from '@tanstack/react-query';
 import { addDays, format, setDay, subDays } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -95,28 +97,32 @@ function Timetable() {
           </Heading>
           <Spacer />
           <Box>
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                variant="ghost"
-                size="lg"
-                aria-label="event menu"
-                icon={<TbDots />}
-                borderRadius="full"
-              />
-              <MenuList shadow="lg" rounded="xl">
+            <MenuRoot>
+              <MenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  size="lg"
+                  aria-label="event menu"
+                  borderRadius="full"
+                >
+                  <TbDots />
+                </IconButton>
+              </MenuTrigger>
+              <MenuContent shadow="lg" rounded="xl">
                 <MenuItem
+                  value="edit-division"
                   textStyle="title"
-                  icon={<TbPencil />}
                   onClick={onDivisionEditorOpen}
                 >
+                  <TbPencil />
                   日課を編集
                 </MenuItem>
                 <MenuItem
+                  value="report"
                   textStyle="title"
-                  icon={<TbFlag />}
                   onClick={reportOnOpen}
                 >
+                  <TbFlag />
                   報告
                 </MenuItem>
                 <Suspense>
@@ -127,8 +133,8 @@ function Timetable() {
                     placeholder="例：〇年〇組〇〇コース〇週〇時間目が△△ではなく□□です"
                   />
                 </Suspense>
-              </MenuList>
-            </Menu>
+              </MenuContent>
+            </MenuRoot>
           </Box>
         </HStack>
       </Header>
@@ -156,7 +162,8 @@ function Timetable() {
             <Card w="100%">
               <VStack w="100%" align="flex-start" p={2} gap={6}>
                 <VStack w="100%" align="flex-start" gap={4}>
-                  <HStack w="100%" as={RouterLink} to="editor">
+                  <HStack w="100%" asChild>
+                    <RouterLink to="editor">
                     <Heading size="md">日課</Heading>
                     <Spacer />
                     <HStack rounded="lg" color="description" fontWeight="bold">
@@ -174,6 +181,7 @@ function Timetable() {
                       )}
                     </HStack>
                     <Icon as={TbChevronRight} />
+                    </RouterLink>
                   </HStack>
                   {user.userScheduleId ? (
                     division ? (
