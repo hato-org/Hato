@@ -63,13 +63,14 @@ const UserInfo = React.memo(
             </HStack>
           ) : (
             <Link
-              as={RouterLink}
-              to={`/classroom/course/${course?.id}`}
+              asChild
               color="description"
               fontSize="xs"
               lineClamp={1}
             >
-              {course?.name}
+              <RouterLink to={`/classroom/course/${course?.id}`}>
+                {course?.name}
+              </RouterLink>
             </Link>
           )}
         </Skeleton>

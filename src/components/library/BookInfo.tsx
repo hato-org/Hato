@@ -162,16 +162,15 @@ const BookInfo = React.memo(
                       }</IconButton>
                   </motion.div>
                 )}
-                <Button
-                  w="100%"
-                  rounded="lg"
-                  shadow="lg"
-                  as={Link}
-                  href={url[holdings[0]]}
-                  target="_blank" rel="noreferrer"
-                >
-                  詳細を開く
-                 {<Icon as={TbExternalLink} />}</Button>
+                <Button w="100%" rounded="lg" shadow="lg" asChild>
+                  <Link
+                    href={url[holdings[0]]}
+                    target="_blank" rel="noreferrer"
+                  >
+                    詳細を開く
+                    <Icon as={TbExternalLink} />
+                  </Link>
+                </Button>
                 {source !== 'NDL' && (
                   <Button
                     w="100%"

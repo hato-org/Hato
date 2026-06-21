@@ -93,13 +93,15 @@ function Login() {
             <LoginButton />
           )}
           <Button
-            as={RouterLink}
-            to="/"
+            asChild
             variant="ghost"
             color="blue.500"
             textStyle="link"
-          >{<TbArrowNarrowLeft />} 
-            <Text>ホームに戻る</Text>
+          >
+            <RouterLink to="/">
+              <TbArrowNarrowLeft />
+              <Text>ホームに戻る</Text>
+            </RouterLink>
           </Button>
         </VStack>
       </Center>

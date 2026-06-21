@@ -76,11 +76,16 @@ const PDFViewer = React.memo(
                 aria-label="open source link"
                 size="lg"
                 variant="ghost"
-                as={Link}
-                href={attachment.url ?? ''}
-                target="_blank" rel="noreferrer"
                 borderRadius="full"
-              >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
+                asChild
+              >
+                <Link
+                  href={attachment.url ?? ''}
+                  target="_blank" rel="noreferrer"
+                >
+                  <Icon as={TbExternalLink} boxSize={6} />
+                </Link>
+              </IconButton>
             </HStack>
             <Box w="100%">
               <Collapsible.Root open={!!isFetching}><Collapsible.Content>

@@ -166,18 +166,19 @@ const Calendar = React.memo(
                                     : 'blue.100',
                               }}
                               transition="all .2s ease"
-                              as={RouterLink}
-                              to={`/events/${event._id}`}
+                              asChild
                             >
-                              <Text
-                                lineClamp={1}
-                                fontSize={{ base: 'xx-small', md: 'xs' }}
-                                fontWeight="bold"
-                                textAlign="center"
-                                wordBreak="break-all"
-                              >
-                                {event.title}
-                              </Text>
+                              <RouterLink to={`/events/${event._id}`}>
+                                <Text
+                                  lineClamp={1}
+                                  fontSize={{ base: 'xx-small', md: 'xs' }}
+                                  fontWeight="bold"
+                                  textAlign="center"
+                                  wordBreak="break-all"
+                                >
+                                  {event.title}
+                                </Text>
+                              </RouterLink>
                             </Box>
                           ))}
                       </VStack>

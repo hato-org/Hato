@@ -102,13 +102,18 @@ export default function ClassroomAnnouncement() {
             }</IconButton>
           <IconButton
             aria-label="open in browser"
-            as={Link}
-            href={data?.alternateLink ?? ''}
-            target="_blank" rel="noreferrer"
             size="lg"
             variant="ghost"
             borderRadius="full"
-          >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
+            asChild
+          >
+            <Link
+              href={data?.alternateLink ?? ''}
+              target="_blank" rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} boxSize={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
 
@@ -159,12 +164,10 @@ export default function ClassroomAnnouncement() {
                 rounded="md"
                 loading={isCoursePending}
               >
-                <Link
-                  as={RouterLink}
-                  to={`/classroom/course/${courseInfo?.id}`}
-                  textStyle="description"
-                >
-                  {courseInfo?.name}
+                <Link asChild textStyle="description">
+                  <RouterLink to={`/classroom/course/${courseInfo?.id}`}>
+                    {courseInfo?.name}
+                  </RouterLink>
                 </Link>
               </Skeleton>
             </VStack>

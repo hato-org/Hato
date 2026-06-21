@@ -58,13 +58,18 @@ export default function ClassroomCourse() {
           <Spacer />
           <IconButton
             aria-label="open in browser"
-            as={Link}
-            href={data?.alternateLink ?? ''}
             variant="ghost"
             size="lg"
             borderRadius="full"
-            target="_blank" rel="noreferrer"
-          >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
+            asChild
+          >
+            <Link
+              href={data?.alternateLink ?? ''}
+              target="_blank" rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} boxSize={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
       <ChakraPullToRefresh

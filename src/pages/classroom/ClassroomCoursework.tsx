@@ -98,13 +98,18 @@ export default function ClassroomCoursework() {
             }</IconButton>
           <IconButton
             aria-label="open in browser"
-            as={Link}
-            href={data?.alternateLink ?? ''}
-            target="_blank" rel="noreferrer"
             size="lg"
             variant="ghost"
             borderRadius="full"
-          >{<Icon as={TbExternalLink} boxSize={6} />}</IconButton>
+            asChild
+          >
+            <Link
+              href={data?.alternateLink ?? ''}
+              target="_blank" rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} boxSize={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
 

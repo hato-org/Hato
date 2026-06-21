@@ -12,7 +12,7 @@ const LiveStream = React.memo(({ type, name, url }: ClassmatchLiveStream) =>
       src={`https://youtube.com/embed/${getYouTubeID(url)}`}
       w="full"
       shadow="md"
-      sx={{ aspectRatio: '16/9', rounded: 'xl' }}
+      css={{ aspectRatio: '16/9', rounded: 'xl' }}
     />
   ) : (
     <HStack
@@ -20,22 +20,24 @@ const LiveStream = React.memo(({ type, name, url }: ClassmatchLiveStream) =>
       w="full"
       color="gray.100"
       rounded="xl"
-      as={Link}
-      target="_blank" rel="noreferrer"
-      href={url}
-      bgGradient="linear(to-r, #7928CA, #FF0080)"
+      asChild
+      bgGradient="to-r"
+      gradientFrom="#7928CA"
+      gradientTo="#FF0080"
       gap={4}
     >
-      <Icon as={FaInstagram} boxSize={6} />
-      <Text
-        color="gray.100"
-        textStyle="title"
-        _hover={{ textDecoration: 'none' }}
-      >
-        {name}
-      </Text>
-      <Spacer />
-      <Icon as={TbExternalLink} boxSize={6} />
+      <Link target="_blank" rel="noreferrer" href={url}>
+        <Icon as={FaInstagram} boxSize={6} />
+        <Text
+          color="gray.100"
+          textStyle="title"
+          _hover={{ textDecoration: 'none' }}
+        >
+          {name}
+        </Text>
+        <Spacer />
+        <Icon as={TbExternalLink} boxSize={6} />
+      </Link>
     </HStack>
   ),
 );
