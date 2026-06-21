@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerRoot } from '@/components/ui/drawer';
-import { Button, HStack, Icon, Input, InputGroup, InputLeftElement, Spacer, Switch, Text, Textarea, useBoolean, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { Button, Field, HStack, Icon, Input, InputGroup, Spacer, Text, Textarea, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
 import ResizeTextArea from 'react-textarea-autosize';
 import { AsyncSelect } from 'chakra-react-select';
@@ -13,8 +14,17 @@ import {
 import { useAddEventMutation, useTagsSearch } from '@/services/calendar';
 import { useUser } from '@/services/user';
 
+interface AddEventDrawerProps
+  extends Omit<
+    React.ComponentProps<typeof DrawerRoot>,
+    'open' | 'onOpenChange' | 'children'
+  > {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 const AddEventDrawer = React.memo(
-  ({ isOpen, onClose, ...rest }: Omit<DrawerProps, 'children'>) => {
+  ({ isOpen, onClose, ...rest }: AddEventDrawerProps) => {
     const toast = (options: Parameters<typeof toaster.create>[0]) =>
     toaster.create({ duration: 1500, ...options });
     const { data: user } = useUser();
@@ -22,7 +32,7 @@ const AddEventDrawer = React.memo(
     const [desc, setDesc] = useState('');
     const [startAt, setStartAt] = useState<Date>();
     const [endAt, setEndAt] = useState<Date>();
-    const [isAllDay, setIsAllDay] = useBoolean(false);
+    const [isAllDay, setIsAllDay] = useState(false);
     const [location, setLocation] = useState('');
     // const [url, setUrl] = useState('');
     const [tags, setTags] = useState<Tag[]>([]);
@@ -48,25 +58,29 @@ const AddEventDrawer = React.memo(
           <DrawerBody w="full" maxW="container.lg" mx="auto">
             <VStack gap={8}>
               <VStack w="100%">
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="タイトル"
-                  variant="flushed"
-                  textStyle="title"
-                  size="lg"
-                  isInvalid={!title}
-                />
+                <Field.Root invalid={!title}>
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="タイトル"
+                    variant="flushed"
+                    textStyle="title"
+                    size="lg"
+                  />
+                </Field.Root>
                 <Textarea
-                  value={desc}
-                  placeholder="説明（任意）"
-                  as={ResizeTextArea}
+                  asChild
                   resize="none"
                   variant="flushed"
                   minH="unset"
-                  maxRows={5}
-                  onChange={(e) => setDesc(e.target.value)}
-                />
+                >
+                  <ResizeTextArea
+                    value={desc}
+                    placeholder="説明（任意）"
+                    maxRows={5}
+                    onChange={(e) => setDesc(e.target.value)}
+                  />
+                </Textarea>
                 {/* <Input
                 onChange={(e) => setDesc(e.target.value)}
                 placeholder="説明（任意）"
@@ -79,9 +93,9 @@ const AddEventDrawer = React.memo(
                   <Text textStyle="title">終日</Text>
                   <Spacer />
                   <Switch
-                    isChecked={isAllDay}
-                    onChange={() => {
-                      setIsAllDay.toggle();
+                    checked={isAllDay}
+                    onCheckedChange={() => {
+                      setIsAllDay((v) => !v);
                       setStartAt(undefined);
                       setEndAt(undefined);
                     }}
@@ -89,45 +103,42 @@ const AddEventDrawer = React.memo(
                 </HStack>
                 <Wrap w="100%">
                   <WrapItem w="100%">
-                    <InputGroup>
-                      <InputLeftElement>
-                        <Icon as={TbArrowBarRight} />
-                      </InputLeftElement>
-                      <Input
-                        onChange={(e) => setStartAt(new Date(e.target.value))}
-                        variant="flushed"
-                        type={isAllDay ? 'date' : 'datetime-local'}
-                        isInvalid={
-                          !startAt ||
-                          (endAt && startAt.getTime() > endAt.getTime())
-                        }
-                      />
-                    </InputGroup>
+                    <Field.Root
+                      invalid={
+                        !startAt ||
+                        (endAt && startAt.getTime() > endAt.getTime())
+                      }
+                    >
+                      <InputGroup startElement={<Icon as={TbArrowBarRight} />}>
+                        <Input
+                          onChange={(e) => setStartAt(new Date(e.target.value))}
+                          variant="flushed"
+                          type={isAllDay ? 'date' : 'datetime-local'}
+                        />
+                      </InputGroup>
+                    </Field.Root>
                   </WrapItem>
                   <WrapItem w="100%">
-                    <InputGroup>
-                      <InputLeftElement>
-                        <Icon as={TbArrowBarToRight} />
-                      </InputLeftElement>
-                      <Input
-                        onChange={(e) => setEndAt(new Date(e.target.value))}
-                        variant="flushed"
-                        type={isAllDay ? 'date' : 'datetime-local'}
-                        isInvalid={
-                          !endAt ||
-                          (startAt && startAt?.getTime() > endAt.getTime())
-                        }
-                      />
-                    </InputGroup>
+                    <Field.Root
+                      invalid={
+                        !endAt ||
+                        (startAt && startAt?.getTime() > endAt.getTime())
+                      }
+                    >
+                      <InputGroup startElement={<Icon as={TbArrowBarToRight} />}>
+                        <Input
+                          onChange={(e) => setEndAt(new Date(e.target.value))}
+                          variant="flushed"
+                          type={isAllDay ? 'date' : 'datetime-local'}
+                        />
+                      </InputGroup>
+                    </Field.Root>
                   </WrapItem>
                 </Wrap>
                 <HStack w="100%" />
               </VStack>
               <VStack w="100%">
-                <InputGroup>
-                  <InputLeftElement>
-                    <Icon as={TbMapPin} />
-                  </InputLeftElement>
+                <InputGroup startElement={<Icon as={TbMapPin} />}>
                   <Input
                     value={location}
                     variant="flushed"
@@ -135,14 +146,11 @@ const AddEventDrawer = React.memo(
                     onChange={(e) => setLocation(e.target.value)}
                   />
                 </InputGroup>
-                <InputGroup>
-                  <InputLeftElement>
-                    <Icon as={TbTag} />
-                  </InputLeftElement>
+                <InputGroup startElement={<Icon as={TbTag} />}>
                   {/* <Input variant='flushed' placeholder="o" /> */}
                   <AsyncSelect
                     isMulti
-                    isInvalid={!tags.length}
+                    invalid={!tags.length}
                     placeholder="タグ"
                     menuPlacement="top"
                     maxMenuHeight={240}
@@ -169,7 +177,7 @@ const AddEventDrawer = React.memo(
                     }}
                     options={searchRes}
                     loadOptions={(value) => searchTags(value || '*')}
-                    loading={searchPending}
+                    isLoading={searchPending}
                     value={tags}
                     onChange={(e: readonly Tag[]) => setTags(e as Tag[])}
                   />
@@ -213,7 +221,7 @@ const AddEventDrawer = React.memo(
                         });
                         setTitle('');
                         setDesc('');
-                        setIsAllDay.off();
+                        setIsAllDay(false);
                         setStartAt(undefined);
                         setEndAt(undefined);
                         setLocation('');
