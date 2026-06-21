@@ -6,12 +6,10 @@ import {
   Text,
   VStack,
   Icon,
-  Tooltip,
   useClipboard,
   Alert,
-  AlertDescription,
-  AlertIcon,
 } from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
 import { Link as RouterLink, Navigate, useSearchParams } from 'react-router';
@@ -21,7 +19,9 @@ import { jwtAtom } from '@/store/auth';
 
 function Login() {
   const jwt = useAtomValue(jwtAtom);
-  const { onCopy, hasCopied } = useClipboard(window.location.toString());
+  const { copy, copied } = useClipboard({
+    value: window.location.toString(),
+  });
   const [searchParams] = useSearchParams();
   const isEmbedBrowser = useMemo(
     () => /(Instagram|Line)/.test(navigator.userAgent),
@@ -53,7 +53,7 @@ function Login() {
           </Text>
           {isEmbedBrowser ? (
             <VStack w="full">
-              <Alert
+              <Alert.Root
                 status="warning"
                 rounded="xl"
                 flexDirection="column"
@@ -63,9 +63,9 @@ function Login() {
                 textAlign="center"
                 p={4}
               >
-                <AlertIcon boxSize={8} mr={0} />
-                <AlertDescription fontWeight="bold" fontSize="sm">
-                  <Tooltip label={navigator.userAgent}>
+                <Alert.Indicator boxSize={8} mr={0} />
+                <Alert.Description fontWeight="bold" fontSize="sm">
+                  <Tooltip content={navigator.userAgent}>
                     お使いのブラウザ
                   </Tooltip>
                   では
@@ -77,17 +77,16 @@ function Login() {
                     mt={2}
                     variant="ghost"
                     rounded="lg"
-                    onClick={onCopy}
-                  >{
-                      <Icon
-                        color={hasCopied ? 'green.400' : undefined}
-                        as={hasCopied ? TbCheck : TbCopy}
-                      />
-                    } 
+                    onClick={copy}
+                  >
+                    <Icon
+                      color={copied ? 'green.400' : undefined}
+                      as={copied ? TbCheck : TbCopy}
+                    />
                     リンクをコピー
                   </Button>
-                </AlertDescription>
-              </Alert>
+                </Alert.Description>
+              </Alert.Root>
             </VStack>
           ) : (
             <LoginButton />

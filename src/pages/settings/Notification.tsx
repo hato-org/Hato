@@ -1,19 +1,15 @@
 import { Suspense, useCallback, useMemo } from 'react';
 import {
   Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
   Collapsible,
   HStack,
   Icon,
-  ListItem,
+  List,
   Spinner,
-  Switch,
-  UnorderedList,
   VStack,
 } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
 import { toaster } from '@/components/ui/toaster';
 import { useAtomValue } from 'jotai';
 import { TbExclamationCircle } from 'react-icons/tb';
@@ -71,8 +67,8 @@ export default function Notification() {
                     disabled={
                       subscribePending || unsubscribePending || !isPushAvailable
                     }
-                    isChecked={!!pushSubscription}
-                    onChange={() =>
+                    checked={!!pushSubscription}
+                    onCheckedChange={() =>
                       pushSubscription
                         ? unsubscribe(undefined, {
                             onError: () => {
@@ -100,30 +96,30 @@ export default function Notification() {
           />
           <Box w="full">
             <Collapsible.Root open={!isPushAvailable}><Collapsible.Content>
-              <Alert status="warning" rounded="xl">
+              <Alert.Root status="warning" rounded="xl">
                 <VStack w="full" align="flex-start">
                   <HStack>
-                    <AlertIcon />
-                    <AlertTitle>プッシュ通知を有効にできません</AlertTitle>
+                    <Alert.Indicator />
+                    <Alert.Title>プッシュ通知を有効にできません</Alert.Title>
                   </HStack>
-                  <AlertDescription textStyle="description" fontWeight="bold">
+                  <Alert.Description textStyle="description" fontWeight="bold">
                     以下をお試しください
-                  </AlertDescription>
-                  <UnorderedList gap={2}>
+                  </Alert.Description>
+                  <List.Root gap={2}>
                     {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
                       navigator.userAgent,
                     ) && (
-                      <ListItem textStyle="title">
+                      <List.Item textStyle="title">
                         iOSをアップデートする（16.4+）
-                      </ListItem>
+                      </List.Item>
                     )}
-                    <ListItem textStyle="title">ホーム画面に追加する</ListItem>
-                    <ListItem textStyle="title">
+                    <List.Item textStyle="title">ホーム画面に追加する</List.Item>
+                    <List.Item textStyle="title">
                       OSの設定で通知を許可する
-                    </ListItem>
-                  </UnorderedList>
+                    </List.Item>
+                  </List.Root>
                 </VStack>
-              </Alert>
+              </Alert.Root>
             </Collapsible.Content></Collapsible.Root>
           </Box>
           <Suspense fallback={<Loading />}>
@@ -205,10 +201,10 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
       )}
       <Switch
         disabled={isPending || !!error}
-        isChecked={settings?.notification.push.includes(id) ?? false}
-        onChange={(e) =>
+        checked={settings?.notification.push.includes(id) ?? false}
+        onCheckedChange={(e) =>
           mutate(
-            notifySettingReducer(id, e.target.checked ? 'add' : 'remove'),
+            notifySettingReducer(id, e.checked ? 'add' : 'remove'),
             {
               onError: (err) => {
                 toast({
