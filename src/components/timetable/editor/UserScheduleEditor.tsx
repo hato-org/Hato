@@ -120,7 +120,7 @@ export default function UserScheduleEditor() {
                     <Button
                       w="full"
                       rounded="lg"
-                      colorScheme="red"
+                      colorPalette="red"
                       variant="outline"
                       onClick={onDeletemodalOpen}
                     >
@@ -145,7 +145,7 @@ export default function UserScheduleEditor() {
             <Button
               w="full"
               rounded="lg"
-              colorScheme="blue"
+              colorPalette="blue"
               disabled={
                 !schedule.title ||
                 !schedule.owner ||
@@ -220,7 +220,7 @@ function UserScheduleDeleteDialog({
             <Button
               w="full"
               rounded="lg"
-              colorScheme="red"
+              colorPalette="red"
               onClick={() =>
                 mutate(id, {
                   onSuccess: () => {

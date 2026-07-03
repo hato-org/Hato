@@ -64,7 +64,7 @@ export default function SortableCard({ cardId }: { cardId: string }) {
         top="50%"
         left="50%"
         aria-label="Delete card"
-        colorScheme="red"
+        colorPalette="red"
         variant="ghost"
         size="lg"
         borderRadius="full"

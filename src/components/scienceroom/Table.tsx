@@ -25,7 +25,7 @@ const ScienceRoomTableTable = React.memo(
           variant="line"
           size="sm"
           textStyle="title"
-          colorScheme="bg"
+          colorPalette="bg"
           {...rest}
         >
           <Table.Header>

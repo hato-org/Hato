@@ -129,7 +129,7 @@ function Events() {
       <FloatButton
         aria-label="create event"
         size="lg"
-        colorScheme="blue"
+        colorPalette="blue"
         mb={16}
         mr={4}
         onClick={onOpen}

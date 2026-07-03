@@ -146,7 +146,7 @@ function EventDetail() {
                           </Button>
                           <Button
                             w="full"
-                            colorScheme="red"
+                            colorPalette="red"
                             rounded="lg"
                             onClick={() =>
                               mutate(

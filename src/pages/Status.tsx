@@ -73,7 +73,7 @@ function Status() {
                     aria-label="Add maintenance info"
                     onClick={onOpen}
                     variant="ghost"
-                    colorScheme="blue"
+                    colorPalette="blue"
                     borderRadius="full"
                   >
                     {<Icon as={TbPlus} />}

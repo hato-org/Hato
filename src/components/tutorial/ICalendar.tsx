@@ -101,7 +101,7 @@ export default function ICalendar() {
                           <IconButton
                             aria-label="copy ical url"
                             variant="outline"
-                            colorScheme={copied ? 'green' : 'gray'}
+                            colorPalette={copied ? 'green' : 'gray'}
                             onClick={copy}
                           >
                             {copied ? <TbCheck /> : <TbCopy />}
@@ -134,7 +134,7 @@ export default function ICalendar() {
                     gap={4}
                     separator={<Icon as={TbChevronDown} w={8} h={8} />}
                   >
-                    <Button asChild variant="plain" colorScheme="blue">
+                    <Button asChild variant="plain" colorPalette="blue">
                       <Link
                         href="https://calendar.google.com/r"
                         target="_blank"
@@ -156,7 +156,7 @@ export default function ICalendar() {
                           <IconButton
                             aria-label="copy ical url"
                             variant="outline"
-                            colorScheme={copied ? 'green' : 'gray'}
+                            colorPalette={copied ? 'green' : 'gray'}
                             onClick={copy}
                           >
                             {copied ? <TbCheck /> : <TbCopy />}

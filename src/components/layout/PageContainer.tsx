@@ -21,7 +21,7 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
         </Box>
       </Portal>
       <Container
-        maxW={{ base: '100%', md: 'container.sm', lg: 'container.lg' }}
+        maxW={{ base: '100%', md: '640px', lg: '1024px' }}
         display="flex"
         flexDir="row"
         p={0}
@@ -38,6 +38,8 @@ export default function PageContainer({ children }: { children: JSX.Element }) {
         </Flex>
         <Container
           minH="100vh"
+          // v2 Container のデフォルト maxW (60ch)。v3 のデフォルトは 8xl で広すぎる
+          maxW="60ch"
           p={0}
           m={0}
           w="100%"

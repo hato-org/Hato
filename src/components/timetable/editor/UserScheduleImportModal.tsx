@@ -97,7 +97,7 @@ export function UserScheduleImportModal({
           <Button
             w="full"
             rounded="lg"
-            colorScheme="blue"
+            colorPalette="blue"
             onClick={() => {
               mutate(
                 {

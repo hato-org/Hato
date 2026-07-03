@@ -61,9 +61,9 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
         {children}
       </HStack>
       <Box w="100%" pos="absolute" bottom={0}>
-        <Collapsible.Root open={!!isFetching}>
+        <Collapsible.Root open={!!isFetching} unmountOnExit>
           <Collapsible.Content>
-            <ProgressRoot w="100%" size="xs" value={null}>
+            <ProgressRoot w="100%" size="xs" value={null} colorPalette="blue">
               <ProgressBar />
             </ProgressRoot>
           </Collapsible.Content>

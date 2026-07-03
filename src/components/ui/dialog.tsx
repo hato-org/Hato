@@ -24,7 +24,13 @@ export const DialogContent = React.forwardRef<
     <Portal disabled={!portalled} container={portalRef}>
       {backdrop && <ChakraDialog.Backdrop />}
       <ChakraDialog.Positioner>
-        <ChakraDialog.Content ref={ref} {...rest} asChild={false}>
+        {/* textStyle: v2 ModalContent の本文サイズ (16px) に合わせる */}
+        <ChakraDialog.Content
+          textStyle="md"
+          ref={ref}
+          {...rest}
+          asChild={false}
+        >
           {children}
         </ChakraDialog.Content>
       </ChakraDialog.Positioner>
@@ -53,8 +59,20 @@ export const DialogCloseTrigger = React.forwardRef<
 
 export const DialogRoot = ChakraDialog.Root;
 export const DialogFooter = ChakraDialog.Footer;
-export const DialogHeader = ChakraDialog.Header;
-export const DialogBody = ChakraDialog.Body;
+
+// v2 ModalHeader (fontSize xl / semibold / py=4)・ModalBody (py=2) の既定値を再現
+export const DialogHeader = (props: ChakraDialog.HeaderProps) => (
+  <ChakraDialog.Header
+    textStyle="xl"
+    fontWeight="semibold"
+    pt="4"
+    pb="4"
+    {...props}
+  />
+);
+export const DialogBody = (props: ChakraDialog.BodyProps) => (
+  <ChakraDialog.Body pt="2" pb="2" {...props} />
+);
 export const DialogBackdrop = ChakraDialog.Backdrop;
 export const DialogTitle = ChakraDialog.Title;
 export const DialogDescription = ChakraDialog.Description;

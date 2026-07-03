@@ -277,7 +277,7 @@ function EditorSubjectGrid({
                 variant="ghost"
                 rounded="lg"
                 w="full"
-                colorScheme="red"
+                colorPalette="red"
                 onClick={onDelete}
               >
                 {<Icon as={TbTrash} />}

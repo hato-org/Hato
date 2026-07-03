@@ -83,7 +83,7 @@ const UserSubjectPicker = React.memo(
                 <VStack w="full" align="flex-start" gap={4}>
                   <Button
                     variant="plain"
-                    colorScheme="blue"
+                    colorPalette="blue"
                     onClick={() => {
                       setCreateMode(false);
                     }}
@@ -190,7 +190,7 @@ const UserSubjectPicker = React.memo(
               <Button
                 w="full"
                 rounded="lg"
-                colorScheme="blue"
+                colorPalette="blue"
                 disabled={!subject.name}
                 loading={isPending}
                 onClick={() =>

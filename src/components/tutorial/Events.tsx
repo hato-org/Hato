@@ -38,7 +38,7 @@ export default function Events() {
         <DialogBody>
           <VStack align="flex-start">
             {/* <Heading size='lg'>年間行事予定</Heading> */}
-            <List.Root textStyle="title">
+            <List.Root ms="1em" textStyle="title">
               <List.Item>生徒による生徒のための年間行事予定表です</List.Item>
               <List.Item>どんな規模のイベントでもOKです</List.Item>
               <List.Item>
@@ -64,14 +64,14 @@ export default function Events() {
             </List.Root>
             <Separator />
             <Heading size="md">イベントの追加方法</Heading>
-            <List.Root as="ol" pl={4} textStyle="title" gap={4}>
+            <List.Root as="ol" ms="1em" textStyle="title" gap={4}>
               <List.Item>右下の「イベントを追加」をタップ</List.Item>
               <List.Item>
                 各項目を入力
-                <List.Root gap={1}>
+                <List.Root ms="1em" gap={1} listStyleType="disc">
                   <List.Item>
                     タイトル
-                    <Badge ml={1} colorScheme="red">
+                    <Badge ml={1} colorPalette="red">
                       必須
                     </Badge>
                     <Text textStyle="description">イベントのタイトル。</Text>
@@ -82,7 +82,7 @@ export default function Events() {
                   </List.Item>
                   <List.Item>
                     開始日時・終了日時
-                    <Badge ml={1} colorScheme="red">
+                    <Badge ml={1} colorPalette="red">
                       必須
                     </Badge>
                     <Text textStyle="description">
@@ -99,7 +99,7 @@ export default function Events() {
                   </List.Item>
                   <List.Item>
                     タグ
-                    <Badge ml={1} colorScheme="red">
+                    <Badge ml={1} colorPalette="red">
                       必須
                     </Badge>
                     <Text textStyle="description">
@@ -118,7 +118,7 @@ export default function Events() {
           </VStack>
         </DialogBody>
         <DialogFooter>
-          <Button w="100%" colorScheme="blue" rounded="lg" onClick={onClose}>
+          <Button w="100%" colorPalette="blue" rounded="lg" onClick={onClose}>
             OK
           </Button>
         </DialogFooter>

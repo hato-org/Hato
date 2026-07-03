@@ -109,7 +109,7 @@ export default function Notification() {
                     >
                       以下をお試しください
                     </Alert.Description>
-                    <List.Root gap={2}>
+                    <List.Root ms="1em" gap={2}>
                       {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
                         navigator.userAgent,
                       ) && (

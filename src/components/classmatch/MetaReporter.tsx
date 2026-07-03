@@ -98,7 +98,7 @@ export default function MetaReporter({
       <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
-          colorScheme="red"
+          colorPalette="red"
           variant="outline"
           rounded="lg"
           flex={1}
@@ -109,7 +109,7 @@ export default function MetaReporter({
         <IconButton
           aria-label="confirm changes"
           rounded="lg"
-          colorScheme="green"
+          colorPalette="green"
           flex={2}
           onClick={() =>
             mutate(

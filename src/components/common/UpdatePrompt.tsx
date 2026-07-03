@@ -71,7 +71,7 @@ function UpdatePrompt() {
         <Button
           w="100%"
           rounded="lg"
-          colorScheme="blue"
+          colorPalette="blue"
           onClick={() => {
             updateServiceWorker();
             setWhatsNew(true);

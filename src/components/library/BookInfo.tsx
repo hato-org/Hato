@@ -184,7 +184,7 @@ const BookInfo = React.memo(
                       w="100%"
                       rounded="lg"
                       shadow="lg"
-                      colorScheme="blue"
+                      colorPalette="blue"
                       disabled={!detail?.raw_holdings[0]?.id}
                       onClick={() =>
                         window.open(

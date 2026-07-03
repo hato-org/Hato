@@ -80,7 +80,7 @@ function UsernameModal({
             キャンセル
           </Button>
           <Button
-            colorScheme="blue"
+            colorPalette="blue"
             onClick={
               isFulfilled
                 ? () => {

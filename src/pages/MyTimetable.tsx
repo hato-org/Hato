@@ -70,7 +70,7 @@ function MyTimetable() {
               <IconButton
                 aria-label="Add new user schedule"
                 variant="ghost"
-                colorScheme="blue"
+                colorPalette="blue"
                 borderRadius="full"
                 onClick={() => setUserScheduleEditor('new')}
               >
@@ -90,7 +90,7 @@ function MyTimetable() {
               w="full"
               rounded="lg"
               variant="ghost"
-              colorScheme="blue"
+              colorPalette="blue"
               onClick={() => setUserScheduleEditor('new')}
             >
               {<Icon as={TbPlus} />}

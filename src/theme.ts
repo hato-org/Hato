@@ -1,9 +1,128 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
+/**
+ * Chakra v2 のカラーパレット (v3 では Tailwind 系に変更されたため、
+ * v2 当時の見た目を維持する目的で使用色のみ移植)
+ */
+const v2Palettes = {
+  gray: {
+    '50': { value: '#F7FAFC' },
+    '100': { value: '#EDF2F7' },
+    '200': { value: '#E2E8F0' },
+    '300': { value: '#CBD5E0' },
+    '400': { value: '#A0AEC0' },
+    '500': { value: '#718096' },
+    '600': { value: '#4A5568' },
+    '700': { value: '#2D3748' },
+    '800': { value: '#1A202C' },
+    '900': { value: '#171923' },
+    '950': { value: '#0f1117' },
+  },
+  red: {
+    '50': { value: '#FFF5F5' },
+    '100': { value: '#FED7D7' },
+    '200': { value: '#FEB2B2' },
+    '300': { value: '#FC8181' },
+    '400': { value: '#F56565' },
+    '500': { value: '#E53E3E' },
+    '600': { value: '#C53030' },
+    '700': { value: '#9B2C2C' },
+    '800': { value: '#822727' },
+    '900': { value: '#63171B' },
+    '950': { value: '#4a1114' },
+  },
+  orange: {
+    '50': { value: '#FFFAF0' },
+    '100': { value: '#FEEBC8' },
+    '200': { value: '#FBD38D' },
+    '300': { value: '#F6AD55' },
+    '400': { value: '#ED8936' },
+    '500': { value: '#DD6B20' },
+    '600': { value: '#C05621' },
+    '700': { value: '#9C4221' },
+    '800': { value: '#7B341E' },
+    '900': { value: '#652B19' },
+    '950': { value: '#4c2013' },
+  },
+  yellow: {
+    '50': { value: '#FFFFF0' },
+    '100': { value: '#FEFCBF' },
+    '200': { value: '#FAF089' },
+    '300': { value: '#F6E05E' },
+    '400': { value: '#ECC94B' },
+    '500': { value: '#D69E2E' },
+    '600': { value: '#B7791F' },
+    '700': { value: '#975A16' },
+    '800': { value: '#744210' },
+    '900': { value: '#5F370E' },
+    '950': { value: '#48290a' },
+  },
+  green: {
+    '50': { value: '#F0FFF4' },
+    '100': { value: '#C6F6D5' },
+    '200': { value: '#9AE6B4' },
+    '300': { value: '#68D391' },
+    '400': { value: '#48BB78' },
+    '500': { value: '#38A169' },
+    '600': { value: '#2F855A' },
+    '700': { value: '#276749' },
+    '800': { value: '#22543D' },
+    '900': { value: '#1C4532' },
+    '950': { value: '#153426' },
+  },
+  blue: {
+    '50': { value: '#ebf8ff' },
+    '100': { value: '#bee3f8' },
+    '200': { value: '#90cdf4' },
+    '300': { value: '#63b3ed' },
+    '400': { value: '#4299e1' },
+    '500': { value: '#3182ce' },
+    '600': { value: '#2b6cb0' },
+    '700': { value: '#2c5282' },
+    '800': { value: '#2a4365' },
+    '900': { value: '#1A365D' },
+    '950': { value: '#132743' },
+  },
+  pink: {
+    '50': { value: '#FFF5F7' },
+    '100': { value: '#FED7E2' },
+    '200': { value: '#FBB6CE' },
+    '300': { value: '#F687B3' },
+    '400': { value: '#ED64A6' },
+    '500': { value: '#D53F8C' },
+    '600': { value: '#B83280' },
+    '700': { value: '#97266D' },
+    '800': { value: '#702459' },
+    '900': { value: '#521B41' },
+    '950': { value: '#3d1430' },
+  },
+};
+
+/**
+ * v2 の solid ボタン配色 (light: 500/白文字, dark: 200/黒文字) を
+ * v3 の colorPalette セマンティックトークンとして再現
+ */
+const v2SolidTokens = Object.fromEntries(
+  ['blue', 'red', 'green', 'orange', 'yellow', 'pink'].map((c) => [
+    c,
+    {
+      // default 側が _light 条件で定義しているため、base ではなく _light で
+      // 上書きしないとマージ後に default の値が勝ってしまう
+      solid: {
+        value: { _light: `{colors.${c}.500}`, _dark: `{colors.${c}.200}` },
+      },
+      contrast: {
+        value: { _light: 'white', _dark: '{colors.gray.800}' },
+      },
+    },
+  ]),
+);
+
 const config = defineConfig({
   theme: {
     tokens: {
       colors: {
+        ...v2Palettes,
         bg: {
           '50': { value: '#f7f7f7' },
           '100': { value: '#eeeeee' },
@@ -29,14 +148,40 @@ const config = defineConfig({
     },
     semanticTokens: {
       colors: {
+        ...v2SolidTokens,
+        // v2 のデフォルト (colorScheme=gray solid) ボタン配色
+        gray: {
+          solid: {
+            value: {
+              _light: '{colors.gray.100}',
+              _dark: '{colors.whiteAlpha.200}',
+            },
+          },
+          contrast: {
+            value: {
+              _light: '{colors.gray.800}',
+              _dark: '{colors.whiteAlpha.900}',
+            },
+          },
+        },
         title: {
           value: { base: '{colors.gray.700}', _dark: '{colors.gray.100}' },
         },
         description: {
           value: { base: '{colors.gray.500}', _dark: '{colors.gray.400}' },
         },
+        // NOTE: v3 の `bg`/`border` は子キーを持つセマンティックグループのため、
+        // グループ直下に value を書くと条件付きトークンの生成順が壊れ
+        // ダークモードが効かなくなる。必ず DEFAULT キー経由で上書きすること。
         bg: {
-          value: { base: 'white', _dark: '{colors.bg.900}' },
+          DEFAULT: {
+            value: { base: 'white', _dark: '{colors.bg.900}' },
+          },
+          // v3 組み込みのサーフェス (Dialog/Menu/Popover 等) が参照する。
+          // v2 の dark サーフェス (gray.700) に合わせる
+          panel: {
+            value: { _light: 'white', _dark: '{colors.gray.700}' },
+          },
         },
         bgAlpha: {
           value: {
@@ -51,7 +196,9 @@ const config = defineConfig({
           value: { base: 'white', _dark: '{colors.bg.800}' },
         },
         border: {
-          value: { base: '{colors.bg.100}', _dark: '{colors.bg.800}' },
+          DEFAULT: {
+            value: { base: '{colors.bg.100}', _dark: '{colors.bg.800}' },
+          },
         },
         hover: {
           value: {
@@ -85,16 +232,41 @@ const config = defineConfig({
         },
       },
     },
+    recipes: {
+      // v2 の Heading サイズ体系 (v3 では md=16px 等に縮小。v2: md=20→24px responsive)
+      heading: {
+        variants: {
+          size: {
+            sm: { fontSize: 'md', lineHeight: 1.2 },
+            md: { fontSize: 'xl', lineHeight: 1.2 },
+            '2xl': { fontSize: { base: '4xl', md: '5xl' }, lineHeight: 1.2 },
+          },
+        },
+      },
+      // v2 のボタン寸法 (v3 は lg=44px/md フォント等に縮小されたため v2 に合わせる)
+      button: {
+        variants: {
+          size: {
+            sm: { h: '8', minW: '8', textStyle: 'sm', px: '3' },
+            md: { h: '10', minW: '10', textStyle: 'md', px: '4' },
+            lg: { h: '12', minW: '12', textStyle: 'lg', px: '6' },
+          },
+        },
+      },
+    },
     textStyles: {
+      // NOTE: v3 では textStyle 内の color が color prop より優先されるため、
+      // title には color を含めない (globalCss の body color: title が同値の
+      // デフォルトを与えるので見た目は不変、color prop での上書きが可能になる)
       title: {
         value: {
           fontWeight: 'bold',
-          color: 'title',
         },
       },
       description: {
         value: {
           fontSize: 'sm',
+          lineHeight: 1.5, // v2 では body の 1.5 を継承していた (21px)
           color: 'description',
         },
       },

@@ -63,6 +63,7 @@ export default function Search() {
             w="100%"
             fitted
             size="lg"
+            colorPalette="blue"
             value={selected}
             onValueChange={(e) => setSelected(e.value as 'free' | 'detail')}
           >
@@ -82,17 +83,17 @@ export default function Search() {
                 詳細検索
               </Tabs.Trigger>
             </Tabs.List>
-            <Tabs.Content value="free" w="100%">
+            <Tabs.Content value="free" w="100%" px={4} pb={4}>
               <FreeSearch onSubmit={() => mutate('free')} />
             </Tabs.Content>
-            <Tabs.Content value="detail" w="100%">
+            <Tabs.Content value="detail" w="100%" px={4} pb={4}>
               <DetailSearch onSubmit={() => mutate('detail')} />
             </Tabs.Content>
           </Tabs.Root>
           <Box w="100%" px={4} pb={4}>
             <Button
               w="100%"
-              colorScheme="blue"
+              colorPalette="blue"
               rounded="lg"
               onClick={() => mutate(selected, {})}
               loading={isPending}

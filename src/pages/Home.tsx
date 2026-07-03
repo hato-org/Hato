@@ -49,7 +49,7 @@ function Home() {
         <Button
           w={{ base: '100%', md: 60 }}
           mt={10}
-          colorScheme="blue"
+          colorPalette="blue"
           rounded="xl"
           shadow="xl"
           asChild

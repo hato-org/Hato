@@ -203,7 +203,7 @@ const Card = React.memo(
                       w="full"
                       rounded="lg"
                       variant={isSelected ? 'outline' : 'solid'}
-                      colorScheme={isSelected ? 'red' : 'blue'}
+                      colorPalette={isSelected ? 'red' : 'blue'}
                       onClick={() =>
                         mutate({ userScheduleId: isSelected ? null : _id })
                       }
@@ -219,7 +219,7 @@ const Card = React.memo(
                       <Button
                         w="full"
                         rounded="lg"
-                        colorScheme={isSelected ? 'red' : 'blue'}
+                        colorPalette={isSelected ? 'red' : 'blue'}
                         variant={isSelected ? 'outline' : 'solid'}
                         onClick={() =>
                           mutate({ userScheduleId: isSelected ? null : _id })

@@ -14,7 +14,8 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
       props;
 
     return (
-      <ChakraSwitch.Root ref={rootRef} {...rest}>
+      // v2 の Switch デフォルト (colorScheme=blue) を踏襲
+      <ChakraSwitch.Root colorPalette="blue" ref={rootRef} {...rest}>
         <ChakraSwitch.HiddenInput ref={ref} {...inputProps} />
         <ChakraSwitch.Control>
           <ChakraSwitch.Thumb>

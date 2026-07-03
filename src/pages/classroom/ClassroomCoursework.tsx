@@ -143,7 +143,7 @@ export default function ClassroomCoursework() {
             gap={2}
             loading={isPending}
           >
-            <Text whiteSpace="pre-wrap" textStyle="description" color="title">
+            <Text whiteSpace="pre-wrap" fontSize="sm" color="title">
               {data?.description}
             </Text>
           </SkeletonText>

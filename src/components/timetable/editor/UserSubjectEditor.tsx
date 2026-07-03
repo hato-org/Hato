@@ -86,7 +86,7 @@ export default function UserSubjectEditor({
         <DrawerFooter>
           <Button
             w="full"
-            colorScheme="blue"
+            colorPalette="blue"
             rounded="lg"
             disabled={!(name && subject)}
             loading={isPending}

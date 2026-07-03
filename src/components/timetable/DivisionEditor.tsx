@@ -106,7 +106,7 @@ const DivisionEditor = React.memo(
           <DialogFooter>
             <Button
               w="100%"
-              colorScheme="blue"
+              colorPalette="blue"
               rounded="lg"
               onClick={() => {
                 if (

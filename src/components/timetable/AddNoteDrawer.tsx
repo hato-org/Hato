@@ -61,7 +61,7 @@ const AddNoteDrawer = React.memo(
           pb="env(safe-area-inset-bottom)"
           bg="panel"
         >
-          <DrawerHeader w="full" maxW="container.lg" mx="auto">
+          <DrawerHeader w="full" maxW="1024px" mx="auto">
             <HStack>
               <Text>備考の追加</Text>
               <Spacer />
@@ -70,7 +70,7 @@ const AddNoteDrawer = React.memo(
               </Text>
             </HStack>
           </DrawerHeader>
-          <DrawerBody w="full" maxW="container.lg" mx="auto" px={0}>
+          <DrawerBody w="full" maxW="1024px" mx="auto" px={0}>
             <VStack w="100%" textStyle="title">
               <Accordion.Root
                 w="100%"
@@ -243,10 +243,10 @@ const AddNoteDrawer = React.memo(
               </Accordion.Root>
             </VStack>
           </DrawerBody>
-          <DrawerFooter w="full" maxW="container.lg" mx="auto">
+          <DrawerFooter w="full" maxW="1024px" mx="auto">
             <Button
               w="100%"
-              colorScheme="blue"
+              colorPalette="blue"
               rounded="lg"
               onClick={() =>
                 mutate(

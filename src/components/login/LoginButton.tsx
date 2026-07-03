@@ -9,7 +9,7 @@ const LoginButton = React.memo(({ scopes }: { scopes?: string[] }) => {
   return (
     <Button
       loading={loginLoading}
-      colorScheme="blue"
+      colorPalette="blue"
       rounded="lg"
       onClick={() => login()}
     >

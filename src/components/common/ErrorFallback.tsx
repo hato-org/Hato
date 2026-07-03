@@ -44,7 +44,7 @@ function ErrorFallback() {
           {error.stack}
         </Code>
         <Button
-          colorScheme="blue"
+          colorPalette="blue"
           rounded="xl"
           onClick={() => {
             if (!import.meta.env.DEV && sendReport) mutate(report);

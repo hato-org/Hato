@@ -93,7 +93,7 @@ const ReportModal = React.memo(
               </Button>
               <Button
                 w="full"
-                colorScheme="blue"
+                colorPalette="blue"
                 rounded="lg"
                 onClick={() =>
                   mutate({

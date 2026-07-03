@@ -25,7 +25,13 @@ export const DrawerContent = React.forwardRef<
     <Portal disabled={!portalled} container={portalRef}>
       {backdrop && <ChakraDrawer.Backdrop />}
       <ChakraDrawer.Positioner padding={offset}>
-        <ChakraDrawer.Content ref={ref} {...rest} asChild={false}>
+        {/* textStyle: v2 DrawerContent の本文サイズ (16px) に合わせる */}
+        <ChakraDrawer.Content
+          textStyle="md"
+          ref={ref}
+          {...rest}
+          asChild={false}
+        >
           {children}
         </ChakraDrawer.Content>
       </ChakraDrawer.Positioner>
@@ -53,8 +59,20 @@ export const DrawerCloseTrigger = React.forwardRef<
 export const DrawerTrigger = ChakraDrawer.Trigger;
 export const DrawerRoot = ChakraDrawer.Root;
 export const DrawerFooter = ChakraDrawer.Footer;
-export const DrawerHeader = ChakraDrawer.Header;
-export const DrawerBody = ChakraDrawer.Body;
+
+// v2 DrawerHeader (fontSize xl / semibold / py=4)・DrawerBody (py=2) の既定値を再現
+export const DrawerHeader = (props: ChakraDrawer.HeaderProps) => (
+  <ChakraDrawer.Header
+    textStyle="xl"
+    fontWeight="semibold"
+    pt="4"
+    pb="4"
+    {...props}
+  />
+);
+export const DrawerBody = (props: ChakraDrawer.BodyProps) => (
+  <ChakraDrawer.Body pt="2" pb="2" {...props} />
+);
 export const DrawerBackdrop = ChakraDrawer.Backdrop;
 export const DrawerDescription = ChakraDrawer.Description;
 export const DrawerTitle = ChakraDrawer.Title;

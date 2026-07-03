@@ -218,7 +218,7 @@ function Timetable() {
                     />
                   </Suspense>
                   <IconButton
-                    colorScheme="blue"
+                    colorPalette="blue"
                     color="blue.400"
                     aria-label="Add note"
                     variant="ghost"

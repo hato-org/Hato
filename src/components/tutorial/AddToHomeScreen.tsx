@@ -31,7 +31,7 @@ function AddToHomeScreen() {
         <DialogBody>
           <VStack px={4} align="flex-start">
             <Heading size="md">iPhone (Safari)</Heading>
-            <List.Root as="ol" gap={4} textStyle="title">
+            <List.Root as="ol" ms="1em" gap={4} textStyle="title">
               <List.Item>
                 共有メニューを開く
                 <Image
@@ -53,7 +53,7 @@ function AddToHomeScreen() {
               </List.Item>
             </List.Root>
             <Heading size="md">Android (Chrome)</Heading>
-            <List.Root as="ol" gap={4} textStyle="title">
+            <List.Root as="ol" ms="1em" gap={4} textStyle="title">
               <List.Item>
                 「<Icon as={TbDotsVertical} />
                 」メニューを開く

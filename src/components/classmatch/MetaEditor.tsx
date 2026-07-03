@@ -135,7 +135,7 @@ function MetaEditor({
             w="full"
             rounded="lg"
             variant="outline"
-            colorScheme="red"
+            colorPalette="red"
             onClick={() => setParticipantsValue([])}
           >
             {<Icon as={TbX} />}
@@ -181,7 +181,7 @@ function MetaEditor({
       <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
-          colorScheme="red"
+          colorPalette="red"
           variant="outline"
           rounded="lg"
           flex={1}
@@ -192,7 +192,7 @@ function MetaEditor({
         <IconButton
           aria-label="confirm changes"
           rounded="lg"
-          colorScheme="green"
+          colorPalette="green"
           flex={2}
           onClick={() =>
             mutate(

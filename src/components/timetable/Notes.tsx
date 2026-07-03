@@ -159,7 +159,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
               flex={1}
               rounded="lg"
               variant="ghost"
-              colorScheme="red"
+              colorPalette="red"
               onClick={() => {
                 setEditMode(false);
                 setMessage(note.message);
@@ -172,7 +172,7 @@ const NoteCard = React.memo(({ note }: { note: Note }) => {
               flex={3}
               rounded="lg"
               variant="solid"
-              colorScheme="green"
+              colorPalette="green"
               loading={isPending}
               onClick={() => {
                 mutate(

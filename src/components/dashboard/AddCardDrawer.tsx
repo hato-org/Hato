@@ -41,10 +41,10 @@ const AddCardDrawer = React.memo(() => {
       onOpenChange={(e) => !e.open && onClose()}
     >
       <DrawerContent bg="panel" roundedTop="xl">
-        <DrawerHeader w="full" maxW="container.lg" mx="auto">
+        <DrawerHeader w="full" maxW="1024px" mx="auto">
           カードの追加
         </DrawerHeader>
-        <DrawerBody w="full" maxW="container.lg" mx="auto">
+        <DrawerBody w="full" maxW="1024px" mx="auto">
           <Flex
             w="full"
             overflowX="auto"
@@ -106,13 +106,13 @@ const AddCardDrawer = React.memo(() => {
         <DrawerFooter
           pb="env(safe-area-inset-bottom)"
           w="full"
-          maxW="container.lg"
+          maxW="1024px"
           mx="auto"
         >
           <Button
             w="full"
             rounded="lg"
-            colorScheme="blue"
+            colorPalette="blue"
             disabled={!selectedCard}
             onClick={() => {
               setCardOrder((currVal) => [...currVal, selectedCard]);

@@ -20,7 +20,7 @@ function Error({ type, onOpen }: ErrorProps) {
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
             <Text textStyle="title">まだ日課が設定されていません。</Text>
-            <Button rounded="lg" colorScheme="blue" onClick={onOpen}>
+            <Button rounded="lg" colorPalette="blue" onClick={onOpen}>
               設定する
             </Button>
           </VStack>

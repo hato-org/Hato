@@ -140,7 +140,7 @@ export default function ClassroomMaterial() {
             gap={2}
             loading={isLoading}
           >
-            <Text whiteSpace="pre-wrap" textStyle="description" color="title">
+            <Text whiteSpace="pre-wrap" fontSize="sm" color="title">
               {data?.description}
             </Text>
           </SkeletonText>

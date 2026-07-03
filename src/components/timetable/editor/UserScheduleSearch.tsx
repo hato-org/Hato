@@ -118,7 +118,7 @@ export function UserScheduleSearch() {
               type="submit"
               w="full"
               rounded="lg"
-              colorScheme="blue"
+              colorPalette="blue"
               loading={isPending}
             >
               {<Icon as={TbSearch} />}

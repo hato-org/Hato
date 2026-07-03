@@ -142,7 +142,7 @@ const AddStatusInfo = React.memo(
             <Button
               w="full"
               rounded="lg"
-              colorScheme="blue"
+              colorPalette="blue"
               onClick={() => mutate(statusInfo, { onSuccess: onClose })}
               loading={isPending}
               disabled={

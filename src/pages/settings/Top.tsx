@@ -138,7 +138,7 @@ function Top() {
                     </Button>
                     <Button
                       w="full"
-                      colorScheme="red"
+                      colorPalette="red"
                       rounded="lg"
                       onClick={() => {
                         setTutorial({
