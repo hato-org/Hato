@@ -235,21 +235,163 @@ const config = defineConfig({
     recipes: {
       // v2 の Heading サイズ体系 (v3 では md=16px 等に縮小。v2: md=20→24px responsive)
       heading: {
+        base: { fontWeight: 'bold' }, // v2 は bold (v3 は semibold)
         variants: {
           size: {
             sm: { fontSize: 'md', lineHeight: 1.2 },
             md: { fontSize: 'xl', lineHeight: 1.2 },
-            '2xl': { fontSize: { base: '4xl', md: '5xl' }, lineHeight: 1.2 },
+            '2xl': {
+              fontSize: { base: '4xl', md: '5xl' },
+              lineHeight: { base: 1.2, md: 1 },
+            },
           },
         },
       },
       // v2 のボタン寸法 (v3 は lg=44px/md フォント等に縮小されたため v2 に合わせる)
       button: {
+        base: { fontWeight: 'semibold' }, // v2 は semibold (v3 は medium)
         variants: {
           size: {
             sm: { h: '8', minW: '8', textStyle: 'sm', px: '3' },
             md: { h: '10', minW: '10', textStyle: 'md', px: '4' },
             lg: { h: '12', minW: '12', textStyle: 'lg', px: '6' },
+          },
+        },
+      },
+      // v2 Input 寸法 (v3 は md で 14px / px 3 に縮小)
+      input: {
+        variants: {
+          size: {
+            sm: { textStyle: 'sm', px: '3', '--input-height': 'sizes.8' },
+            md: { textStyle: 'md', px: '4', '--input-height': 'sizes.10' },
+            lg: { textStyle: 'lg', px: '4', '--input-height': 'sizes.12' },
+          },
+        },
+      },
+      textarea: {
+        variants: {
+          size: {
+            md: { textStyle: 'md', px: '4', py: '2' },
+          },
+        },
+      },
+      // v2 Spinner 寸法 (md=24px, v3 は 20px)
+      spinner: {
+        variants: {
+          size: {
+            md: { '--spinner-size': 'sizes.6' },
+          },
+        },
+      },
+      // v2 Divider は horizontal で幅 100% (v3 は flex 子要素で幅 0 になり不可視)
+      separator: {
+        variants: {
+          orientation: {
+            horizontal: { width: '100%' },
+          },
+        },
+      },
+      // v2 Badge subtle 配色 (light: 100/800, dark: 200 の 16% / 200)
+      badge: {
+        variants: {
+          variant: {
+            subtle: {
+              bg: { base: 'colorPalette.100', _dark: 'colorPalette.200/16' },
+              color: { base: 'colorPalette.800', _dark: 'colorPalette.200' },
+            },
+          },
+        },
+      },
+    },
+    slotRecipes: {
+      // v2 Modal 幅 (v3 は 1 段ずつ大きく、xl は 36rem → 56rem になる)
+      dialog: {
+        variants: {
+          size: {
+            xs: { content: { maxW: 'xs' } },
+            sm: { content: { maxW: 'sm' } },
+            md: { content: { maxW: 'md' } },
+            lg: { content: { maxW: 'lg' } },
+            xl: { content: { maxW: 'xl' } },
+          },
+        },
+      },
+      // v2 Avatar 寸法 (sm=32/md=48/lg=64px, 文字は 40%) と塗りつぶしのフォールバック
+      avatar: {
+        variants: {
+          size: {
+            sm: {
+              root: {
+                '--avatar-size': 'sizes.8',
+                '--avatar-font-size': '0.8rem',
+              },
+            },
+            md: {
+              root: {
+                '--avatar-size': 'sizes.12',
+                '--avatar-font-size': '1.2rem',
+              },
+            },
+            lg: {
+              root: {
+                '--avatar-size': 'sizes.16',
+                '--avatar-font-size': '1.6rem',
+              },
+            },
+          },
+          variant: {
+            subtle: {
+              root: { bg: 'gray.400', color: 'white' },
+            },
+          },
+        },
+      },
+      // v2 ではリストマーカーが本文と同色 (v3 は fg.subtle)
+      list: {
+        variants: {
+          variant: {
+            marker: { item: { _marker: { color: 'inherit' } } },
+          },
+        },
+      },
+      // v2 Progress: xs は 4px、indeterminate は中央だけ色の付くグラデーション
+      progress: {
+        base: {
+          range: {
+            _indeterminate: {
+              bgColor: 'transparent',
+              backgroundImage:
+                'linear-gradient(to right, transparent 0%, {colors.colorPalette.solid} 50%, transparent 100%)',
+            },
+          },
+        },
+        variants: {
+          size: {
+            xs: { track: { h: '1' } },
+          },
+        },
+      },
+      // v2 Tabs: lg は fontSize lg / py 3、line の非選択色は継承、下線 2px
+      tabs: {
+        variants: {
+          size: {
+            // textStyle は呼び出し側の textStyle="title" に上書きされるため fontSize で指定
+            lg: {
+              root: { '--tabs-content-padding': 'spacing.4' },
+              trigger: {
+                py: '3',
+                px: '4',
+                fontSize: 'lg',
+                lineHeight: 1.5,
+                height: 'auto',
+              },
+            },
+          },
+          variant: {
+            line: {
+              list: { _horizontal: { borderBottomWidth: '2px' } },
+              trigger: { color: 'inherit' },
+            },
           },
         },
       },

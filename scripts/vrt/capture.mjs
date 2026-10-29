@@ -59,10 +59,15 @@ for (const target of TARGETS) {
         locale: 'ja-JP',
         timezoneId: 'Asia/Tokyo',
       });
-      // 外部リクエスト遮断 (localhostのみ許可)
+      // 外部リクエスト遮断 (localhostのみ許可)。/api/ (vite proxy) も遮断し、
+      // 偽JWTへの 401 で v3 だけログアウトされるのを防ぐ (v2 は 401 処理が壊れている)
       await context.route('**/*', (route) => {
-        const url = route.request().url();
-        if (url.startsWith('http://localhost:300')) return route.continue();
+        const url = new URL(route.request().url());
+        if (
+          url.origin.startsWith('http://localhost:300') &&
+          !url.pathname.startsWith('/api/')
+        )
+          return route.continue();
         return route.abort();
       });
       await context.addInitScript(

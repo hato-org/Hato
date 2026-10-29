@@ -37,6 +37,8 @@ const refreshToken = async (currentJwt: string): Promise<string | null> => {
 };
 
 const navigateToLogin = async () => {
+  // 同時多発の 401 やログイン画面上での 401 で return_to が入れ子になるのを防ぐ
+  if (window.location.pathname === '/login') return;
   const { default: router } = await import('@/routes');
   router.navigate(
     `/login?return_to=${encodeURIComponent(window.location.pathname + window.location.search)}`,

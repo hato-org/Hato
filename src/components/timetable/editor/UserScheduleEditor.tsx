@@ -85,7 +85,11 @@ export default function UserScheduleEditor() {
       onOpenChange={(e) => !e.open && (() => setUserScheduleEditor(false))()}
       size={{ base: 'full', md: 'xl' }}
     >
-      <DialogContent bg="panel" pb="env(safe-area-inset-bottom)">
+      <DialogContent
+        bg="panel"
+        maxW={{ md: '2xl' }}
+        pb="env(safe-area-inset-bottom)"
+      >
         <UserScheduleContext.Provider
           value={useMemo(() => [schedule, setSchedule], [schedule])}
         >

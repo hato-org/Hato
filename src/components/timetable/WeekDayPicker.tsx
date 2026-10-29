@@ -42,6 +42,8 @@ const WeekDayPicker = React.memo(
             <MenuTrigger asChild>
               <Button
                 variant="plain"
+                px={0}
+                h="auto"
                 w="100%"
                 rounded="lg"
                 layerStyle="button"
@@ -78,6 +80,8 @@ const WeekDayPicker = React.memo(
             <MenuTrigger asChild>
               <Button
                 variant="plain"
+                px={0}
+                h="auto"
                 w="100%"
                 rounded="lg"
                 layerStyle="button"

@@ -67,7 +67,10 @@ const UpcomingMatch = React.memo(
           <Loading />
         ) : upcomingMatches?.length ? (
           <Box w="full">
-            <Collapsible.Root open={isOpen}>
+            <Collapsible.Root
+              open={isOpen}
+              collapsedHeight={(data?.length ?? 0) > 3 ? 220 : 0}
+            >
               <Collapsible.Content>
                 <VStack w="full" gap={0}>
                   {upcomingMatches?.map((upcoming) => (

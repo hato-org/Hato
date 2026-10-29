@@ -213,9 +213,10 @@ const MenuBody = React.memo(() => {
             w="100%"
             gap={4}
             color={
-              location.pathname.startsWith(menuItem.href)
+              menuItem.color ??
+              (location.pathname.startsWith(menuItem.href)
                 ? 'blue.400'
-                : undefined
+                : undefined)
             }
             layerStyle="button"
             rounded="xl"

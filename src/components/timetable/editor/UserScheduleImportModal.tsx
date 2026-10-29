@@ -53,7 +53,7 @@ export function UserScheduleImportModal({
       open={isOpen}
       onOpenChange={(e) => !e.open && onClose()}
     >
-      <DialogContent rounded="xl" bg="panel">
+      <DialogContent rounded="xl" bg="panel" maxW="2xl">
         <DialogHeader>時間割のインポート</DialogHeader>
         <DialogBody>
           <VStack w="full" gap={8} py={4}>

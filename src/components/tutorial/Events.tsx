@@ -64,7 +64,7 @@ export default function Events() {
             </List.Root>
             <Separator />
             <Heading size="md">イベントの追加方法</Heading>
-            <List.Root as="ol" ms="1em" textStyle="title" gap={4}>
+            <List.Root as="ol" ms="1em" pl={4} textStyle="title" gap={4}>
               <List.Item>右下の「イベントを追加」をタップ</List.Item>
               <List.Item>
                 各項目を入力
