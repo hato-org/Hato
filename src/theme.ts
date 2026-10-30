@@ -1,4 +1,15 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
+import {
+  alertAnatomy,
+  avatarAnatomy,
+  dialogAnatomy,
+  listAnatomy,
+  progressAnatomy,
+  switchAnatomy,
+  tableAnatomy,
+  tabsAnatomy,
+  tagAnatomy,
+} from '@chakra-ui/react/anatomy';
 
 /**
  * Chakra v2 のカラーパレット (v3 では Tailwind 系に変更されたため、
@@ -306,7 +317,13 @@ const config = defineConfig({
     slotRecipes: {
       // v2 Alert subtle: 文字色は継承し、色はアイコンと背景だけに付ける
       alert: {
+        slots: alertAnatomy.keys(),
+        // v2 はタイトル太字、本文は継承 (md=16px)
+        base: { title: { fontWeight: 'bold' } },
         variants: {
+          size: {
+            md: { root: { textStyle: 'md' } },
+          },
           variant: {
             subtle: {
               root: {
@@ -323,6 +340,7 @@ const config = defineConfig({
       // v2 Tag: lg は 32px 高・px 3、outline は 500 (dark: 200/80) の枠線。
       // アイコン要素は flex で中央揃え (inline の svg がベースライン分下にずれるため)
       tag: {
+        slots: tagAnatomy.keys(),
         base: {
           startElement: { display: 'inline-flex', alignItems: 'center' },
           endElement: { display: 'inline-flex', alignItems: 'center' },
@@ -358,6 +376,7 @@ const config = defineConfig({
       // v2 の sm 寸法と th スタイル。v3 は文字サイズを root に置くため、
       // 呼び出し側の textStyle="title" で打ち消されないよう th/td に直接指定する
       table: {
+        slots: tableAnatomy.keys(),
         variants: {
           variant: {
             line: { row: { bg: 'transparent' } },
@@ -381,6 +400,7 @@ const config = defineConfig({
       },
       // v2 Switch のオフ時トラック色 (v3 の bg.emphasized は v2 gray で青みがかる)
       switch: {
+        slots: switchAnatomy.keys(),
         variants: {
           variant: {
             solid: {
@@ -391,6 +411,7 @@ const config = defineConfig({
       },
       // v2 Modal 幅 (v3 は 1 段ずつ大きく、xl は 36rem → 56rem になる)
       dialog: {
+        slots: dialogAnatomy.keys(),
         variants: {
           size: {
             xs: { content: { maxW: 'xs' } },
@@ -403,6 +424,7 @@ const config = defineConfig({
       },
       // v2 Avatar 寸法 (sm=32/md=48/lg=64px, 文字は 40%) と塗りつぶしのフォールバック
       avatar: {
+        slots: avatarAnatomy.keys(),
         variants: {
           size: {
             sm: {
@@ -433,6 +455,7 @@ const config = defineConfig({
       },
       // v2 ではリストマーカーが本文と同色 (v3 は fg.subtle)
       list: {
+        slots: listAnatomy.keys(),
         variants: {
           variant: {
             marker: { item: { _marker: { color: 'inherit' } } },
@@ -441,6 +464,7 @@ const config = defineConfig({
       },
       // v2 Progress: xs は 4px、indeterminate は中央だけ色の付くグラデーション
       progress: {
+        slots: progressAnatomy.keys(),
         base: {
           range: {
             _indeterminate: {
@@ -458,6 +482,7 @@ const config = defineConfig({
       },
       // v2 Tabs: lg は fontSize lg / py 3、line の非選択色は継承、下線 2px
       tabs: {
+        slots: tabsAnatomy.keys(),
         variants: {
           size: {
             // textStyle は呼び出し側の textStyle="title" に上書きされるため fontSize で指定

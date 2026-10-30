@@ -58,6 +58,8 @@ for (const target of TARGETS) {
         deviceScaleFactor: 1,
         locale: 'ja-JP',
         timezoneId: 'Asia/Tokyo',
+        // PWA の更新通知バナーが片方だけに出るのを防ぐ
+        serviceWorkers: 'block',
       });
       // 外部リクエスト遮断 (localhostのみ許可)。/api/ (vite proxy) も遮断し、
       // 偽JWTへの 401 で v3 だけログアウトされるのを防ぐ (v2 は 401 処理が壊れている)
