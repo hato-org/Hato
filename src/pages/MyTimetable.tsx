@@ -7,7 +7,7 @@ import {
   Button,
   Icon,
   VStack,
-  StackDivider,
+  StackSeparator,
   Spacer,
   IconButton,
 } from '@chakra-ui/react';
@@ -61,7 +61,7 @@ function MyTimetable() {
         <Center mb={32} pt={4} px={4} flexDir="column">
           <VStack align="flex-start" w="full" gap={4}>
             <UserScheduleSearch />
-            <StackDivider border="1px solid" borderColor="border" />
+            <StackSeparator border="1px solid" borderColor="border" />
             <HStack px={4} w="full">
               <Heading as="h3" size="md">
                 作成・インポートした時間割
@@ -69,12 +69,13 @@ function MyTimetable() {
               <Spacer />
               <IconButton
                 aria-label="Add new user schedule"
-                icon={<Icon as={TbPlus} />}
                 variant="ghost"
-                colorScheme="blue"
-                isRound
+                colorPalette="blue"
+                borderRadius="full"
                 onClick={() => setUserScheduleEditor('new')}
-              />
+              >
+                {<Icon as={TbPlus} />}
+              </IconButton>
             </HStack>
             {isPending ? (
               <Loading />
@@ -89,10 +90,10 @@ function MyTimetable() {
               w="full"
               rounded="lg"
               variant="ghost"
-              colorScheme="blue"
-              leftIcon={<Icon as={TbPlus} />}
+              colorPalette="blue"
               onClick={() => setUserScheduleEditor('new')}
             >
+              {<Icon as={TbPlus} />}
               新しい時間割を作成
             </Button>
           </VStack>

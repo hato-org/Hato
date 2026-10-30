@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   Button,
+  Field,
   HStack,
   Icon,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Textarea,
   VStack,
 } from '@chakra-ui/react';
@@ -35,69 +37,82 @@ const AddStatusInfo = React.memo(
     });
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent bg="panel" rounded="xl">
-          <ModalHeader>メンテナンス情報の追加</ModalHeader>
-          <ModalBody>
-            <VStack spacing={8}>
-              <Input
-                rounded="lg"
-                placeholder="タイトル"
-                value={statusInfo.title}
-                onChange={(e) =>
-                  setStatusInfo((curr) => ({ ...curr, title: e.target.value }))
-                }
-                isInvalid={!statusInfo.title}
-              />
-              <Textarea
-                rounded="lg"
-                placeholder="説明"
-                value={statusInfo.description}
-                onChange={(e) =>
-                  setStatusInfo((curr) => ({
-                    ...curr,
-                    description: e.target.value,
-                  }))
-                }
-                isInvalid={!statusInfo.description}
-              />
-              <HStack w="full" spacing={4}>
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        size="xl"
+      >
+        <DialogContent bg="panel" rounded="xl">
+          <DialogHeader>メンテナンス情報の追加</DialogHeader>
+          <DialogBody>
+            <VStack gap={8}>
+              <Field.Root invalid={!statusInfo.title}>
                 <Input
-                  type="datetime-local"
-                  value={
-                    statusInfo.startAt
-                      ? format(new Date(statusInfo.startAt), 'yyyy-MM-dd HH:mm')
-                      : undefined
-                  }
+                  rounded="lg"
+                  placeholder="タイトル"
+                  value={statusInfo.title}
                   onChange={(e) =>
                     setStatusInfo((curr) => ({
                       ...curr,
-                      startAt: new Date(e.target.value).toISOString() ?? '',
+                      title: e.target.value,
                     }))
                   }
-                  isInvalid={!statusInfo.startAt}
                 />
+              </Field.Root>
+              <Field.Root invalid={!statusInfo.description}>
+                <Textarea
+                  rounded="lg"
+                  placeholder="説明"
+                  value={statusInfo.description}
+                  onChange={(e) =>
+                    setStatusInfo((curr) => ({
+                      ...curr,
+                      description: e.target.value,
+                    }))
+                  }
+                />
+              </Field.Root>
+              <HStack w="full" gap={4}>
+                <Field.Root invalid={!statusInfo.startAt}>
+                  <Input
+                    type="datetime-local"
+                    value={
+                      statusInfo.startAt
+                        ? format(
+                            new Date(statusInfo.startAt),
+                            'yyyy-MM-dd HH:mm',
+                          )
+                        : undefined
+                    }
+                    onChange={(e) =>
+                      setStatusInfo((curr) => ({
+                        ...curr,
+                        startAt: new Date(e.target.value).toISOString() ?? '',
+                      }))
+                    }
+                  />
+                </Field.Root>
                 <Icon as={TbChevronRight} boxSize={6} />
-                <Input
-                  type="datetime-local"
-                  value={
-                    statusInfo.endAt
-                      ? format(new Date(statusInfo.endAt), 'yyyy-MM-dd HH:mm')
-                      : undefined
-                  }
-                  onChange={(e) =>
-                    setStatusInfo((curr) => ({
-                      ...curr,
-                      endAt: new Date(e.target.value).toISOString() ?? '',
-                    }))
-                  }
-                  isInvalid={!statusInfo.endAt}
-                />
+                <Field.Root invalid={!statusInfo.endAt}>
+                  <Input
+                    type="datetime-local"
+                    value={
+                      statusInfo.endAt
+                        ? format(new Date(statusInfo.endAt), 'yyyy-MM-dd HH:mm')
+                        : undefined
+                    }
+                    onChange={(e) =>
+                      setStatusInfo((curr) => ({
+                        ...curr,
+                        endAt: new Date(e.target.value).toISOString() ?? '',
+                      }))
+                    }
+                  />
+                </Field.Root>
               </HStack>
               <Select
                 isMulti
-                isInvalid={!statusInfo.scope.length}
+                invalid={!statusInfo.scope.length}
                 placeholder="影響範囲"
                 chakraStyles={{
                   container: (provided) => ({
@@ -122,15 +137,15 @@ const AddStatusInfo = React.memo(
                 }
               />
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button
               w="full"
               rounded="lg"
-              colorScheme="blue"
+              colorPalette="blue"
               onClick={() => mutate(statusInfo, { onSuccess: onClose })}
-              isLoading={isPending}
-              isDisabled={
+              loading={isPending}
+              disabled={
                 !statusInfo.title ||
                 !statusInfo.description ||
                 !statusInfo.startAt ||
@@ -140,9 +155,9 @@ const AddStatusInfo = React.memo(
             >
               追加
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

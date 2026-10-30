@@ -35,16 +35,9 @@ function PostDetail() {
           <Spacer />
           <IconButton
             aria-label="pin"
-            icon={
-              <Icon
-                color={isPinned ? 'blue.400' : undefined}
-                as={isPinned ? TbPinFilled : TbPin}
-                boxSize={6}
-              />
-            }
             size="lg"
             variant="ghost"
-            isRound
+            borderRadius="full"
             onClick={() =>
               id &&
               setPinned((currVal) =>
@@ -53,7 +46,15 @@ function PostDetail() {
                   : [...currVal, id],
               )
             }
-          />
+          >
+            {
+              <Icon
+                color={isPinned ? 'blue.400' : undefined}
+                as={isPinned ? TbPinFilled : TbPin}
+                boxSize={6}
+              />
+            }
+          </IconButton>
         </HStack>
       </Header>
       <Post id={id!} />

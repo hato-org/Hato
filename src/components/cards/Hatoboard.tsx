@@ -29,20 +29,22 @@ function Hatoboard() {
   const [isLimited, setIsLimited] = useState(true);
 
   return (
-    <VStack w="100%" spacing={4}>
-      <HStack w="100%" pt={2} pl={2} as={RouterLink} to="/posts/hatoboard">
-        <Heading as="h2" size="md">
-          はとボード
-        </Heading>
-        <Spacer />
-        <Icon as={TbChevronRight} w={5} h={5} />
+    <VStack w="100%" gap={4}>
+      <HStack w="100%" pt={2} pl={2} asChild>
+        <RouterLink to="/posts/hatoboard">
+          <Heading as="h2" size="md">
+            はとボード
+          </Heading>
+          <Spacer />
+          <Icon as={TbChevronRight} w={5} h={5} />
+        </RouterLink>
       </HStack>
       {status === 'pending' ? (
         <Loading />
       ) : status === 'error' ? (
         <Error error={error} />
       ) : (
-        <VStack w="100%" align="flex-start" spacing={4}>
+        <VStack w="100%" align="flex-start" gap={4}>
           {pinnedPosts?.length ? (
             <VStack w="100%">
               {pinnedPosts.slice(0, isLimited ? 2 : undefined).map((post) => (
@@ -55,15 +57,15 @@ function Hatoboard() {
                   size="sm"
                   variant="ghost"
                   color="description"
-                  leftIcon={
+                  onClick={() => setIsLimited((oldVal) => !oldVal)}
+                >
+                  {
                     <Icon
                       as={TbChevronDown}
                       transform={`rotate(${isLimited ? '0deg' : '180deg'})`}
                       transition="all .2s ease"
                     />
                   }
-                  onClick={() => setIsLimited((oldVal) => !oldVal)}
-                >
                   {isLimited ? ' さらに表示' : '一部を表示'}
                 </Button>
               )}

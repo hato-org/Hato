@@ -8,13 +8,13 @@ import {
   Text,
   Icon,
   IconButton,
-  Collapse,
+  Collapsible,
   ButtonGroup,
   Button,
   Link,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useColorModeValue } from '@/components/ui/color-mode';
 import { motion } from 'framer-motion';
 import { TbChevronDown, TbBook, TbExternalLink } from 'react-icons/tb';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
@@ -36,7 +36,7 @@ const BookInfo = React.memo(
     source,
   }: Book) => {
     const [bookmarks, setBookmarks] = useAtom(libraryBookmarkAtom);
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
     const bgBrightness = useColorModeValue('100%', '40%');
     const bgOpacity = useColorModeValue(0.3, 0.9);
     const isBookmarked = bookmarks.includes(isbn);
@@ -66,7 +66,7 @@ const BookInfo = React.memo(
         my={0}
         layerStyle="button"
         rounded="xl"
-        spacing={0}
+        gap={0}
         pos="relative"
         overflow="hidden"
         zIndex={0}
@@ -75,7 +75,6 @@ const BookInfo = React.memo(
           w="100%"
           h="100%"
           src={imgSrc}
-          fallback={<Box />}
           pos="absolute"
           zIndex={-1}
           objectFit="cover"
@@ -87,24 +86,27 @@ const BookInfo = React.memo(
           alt=""
         />
 
-        <HStack p={2} pr={4} w="100%" spacing={4} onClick={onToggle}>
-          <Image
-            boxSize={16}
-            minW={16}
-            shadow="md"
-            objectFit="cover"
-            rounded="lg"
-            src={imgSrc}
-            fallback={<Icon as={TbBook} boxSize={16} p={4} />}
-            alt={`${title}の表紙`}
-          />
-          <VStack align="flex-start" spacing={1}>
+        <HStack p={2} pr={4} w="100%" gap={4} onClick={onToggle}>
+          {imgSrc ? (
+            <Image
+              boxSize={16}
+              minW={16}
+              shadow="md"
+              objectFit="cover"
+              rounded="lg"
+              src={imgSrc}
+              alt={`${title}の表紙`}
+            />
+          ) : (
+            <Icon as={TbBook} boxSize={16} p={4} />
+          )}
+          <VStack align="flex-start" gap={1}>
             <Text textStyle="title">{title}</Text>
-            <HStack divider={<Text textStyle="description">・</Text>}>
+            <HStack separator={<Text textStyle="description">・</Text>}>
               <Text textStyle="description" whiteSpace="nowrap">
                 {pubdate}
               </Text>
-              <Text textStyle="description" noOfLines={1}>
+              <Text textStyle="description" lineClamp={1}>
                 {author}
               </Text>
             </HStack>
@@ -118,81 +120,85 @@ const BookInfo = React.memo(
           />
         </HStack>
         <Box w="100%">
-          <Collapse in={isOpen}>
-            <VStack w="100%" p={2} spacing={1}>
-              <HStack w="100%" spacing={4}>
-                <Text w={16} textAlign="right" textStyle="title">
-                  出版者
-                </Text>
-                <Text textStyle="description">{publisher}</Text>
-              </HStack>
-              <HStack w="100%" spacing={4}>
-                <Text w={16} textAlign="right" textStyle="title">
-                  ISBN
-                </Text>
-                <Text textStyle="description">{isbn}</Text>
-              </HStack>
-              <HStack w="100%" spacing={4}>
-                <Text w={16} textAlign="right" textStyle="title">
-                  所蔵
-                </Text>
-                <Text textStyle="description">{sourceName[source] ?? ''}</Text>
-              </HStack>
-              <ButtonGroup w="100%" p={2} spacing={4}>
-                {isbn && (
-                  <motion.div whileTap={{ scale: 0.9 }}>
-                    <IconButton
-                      aria-label="bookmark"
-                      icon={
-                        <Icon
-                          as={isBookmarked ? IoBookmark : IoBookmarkOutline}
-                          color={isBookmarked ? 'blue.400' : undefined}
-                        />
-                      }
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <VStack w="100%" p={2} gap={1}>
+                <HStack w="100%" gap={4}>
+                  <Text w={16} textAlign="right" textStyle="title">
+                    出版者
+                  </Text>
+                  <Text textStyle="description">{publisher}</Text>
+                </HStack>
+                <HStack w="100%" gap={4}>
+                  <Text w={16} textAlign="right" textStyle="title">
+                    ISBN
+                  </Text>
+                  <Text textStyle="description">{isbn}</Text>
+                </HStack>
+                <HStack w="100%" gap={4}>
+                  <Text w={16} textAlign="right" textStyle="title">
+                    所蔵
+                  </Text>
+                  <Text textStyle="description">
+                    {sourceName[source] ?? ''}
+                  </Text>
+                </HStack>
+                <ButtonGroup w="100%" p={2} gap={4}>
+                  {isbn && (
+                    <motion.div whileTap={{ scale: 0.9 }}>
+                      <IconButton
+                        aria-label="bookmark"
+                        rounded="lg"
+                        shadow="lg"
+                        onClick={() =>
+                          setBookmarks((currVal) =>
+                            isBookmarked
+                              ? currVal.filter(
+                                  (markedIsbn) => markedIsbn !== isbn,
+                                )
+                              : [...currVal, isbn],
+                          )
+                        }
+                      >
+                        {
+                          <Icon
+                            as={isBookmarked ? IoBookmark : IoBookmarkOutline}
+                            color={isBookmarked ? 'blue.400' : undefined}
+                          />
+                        }
+                      </IconButton>
+                    </motion.div>
+                  )}
+                  <Button w="100%" rounded="lg" shadow="lg" asChild>
+                    <Link
+                      href={url[holdings[0]]}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      詳細を開く
+                      <Icon as={TbExternalLink} />
+                    </Link>
+                  </Button>
+                  {source !== 'NDL' && (
+                    <Button
+                      w="100%"
                       rounded="lg"
                       shadow="lg"
+                      colorPalette="blue"
+                      disabled={!detail?.raw_holdings[0]?.id}
                       onClick={() =>
-                        setBookmarks((currVal) =>
-                          isBookmarked
-                            ? currVal.filter(
-                                (markedIsbn) => markedIsbn !== isbn,
-                              )
-                            : [...currVal, isbn],
+                        window.open(
+                          `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`,
                         )
                       }
-                    />
-                  </motion.div>
-                )}
-                <Button
-                  w="100%"
-                  rounded="lg"
-                  shadow="lg"
-                  rightIcon={<Icon as={TbExternalLink} />}
-                  as={Link}
-                  href={url[holdings[0]]}
-                  isExternal
-                >
-                  詳細を開く
-                </Button>
-                {source !== 'NDL' && (
-                  <Button
-                    w="100%"
-                    rounded="lg"
-                    shadow="lg"
-                    colorScheme="blue"
-                    isDisabled={!detail?.raw_holdings[0]?.id}
-                    onClick={() =>
-                      window.open(
-                        `https://docs.google.com/forms/d/e/1FAIpQLSf-AAYIvxK9X1gEM7GwDUvETdCH3KPwoMXrk9R_dG6ipPehZQ/viewform?entry.1484043324=${title}&entry.294673799=${detail?.raw_holdings[0]?.id}`,
-                      )
-                    }
-                  >
-                    予約
-                  </Button>
-                )}
-              </ButtonGroup>
-            </VStack>
-          </Collapse>
+                    >
+                      予約
+                    </Button>
+                  )}
+                </ButtonGroup>
+              </VStack>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );

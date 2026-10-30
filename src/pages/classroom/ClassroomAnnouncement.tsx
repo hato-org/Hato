@@ -5,7 +5,7 @@ import {
   Text,
   VStack,
   Icon,
-  StackDivider,
+  StackSeparator,
   Spacer,
   IconButton,
   Link,
@@ -70,14 +70,7 @@ export default function ClassroomAnnouncement() {
             aria-label="bookmark"
             variant="ghost"
             size="lg"
-            isRound
-            icon={
-              <Icon
-                color={isBookmarked ? 'blue.400' : undefined}
-                as={isBookmarked ? IoBookmark : IoBookmarkOutline}
-                boxSize={5}
-              />
-            }
+            borderRadius="full"
             onClick={() =>
               setBookmarks((currVal) =>
                 isBookmarked
@@ -100,17 +93,30 @@ export default function ClassroomAnnouncement() {
                     ],
               )
             }
-          />
+          >
+            {
+              <Icon
+                color={isBookmarked ? 'blue.400' : undefined}
+                as={isBookmarked ? IoBookmark : IoBookmarkOutline}
+                boxSize={5}
+              />
+            }
+          </IconButton>
           <IconButton
             aria-label="open in browser"
-            as={Link}
-            href={data?.alternateLink ?? ''}
-            isExternal
             size="lg"
             variant="ghost"
-            isRound
-            icon={<Icon as={TbExternalLink} boxSize={6} />}
-          />
+            borderRadius="full"
+            asChild
+          >
+            <Link
+              href={data?.alternateLink ?? ''}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} boxSize={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
 
@@ -122,22 +128,17 @@ export default function ClassroomAnnouncement() {
           pb={32}
           w="full"
           align="flex-start"
-          spacing={4}
+          gap={4}
           userSelect="text"
         >
-          <HStack w="full" spacing={4}>
-            <StackDivider
+          <HStack w="full" gap={4}>
+            <StackSeparator
               rounded="full"
               borderWidth={2}
               borderColor="blue.400"
             />
-            <VStack w="full" align="flex-start" spacing={1}>
-              <Skeleton
-                minH={8}
-                minW={40}
-                rounded="lg"
-                isLoaded={!isUserPending}
-              >
+            <VStack w="full" align="flex-start" gap={1}>
+              <Skeleton minH={8} minW={40} rounded="lg" loading={isUserPending}>
                 {userError ? (
                   <HStack>
                     <Icon
@@ -159,14 +160,12 @@ export default function ClassroomAnnouncement() {
                 minH={6}
                 minW={20}
                 rounded="md"
-                isLoaded={!isCoursePending}
+                loading={isCoursePending}
               >
-                <Link
-                  as={RouterLink}
-                  to={`/classroom/course/${courseInfo?.id}`}
-                  textStyle="description"
-                >
-                  {courseInfo?.name}
+                <Link asChild textStyle="description">
+                  <RouterLink to={`/classroom/course/${courseInfo?.id}`}>
+                    {courseInfo?.name}
+                  </RouterLink>
                 </Link>
               </Skeleton>
             </VStack>
@@ -175,9 +174,8 @@ export default function ClassroomAnnouncement() {
             w="full"
             mt={2}
             noOfLines={3}
-            skeletonHeight={4}
-            spacing={2}
-            isLoaded={!isPending}
+            gap={2}
+            loading={isPending}
           >
             <Text whiteSpace="pre-wrap" textStyle="description" color="title">
               {data?.text}

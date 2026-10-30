@@ -3,14 +3,14 @@ import {
   Box,
   Center,
   CenterProps,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   IconButton,
-  Progress,
   useBreakpointValue,
-  useColorModeValue,
 } from '@chakra-ui/react';
+import { ProgressBar, ProgressRoot } from '@/components/ui/progress';
+import { useColorModeValue } from '@/components/ui/color-mode';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbMenu2 } from 'react-icons/tb';
 import { useSetAtom } from 'jotai';
@@ -46,23 +46,28 @@ const Header = React.memo(({ withMenu, children, ...rest }: HeaderProps) => {
       {...rest}
     >
       <StatusBanner />
-      <HStack px={2} w="100%" spacing={0}>
+      <HStack px={2} w="100%" gap={0}>
         {withMenu && isMobile && (
           <IconButton
             aria-label="menu"
-            icon={<Icon as={TbMenu2} boxSize={6} />}
             variant="ghost"
-            isRound
+            borderRadius="full"
             size="lg"
             onClick={onMenuOpen}
-          />
+          >
+            {<Icon as={TbMenu2} boxSize={6} />}
+          </IconButton>
         )}
         {children}
       </HStack>
       <Box w="100%" pos="absolute" bottom={0}>
-        <Collapse in={!!isFetching}>
-          <Progress w="100%" size="xs" isIndeterminate />
-        </Collapse>
+        <Collapsible.Root open={!!isFetching} unmountOnExit>
+          <Collapsible.Content>
+            <ProgressRoot w="100%" size="xs" value={null} colorPalette="blue">
+              <ProgressBar />
+            </ProgressRoot>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
     </Center>
   );

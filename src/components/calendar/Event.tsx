@@ -1,12 +1,5 @@
-import {
-  VStack,
-  Heading,
-  HStack,
-  Text,
-  Icon,
-  Tag,
-  Wrap,
-} from '@chakra-ui/react';
+import { VStack, Heading, HStack, Text, Icon, Wrap } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbChevronRight, TbMapPin, TbTag, TbWorld } from 'react-icons/tb';
@@ -21,11 +14,11 @@ function Event({ id }: { id: string }) {
   if (status === 'error') return <Error error={error} />;
 
   return (
-    <VStack w="100%" spacing={4} p={8}>
+    <VStack w="100%" gap={4} p={8}>
       <Heading>{data.title}</Heading>
       <Text textStyle="description">{data.description}</Text>
-      <HStack spacing={4}>
-        <VStack align="flex-start" spacing={-1}>
+      <HStack gap={4}>
+        <VStack align="flex-start" gap={-1}>
           <Text textStyle="title" fontSize="xs">
             {data.isAllDay
               ? format(new Date(data.startAt), 'yo', {
@@ -42,7 +35,7 @@ function Event({ id }: { id: string }) {
           </Text>
         </VStack>
         <Icon as={TbChevronRight} w={8} h={8} color="blue.400" />
-        <VStack align="flex-start" spacing={-1}>
+        <VStack align="flex-start" gap={-1}>
           <Text textStyle="title" fontSize="xs">
             {data.isAllDay
               ? format(new Date(data.endAt), 'yo', { locale: ja })

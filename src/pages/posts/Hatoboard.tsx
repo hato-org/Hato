@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Tabs, TabList, Tab, TabPanel, TabPanels, Box } from '@chakra-ui/react';
+import { Tabs, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 import { useAtom, useAtomValue } from 'jotai';
@@ -67,18 +67,18 @@ const Hatoboard = React.memo(() => {
   if (status === 'error') return <CardElement.Error error={error} />;
 
   return (
-    <Tabs
+    <Tabs.Root
       w="100%"
-      isFitted
+      fitted
       size="lg"
-      defaultIndex={Number(searchParams.get('tab'))}
-      onChange={(index) => {
-        setSearchParams({ tab: index.toString() });
+      value={searchParams.get('tab') ?? '0'}
+      onValueChange={(e) => {
+        setSearchParams({ tab: e.value });
         setScrollState(undefined);
       }}
-      isLazy
+      lazyMount
     >
-      <TabList
+      <Tabs.List
         w="100%"
         position="sticky"
         top={14}
@@ -86,25 +86,28 @@ const Hatoboard = React.memo(() => {
         shadow="lg"
         zIndex={5}
       >
-        <Tab
+        <Tabs.Trigger
+          value="0"
           textStyle="title"
           _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
         >
           すべて
-        </Tab>
-        <Tab
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          value="1"
           textStyle="title"
           _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
         >
           校外
-        </Tab>
-        <Tab
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          value="2"
           textStyle="title"
           _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
         >
           校内
-        </Tab>
-      </TabList>
+        </Tabs.Trigger>
+      </Tabs.List>
       <ChakraPullToRefresh
         w="100%"
         pt={4}
@@ -117,8 +120,8 @@ const Hatoboard = React.memo(() => {
           ]);
         }}
       >
-        <TabPanels w="100%" p={0}>
-          <TabPanel w="100%" px={4} py={2}>
+        <Box w="100%" p={0}>
+          <Tabs.Content value="0" w="100%" px={4} py={2}>
             <Virtuoso
               useWindowScroll
               ref={allPostsRef}
@@ -133,8 +136,8 @@ const Hatoboard = React.memo(() => {
               }
               restoreStateFrom={scrollState}
             />
-          </TabPanel>
-          <TabPanel w="100%" px={4} py={2}>
+          </Tabs.Content>
+          <Tabs.Content value="1" w="100%" px={4} py={2}>
             <Virtuoso
               useWindowScroll
               ref={publicPostsRef}
@@ -151,8 +154,8 @@ const Hatoboard = React.memo(() => {
               }
               restoreStateFrom={scrollState}
             />
-          </TabPanel>
-          <TabPanel w="100%" px={4} py={2}>
+          </Tabs.Content>
+          <Tabs.Content value="2" w="100%" px={4} py={2}>
             <Virtuoso
               useWindowScroll
               ref={privatePostsRef}
@@ -169,10 +172,10 @@ const Hatoboard = React.memo(() => {
               }
               restoreStateFrom={scrollState}
             />
-          </TabPanel>
-        </TabPanels>
+          </Tabs.Content>
+        </Box>
       </ChakraPullToRefresh>
-    </Tabs>
+    </Tabs.Root>
   );
 });
 Hatoboard.displayName = 'Hatoboard';

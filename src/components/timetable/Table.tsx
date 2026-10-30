@@ -1,20 +1,11 @@
 import React from 'react';
-import {
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  TableProps,
-} from '@chakra-ui/react';
+import { Table } from '@chakra-ui/react';
 import Error from '../cards/Error';
 import Loading from '../common/Loading';
 import { useUserSubject } from '@/services/timetable';
 import { HTTPError } from 'ky';
 
-interface TimetableTableProps extends TableProps {
+interface TimetableTableProps extends Table.RootProps {
   week: Week;
   day: number;
   schedules?: UserSchedule['schedules'];
@@ -35,27 +26,35 @@ const TimetableTable = React.memo(
     if (error) return <Error error={error} />;
 
     return (
-      <TableContainer w="100%" {...rest}>
-        <Table variant="simple" size="sm" textStyle="title" colorScheme="bg">
-          <Thead>
-            <Tr>
-              <Th>時間</Th>
-              <Th>教科名</Th>
-              <Th>場所</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+      <Table.ScrollArea w="100%">
+        <Table.Root
+          variant="line"
+          size="sm"
+          textStyle="title"
+          colorPalette="bg"
+          {...rest}
+        >
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>時間</Table.ColumnHeader>
+              <Table.ColumnHeader>教科名</Table.ColumnHeader>
+              <Table.ColumnHeader>場所</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {Array.from({ length: schedules?.[week][day].length ?? 0 }).map(
               (_, index) => (
-                <Tr key={`${schedules?.[week][day][index]?.subjectId}${index}`}>
-                  <Td>{index + 1}</Td>
+                <Table.Row
+                  key={`${schedules?.[week][day][index]?.subjectId}${index}`}
+                >
+                  <Table.Cell>{index + 1}</Table.Cell>
                   <TablePeriod {...schedules?.[week][day][index]} />
-                </Tr>
+                </Table.Row>
               ),
             )}
-          </Tbody>
-        </Table>
-      </TableContainer>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
     );
   },
 );
@@ -67,12 +66,12 @@ const TablePeriod = React.memo(
 
     return (
       <>
-        <Td textStyle="title" fontSize="lg">
+        <Table.Cell textStyle="title" fontSize="lg">
           {data?.name ?? '-'}
-        </Td>
-        <Td textStyle="title" fontSize="lg">
+        </Table.Cell>
+        <Table.Cell textStyle="title" fontSize="lg">
           {data?.location ?? '-'}
-        </Td>
+        </Table.Cell>
       </>
     );
   },

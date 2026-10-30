@@ -1,30 +1,32 @@
 import { useState } from 'react';
 import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   Button,
+  Field,
   HStack,
   Icon,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   VStack,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { TbEdit } from 'react-icons/tb';
 import { useUserMutation } from '@/services/user';
 
 export default function AccountUsername({ username }: { username: string }) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { open: isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>
       <HStack id="modify-username" rounded="md" py={2} onClick={onOpen}>
-        <Text textStyle="title" noOfLines={1}>
+        <Text textStyle="title" lineClamp={1}>
           {username}
         </Text>
         <Icon as={TbEdit} />
@@ -41,42 +43,44 @@ function UsernameModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1500,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const { mutate, isPending } = useUserMutation();
   const [username, setUsername] = useState('');
 
   const isFulfilled = username.length <= 20;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent bg="panel" rounded="xl">
-        <ModalHeader>アカウント名の変更</ModalHeader>
-        <ModalBody>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+      placement="center"
+    >
+      <DialogContent bg="panel" rounded="xl">
+        <DialogHeader>アカウント名の変更</DialogHeader>
+        <DialogBody>
           <VStack>
-            <Input
-              rounded="lg"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              isInvalid={!isFulfilled}
-              placeholder="新しいアカウント名（20文字以内）"
-            />
+            <Field.Root invalid={!isFulfilled}>
+              <Input
+                rounded="lg"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="新しいアカウント名（20文字以内）"
+              />
+            </Field.Root>
             {!isFulfilled && (
               <Text fontWeight="bold" color="red.500" fontSize="sm">
                 ユーザー名は20文字以内にしてください。
               </Text>
             )}
           </VStack>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={onClose} mr={2} rounded="lg">
             キャンセル
           </Button>
           <Button
-            colorScheme="blue"
+            colorPalette="blue"
             onClick={
               isFulfilled
                 ? () => {
@@ -86,14 +90,14 @@ function UsernameModal({
                         onSuccess: () => {
                           toast({
                             title: '変更しました。',
-                            status: 'success',
+                            type: 'success',
                           });
                           onClose();
                         },
                         onError: () => {
                           toast({
                             title: 'エラーが発生しました',
-                            status: 'error',
+                            type: 'error',
                           });
                         },
                       },
@@ -102,13 +106,13 @@ function UsernameModal({
                 : undefined
             }
             rounded="lg"
-            isDisabled={!isFulfilled}
-            isLoading={isPending}
+            disabled={!isFulfilled}
+            loading={isPending}
           >
             変更する
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 }

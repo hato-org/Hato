@@ -8,12 +8,12 @@ const LoginButton = React.memo(({ scopes }: { scopes?: string[] }) => {
 
   return (
     <Button
-      isLoading={loginLoading}
-      colorScheme="blue"
+      loading={loginLoading}
+      colorPalette="blue"
       rounded="lg"
-      leftIcon={<Icon as={TbBrandGoogle} />}
       onClick={() => login()}
     >
+      {<Icon as={TbBrandGoogle} />}
       Googleでログイン
     </Button>
   );

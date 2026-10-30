@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Collapse, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { Box, Collapsible, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
 import {
   TbAlertTriangle,
@@ -26,73 +26,84 @@ export default function StatusBanner() {
   );
 
   return (
-    <VStack w="full" spacing={0}>
+    <VStack w="full" gap={0}>
       <Box w="full">
-        <Collapse in={!!statusInfo?.length}>
-          <HStack
-            w="full"
-            justify="center"
-            py={2}
-            bg="warning"
-            as={RouterLink}
-            to="/status"
-            color="white"
-          >
-            <Icon as={TbTool} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              メンテナンス情報あり
-            </Text>
-            <Icon as={TbChevronRight} />
-          </HStack>
-        </Collapse>
+        <Collapsible.Root open={!!statusInfo?.length}>
+          <Collapsible.Content>
+            <HStack
+              w="full"
+              justify="center"
+              py={2}
+              bg="warning"
+              asChild
+              color="white"
+            >
+              <RouterLink to="/status">
+                <Icon as={TbTool} boxSize={6} />
+                <Text textStyle="title" color="inherit">
+                  メンテナンス情報あり
+                </Text>
+                <Icon as={TbChevronRight} />
+              </RouterLink>
+            </HStack>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
       <Box w="full">
-        <Collapse in={isInMaintenance}>
-          <HStack
-            w="full"
-            justify="center"
-            py={2}
-            bg="error"
-            as={RouterLink}
-            to="/status"
-            color="white"
-          >
-            <Icon as={TbAlertTriangle} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              メンテナンス中
-            </Text>
-            <Icon as={TbChevronRight} />
-          </HStack>
-        </Collapse>
+        <Collapsible.Root open={isInMaintenance}>
+          <Collapsible.Content>
+            <HStack
+              w="full"
+              justify="center"
+              py={2}
+              bg="error"
+              asChild
+              color="white"
+            >
+              <RouterLink to="/status">
+                <Icon as={TbAlertTriangle} boxSize={6} />
+                <Text textStyle="title" color="inherit">
+                  メンテナンス中
+                </Text>
+                <Icon as={TbChevronRight} />
+              </RouterLink>
+            </HStack>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
       <Box w="full">
-        <Collapse in={isDown}>
-          <HStack
-            w="full"
-            justify="center"
-            py={2}
-            bg="error"
-            as={RouterLink}
-            to="/status"
-            color="white"
-          >
-            <Icon as={TbAlertTriangle} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              障害発生中
-            </Text>
-            <Icon as={TbChevronRight} />
-          </HStack>
-        </Collapse>
+        <Collapsible.Root open={isDown}>
+          <Collapsible.Content>
+            <HStack
+              w="full"
+              justify="center"
+              py={2}
+              bg="error"
+              asChild
+              color="white"
+            >
+              <RouterLink to="/status">
+                <Icon as={TbAlertTriangle} boxSize={6} />
+                <Text textStyle="title" color="inherit">
+                  障害発生中
+                </Text>
+                <Icon as={TbChevronRight} />
+              </RouterLink>
+            </HStack>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
       <Box w="full">
-        <Collapse in={!isOnline}>
-          <HStack w="full" justify="center" py={1} bg="bg.500" color="white">
-            <Icon as={TbCloudOff} boxSize={6} />
-            <Text textStyle="title" color="inherit">
-              オフライン
-            </Text>
-          </HStack>
-        </Collapse>
+        <Collapsible.Root open={!isOnline}>
+          <Collapsible.Content>
+            <HStack w="full" justify="center" py={1} bg="bg.500" color="white">
+              <Icon as={TbCloudOff} boxSize={6} />
+              <Text textStyle="title" color="inherit">
+                オフライン
+              </Text>
+            </HStack>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </Box>
     </VStack>
   );

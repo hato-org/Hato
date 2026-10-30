@@ -1,4 +1,4 @@
-import { chakra, Center, Icon, ChakraProps } from '@chakra-ui/react';
+import { chakra, Center, Icon, HTMLChakraProps } from '@chakra-ui/react';
 import { TbArrowNarrowDown } from 'react-icons/tb';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import Loading from '../common/Loading';
@@ -6,7 +6,7 @@ import Loading from '../common/Loading';
 const CPullToRefresh = chakra(PullToRefresh);
 
 type ChakraPullToRefreshProps = Parameters<typeof PullToRefresh>[0] &
-  ChakraProps;
+  HTMLChakraProps<'div'>;
 
 function ChakraPullToRefresh({
   children,

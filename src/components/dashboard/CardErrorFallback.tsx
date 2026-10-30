@@ -10,10 +10,10 @@ export default function CardErrorFallback({
     <Center w="100%" py={4}>
       <VStack>
         <Icon as={TbAlertCircle} w={16} h={16} color="warning" />
-        <Text textStyle="description" align="center">
+        <Text textStyle="description" textAlign="center">
           {error.message}
         </Text>
-        <Text textStyle="title" align="center">
+        <Text textStyle="title" textAlign="center">
           カードの表示中にエラーが発生しました
         </Text>
         <Text

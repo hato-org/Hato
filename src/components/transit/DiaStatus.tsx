@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
 import {
   Alert,
-  AlertIcon,
   Box,
   Center,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Skeleton,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   useDisclosure,
   VStack,
@@ -36,7 +35,7 @@ const DiaStatus = React.memo(() => {
       <Text textStyle="title" fontSize="lg">
         運転状況
       </Text>
-      <Skeleton w="100%" minH={8} rounded="xl" isLoaded={!isPending}>
+      <Skeleton w="100%" minH={8} rounded="xl" loading={isPending}>
         <Center w="full">
           {error ? (
             <Error error={error} />
@@ -65,19 +64,19 @@ const UnstableInfo = React.memo(
     isAllUnstable: boolean;
     unstableLines: DiaInfo[];
   }) => {
-    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
+    const { open: isOpen, onToggle } = useDisclosure({ defaultOpen: true });
 
     return (
-      <Alert
+      <Alert.Root
         // bg='transparent'
         status={isAllUnstable ? 'error' : 'warning'}
         rounded="xl"
         onClick={onToggle}
         _hover={{ cursor: 'pointer' }}
       >
-        <VStack w="full" spacing={0}>
+        <VStack w="full" gap={0}>
           <HStack w="full">
-            <AlertIcon mr={0} />
+            <Alert.Indicator mr={0} />
             <Text textStyle="title">
               {isAllUnstable ? '大規模な障害あり' : '一部路線に情報あり'}
             </Text>
@@ -89,16 +88,18 @@ const UnstableInfo = React.memo(
             />
           </HStack>
           <Box w="full">
-            <Collapse in={isOpen}>
-              <VStack mt={4} w="full" align="flex-start">
-                {unstableLines.map((diaInfo) => (
-                  <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
-                ))}
-              </VStack>
-            </Collapse>
+            <Collapsible.Root open={isOpen}>
+              <Collapsible.Content>
+                <VStack mt={4} w="full" align="flex-start">
+                  {unstableLines.map((diaInfo) => (
+                    <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
+                  ))}
+                </VStack>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
         </VStack>
-      </Alert>
+      </Alert.Root>
     );
   },
 );
@@ -120,10 +121,14 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
 
   return (
     <HStack w="full">
-      <StackDivider borderWidth={2} borderColor={borderColor} rounded="full" />
+      <StackSeparator
+        borderWidth={2}
+        borderColor={borderColor}
+        rounded="full"
+      />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
-      <Text textStyle="description" fontWeight="bold" noOfLines={1}>
+      <Text textStyle="description" fontWeight="bold" lineClamp={1}>
         {diaInfo.status.text}
       </Text>
     </HStack>

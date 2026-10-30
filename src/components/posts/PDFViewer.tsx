@@ -1,25 +1,24 @@
 import React, { useMemo, useState } from 'react';
 import {
-  Box,
-  Drawer,
   DrawerBody,
   DrawerContent,
   DrawerHeader,
-  DrawerOverlay,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Box,
   HStack,
   IconButton,
   Text,
   Link,
-  Collapse,
-  Progress,
+  Collapsible,
   Spacer,
   Center,
   useBreakpointValue,
   Icon,
   Editable,
-  EditablePreview,
-  EditableInput,
 } from '@chakra-ui/react';
+import { ProgressBar, ProgressRoot } from '@/components/ui/progress';
 import { useIsFetching } from '@tanstack/react-query';
 import { TbExternalLink, TbX, TbZoomIn, TbZoomOut } from 'react-icons/tb';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -70,44 +69,52 @@ const PDFViewer = React.memo(
     const [zoom, setZoom] = useState(100);
 
     return (
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
+      <DrawerRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
         placement="bottom"
         size="full"
-        allowPinchZoom
       >
-        <DrawerOverlay />
         <DrawerContent top={0} bg="bg">
           <DrawerHeader shadow="xl" p={0}>
-            <HStack align="center" w="100%" px={2} spacing={2}>
+            <HStack align="center" w="100%" px={2} gap={2}>
               <IconButton
                 aria-label="close"
-                icon={<Icon as={TbX} boxSize={6} />}
                 size="lg"
                 variant="ghost"
                 onClick={onClose}
-                isRound
-              />
-              <Text textStyle="title" whiteSpace="nowrap" noOfLines={1} py={4}>
+                borderRadius="full"
+              >
+                {<Icon as={TbX} boxSize={6} />}
+              </IconButton>
+              <Text textStyle="title" whiteSpace="nowrap" lineClamp={1} py={4}>
                 {attachment.name}
               </Text>
               <Spacer />
               <IconButton
                 aria-label="open source link"
-                icon={<Icon as={TbExternalLink} boxSize={6} />}
                 size="lg"
                 variant="ghost"
-                as={Link}
-                href={attachment.url ?? ''}
-                isExternal
-                isRound
-              />
+                borderRadius="full"
+                asChild
+              >
+                <Link
+                  href={attachment.url ?? ''}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icon as={TbExternalLink} boxSize={6} />
+                </Link>
+              </IconButton>
             </HStack>
             <Box w="100%">
-              <Collapse in={!!isFetching}>
-                <Progress w="100%" size="xs" isIndeterminate />
-              </Collapse>
+              <Collapsible.Root open={!!isFetching}>
+                <Collapsible.Content>
+                  <ProgressRoot w="100%" size="xs" value={null}>
+                    <ProgressBar />
+                  </ProgressRoot>
+                </Collapsible.Content>
+              </Collapsible.Root>
             </Box>
           </DrawerHeader>
           <DrawerBody p={0} position="relative" zIndex={-5}>
@@ -155,7 +162,7 @@ const PDFViewer = React.memo(
             )}
           </DrawerBody>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     );
   },
 );
@@ -182,29 +189,26 @@ const ZoomControls = React.memo(
         py={2}
         rounded="xl"
         shadow="lg"
-        spacing={4}
+        gap={4}
         border="1px solid"
         borderColor="border"
       >
-        <IconButton
-          aria-label="Zoom out"
-          rounded="lg"
-          onClick={onZoomOut}
-          icon={<Icon boxSize={6} as={TbZoomOut} />}
-        />
+        <IconButton aria-label="Zoom out" rounded="lg" onClick={onZoomOut}>
+          {<Icon boxSize={6} as={TbZoomOut} />}
+        </IconButton>
         <HStack textStyle="title">
-          <Editable value={zoom.toString()} onChange={onSetZoom}>
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <Editable.Root
+            value={zoom.toString()}
+            onValueChange={(e) => onSetZoom(e.value)}
+          >
+            <Editable.Preview />
+            <Editable.Input />
+          </Editable.Root>
           <Text>%</Text>
         </HStack>
-        <IconButton
-          aria-label="Zoom in"
-          rounded="lg"
-          onClick={onZoomIn}
-          icon={<Icon boxSize={6} as={TbZoomIn} />}
-        />
+        <IconButton aria-label="Zoom in" rounded="lg" onClick={onZoomIn}>
+          {<Icon boxSize={6} as={TbZoomIn} />}
+        </IconButton>
       </HStack>
     </Center>
   ),

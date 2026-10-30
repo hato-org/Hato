@@ -1,15 +1,11 @@
 import React, { useMemo } from 'react';
+import { Box, Button, HStack, Icon, Spacer, Text } from '@chakra-ui/react';
 import {
-  Box,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
+  MenuContent,
   MenuItem,
-  MenuList,
-  Spacer,
-  Text,
-} from '@chakra-ui/react';
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
 import { TbChevronDown } from 'react-icons/tb';
 import {
   addDays,
@@ -42,63 +38,82 @@ const WeekDayPicker = React.memo(
     return (
       <HStack w="100%">
         <Box w="100%">
-          <Menu>
-            <MenuButton
-              w="100%"
-              rounded="lg"
-              layerStyle="button"
-              textStyle="title"
-              borderColor={week ? 'border' : 'invalid'}
-            >
-              <HStack w="100%" px={4} py={2}>
-                <Text>{week ? `${week}週` : '未設定'}</Text>
-                <Spacer />
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList shadow="xl" rounded="xl">
-              <MenuItem textStyle="title" onClick={() => onWeekSelect('A')}>
+          <MenuRoot>
+            <MenuTrigger asChild>
+              <Button
+                variant="plain"
+                px={0}
+                h="auto"
+                w="100%"
+                rounded="lg"
+                layerStyle="button"
+                textStyle="title"
+                borderColor={week ? 'border' : 'invalid'}
+              >
+                <HStack w="100%" px={4} py={2}>
+                  <Text>{week ? `${week}週` : '未設定'}</Text>
+                  <Spacer />
+                  <Icon as={TbChevronDown} />
+                </HStack>
+              </Button>
+            </MenuTrigger>
+            <MenuContent shadow="xl" rounded="xl">
+              <MenuItem
+                value="A"
+                textStyle="title"
+                onClick={() => onWeekSelect('A')}
+              >
                 A週
               </MenuItem>
-              <MenuItem textStyle="title" onClick={() => onWeekSelect('B')}>
+              <MenuItem
+                value="B"
+                textStyle="title"
+                onClick={() => onWeekSelect('B')}
+              >
                 B週
               </MenuItem>
-            </MenuList>
-          </Menu>
+            </MenuContent>
+          </MenuRoot>
         </Box>
         <Box w="100%">
-          <Menu>
-            <MenuButton
-              w="100%"
-              rounded="lg"
-              layerStyle="button"
-              textStyle="title"
-              borderColor={day !== undefined ? 'border' : 'invalid'}
-            >
-              <HStack w="100%" px={4} py={2}>
-                <Text>
-                  {day !== undefined
-                    ? format(addDays(startOfWeek(new Date()), day), 'EEEE', {
-                        locale: ja,
-                      })
-                    : '未設定'}
-                </Text>
-                <Spacer />
-                <Icon as={TbChevronDown} />
-              </HStack>
-            </MenuButton>
-            <MenuList shadow="xl" rounded="xl">
+          <MenuRoot>
+            <MenuTrigger asChild>
+              <Button
+                variant="plain"
+                px={0}
+                h="auto"
+                w="100%"
+                rounded="lg"
+                layerStyle="button"
+                textStyle="title"
+                borderColor={day !== undefined ? 'border' : 'invalid'}
+              >
+                <HStack w="100%" px={4} py={2}>
+                  <Text>
+                    {day !== undefined
+                      ? format(addDays(startOfWeek(new Date()), day), 'EEEE', {
+                          locale: ja,
+                        })
+                      : '未設定'}
+                  </Text>
+                  <Spacer />
+                  <Icon as={TbChevronDown} />
+                </HStack>
+              </Button>
+            </MenuTrigger>
+            <MenuContent shadow="xl" rounded="xl">
               {weekDays.map((weekDay) => (
                 <MenuItem
                   key={weekDay.toString()}
+                  value={weekDay.toString()}
                   textStyle="title"
                   onClick={() => onDaySelect(getDay(weekDay))}
                 >
                   {format(weekDay, 'EEEE', { locale: ja })}
                 </MenuItem>
               ))}
-            </MenuList>
-          </Menu>
+            </MenuContent>
+          </MenuRoot>
         </Box>
       </HStack>
     );

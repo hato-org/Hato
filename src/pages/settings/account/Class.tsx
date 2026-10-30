@@ -1,14 +1,10 @@
+import { Button, HStack, Icon, Skeleton, Text } from '@chakra-ui/react';
 import {
-  Button,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
+  MenuContent,
   MenuItem,
-  MenuList,
-  Skeleton,
-  Text,
-} from '@chakra-ui/react';
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
 import { TbAlertCircle, TbChevronDown } from 'react-icons/tb';
 import { useClassList } from '@/services/info';
 import { useUser, useUserMutation } from '@/services/user';
@@ -23,35 +19,31 @@ export default function AccountClass() {
   const { mutate, isPending } = useUserMutation();
 
   return (
-    <Menu>
-      <Skeleton isLoaded={!isClassPending} rounded="lg">
+    <MenuRoot ids={{ trigger: 'class-select' }}>
+      <Skeleton loading={isClassPending} rounded="lg">
         {classError ? (
           <HStack py={2}>
             <Icon as={TbAlertCircle} color="red.500" />
             <Text textStyle="title">エラー</Text>
           </HStack>
         ) : (
-          <MenuButton
-            isDisabled={isPending}
-            as={Button}
-            variant="unstyled"
-            id="class-select"
-            rounded="lg"
-            w="100%"
-          >
-            <HStack py={2} pl={4} justify="flex-end">
-              <Text textStyle="title">
-                {classList?.find(({ classCode }) => user.class === classCode)
-                  ?.name ?? '未設定'}
-              </Text>
-              <Icon as={TbChevronDown} />
-            </HStack>
-          </MenuButton>
+          <MenuTrigger asChild>
+            <Button disabled={isPending} variant="plain" rounded="lg" w="100%">
+              <HStack py={2} pl={4} justify="flex-end">
+                <Text textStyle="title">
+                  {classList?.find(({ classCode }) => user.class === classCode)
+                    ?.name ?? '未設定'}
+                </Text>
+                <Icon as={TbChevronDown} />
+              </HStack>
+            </Button>
+          </MenuTrigger>
         )}
       </Skeleton>
-      <MenuList shadow="lg" rounded="xl" py={2}>
+      <MenuContent shadow="lg" rounded="xl" py={2}>
         {classList?.map(({ name, type, gradeCode, classCode }) => (
           <MenuItem
+            value={name}
             onClick={() => {
               mutate({ type, grade: gradeCode, class: classCode });
             }}
@@ -61,7 +53,7 @@ export default function AccountClass() {
             {name}
           </MenuItem>
         ))}
-      </MenuList>
-    </Menu>
+      </MenuContent>
+    </MenuRoot>
   );
 }

@@ -1,16 +1,8 @@
 import React, { useMemo } from 'react';
-import {
-  HStack,
-  Spacer,
-  Icon,
-  Text,
-  VStack,
-  Wrap,
-  Tooltip,
-  Avatar,
-  SkeletonCircle,
-  SkeletonText,
-} from '@chakra-ui/react';
+import { HStack, Spacer, Icon, Text, VStack, Wrap } from '@chakra-ui/react';
+import { SkeletonCircle, SkeletonText } from '@/components/ui/skeleton';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Avatar } from '@/components/ui/avatar';
 import { format, isThisYear } from 'date-fns';
 import { useNavigate } from 'react-router';
 import {
@@ -72,7 +64,7 @@ const Post = React.memo(
 
     return (
       <Card>
-        <VStack p={2} spacing={4} align="flex-start" w="full" userSelect="text">
+        <VStack p={2} gap={4} align="flex-start" w="full" userSelect="text">
           <HStack
             w="full"
             onClick={() =>
@@ -82,8 +74,8 @@ const Post = React.memo(
               cursor: 'pointer',
             }}
           >
-            <HStack spacing={4} align="center">
-              <Tooltip label={typeText} fontSize="md" openDelay={300}>
+            <HStack gap={4} align="center">
+              <Tooltip content={typeText} openDelay={300}>
                 <Avatar bg={iconColor} icon={<Icon as={icon} boxSize={7} />} />
               </Tooltip>
             </HStack>
@@ -168,7 +160,7 @@ function PostPlaceholder() {
       <VStack w="full" align="flex-start" p={2}>
         <SkeletonCircle size="12" />
 
-        <SkeletonText noOfLines={4} skeletonHeight="4" />
+        <SkeletonText noOfLines={4} />
       </VStack>
     </Card>
   );

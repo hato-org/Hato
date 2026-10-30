@@ -6,7 +6,7 @@ import {
   Icon,
   SimpleGrid,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
@@ -34,7 +34,7 @@ import { queryKeys } from '@/services/queryKeys';
 export default function Classmatch() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const [year, setYear] = useState(
     Number(searchParams.get('year')) || new Date().getFullYear(),
   );
@@ -119,7 +119,7 @@ export default function Classmatch() {
           });
         }}
       >
-        <VStack w="full" minH="100vh" p={4} mb={24} spacing={8}>
+        <VStack w="full" minH="100vh" p={4} mb={24} gap={8}>
           <Info />
           <Card
             w="full"
@@ -127,13 +127,13 @@ export default function Classmatch() {
             layerStyle="button"
             _hover={{ cursor: 'pointer' }}
           >
-            <HStack spacing={4}>
-              <StackDivider
+            <HStack gap={4}>
+              <StackSeparator
                 rounded="full"
                 borderWidth={2}
                 borderColor={season === 'spring' ? 'pink.300' : 'orange.500'}
               />
-              <VStack spacing={0}>
+              <VStack gap={0}>
                 <Text fontSize="3xl" fontWeight="bold">
                   {year} {season === 'spring' ? '春' : '秋'}
                 </Text>
@@ -144,13 +144,13 @@ export default function Classmatch() {
             </HStack>
           </Card>
           <Card w="full">
-            <VStack align="flex-start" w="full" p={2} spacing={4}>
+            <VStack align="flex-start" w="full" p={2} gap={4}>
               <Heading size="md">今後の試合</Heading>
               <UpcomingMatch year={year} season={season} />
             </VStack>
           </Card>
           <Card w="full">
-            <VStack align="flex-start" w="full" p={2} spacing={4}>
+            <VStack align="flex-start" w="full" p={2} gap={4}>
               <Heading size="md">トーナメント表・会場図</Heading>
               {sportsStatus === 'error' ? (
                 <Error error={sportsError} />
@@ -172,7 +172,7 @@ export default function Classmatch() {
             </VStack>
           </Card>
           <Card w="full">
-            <VStack align="flex-start" w="full" p={2} spacing={8}>
+            <VStack align="flex-start" w="full" p={2} gap={8}>
               <Heading size="md">ライブ配信</Heading>
               {streamsStatus === 'error' ? (
                 <Error error={streamsError} />

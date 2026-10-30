@@ -37,9 +37,9 @@ function BookInfoAsync({ isbn }: { isbn: string }) {
   if (status === 'error') return <Error error={error} />;
 
   return status === 'pending' ? (
-    <HStack p={2} pr={4} w="100%" spacing={4}>
+    <HStack p={2} pr={4} w="100%" gap={4}>
       <Skeleton boxSize={16} rounded="lg" />
-      <VStack align="flex-start" spacing={2}>
+      <VStack align="flex-start" gap={2}>
         <Skeleton h={4} w={48} rounded="md" maxW="100%" />
         <Skeleton h={4} w={24} rounded="md" />
       </VStack>

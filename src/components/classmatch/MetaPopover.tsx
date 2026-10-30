@@ -1,20 +1,21 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Box,
   Button,
   HStack,
   Icon,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
-  useOutsideClick,
 } from '@chakra-ui/react';
+import {
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverRoot,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { TbFlag, TbPencil } from 'react-icons/tb';
 
@@ -36,22 +37,19 @@ const TournamentMetaPopover = React.memo(
     season: ClassmatchSeason;
     sport: ClassmatchSportId;
   }) => {
-    const { isOpen, onToggle, onClose } = useDisclosure();
+    const { open: isOpen, onToggle, onClose } = useDisclosure();
     const [editMode, setEditMode] = useState<'editor' | 'reporter' | undefined>(
       undefined,
     );
-    const popoverRef = useRef<HTMLDivElement>(null);
-
-    useOutsideClick({
-      ref: popoverRef,
-      handler: onClose,
-    });
 
     const onSubmit = useCallback(() => setEditMode(undefined), []);
 
     return (
-      <Popover isOpen={!!editMode || isOpen}>
-        <PopoverTrigger>
+      <PopoverRoot
+        open={!!editMode || isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+      >
+        <PopoverTrigger asChild>
           <Box
             role="button"
             pos="absolute"
@@ -71,7 +69,6 @@ const TournamentMetaPopover = React.memo(
           rounded="2xl"
           shadow="xl"
           borderColor="border"
-          ref={popoverRef}
         >
           <PopoverArrow bg="panel" borderColor="border" />
           <PopoverBody>
@@ -102,7 +99,7 @@ const TournamentMetaPopover = React.memo(
 
                 default:
                   return (
-                    <VStack w="full" spacing={4}>
+                    <VStack w="full" gap={4}>
                       <Text
                         textStyle="description"
                         fontWeight="bold"
@@ -114,8 +111,8 @@ const TournamentMetaPopover = React.memo(
                         <HStack
                           w="full"
                           justify="space-around"
-                          spacing={0}
-                          divider={
+                          gap={0}
+                          separator={
                             <Text
                               fontSize="xl"
                               color="description"
@@ -128,7 +125,7 @@ const TournamentMetaPopover = React.memo(
                           {participants.map((classInfo, index) => (
                             <VStack
                               key={JSON.stringify(`${classInfo} ${index}`)}
-                              spacing={0}
+                              gap={0}
                               flex={1}
                             >
                               <Text textStyle="title" fontSize="3xl">
@@ -151,7 +148,7 @@ const TournamentMetaPopover = React.memo(
                           まだ結果が分かっていません
                         </Text>
                       )}
-                      <StackDivider
+                      <StackSeparator
                         borderWidth={1}
                         borderColor="border"
                         rounded="full"
@@ -160,10 +157,10 @@ const TournamentMetaPopover = React.memo(
                         w="full"
                         justify="space-evenly"
                         align="flex-start"
-                        spacing={4}
-                        divider={<StackDivider borderColor="border" />}
+                        gap={4}
+                        separator={<StackSeparator borderColor="border" />}
                       >
-                        <VStack spacing={1} align="flex-start">
+                        <VStack gap={1} align="flex-start">
                           <Text
                             textStyle="description"
                             fontWeight="bold"
@@ -181,7 +178,7 @@ const TournamentMetaPopover = React.memo(
                               : '不明'}
                           </Text>
                         </VStack>
-                        <VStack spacing={1} align="flex-start">
+                        <VStack gap={1} align="flex-start">
                           <Text
                             textStyle="description"
                             fontWeight="bold"
@@ -197,18 +194,18 @@ const TournamentMetaPopover = React.memo(
                       <HStack w="full">
                         <Button
                           w="full"
-                          leftIcon={<Icon as={TbPencil} />}
                           rounded="lg"
                           onClick={() => setEditMode('editor')}
                         >
+                          {<Icon as={TbPencil} />}
                           編集
                         </Button>
                         <Button
                           w="full"
-                          leftIcon={<Icon as={TbFlag} />}
                           rounded="lg"
                           onClick={() => setEditMode('reporter')}
                         >
+                          {<Icon as={TbFlag} />}
                           報告
                         </Button>
                       </HStack>
@@ -218,7 +215,7 @@ const TournamentMetaPopover = React.memo(
             })()}
           </PopoverBody>
         </PopoverContent>
-      </Popover>
+      </PopoverRoot>
     );
   },
 );

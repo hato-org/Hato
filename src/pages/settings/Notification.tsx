@@ -1,20 +1,16 @@
 import { Suspense, useCallback, useMemo } from 'react';
 import {
   Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
-  ListItem,
+  List,
   Spinner,
-  Switch,
-  UnorderedList,
   VStack,
-  useToast,
 } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
+import { toaster } from '@/components/ui/toaster';
 import { useAtomValue } from 'jotai';
 import { TbExclamationCircle } from 'react-icons/tb';
 import { MotionCenter } from '@/components/motion';
@@ -29,7 +25,8 @@ import {
 import { useSettings, useSettingsMutation } from '@/services/settings';
 
 export default function Notification() {
-  const toast = useToast({ position: 'top-right', duration: 1500 });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
 
   const pushSubscription = useAtomValue(pushSubscriptionSelector);
   const pushPermission = useAtomValue(pushPermissionSelector);
@@ -55,29 +52,29 @@ export default function Notification() {
       layout
     >
       <SettingCategory title="通知">
-        <VStack spacing={4} align="flex-start" w="100%">
+        <VStack gap={4} align="flex-start" w="100%">
           <SettingButton
             {...{
               label: 'プッシュ通知',
               description: 'プッシュ通知を有効にするか。',
               children: (
-                <HStack spacing={4}>
+                <HStack gap={4}>
                   {(subscribePending || unsubscribePending) && (
                     <Spinner size="sm" color="blue.400" />
                   )}
                   <Switch
                     size="lg"
-                    isDisabled={
+                    disabled={
                       subscribePending || unsubscribePending || !isPushAvailable
                     }
-                    isChecked={!!pushSubscription}
-                    onChange={() =>
+                    checked={!!pushSubscription}
+                    onCheckedChange={() =>
                       pushSubscription
                         ? unsubscribe(undefined, {
                             onError: () => {
                               toast({
                                 title: '無効化に失敗しました',
-                                status: 'error',
+                                type: 'error',
                               });
                             },
                           })
@@ -87,7 +84,7 @@ export default function Notification() {
                                 title: '有効化に失敗しました',
                                 description:
                                   'システムの通知設定を確認してください',
-                                status: 'error',
+                                type: 'error',
                               });
                             },
                           })
@@ -98,38 +95,47 @@ export default function Notification() {
             }}
           />
           <Box w="full">
-            <Collapse in={!isPushAvailable}>
-              <Alert status="warning" rounded="xl">
-                <VStack w="full" align="flex-start">
-                  <HStack>
-                    <AlertIcon />
-                    <AlertTitle>プッシュ通知を有効にできません</AlertTitle>
-                  </HStack>
-                  <AlertDescription textStyle="description" fontWeight="bold">
-                    以下をお試しください
-                  </AlertDescription>
-                  <UnorderedList spacing={2}>
-                    {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
-                      navigator.userAgent,
-                    ) && (
-                      <ListItem textStyle="title">
-                        iOSをアップデートする（16.4+）
-                      </ListItem>
-                    )}
-                    <ListItem textStyle="title">ホーム画面に追加する</ListItem>
-                    <ListItem textStyle="title">
-                      OSの設定で通知を許可する
-                    </ListItem>
-                  </UnorderedList>
-                </VStack>
-              </Alert>
-            </Collapse>
+            <Collapsible.Root open={!isPushAvailable}>
+              <Collapsible.Content>
+                <Alert.Root status="warning" rounded="xl">
+                  <VStack w="full" align="flex-start">
+                    <HStack>
+                      <Alert.Indicator />
+                      <Alert.Title>プッシュ通知を有効にできません</Alert.Title>
+                    </HStack>
+                    <Alert.Description
+                      textStyle="description"
+                      fontWeight="bold"
+                    >
+                      以下をお試しください
+                    </Alert.Description>
+                    <List.Root ms="1em" gap={2}>
+                      {/iPhone OS ([1-9]|1[1-6])_[0-3]/.test(
+                        navigator.userAgent,
+                      ) && (
+                        <List.Item textStyle="title">
+                          iOSをアップデートする（16.4+）
+                        </List.Item>
+                      )}
+                      <List.Item textStyle="title">
+                        ホーム画面に追加する
+                      </List.Item>
+                      <List.Item textStyle="title">
+                        OSの設定で通知を許可する
+                      </List.Item>
+                    </List.Root>
+                  </VStack>
+                </Alert.Root>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
           <Suspense fallback={<Loading />}>
             <Box w="full">
-              <Collapse in={!!pushSubscription}>
-                <NotificationDetail />
-              </Collapse>
+              <Collapsible.Root open={!!pushSubscription}>
+                <Collapsible.Content>
+                  <NotificationDetail />
+                </Collapsible.Content>
+              </Collapsible.Root>
             </Box>
           </Suspense>
         </VStack>
@@ -177,7 +183,8 @@ function NotificationDetail() {
 }
 
 function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
-  const toast = useToast({ position: 'top-right', duration: 1500 });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const { data: settings, error } = useSettings();
   const { mutate, isPending } = useSettingsMutation();
 
@@ -196,27 +203,24 @@ function NotifySettingSwitch({ id }: { id: WebPushServiceId }) {
   );
 
   return (
-    <HStack spacing={4}>
+    <HStack gap={4}>
       {isPending && <Spinner color="blue.400" size="xs" />}
       {error && (
         <Icon as={TbExclamationCircle} color="yellow.400" boxSize={5} />
       )}
       <Switch
-        isDisabled={isPending || !!error}
-        isChecked={settings?.notification.push.includes(id) ?? false}
-        onChange={(e) =>
-          mutate(
-            notifySettingReducer(id, e.target.checked ? 'add' : 'remove'),
-            {
-              onError: (err) => {
-                toast({
-                  title: '更新に失敗しました',
-                  description: err.message,
-                  status: 'error',
-                });
-              },
+        disabled={isPending || !!error}
+        checked={settings?.notification.push.includes(id) ?? false}
+        onCheckedChange={(e) =>
+          mutate(notifySettingReducer(id, e.checked ? 'add' : 'remove'), {
+            onError: (err) => {
+              toast({
+                title: '更新に失敗しました',
+                description: err.message,
+                type: 'error',
+              });
             },
-          )
+          })
         }
       />
     </HStack>

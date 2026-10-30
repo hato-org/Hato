@@ -10,7 +10,7 @@ const TransitSummary = React.memo(() => {
 
   return (
     <Card w="full">
-      <VStack p={2} align="flex-start" spacing={4}>
+      <VStack p={2} align="flex-start" gap={4}>
         <Heading size="md">運行情報</Heading>
         {status === 'error' ? (
           <Error error={error} />

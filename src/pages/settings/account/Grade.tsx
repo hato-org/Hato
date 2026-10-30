@@ -1,14 +1,10 @@
+import { Button, HStack, Icon, Skeleton, Text } from '@chakra-ui/react';
 import {
-  Button,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
+  MenuContent,
   MenuItem,
-  MenuList,
-  Skeleton,
-  Text,
-} from '@chakra-ui/react';
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
 import { TbAlertCircle, TbChevronDown } from 'react-icons/tb';
 import { useGradeList } from '@/services/info';
 import { useUser, useUserMutation } from '@/services/user';
@@ -23,37 +19,33 @@ export default function AccountGrade() {
   const { mutate, isPending } = useUserMutation();
 
   return (
-    <Menu>
-      <Skeleton isLoaded={!isGradePending} rounded="lg">
+    <MenuRoot ids={{ trigger: 'grade-select' }}>
+      <Skeleton loading={isGradePending} rounded="lg">
         {gradeError ? (
           <HStack py={2}>
             <Icon as={TbAlertCircle} color="red.500" />
             <Text textStyle="title">エラー</Text>
           </HStack>
         ) : (
-          <MenuButton
-            isDisabled={isPending}
-            as={Button}
-            variant="unstyled"
-            id="grade-select"
-            rounded="lg"
-            w="100%"
-          >
-            <HStack py={2} pl={4} justify="flex-end">
-              <Text textStyle="title">
-                {gradeList?.find(
-                  ({ type, gradeCode }) =>
-                    type === user.type && gradeCode === user.grade,
-                )?.name ?? '未設定'}
-              </Text>
-              <Icon as={TbChevronDown} />
-            </HStack>
-          </MenuButton>
+          <MenuTrigger asChild>
+            <Button disabled={isPending} variant="plain" rounded="lg" w="100%">
+              <HStack py={2} pl={4} justify="flex-end">
+                <Text textStyle="title">
+                  {gradeList?.find(
+                    ({ type, gradeCode }) =>
+                      type === user.type && gradeCode === user.grade,
+                  )?.name ?? '未設定'}
+                </Text>
+                <Icon as={TbChevronDown} />
+              </HStack>
+            </Button>
+          </MenuTrigger>
         )}
       </Skeleton>
-      <MenuList shadow="lg" rounded="xl" py={2}>
+      <MenuContent shadow="lg" rounded="xl" py={2}>
         {gradeList?.map(({ name, type, gradeCode }) => (
           <MenuItem
+            value={name}
             onClick={() => {
               mutate({ type, grade: gradeCode });
             }}
@@ -63,7 +55,7 @@ export default function AccountGrade() {
             {name}
           </MenuItem>
         ))}
-      </MenuList>
-    </Menu>
+      </MenuContent>
+    </MenuRoot>
   );
 }

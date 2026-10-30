@@ -27,7 +27,7 @@ import { queryKeys } from '@/services/queryKeys';
 
 function Events() {
   const queryClient = useQueryClient();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const setTutorialModal = useSetAtom(tutorialModalAtom);
   const onHelpOpen = useCallback(
     () => setTutorialModal((currVal) => ({ ...currVal, events: true })),
@@ -75,12 +75,13 @@ function Events() {
           <Spacer />
           <IconButton
             aria-label="open help"
-            icon={<Icon as={TbInfoCircle} w={6} h={6} />}
             onClick={onHelpOpen}
-            isRound
+            borderRadius="full"
             size="lg"
             variant="ghost"
-          />
+          >
+            {<Icon as={TbInfoCircle} w={6} h={6} />}
+          </IconButton>
         </HStack>
       </Header>
       <ChakraPullToRefresh
@@ -105,14 +106,15 @@ function Events() {
                   position="absolute"
                   top={0}
                   right={0}
-                  icon={<TbX />}
                   onClick={() =>
                     setTutorial((oldTutorial) => ({
                       ...oldTutorial,
                       iCal: true,
                     }))
                   }
-                />
+                >
+                  {<TbX />}
+                </IconButton>
               </VStack>
             </Card>
           )}
@@ -127,12 +129,12 @@ function Events() {
       <FloatButton
         aria-label="create event"
         size="lg"
-        colorScheme="blue"
+        colorPalette="blue"
         mb={16}
         mr={4}
         onClick={onOpen}
-        leftIcon={<TbPlus />}
       >
+        <TbPlus />
         <Text>イベントを追加</Text>
       </FloatButton>
       <AddEventDrawer isOpen={isOpen} onClose={onClose} />

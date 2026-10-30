@@ -1,22 +1,23 @@
 import { useCallback } from 'react';
 import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   HStack,
   VStack,
-  Avatar,
   Text,
   Icon,
   Spacer,
   Button,
-  Modal,
   useDisclosure,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  ModalBody,
-  ModalFooter,
   ButtonGroup,
   Link,
 } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import { Link as RouterLink } from 'react-router';
 import {
   TbActivity,
@@ -38,7 +39,7 @@ import SettingCategory from './Category';
 function Top() {
   const { logout } = useAuth();
   const { data: user } = useUser();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const queryClient = useQueryClient();
   const setTutorial = useSetAtom(tutorialAtom);
   const setWhatsNew = useSetAtom(whatsNewAtom);
@@ -50,7 +51,7 @@ function Top() {
   return (
     <MotionVStack
       w="100%"
-      spacing={8}
+      gap={8}
       initial={{ x: '-100%', opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '-100%', opacity: 0 }}
@@ -63,29 +64,23 @@ function Top() {
       layout
     >
       <SettingCategory title="アカウント">
-        <HStack
-          p={2}
-          w="100%"
-          spacing={4}
-          rounded="xl"
-          as={RouterLink}
-          to="account"
-          layerStyle="button"
-        >
-          <Avatar src={user?.avatar} size="sm" />
-          <VStack align="flex-start" spacing={0} minW={0}>
-            <Text textStyle="title" fontSize="md">
-              {user?.name}
+        <HStack p={2} w="100%" gap={4} rounded="xl" asChild layerStyle="button">
+          <RouterLink to="account">
+            <Avatar src={user?.avatar} size="sm" />
+            <VStack align="flex-start" gap={0} minW={0}>
+              <Text textStyle="title" fontSize="md">
+                {user?.name}
+              </Text>
+              <Text textStyle="description" fontSize="xs" lineClamp={1}>
+                {user?.email}
+              </Text>
+            </VStack>
+            <Spacer />
+            <Text textStyle="description" fontWeight="bold" whiteSpace="nowrap">
+              {user?.contributionCount} pt
             </Text>
-            <Text textStyle="description" fontSize="xs" noOfLines={1}>
-              {user?.email}
-            </Text>
-          </VStack>
-          <Spacer />
-          <Text textStyle="description" fontWeight="bold" whiteSpace="nowrap">
-            {user?.contributionCount} pt
-          </Text>
-          <Icon as={TbChevronRight} />
+            <Icon as={TbChevronRight} />
+          </RouterLink>
         </HStack>
       </SettingCategory>
       <SettingCategory title="画面表示">
@@ -115,11 +110,14 @@ function Top() {
         <SettingButton label="リリースノート" onClick={onWhatsNewOpen} />
         <SettingButton label="キャッシュ削除" onClick={onOpen}>
           <>
-            <Modal isCentered isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent rounded="xl" bg="panel">
-                <ModalHeader>キャッシュを削除しますか？</ModalHeader>
-                <ModalBody>
+            <DialogRoot
+              placement="center"
+              open={isOpen}
+              onOpenChange={(e) => !e.open && onClose()}
+            >
+              <DialogContent rounded="xl" bg="panel">
+                <DialogHeader>キャッシュを削除しますか？</DialogHeader>
+                <DialogBody>
                   <VStack align="flex-start" w="100%" textStyle="title">
                     <Text w="full" textAlign="center">
                       現在アプリ内に保存されている
@@ -127,9 +125,9 @@ function Top() {
                       一時データが削除されます
                     </Text>
                   </VStack>
-                </ModalBody>
-                <ModalFooter>
-                  <HStack w="full" spacing={4}>
+                </DialogBody>
+                <DialogFooter>
+                  <HStack w="full" gap={4}>
                     <Button
                       w="full"
                       variant="ghost"
@@ -140,7 +138,7 @@ function Top() {
                     </Button>
                     <Button
                       w="full"
-                      colorScheme="red"
+                      colorPalette="red"
                       rounded="lg"
                       onClick={() => {
                         setTutorial({
@@ -156,9 +154,9 @@ function Top() {
                       削除
                     </Button>
                   </HStack>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                </DialogFooter>
+              </DialogContent>
+            </DialogRoot>
             <Icon as={TbChevronRight} />
           </>
         </SettingButton>
@@ -174,16 +172,21 @@ function Top() {
       </Button>
       <HStack w="100%" justify="center">
         <ButtonGroup rounded="lg" variant="ghost">
-          <Button
-            leftIcon={<TbBrandGithub />}
-            as={Link}
-            isExternal
-            href={import.meta.env.VITE_REPO_URL}
-          >
-            GitHub
+          <Button asChild>
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              href={import.meta.env.VITE_REPO_URL}
+            >
+              <TbBrandGithub />
+              GitHub
+            </Link>
           </Button>
-          <Button as={RouterLink} to="/status" leftIcon={<TbActivity />}>
-            サービス稼働状況
+          <Button asChild>
+            <RouterLink to="/status">
+              <TbActivity />
+              サービス稼働状況
+            </RouterLink>
           </Button>
         </ButtonGroup>
       </HStack>

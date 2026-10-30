@@ -52,20 +52,25 @@ export default function ClassroomCourse() {
       <Header>
         <HStack w="full">
           <BackButton />
-          <Heading size="md" ml={2} py={4} noOfLines={1}>
+          <Heading size="md" ml={2} py={4} lineClamp={1}>
             {data?.name}
           </Heading>
           <Spacer />
           <IconButton
             aria-label="open in browser"
-            as={Link}
-            href={data?.alternateLink ?? ''}
             variant="ghost"
             size="lg"
-            isRound
-            isExternal
-            icon={<Icon as={TbExternalLink} boxSize={6} />}
-          />
+            borderRadius="full"
+            asChild
+          >
+            <Link
+              href={data?.alternateLink ?? ''}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} boxSize={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
       <ChakraPullToRefresh

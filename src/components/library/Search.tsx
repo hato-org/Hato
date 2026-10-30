@@ -1,20 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
-  AlertIcon,
   Box,
   Button,
-  Collapse,
-  FormControl,
-  FormLabel,
+  Collapsible,
+  Field,
   HStack,
   Icon,
   Input,
   Skeleton,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   Text,
   VStack,
@@ -62,46 +56,47 @@ export default function Search() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <VStack pt={2} px={4} mb={24} w="100%" spacing={8}>
+    <VStack pt={2} px={4} mb={24} w="100%" gap={8}>
       <Card p={0} w="100%" overflow="hidden">
         <VStack>
-          <Tabs
+          <Tabs.Root
             w="100%"
-            isFitted
+            fitted
             size="lg"
-            onChange={(index) => setSelected(category[index])}
-            defaultIndex={defaultIndex}
+            colorPalette="blue"
+            value={selected}
+            onValueChange={(e) => setSelected(e.value as 'free' | 'detail')}
           >
-            <TabList>
-              <Tab
+            <Tabs.List>
+              <Tabs.Trigger
+                value="free"
                 textStyle="title"
                 _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
               >
                 フリーワード
-              </Tab>
-              <Tab
+              </Tabs.Trigger>
+              <Tabs.Trigger
+                value="detail"
                 textStyle="title"
                 _selected={{ color: 'blue.400', borderColor: 'blue.400' }}
               >
                 詳細検索
-              </Tab>
-            </TabList>
-            <TabPanels w="100%">
-              <TabPanel w="100%">
-                <FreeSearch onSubmit={() => mutate('free')} />
-              </TabPanel>
-              <TabPanel>
-                <DetailSearch onSubmit={() => mutate('detail')} />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+              </Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content value="free" w="100%" px={4} pb={4}>
+              <FreeSearch onSubmit={() => mutate('free')} />
+            </Tabs.Content>
+            <Tabs.Content value="detail" w="100%" px={4} pb={4}>
+              <DetailSearch onSubmit={() => mutate('detail')} />
+            </Tabs.Content>
+          </Tabs.Root>
           <Box w="100%" px={4} pb={4}>
             <Button
               w="100%"
-              colorScheme="blue"
+              colorPalette="blue"
               rounded="lg"
               onClick={() => mutate(selected, {})}
-              isLoading={isPending}
+              loading={isPending}
             >
               検索
             </Button>
@@ -122,62 +117,68 @@ const SearchResult = React.memo(
     isLoading: boolean;
   }) => (
     <Box w="100%" h="100%">
-      <Collapse in={!!result || isLoading}>
-        {isLoading ? (
-          <Loading />
-        ) : result?.count ? (
-          <VStack w="100%" h="100%" spacing={4}>
-            {result?.messages.length && (
-              <Alert status="info" rounded="xl" shadow="xl">
-                <AlertIcon mr={4} />
-                <VStack align="flex-start" spacing={1}>
-                  {result.messages.map((message) => (
-                    <Text key={message} textStyle="title">
-                      {message}
-                    </Text>
-                  ))}
-                </VStack>
-              </Alert>
-            )}
-            <HStack w="100%" px={2}>
-              <Skeleton isLoaded={!isLoading} rounded="lg" w={24}>
-                <Text textStyle="title" color="description">
-                  {result?.count}件
-                </Text>
-              </Skeleton>
-            </HStack>
-            <Virtuoso
-              useWindowScroll
-              data={result?.books ?? []}
-              itemContent={(index, book) => (
-                <Box py={2}>
-                  <BookInfo {...book} />
-                </Box>
+      <Collapsible.Root open={!!result || isLoading}>
+        <Collapsible.Content>
+          {isLoading ? (
+            <Loading />
+          ) : result?.count ? (
+            <VStack w="100%" h="100%" gap={4}>
+              {result?.messages.length && (
+                <Alert.Root status="info" rounded="xl" shadow="xl">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <VStack align="flex-start" gap={1}>
+                      {result.messages.map((message) => (
+                        <Text key={message} textStyle="title">
+                          {message}
+                        </Text>
+                      ))}
+                    </VStack>
+                  </Alert.Content>
+                </Alert.Root>
               )}
-              style={{ width: '100%' }}
-            />
-          </VStack>
-        ) : (
-          <VStack w="100%" spacing={4}>
-            {result?.messages.length && (
-              <Alert status="info" rounded="xl" shadow="xl">
-                <AlertIcon mr={4} />
-                <VStack align="flex-start" spacing={1}>
-                  {result.messages.map((message) => (
-                    <Text key={message} textStyle="title">
-                      {message}
-                    </Text>
-                  ))}
-                </VStack>
-              </Alert>
-            )}
-            <Icon as={TbMoodSad} boxSize={16} color="description" />
-            <Text textStyle="description" fontWeight="bold">
-              本が見つかりませんでした
-            </Text>
-          </VStack>
-        )}
-      </Collapse>
+              <HStack w="100%" px={2}>
+                <Skeleton loading={isLoading} rounded="lg" w={24}>
+                  <Text textStyle="title" color="description">
+                    {result?.count}件
+                  </Text>
+                </Skeleton>
+              </HStack>
+              <Virtuoso
+                useWindowScroll
+                data={result?.books ?? []}
+                itemContent={(index, book) => (
+                  <Box py={2}>
+                    <BookInfo {...book} />
+                  </Box>
+                )}
+                style={{ width: '100%' }}
+              />
+            </VStack>
+          ) : (
+            <VStack w="100%" gap={4}>
+              {result?.messages.length && (
+                <Alert.Root status="info" rounded="xl" shadow="xl">
+                  <Alert.Indicator />
+                  <Alert.Content>
+                    <VStack align="flex-start" gap={1}>
+                      {result.messages.map((message) => (
+                        <Text key={message} textStyle="title">
+                          {message}
+                        </Text>
+                      ))}
+                    </VStack>
+                  </Alert.Content>
+                </Alert.Root>
+              )}
+              <Icon as={TbMoodSad} boxSize={16} color="description" />
+              <Text textStyle="description" fontWeight="bold">
+                本が見つかりませんでした
+              </Text>
+            </VStack>
+          )}
+        </Collapsible.Content>
+      </Collapsible.Root>
     </Box>
   ),
 );
@@ -218,8 +219,8 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
       }}
     >
       <VStack>
-        <FormControl>
-          <FormLabel>タイトル</FormLabel>
+        <Field.Root>
+          <Field.Label>タイトル</Field.Label>
           <Input
             textStyle="title"
             rounded="lg"
@@ -228,9 +229,9 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               setParams((currVal) => ({ ...currVal, title: e.target.value }))
             }
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel>著者名</FormLabel>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>著者名</Field.Label>
           <Input
             textStyle="title"
             rounded="lg"
@@ -239,9 +240,9 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               setParams((currVal) => ({ ...currVal, author: e.target.value }))
             }
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel>出版者</FormLabel>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>出版者</Field.Label>
           <Input
             textStyle="title"
             rounded="lg"
@@ -253,9 +254,9 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               }))
             }
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel>分類</FormLabel>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>分類</Field.Label>
           <Input
             textStyle="title"
             rounded="lg"
@@ -264,9 +265,9 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               setParams((currVal) => ({ ...currVal, ndc: e.target.value }))
             }
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel>出版年</FormLabel>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>出版年</Field.Label>
           <HStack>
             <Input
               textStyle="title"
@@ -294,9 +295,9 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               }
             />
           </HStack>
-        </FormControl>
-        <FormControl>
-          <FormLabel>ISBN</FormLabel>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>ISBN</Field.Label>
           <Input
             textStyle="title"
             rounded="lg"
@@ -305,7 +306,7 @@ function DetailSearch({ onSubmit }: { onSubmit: () => void }) {
               setParams((currVal) => ({ ...currVal, isbn: e.target.value }))
             }
           />
-        </FormControl>
+        </Field.Root>
       </VStack>
     </form>
   );

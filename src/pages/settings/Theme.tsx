@@ -1,4 +1,6 @@
-import { Switch, useColorMode, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
+import { useColorMode } from '@/components/ui/color-mode';
 import { MotionCenter } from '@/components/motion';
 import SettingButton from './Button';
 import SettingCategory from './Category';
@@ -13,8 +15,8 @@ function Theme() {
       children: (
         <Switch
           size="lg"
-          isChecked={colorMode === 'dark'}
-          onChange={toggleColorMode}
+          checked={colorMode === 'dark'}
+          onCheckedChange={toggleColorMode}
         />
       ),
     },
@@ -34,7 +36,7 @@ function Theme() {
       }}
       layout
     >
-      <VStack spacing={4} align="flex-start" w="100%">
+      <VStack gap={4} align="flex-start" w="100%">
         <SettingCategory title="画面表示">
           {list.map((elem) => (
             <SettingButton {...elem} key={elem.label} />

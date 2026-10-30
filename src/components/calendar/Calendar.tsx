@@ -5,7 +5,7 @@ import {
   Box,
   StackProps,
   IconButton,
-  Divider,
+  Separator,
   Center,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router';
@@ -54,7 +54,7 @@ const Calendar = React.memo(
     const { data: events } = useEvents({ year, month });
 
     return (
-      <VStack w="100%" spacing={4} {...rest}>
+      <VStack w="100%" gap={4} {...rest}>
         <MonthSwitcher date={date} onNext={onNextMonth} onPrev={onPrevMonth} />
         <Card w="100%" p={0}>
           <Center
@@ -64,8 +64,8 @@ const Calendar = React.memo(
             // dragSnapToOrigin
             // onDragEnd={(event: any, info: any) => console.log(event, info)}
           >
-            <VStack w="100%" h="100%" spacing={1} divider={<Divider />}>
-              <HStack w="100%" spacing={0}>
+            <VStack w="100%" h="100%" gap={1} separator={<Separator />}>
+              <HStack w="100%" gap={0}>
                 {dayOfWeek.map((day) => (
                   <Text
                     key={day}
@@ -79,7 +79,7 @@ const Calendar = React.memo(
                 ))}
               </HStack>
               {days.map((week) => (
-                <HStack key={week.toString()} w="100%" h="100%" spacing={0}>
+                <HStack key={week.toString()} w="100%" h="100%" gap={0}>
                   {week.map((day) => (
                     <VStack
                       key={day.toString()}
@@ -104,7 +104,7 @@ const Calendar = React.memo(
                       >
                         {day.getDate()}
                       </Text>
-                      <VStack spacing="2px" w="100%" px="1px" overflowY="auto">
+                      <VStack gap="2px" w="100%" px="1px" overflowY="auto">
                         {events
                           ?.filter(
                             (event) =>
@@ -166,18 +166,19 @@ const Calendar = React.memo(
                                     : 'blue.100',
                               }}
                               transition="all .2s ease"
-                              as={RouterLink}
-                              to={`/events/${event._id}`}
+                              asChild
                             >
-                              <Text
-                                noOfLines={1}
-                                fontSize={{ base: 'xx-small', md: 'xs' }}
-                                fontWeight="bold"
-                                textAlign="center"
-                                wordBreak="break-all"
-                              >
-                                {event.title}
-                              </Text>
+                              <RouterLink to={`/events/${event._id}`}>
+                                <Text
+                                  lineClamp={1}
+                                  fontSize={{ base: 'xx-small', md: 'xs' }}
+                                  fontWeight="bold"
+                                  textAlign="center"
+                                  wordBreak="break-all"
+                                >
+                                  {event.title}
+                                </Text>
+                              </RouterLink>
                             </Box>
                           ))}
                       </VStack>
@@ -205,19 +206,21 @@ const MonthSwitcher = React.memo(
     <HStack p={2} w="100%" rounded="xl" justify="space-between">
       <IconButton
         aria-label="previous month"
-        icon={<TbChevronLeft />}
         onClick={onPrev}
-        isRound
+        borderRadius="full"
         variant="ghost"
-      />
+      >
+        {<TbChevronLeft />}
+      </IconButton>
       <Text textStyle="title">{format(date, 'yyyy年M月')}</Text>
       <IconButton
         aria-label="next month"
-        icon={<TbChevronRight />}
         onClick={onNext}
-        isRound
+        borderRadius="full"
         variant="ghost"
-      />
+      >
+        {<TbChevronRight />}
+      </IconButton>
     </HStack>
   ),
 );

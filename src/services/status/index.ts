@@ -1,4 +1,5 @@
-import { useToast } from '@chakra-ui/react';
+import {} from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import ky, { HTTPError } from 'ky';
 import { queryKeys } from '../queryKeys';
@@ -23,10 +24,8 @@ export const useHatoStatusMaintenance = () =>
   });
 
 export const useHatoStatusMaintenanceMutation = () => {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1000,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1000, ...options });
 
   return useMutation<StatusMaintenance[], HTTPError, StatusMaintenance>({
     mutationFn: async (data) =>
@@ -39,7 +38,7 @@ export const useHatoStatusMaintenanceMutation = () => {
     onSuccess: () => {
       toast({
         title: '追加しました。',
-        status: 'success',
+        type: 'success',
       });
     },
   });

@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   Button,
   Heading,
   HStack,
   Icon,
   IconButton,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spacer,
-  Switch,
   Text,
-  useToast,
   VStack,
 } from '@chakra-ui/react';
+import { Switch } from '@/components/ui/switch';
+import { toaster } from '@/components/ui/toaster';
 import { format, startOfDay } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { TbX } from 'react-icons/tb';
@@ -31,10 +32,8 @@ interface DivisionEditorProps {
 
 const DivisionEditor = React.memo(
   ({ date, isOpen, onClose }: DivisionEditorProps) => {
-    const toast = useToast({
-      position: 'top-right',
-      duration: 1000,
-    });
+    const toast = (options: Parameters<typeof toaster.create>[0]) =>
+      toaster.create({ duration: 1000, ...options });
 
     const [division, setDivision] = useState<Partial<Division>>({
       date: startOfDay(date),
@@ -58,10 +57,9 @@ const DivisionEditor = React.memo(
     }, [date, currentDivision]);
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent rounded="xl" bg="panel">
-          <ModalHeader>
+      <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && onClose()}>
+        <DialogContent rounded="xl" bg="panel">
+          <DialogHeader>
             <HStack align="center">
               <Text>日課の編集</Text>
               <Spacer />
@@ -70,15 +68,16 @@ const DivisionEditor = React.memo(
               </Text>
               <IconButton
                 aria-label="close modal"
-                icon={<Icon as={TbX} boxSize={4} />}
                 variant="ghost"
                 rounded="lg"
                 size="sm"
                 onClick={onClose}
-              />
+              >
+                {<Icon as={TbX} boxSize={4} />}
+              </IconButton>
             </HStack>
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             <VStack align="stretch">
               <Heading size="md">日課</Heading>
               <WeekDayPicker
@@ -93,21 +92,21 @@ const DivisionEditor = React.memo(
                 <Text textStyle="title">特編</Text>
                 <Spacer />
                 <Switch
-                  isChecked={division.irregular}
-                  onChange={(e) =>
+                  checked={division.irregular}
+                  onCheckedChange={(e) =>
                     setDivision((val) => ({
                       ...val,
-                      irregular: e.target.checked,
+                      irregular: e.checked,
                     }))
                   }
                 />
               </HStack>
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button
               w="100%"
-              colorScheme="blue"
+              colorPalette="blue"
               rounded="lg"
               onClick={() => {
                 if (
@@ -128,29 +127,29 @@ const DivisionEditor = React.memo(
                         onClose();
                         toast({
                           title: '更新しました。',
-                          status: 'success',
+                          type: 'success',
                         });
                       },
                       onError: (error) => {
                         toast({
                           title: '更新に失敗しました。',
                           description: error.message,
-                          status: 'error',
+                          type: 'error',
                         });
                       },
                     },
                   );
               }}
-              isDisabled={
+              disabled={
                 !(division.date && division.week && division.day !== undefined)
               }
-              isLoading={isPending}
+              loading={isPending}
             >
               更新
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

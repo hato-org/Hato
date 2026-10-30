@@ -2,7 +2,7 @@ import {
   HStack,
   Skeleton,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
   useDisclosure,
@@ -13,14 +13,14 @@ import { useDivision } from '@/services/timetable';
 import { days } from '@/utils/date';
 
 export default function Clock() {
-  const { isOpen: isSecondsShowed, onToggle } = useDisclosure();
+  const { open: isSecondsShowed, onToggle } = useDisclosure();
   const [date] = useSeconds();
   const { data: division, isPending } = useDivision({ date });
 
   return (
-    <HStack w="full" p={2} spacing={4}>
-      <StackDivider borderWidth={2} rounded="full" borderColor="blue.400" />
-      <VStack spacing={0} align="flex-start">
+    <HStack w="full" p={2} gap={4}>
+      <StackSeparator borderWidth={2} rounded="full" borderColor="blue.400" />
+      <VStack gap={0} align="flex-start">
         {/* <HStack w="full">
           <Text textStyle="title">
             {format(date, 'yyyy')}
@@ -36,7 +36,7 @@ export default function Clock() {
             </Text>
           </Text>
         </HStack> */}
-        <HStack spacing={1} flexWrap="nowrap">
+        <HStack gap={1} flexWrap="nowrap">
           <Text textStyle="title" fontSize="3xl">
             {format(date, 'M')}
             <Text pl={1} as="span" textStyle="description">
@@ -68,7 +68,7 @@ export default function Clock() {
             </Text>
           </HStack>
         ) : (
-          <Skeleton rounded="md" isLoaded={!isPending}>
+          <Skeleton rounded="md" loading={isPending}>
             <Text textStyle="description" fontWeight="bold">
               日課未設定
             </Text>

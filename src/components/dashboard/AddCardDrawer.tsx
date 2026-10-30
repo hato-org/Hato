@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import {
-  Box,
-  Button,
-  Center,
-  Drawer,
   DrawerBody,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Box,
+  Button,
+  Center,
   Flex,
   Icon,
   Text,
@@ -34,17 +35,20 @@ const AddCardDrawer = React.memo(() => {
   );
 
   return (
-    <Drawer placement="bottom" isOpen={cardOrderDrawer} onClose={onClose}>
-      <DrawerOverlay />
+    <DrawerRoot
+      placement="bottom"
+      open={cardOrderDrawer}
+      onOpenChange={(e) => !e.open && onClose()}
+    >
       <DrawerContent bg="panel" roundedTop="xl">
-        <DrawerHeader w="full" maxW="container.lg" mx="auto">
+        <DrawerHeader w="full" maxW="1024px" mx="auto">
           カードの追加
         </DrawerHeader>
-        <DrawerBody w="full" maxW="container.lg" mx="auto">
+        <DrawerBody w="full" maxW="1024px" mx="auto">
           <Flex
             w="full"
             overflowX="auto"
-            sx={{ scrollSnapType: 'x mandatory' }}
+            css={{ scrollSnapType: 'x mandatory' }}
           >
             {unlistedCards.length ? (
               unlistedCards.map((card) => (
@@ -102,26 +106,26 @@ const AddCardDrawer = React.memo(() => {
         <DrawerFooter
           pb="env(safe-area-inset-bottom)"
           w="full"
-          maxW="container.lg"
+          maxW="1024px"
           mx="auto"
         >
           <Button
             w="full"
             rounded="lg"
-            colorScheme="blue"
-            leftIcon={<Icon as={TbPlus} />}
-            isDisabled={!selectedCard}
+            colorPalette="blue"
+            disabled={!selectedCard}
             onClick={() => {
               setCardOrder((currVal) => [...currVal, selectedCard]);
               setSelectedCard('');
               onClose();
             }}
           >
+            {<Icon as={TbPlus} />}
             カードを追加
           </Button>
         </DrawerFooter>
       </DrawerContent>
-    </Drawer>
+    </DrawerRoot>
   );
 });
 AddCardDrawer.displayName = 'AddCardDrawer';

@@ -18,11 +18,12 @@ const DateSwitcher = React.memo(
       <HStack py={2} w="100%" rounded="xl" justify="space-between" {...rest}>
         <IconButton
           aria-label="previous day"
-          icon={<TbChevronLeft />}
           onClick={onPrev}
-          isRound
+          borderRadius="full"
           variant="ghost"
-        />
+        >
+          {<TbChevronLeft />}
+        </IconButton>
         <Input
           textStyle="title"
           type="date"
@@ -33,11 +34,12 @@ const DateSwitcher = React.memo(
         />
         <IconButton
           aria-label="next day"
-          icon={<TbChevronRight />}
           onClick={onNext}
-          isRound
+          borderRadius="full"
           variant="ghost"
-        />
+        >
+          {<TbChevronRight />}
+        </IconButton>
       </HStack>
     );
   },

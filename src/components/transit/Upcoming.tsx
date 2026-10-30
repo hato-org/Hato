@@ -7,7 +7,7 @@ import {
   Skeleton,
   Spacer,
   Stack,
-  StackDivider,
+  StackSeparator,
   StackProps,
   Text,
   useDisclosure,
@@ -81,14 +81,14 @@ const UpcomingTrains = React.memo(() => {
 
   return (
     <Card w="full">
-      <VStack p={2} align="flex-start" spacing={4}>
+      <VStack p={2} align="flex-start" gap={4}>
         <Heading size="md">これからの列車</Heading>
         <VStack align="flex-start" w="100%">
           <Text textStyle="title" fontSize="lg">
             長野方面
           </Text>
           <VStack w="full">
-            <Skeleton w="full" rounded="xl" isLoaded={!isNaganoPending}>
+            <Skeleton w="full" rounded="xl" loading={isNaganoPending}>
               <PrimaryUpcomingTrainCountdown
                 date={date}
                 train={naganoUpcoming?.[0]}
@@ -97,7 +97,7 @@ const UpcomingTrains = React.memo(() => {
               {(naganoUpcoming?.length ?? 0) > 2 && (
                 <Stack
                   direction={{ base: 'column', md: 'row' }}
-                  spacing={{ base: 0, md: 2 }}
+                  gap={{ base: 0, md: 2 }}
                   w="full"
                 >
                   <SecondoryUpcomingTrainCountdown
@@ -118,7 +118,7 @@ const UpcomingTrains = React.memo(() => {
             上田方面
           </Text>
           <VStack w="full">
-            <Skeleton w="full" rounded="xl" isLoaded={!isUedaPending}>
+            <Skeleton w="full" rounded="xl" loading={isUedaPending}>
               <PrimaryUpcomingTrainCountdown
                 date={date}
                 train={uedaUpcoming?.[0]}
@@ -127,7 +127,7 @@ const UpcomingTrains = React.memo(() => {
               {(uedaUpcoming?.length ?? 0) > 2 && (
                 <Stack
                   flexDirection={{ base: 'column', md: 'row' }}
-                  spacing={{ base: 0, md: 2 }}
+                  gap={{ base: 0, md: 2 }}
                   w="full"
                 >
                   <SecondoryUpcomingTrainCountdown
@@ -162,7 +162,7 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
     train?: UpcomingTrain;
     openModal?: boolean;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return train ? (
       <>
@@ -174,8 +174,12 @@ export const PrimaryUpcomingTrainCountdown = React.memo(
           onClick={onOpen}
           {...rest}
         >
-          <StackDivider borderWidth={2} borderColor="blue.400" rounded="full" />
-          <VStack spacing={0} align="flex-start">
+          <StackSeparator
+            borderWidth={2}
+            borderColor="blue.400"
+            rounded="full"
+          />
+          <VStack gap={0} align="flex-start">
             <Text textStyle="title" fontSize="xl">
               {format(train.departAt, 'HH:mm')}
             </Text>
@@ -212,7 +216,7 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
     train?: UpcomingTrain;
     openModal?: boolean;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return train ? (
       <>
@@ -224,8 +228,12 @@ export const SecondoryUpcomingTrainCountdown = React.memo(
           onClick={onOpen}
           layerStyle={openModal ? 'button' : undefined}
         >
-          <StackDivider borderWidth={1} borderColor="blue.400" rounded="full" />
-          <VStack spacing={0} align="flex-start">
+          <StackSeparator
+            borderWidth={1}
+            borderColor="blue.400"
+            rounded="full"
+          />
+          <VStack gap={0} align="flex-start">
             <Text fontSize="md">{format(train.departAt, 'HH:mm')}</Text>
             <Text textStyle="description" fontSize="2xs">
               {train.destination}行

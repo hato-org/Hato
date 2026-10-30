@@ -3,16 +3,15 @@ import '@fontsource-variable/noto-sans-jp';
 import '@fontsource/inter';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { Provider } from '@/components/ui/provider';
+import { Toaster } from '@/components/ui/toaster';
 import { HelmetProvider } from 'react-helmet-async';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { DevTools } from 'jotai-devtools';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import App from './App';
-import theme from './theme';
 import './global.css';
 
 import '@/utils/recoil_migration';
@@ -85,10 +84,24 @@ const queryClient = new QueryClient({
 
 const persister = createIDBPersister();
 
+// jotai-devtools 0.10 以降はスタイルの明示 import が必要 (約 1MB のため開発時のみ読み込む)
+const JotaiDevTools = import.meta.env.DEV
+  ? React.lazy(async () => {
+      try {
+        await import('jotai-devtools/styles.css');
+        const { DevTools } = await import('jotai-devtools');
+        return { default: DevTools };
+      } catch {
+        // 開発用ツールの読み込み失敗でアプリ全体を落とさない
+        return { default: () => null };
+      }
+    })
+  : () => null;
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      <ChakraProvider theme={theme}>
+      <Provider defaultTheme="system" enableSystem>
         <HelmetProvider>
           <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <PersistQueryClientProvider
@@ -98,14 +111,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 maxAge: 1000 * 60 * 60 * 24, // 24 hours
               }}
             >
-              <ColorModeScript />
               <App />
+              <Toaster />
               <ReactQueryDevtools initialIsOpen={false} />
-              <DevTools />
+              <React.Suspense fallback={null}>
+                <JotaiDevTools />
+              </React.Suspense>
             </PersistQueryClientProvider>
           </GoogleOAuthProvider>
         </HelmetProvider>
-      </ChakraProvider>
+      </Provider>
     </ErrorBoundary>
   </React.StrictMode>,
 );

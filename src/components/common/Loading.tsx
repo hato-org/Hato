@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Fade, Spinner, SpinnerProps, Text, VStack } from '@chakra-ui/react';
+import { Spinner, SpinnerProps, Text, VStack } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import { MotionCenter } from '../motion';
 
@@ -36,23 +36,22 @@ const Loading = React.memo(
     return (
       <VStack
         w="full"
-        spacing={4}
+        gap={4}
         flexGrow={1}
         p={4}
         onClick={() => setTip(tips[Math.floor(Math.random() * tips.length)])}
         _hover={{ cursor: 'pointer' }}
       >
-        <Spinner color="blue.400" thickness="3px" {...rest} />
-        {withTips && (
-          <Fade in={tipsShowed}>
-            <Text
-              whiteSpace="pre-wrap"
-              textAlign="center"
-              textStyle="description"
-            >
-              {tip}
-            </Text>
-          </Fade>
+        <Spinner color="blue.400" borderWidth="3px" {...rest} />
+        {withTips && tipsShowed && (
+          <Text
+            whiteSpace="pre-wrap"
+            textAlign="center"
+            textStyle="description"
+            animation="fade-in 0.4s ease"
+          >
+            {tip}
+          </Text>
         )}
       </VStack>
     );
@@ -76,7 +75,7 @@ export const GlobalLoading = React.memo(() => (
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 1.2 }}
     >
-      <Spinner size="lg" color="blue.400" thickness="3px" />
+      <Spinner size="lg" color="blue.400" borderWidth="3px" />
     </MotionCenter>
   </AnimatePresence>
 ));

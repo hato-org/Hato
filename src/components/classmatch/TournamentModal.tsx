@@ -1,16 +1,14 @@
 import React from 'react';
 import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  VStack,
-  Image,
-  useColorModeValue,
-} from '@chakra-ui/react';
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import { VStack, Image } from '@chakra-ui/react';
+import { useColorModeValue } from '@/components/ui/color-mode';
 import {
   useClassmatchSportInfo,
   useClassmatchSports,
@@ -46,20 +44,23 @@ const TournamentModal = React.memo(
     );
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent overflow="hidden" bg="panel" rounded="xl">
-          <ModalCloseButton top={4} right={4} size="lg" />
-          <ModalHeader>
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        size="xl"
+      >
+        <DialogContent overflow="hidden" bg="panel" rounded="xl">
+          <DialogCloseTrigger top={4} right={4} />
+          <DialogHeader>
             {sports?.find(({ id }) => id === sport)?.name}
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             {status === 'pending' ? (
               <Loading />
             ) : status === 'error' ? (
               <Error error={error} />
             ) : (
-              <VStack spacing={0}>
+              <VStack gap={0}>
                 <Image
                   w="full"
                   aspectRatio="4 / 3"
@@ -75,10 +76,10 @@ const TournamentModal = React.memo(
                 />
               </VStack>
             )}
-          </ModalBody>
-          <ModalFooter />
-        </ModalContent>
-      </Modal>
+          </DialogBody>
+          <DialogFooter />
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

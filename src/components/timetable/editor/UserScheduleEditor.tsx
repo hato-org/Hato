@@ -1,26 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   Button,
   HStack,
   Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   VStack,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useAtom } from 'jotai';
 import { TbTrash } from 'react-icons/tb';
 import { UserScheduleContext } from './context';
@@ -37,12 +33,10 @@ import { UserScheduleMetaEditor } from './MetaEditor';
 import { EditorTable } from './Table';
 
 export default function UserScheduleEditor() {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 3000,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 3000, ...options });
   const {
-    isOpen: isDeleteModalOpen,
+    open: isDeleteModalOpen,
     onOpen: onDeletemodalOpen,
     onClose: onDeleteModalClose,
   } = useDisclosure();
@@ -86,30 +80,33 @@ export default function UserScheduleEditor() {
   }, [isLoading, userScheduleEditor]);
 
   return (
-    <Modal
-      isOpen={!!userScheduleEditor}
-      onClose={() => setUserScheduleEditor(false)}
-      size={{ base: 'full', md: '2xl' }}
+    <DialogRoot
+      open={!!userScheduleEditor}
+      onOpenChange={(e) => !e.open && (() => setUserScheduleEditor(false))()}
+      size={{ base: 'full', md: 'xl' }}
     >
-      <ModalOverlay />
-      <ModalContent bg="panel" pb="env(safe-area-inset-bottom)">
+      <DialogContent
+        bg="panel"
+        maxW={{ md: '2xl' }}
+        pb="env(safe-area-inset-bottom)"
+      >
         <UserScheduleContext.Provider
           value={useMemo(() => [schedule, setSchedule], [schedule])}
         >
-          <ModalCloseButton top={4} right={4} />
-          <ModalHeader>マイ時間割の編集</ModalHeader>
-          <ModalBody px={4}>
+          <DialogCloseTrigger top={4} right={4} />
+          <DialogHeader>マイ時間割の編集</DialogHeader>
+          <DialogBody px={4}>
             {userScheduleEditor !== 'new' && isPending ? (
               <Loading />
             ) : error ? (
               <Error error={error} />
             ) : (
-              <VStack w="full" pb={8} spacing={6}>
+              <VStack w="full" pb={8} gap={6}>
                 <UserScheduleMetaEditor
                   onVisibilityChange={(e) =>
                     setSchedule((val) => ({
                       ...val,
-                      private: e.target.checked,
+                      private: e.checked,
                     }))
                   }
                 />
@@ -127,11 +124,11 @@ export default function UserScheduleEditor() {
                     <Button
                       w="full"
                       rounded="lg"
-                      colorScheme="red"
+                      colorPalette="red"
                       variant="outline"
-                      leftIcon={<Icon as={TbTrash} />}
                       onClick={onDeletemodalOpen}
                     >
+                      {<Icon as={TbTrash} />}
                       時間割を削除する
                     </Button>
                     <UserScheduleDeleteDialog
@@ -147,43 +144,43 @@ export default function UserScheduleEditor() {
                 )}
               </VStack>
             )}
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button
               w="full"
               rounded="lg"
-              colorScheme="blue"
-              isDisabled={
+              colorPalette="blue"
+              disabled={
                 !schedule.title ||
                 !schedule.owner ||
                 !schedule.meta.grade ||
                 !schedule.meta.class
               }
-              isLoading={mutatePending}
+              loading={mutatePending}
               onClick={() => {
                 mutate(schedule, {
                   onSuccess: () => {
                     setUserScheduleEditor(false);
                     toast({
                       title: '更新しました。',
-                      status: 'success',
+                      type: 'success',
                     });
                   },
                   onError: (mutationErr) =>
                     toast({
                       title: '更新に失敗しました',
                       description: mutationErr.message,
-                      status: 'error',
+                      type: 'error',
                     }),
                 });
               }}
             >
               {userScheduleEditor === 'new' ? '追加' : '更新'}
             </Button>
-          </ModalFooter>
+          </DialogFooter>
         </UserScheduleContext.Provider>
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </DialogRoot>
   );
 }
 
@@ -198,51 +195,42 @@ function UserScheduleDeleteDialog({
   onDelete: () => void;
   onCancel: () => void;
 }) {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 3000,
-  });
-  const cancelRef = useRef<HTMLButtonElement>(null);
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 3000, ...options });
   const { mutate } = useDeleteUserScheduleMutation();
 
   return (
-    <AlertDialog
-      leastDestructiveRef={cancelRef}
-      isOpen={isOpen}
-      onClose={onCancel}
-      isCentered
+    <DialogRoot
+      role="alertdialog"
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onCancel()}
+      placement="center"
     >
-      <AlertDialogOverlay />
-      <AlertDialogContent bg="panel" p={2} rounded="xl">
-        <AlertDialogHeader>時間割の削除</AlertDialogHeader>
-        <AlertDialogBody>
+      <DialogBackdrop />
+      <DialogContent bg="panel" p={2} rounded="xl">
+        <DialogHeader>時間割の削除</DialogHeader>
+        <DialogBody>
           <Text textAlign="center" textStyle="title">
             本当に削除しますか？
             <br />
             この操作は取り消せません。
           </Text>
-        </AlertDialogBody>
-        <AlertDialogFooter>
+        </DialogBody>
+        <DialogFooter>
           <HStack w="full">
-            <Button
-              ref={cancelRef}
-              w="full"
-              variant="ghost"
-              rounded="lg"
-              onClick={onCancel}
-            >
+            <Button w="full" variant="ghost" rounded="lg" onClick={onCancel}>
               キャンセル
             </Button>
             <Button
               w="full"
               rounded="lg"
-              colorScheme="red"
+              colorPalette="red"
               onClick={() =>
                 mutate(id, {
                   onSuccess: () => {
                     toast({
                       title: '削除しました。',
-                      status: 'success',
+                      type: 'success',
                     });
                     onDelete();
                   },
@@ -250,7 +238,7 @@ function UserScheduleDeleteDialog({
                     toast({
                       title: 'エラーが発生しました',
                       description: deleteErr.message,
-                      status: 'error',
+                      type: 'error',
                     });
                   },
                 })
@@ -259,8 +247,8 @@ function UserScheduleDeleteDialog({
               削除
             </Button>
           </HStack>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 }

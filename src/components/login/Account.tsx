@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   FlexProps,
   HStack,
@@ -8,6 +7,7 @@ import {
   useBreakpointValue,
   VStack,
 } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import { TbUser } from 'react-icons/tb';
 import { Link as RouterLink } from 'react-router';
 import { useUser } from '@/services/user';
@@ -24,48 +24,49 @@ function Account({ ...rest }: FlexProps) {
       layerStyle="button"
       rounded="xl"
       direction="column"
-      as={RouterLink}
-      to="/settings/account"
+      asChild
       {...rest}
     >
-      <HStack spacing={4}>
-        <Avatar src={user?.avatar} size="sm" icon={<TbUser />} />
-        {breakPoint !== 1 && (
-          <>
-            <VStack w="100%" align="flex-start" spacing={0}>
-              <Text textStyle="title">{user?.name}</Text>
+      <RouterLink to="/settings/account">
+        <HStack gap={4}>
+          <Avatar src={user?.avatar} size="sm" icon={<TbUser />} />
+          {breakPoint !== 1 && (
+            <>
+              <VStack w="100%" align="flex-start" gap={0}>
+                <Text textStyle="title">{user?.name}</Text>
+                <Text
+                  textStyle="description"
+                  fontSize="xs"
+                  wordBreak="break-all"
+                  lineClamp={1}
+                >
+                  {user?.email}
+                </Text>
+              </VStack>
+              <Spacer />
               <Text
-                textStyle="description"
-                fontSize="xs"
-                wordBreak="break-all"
-                noOfLines={1}
+                fontSize="sm"
+                color="gray.500"
+                fontWeight="bold"
+                whiteSpace="nowrap"
               >
-                {user?.email}
+                {user.contributionCount} pt
               </Text>
-            </VStack>
-            <Spacer />
-            <Text
-              fontSize="sm"
-              color="gray.500"
-              fontWeight="bold"
-              whiteSpace="nowrap"
-            >
-              {user.contributionCount} pt
-            </Text>
-          </>
-        )}
-      </HStack>
+            </>
+          )}
+        </HStack>
+      </RouterLink>
     </Flex>
   ) : (
-    <Avatar
-      src={user.avatar}
-      size="md"
-      icon={<TbUser />}
-      p={2}
-      layerStyle="button"
-      as={RouterLink}
-      to="/settings/account"
-    />
+    <RouterLink to="/settings/account">
+      <Avatar
+        src={user.avatar}
+        size="md"
+        icon={<TbUser />}
+        p={2}
+        layerStyle="button"
+      />
+    </RouterLink>
   );
 }
 

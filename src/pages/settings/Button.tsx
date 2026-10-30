@@ -24,26 +24,35 @@ function SettingButton({
   children,
   ...rest
 }: SettingButtonProps) {
-  return (
-    <HStack
-      p={2}
-      w="100%"
-      as={href ? RouterLink : 'label'}
-      to={href || ''}
-      rounded="xl"
-      layerStyle="button"
-      {...rest}
-    >
-      <VStack align="flex-start" spacing={0} flexGrow={1}>
+  const inner = (
+    <>
+      <VStack align="flex-start" gap={0} flexGrow={1}>
         <Text fontWeight="bold" fontSize="md" textStyle="title">
           {label}
         </Text>
-        <Text fontSize="xs" color="gray.400" noOfLines={1}>
+        <Text fontSize="xs" color="gray.400" lineClamp={1}>
           {description}
         </Text>
       </VStack>
       <Spacer />
       {children || <Icon as={TbChevronRight} />}
+    </>
+  );
+
+  return href ? (
+    <HStack p={2} w="100%" asChild rounded="xl" layerStyle="button" {...rest}>
+      <RouterLink to={href}>{inner}</RouterLink>
+    </HStack>
+  ) : (
+    <HStack
+      p={2}
+      w="100%"
+      as="label"
+      rounded="xl"
+      layerStyle="button"
+      {...rest}
+    >
+      {inner}
     </HStack>
   );
 }

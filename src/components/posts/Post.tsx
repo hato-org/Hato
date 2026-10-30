@@ -6,11 +6,9 @@ import {
   Text,
   Icon,
   Wrap,
-  Tag,
-  TagLeftIcon,
-  TagLabel,
   useDisclosure,
 } from '@chakra-ui/react';
+import { Tag } from '@/components/ui/tag';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { TbClock, TbFile, TbPaperclip, TbTag } from 'react-icons/tb';
@@ -23,7 +21,7 @@ import { queryKeys } from '@/services/queryKeys';
 const PDFViewer = lazy(() => import('./PDFViewer'));
 
 function Post({ id }: { id: string }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const [selectedAttachment, setSelectedAttachment] = useState('');
   const queryClient = useQueryClient();
 
@@ -50,7 +48,7 @@ function Post({ id }: { id: string }) {
         ]);
       }}
     >
-      <VStack w="100%" spacing={4} p={8}>
+      <VStack w="100%" gap={4} p={8}>
         <Heading>{data.title}</Heading>
         {data.text && <Text textStyle="description">{data.text}</Text>}
         <HStack textStyle="description">
@@ -60,7 +58,7 @@ function Post({ id }: { id: string }) {
           </Text>
         </HStack>
 
-        <HStack w="100%" spacing={4} pt={8}>
+        <HStack w="100%" gap={4} pt={8}>
           <Icon as={TbPaperclip} w={6} h={6} />
           <Wrap>
             {data.attachments.map((attachment) => (
@@ -74,28 +72,30 @@ function Post({ id }: { id: string }) {
                     setSelectedAttachment(attachment.id);
                   }}
                   layerStyle="button"
+                  startElement={<Icon as={TbFile} />}
                 >
-                  <TagLeftIcon as={TbFile} />
-                  <TagLabel fontWeight="bold">{attachment.name}</TagLabel>
-                  <PDFViewer
-                    isOpen={isOpen && selectedAttachment === attachment.id}
-                    onClose={() => {
-                      onClose();
-                      setSelectedAttachment('');
-                    }}
-                    attachment={attachment}
-                  />
+                  <Text as="span" fontWeight="bold">
+                    {attachment.name}
+                  </Text>
                 </Tag>
+                <PDFViewer
+                  isOpen={isOpen && selectedAttachment === attachment.id}
+                  onClose={() => {
+                    onClose();
+                    setSelectedAttachment('');
+                  }}
+                  attachment={attachment}
+                />
               </Suspense>
             ))}
           </Wrap>
         </HStack>
-        <HStack w="100%" spacing={4}>
+        <HStack w="100%" gap={4}>
           <Icon as={TbTag} w={6} h={6} />
           <Wrap>
             {data.tags.map((tag) => (
               <Tag key={tag.value} size="lg" variant="subtle">
-                <TagLabel>{tag.label}</TagLabel>
+                {tag.label}
               </Tag>
             ))}
           </Wrap>

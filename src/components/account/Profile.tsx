@@ -1,11 +1,5 @@
-import {
-  HStack,
-  Avatar,
-  VStack,
-  StackDivider,
-  Text,
-  Spacer,
-} from '@chakra-ui/react';
+import { HStack, VStack, StackSeparator, Text, Spacer } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
 import html2canvas from 'html2canvas';
 import { useUser } from '@/services/user';
 import { useClassList, useCourseList, useGradeList } from '@/services/info';
@@ -40,8 +34,8 @@ function Profile() {
     <HStack
       w="100%"
       justify="center"
-      spacing={4}
-      divider={<StackDivider borderColor="blue.300" borderWidth={1} />}
+      gap={4}
+      separator={<StackSeparator borderColor="blue.300" borderWidth={1} />}
       p={4}
       rounded="xl"
       id="profile-image"
@@ -53,7 +47,7 @@ function Profile() {
       // shadow="xl"
     >
       <Avatar src={user?.avatar} size="lg" />
-      <VStack align="flex-start" spacing={0}>
+      <VStack align="flex-start" gap={0}>
         <HStack w="100%">
           <Text textStyle="title" fontSize="xl">
             {user?.name}

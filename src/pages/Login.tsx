@@ -6,12 +6,10 @@ import {
   Text,
   VStack,
   Icon,
-  Tooltip,
   useClipboard,
   Alert,
-  AlertDescription,
-  AlertIcon,
 } from '@chakra-ui/react';
+import { Tooltip } from '@/components/ui/tooltip';
 import { Helmet } from 'react-helmet-async';
 import { TbArrowNarrowLeft, TbCheck, TbCopy } from 'react-icons/tb';
 import { Link as RouterLink, Navigate, useSearchParams } from 'react-router';
@@ -21,7 +19,9 @@ import { jwtAtom } from '@/store/auth';
 
 function Login() {
   const jwt = useAtomValue(jwtAtom);
-  const { onCopy, hasCopied } = useClipboard(window.location.toString());
+  const { copy, copied } = useClipboard({
+    value: window.location.toString(),
+  });
   const [searchParams] = useSearchParams();
   const isEmbedBrowser = useMemo(
     () => /(Instagram|Line)/.test(navigator.userAgent),
@@ -38,7 +38,7 @@ function Login() {
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
       {/* @ts-ignore: Chakra UI doesn't support `dvh` */}
       <Center h={[['100vh', '100dvh']]} w="100vw" flexDir="column" p={8}>
-        <VStack spacing={8} w="100%">
+        <VStack gap={8} w="100%">
           <Heading color="blue.500" as="h1" size="2xl" fontWeight="black">
             ログイン
           </Heading>
@@ -53,7 +53,7 @@ function Login() {
           </Text>
           {isEmbedBrowser ? (
             <VStack w="full">
-              <Alert
+              <Alert.Root
                 status="warning"
                 rounded="xl"
                 flexDirection="column"
@@ -63,9 +63,9 @@ function Login() {
                 textAlign="center"
                 p={4}
               >
-                <AlertIcon boxSize={8} mr={0} />
-                <AlertDescription fontWeight="bold" fontSize="sm">
-                  <Tooltip label={navigator.userAgent}>
+                <Alert.Indicator boxSize={8} mr={0} />
+                <Alert.Description fontWeight="bold" fontSize="sm">
+                  <Tooltip content={navigator.userAgent}>
                     お使いのブラウザ
                   </Tooltip>
                   では
@@ -73,35 +73,24 @@ function Login() {
                   正常にログインできません。
                   <br />
                   他のブラウザで開いてみてください。
-                  <Button
-                    mt={2}
-                    variant="ghost"
-                    rounded="lg"
-                    leftIcon={
-                      <Icon
-                        color={hasCopied ? 'green.400' : undefined}
-                        as={hasCopied ? TbCheck : TbCopy}
-                      />
-                    }
-                    onClick={onCopy}
-                  >
+                  <Button mt={2} variant="ghost" rounded="lg" onClick={copy}>
+                    <Icon
+                      color={copied ? 'green.400' : undefined}
+                      as={copied ? TbCheck : TbCopy}
+                    />
                     リンクをコピー
                   </Button>
-                </AlertDescription>
-              </Alert>
+                </Alert.Description>
+              </Alert.Root>
             </VStack>
           ) : (
             <LoginButton />
           )}
-          <Button
-            as={RouterLink}
-            to="/"
-            variant="ghost"
-            color="blue.500"
-            textStyle="link"
-            leftIcon={<TbArrowNarrowLeft />}
-          >
-            <Text>ホームに戻る</Text>
+          <Button asChild variant="ghost" color="blue.500" textStyle="link">
+            <RouterLink to="/">
+              <TbArrowNarrowLeft />
+              <Text>ホームに戻る</Text>
+            </RouterLink>
           </Button>
         </VStack>
       </Center>

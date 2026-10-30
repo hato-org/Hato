@@ -7,7 +7,8 @@ import {
 import { useAtom, useSetAtom } from 'jotai';
 import { useClient } from '@/modules/client';
 import { jwtAtom, userAtom } from '@/store/auth';
-import { useToast } from '@chakra-ui/react';
+import {} from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { queryKeys } from '../queryKeys';
 
 export const useUser = () => {
@@ -31,7 +32,8 @@ export const useUser = () => {
 
 export const useUserMutation = () => {
   const queryClient = useQueryClient();
-  const toast = useToast({ position: 'top-right', duration: 1500 });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const { client } = useClient();
   const { data: user } = useUser();
   const setUser = useSetAtom(userAtom);

@@ -1,37 +1,36 @@
-import { HStack, Icon, Text, useClipboard, useToast } from '@chakra-ui/react';
+import { HStack, Icon, Text, useClipboard } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { TbCheck, TbCopy } from 'react-icons/tb';
 import { useUser } from '@/services/user';
 
 export default function AccountApiKey() {
   const { data: user } = useUser();
-  const { onCopy, hasCopied } = useClipboard(user.apiKey);
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1500,
-  });
+  const { copy, copied } = useClipboard({ value: user.apiKey });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
 
   return (
     <HStack
       onClick={() => {
-        onCopy();
+        copy();
         toast({
           title: 'コピーしました。',
-          status: 'success',
+          type: 'success',
         });
       }}
     >
       <Text
         fontFamily="monospace"
         wordBreak="break-all"
-        noOfLines={1}
+        lineClamp={1}
         textStyle="title"
       >
         {user.apiKey.slice(0, 4)}...
       </Text>
       <Icon
         transition="all .2s ease"
-        color={hasCopied ? 'green.400' : undefined}
-        as={hasCopied ? TbCheck : TbCopy}
+        color={copied ? 'green.400' : undefined}
+        as={copied ? TbCheck : TbCopy}
       />
     </HStack>
   );

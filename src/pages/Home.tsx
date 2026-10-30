@@ -49,13 +49,12 @@ function Home() {
         <Button
           w={{ base: '100%', md: 60 }}
           mt={10}
-          colorScheme="blue"
+          colorPalette="blue"
           rounded="xl"
           shadow="xl"
-          as={RouterLink}
-          to="/login"
+          asChild
         >
-          ログイン
+          <RouterLink to="/login">ログイン</RouterLink>
         </Button>
       </Center>
     </>

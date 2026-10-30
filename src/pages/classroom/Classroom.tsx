@@ -61,7 +61,7 @@ export default function Classroom() {
     return (
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: Chakra UI doesn't support `dvh`
-      <VStack spacing={8} w="full" h={[['100dvh', '100vh']]} justify="center">
+      <VStack gap={8} w="full" h={[['100dvh', '100vh']]} justify="center">
         <Icon as={TbExclamationCircle} boxSize={24} color="yellow.400" />
         <Text textAlign="center" textStyle="title" fontSize="xl">
           Classroomと連携するには、
@@ -91,22 +91,29 @@ export default function Classroom() {
         <IconButton
           aria-label="bookmarks"
           variant="ghost"
-          isRound
+          borderRadius="full"
           size="lg"
-          icon={<Icon as={TbBookmark} boxSize={6} />}
-          as={RouterLink}
-          to="/classroom/bookmarks"
-        />
+          asChild
+        >
+          <RouterLink to="/classroom/bookmarks">
+            <Icon as={TbBookmark} boxSize={6} />
+          </RouterLink>
+        </IconButton>
         <IconButton
           aria-label="open in browser"
           variant="ghost"
-          isRound
+          borderRadius="full"
           size="lg"
-          icon={<Icon as={TbExternalLink} boxSize={6} />}
-          as={Link}
-          href={`https://classroom.google.com/u/${user.email}`}
-          isExternal
-        />
+          asChild
+        >
+          <Link
+            href={`https://classroom.google.com/u/${user.email}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon as={TbExternalLink} boxSize={6} />
+          </Link>
+        </IconButton>
       </Header>
       <ChakraPullToRefresh
         w="full"

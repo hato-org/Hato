@@ -1,20 +1,20 @@
 import React from 'react';
 import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   Alert,
-  AlertIcon,
   Box,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   useDisclosure,
   VStack,
@@ -45,19 +45,19 @@ const StatusAlert = React.memo(
         ? 'warning'
         : 'success';
 
-    const { isOpen, onToggle } = useDisclosure({
-      defaultIsOpen: defaultOpen ?? statusSummary !== 'success',
+    const { open: isOpen, onToggle } = useDisclosure({
+      defaultOpen: defaultOpen ?? statusSummary !== 'success',
     });
 
     return (
-      <Alert
+      <Alert.Root
         // bg='transparent'
         status={statusSummary}
         rounded="xl"
         p={0}
         _hover={{ cursor: 'pointer' }}
       >
-        <VStack w="full" spacing={0}>
+        <VStack w="full" gap={0}>
           <HStack
             w="full"
             px={4}
@@ -65,7 +65,7 @@ const StatusAlert = React.memo(
             onClick={onToggle}
             layerStyle="button"
           >
-            <AlertIcon mr={0} />
+            <Alert.Indicator mr={0} />
             <Text textStyle="title">
               {statusSummary === 'error'
                 ? '大規模な障害あり'
@@ -81,39 +81,41 @@ const StatusAlert = React.memo(
             />
           </HStack>
           <Box w="full">
-            <Collapse in={isOpen}>
-              <VStack
-                p={{ base: 2, md: 4 }}
-                spacing={0}
-                w="full"
-                align="flex-start"
-              >
-                {lines
-                  ?.toSorted((a, b) =>
-                    a.status.code !== 'normal'
-                      ? -1
-                      : b.status.code !== 'normal'
-                        ? 1
-                        : 0,
-                  )
-                  .filter(({ status }) =>
-                    filterUnstableLines ? status.code !== 'normal' : true,
-                  )
-                  .map((diaInfo) => (
-                    <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
-                  ))}
-              </VStack>
-            </Collapse>
+            <Collapsible.Root open={isOpen}>
+              <Collapsible.Content>
+                <VStack
+                  p={{ base: 2, md: 4 }}
+                  gap={0}
+                  w="full"
+                  align="flex-start"
+                >
+                  {lines
+                    ?.toSorted((a, b) =>
+                      a.status.code !== 'normal'
+                        ? -1
+                        : b.status.code !== 'normal'
+                          ? 1
+                          : 0,
+                    )
+                    .filter(({ status }) =>
+                      filterUnstableLines ? status.code !== 'normal' : true,
+                    )
+                    .map((diaInfo) => (
+                      <LineInfo key={diaInfo.lineInfo.kana} diaInfo={diaInfo} />
+                    ))}
+                </VStack>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
         </VStack>
-      </Alert>
+      </Alert.Root>
     );
   },
 );
 StatusAlert.displayName = 'StatusAlert';
 
 const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
   const borderColor = (() => {
     switch (diaInfo.status.code) {
       case 'suspend':
@@ -129,10 +131,14 @@ const LineInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
 
   return (
     <HStack w="full" layerStyle="button" p={2} rounded="lg" onClick={onOpen}>
-      <StackDivider borderWidth={2} borderColor={borderColor} rounded="full" />
+      <StackSeparator
+        borderWidth={2}
+        borderColor={borderColor}
+        rounded="full"
+      />
       <Text textStyle="title">{diaInfo.lineInfo.name}</Text>
       <Spacer />
-      <Text textStyle="description" fontWeight="bold" noOfLines={1}>
+      <Text textStyle="description" fontWeight="bold" lineClamp={1}>
         {diaInfo.status.text}
       </Text>
       <Icon as={TbChevronRight} />
@@ -169,13 +175,16 @@ const StatusDetailModal = React.memo(
     })();
 
     return (
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent rounded="xl" bg="panel">
-          <ModalCloseButton top={4} right={4} />
-          <ModalHeader>{diaInfo.lineInfo.name}</ModalHeader>
-          <ModalBody>
-            <VStack spacing={4} px={2}>
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onClose()}
+        placement="center"
+      >
+        <DialogContent rounded="xl" bg="panel">
+          <DialogCloseTrigger top={4} right={4} />
+          <DialogHeader>{diaInfo.lineInfo.name}</DialogHeader>
+          <DialogBody>
+            <VStack gap={4} px={2}>
               <VStack>
                 <Icon
                   color={statusIcon.color}
@@ -191,10 +200,10 @@ const StatusDetailModal = React.memo(
                 {format(new Date(diaInfo.updatedAt), 'MM/dd HH:mm')} 更新
               </Text>
             </VStack>
-          </ModalBody>
-          <ModalFooter />
-        </ModalContent>
-      </Modal>
+          </DialogBody>
+          <DialogFooter />
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );

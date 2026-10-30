@@ -1,20 +1,20 @@
 import React, { useMemo, useCallback, useEffect } from 'react';
 import {
-  Box,
-  Drawer,
   DrawerBody,
-  DrawerCloseButton,
+  DrawerCloseTrigger,
   DrawerContent,
-  DrawerOverlay,
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import {
+  Box,
   Heading,
   HStack,
   Icon,
   IconButton,
   Image,
   Portal,
-  Show,
   Spacer,
-  StackDivider,
+  StackSeparator,
   StackProps,
   Text,
   useBreakpointValue,
@@ -41,14 +41,12 @@ import Account from '../login/Account';
 export default function SideMenu() {
   return (
     <>
-      <Show below="md">
+      <Box hideFrom="md">
         <SideMenuDrawer />
-      </Show>
-      <Show above="md">
-        <Box px={2}>
-          <MenuBody />
-        </Box>
-      </Show>
+      </Box>
+      <Box hideBelow="md" px={2}>
+        <MenuBody />
+      </Box>
     </>
   );
 }
@@ -64,15 +62,18 @@ export function SideMenuDrawer() {
 
   return (
     <Portal>
-      <Drawer isOpen={menu} onClose={onClose} placement="left">
-        <DrawerOverlay />
+      <DrawerRoot
+        open={menu}
+        onOpenChange={(e) => !e.open && onClose()}
+        placement="start"
+      >
         <DrawerContent bg="panel" roundedRight="2xl">
-          <DrawerCloseButton top={9} right={8} />
+          <DrawerCloseTrigger top={9} right={8} />
           <DrawerBody p={4}>
             <MenuBody />
           </DrawerBody>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     </Portal>
   );
 }
@@ -166,8 +167,8 @@ const MenuBody = React.memo(() => {
   );
 
   return (
-    <VStack w="100%" h="100%" spacing={2} pb="env(safe-area-inset-bottom)">
-      <HStack w="100%" spacing={0}>
+    <VStack w="100%" h="100%" gap={2} pb="env(safe-area-inset-bottom)">
+      <HStack w="100%" gap={0}>
         <Image src="/logo_alpha.png" boxSize={12} alt="Hato ロゴ" />
         {breakPoint !== 1 && (
           <Heading
@@ -183,7 +184,7 @@ const MenuBody = React.memo(() => {
       </HStack>
       {menu.map((menuItem, index) =>
         menuItem.type === 'divider' ? (
-          <StackDivider
+          <StackSeparator
             key={`${menuItem.type}-${index}`}
             borderWidth="1px"
             borderColor="border"
@@ -191,50 +192,56 @@ const MenuBody = React.memo(() => {
         ) : breakPoint === 1 ? (
           <IconButton
             aria-label={menuItem.label}
-            icon={menuItem.icon}
             size="lg"
             variant="ghost"
-            isRound
+            borderRadius="full"
             color={
               menuItem.color ??
               (location.pathname === menuItem.href ? 'blue.400' : undefined)
             }
-            as={RouterLink}
-            to={menuItem.href}
+            asChild
             onClick={
               menuItem.onClick as unknown as React.MouseEventHandler<HTMLButtonElement>
             }
-          />
+          >
+            <RouterLink to={menuItem.href}>{menuItem.icon}</RouterLink>
+          </IconButton>
         ) : (
           <HStack
             p={2}
             key={menuItem.label}
             w="100%"
-            spacing={4}
+            gap={4}
             color={
-              location.pathname.startsWith(menuItem.href)
+              menuItem.color ??
+              (location.pathname.startsWith(menuItem.href)
                 ? 'blue.400'
-                : undefined
+                : undefined)
             }
             layerStyle="button"
             rounded="xl"
-            as={RouterLink}
-            to={menuItem.href}
-            {...menuItem}
+            asChild
           >
-            {menuItem.icon}
-            <Text
-              color={
-                menuItem.color ??
-                (location.pathname.startsWith(menuItem.href)
-                  ? 'blue.400'
-                  : undefined)
+            <RouterLink
+              to={menuItem.href}
+              onClick={
+                menuItem.onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>
               }
-              textStyle="title"
-              fontSize="lg"
             >
-              {menuItem.label}
-            </Text>
+              {menuItem.icon}
+              <Text
+                color={
+                  menuItem.color ??
+                  (location.pathname.startsWith(menuItem.href)
+                    ? 'blue.400'
+                    : undefined)
+                }
+                textStyle="title"
+                fontSize="lg"
+              >
+                {menuItem.label}
+              </Text>
+            </RouterLink>
           </HStack>
         ),
       )}

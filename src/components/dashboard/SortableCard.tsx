@@ -39,7 +39,7 @@ export default function SortableCard({ cardId }: { cardId: string }) {
       pos="relative"
       style={style}
       my={4}
-      sx={{
+      css={{
         touchAction: isDragging ? 'manipulation' : 'auto',
       }}
       zIndex={isDragging ? 1 : 0}
@@ -64,16 +64,17 @@ export default function SortableCard({ cardId }: { cardId: string }) {
         top="50%"
         left="50%"
         aria-label="Delete card"
-        icon={<Icon as={TbTrash} boxSize={6} />}
-        colorScheme="red"
+        colorPalette="red"
         variant="ghost"
         size="lg"
-        isRound
+        borderRadius="full"
         transform="translate(-50%, -50%) scale(1.5)"
         onClick={() =>
           setCardOrder((currVal) => currVal.filter((id) => id !== card.id))
         }
-      />
+      >
+        {<Icon as={TbTrash} boxSize={6} />}
+      </IconButton>
     </Card>
   ) : null;
 }

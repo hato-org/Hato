@@ -27,7 +27,7 @@ function Status() {
   const { data: user } = useUser();
   const { data: status } = useHatoStatus();
   const { data: statusInfo } = useHatoStatusMaintenance();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open: isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -48,9 +48,9 @@ function Status() {
           });
         }}
       >
-        <VStack w="full" p={4} spacing={8}>
+        <VStack w="full" p={4} gap={8}>
           <Card w="full">
-            <VStack align="flex-start" w="full" p={2} spacing={4}>
+            <VStack align="flex-start" w="full" p={2} gap={4}>
               <HStack w="full">
                 <Heading size="md">リアルタイム稼働状況</Heading>
                 <Spacer />
@@ -64,19 +64,20 @@ function Status() {
             </VStack>
           </Card>
           <Card w="full">
-            <VStack align="flex-start" w="full" p={2} spacing={4}>
+            <VStack align="flex-start" w="full" p={2} gap={4}>
               <HStack w="full">
                 <Heading size="md">メンテナンス情報</Heading>
                 <Spacer />
                 {user.role === 'admin' && (
                   <IconButton
                     aria-label="Add maintenance info"
-                    icon={<Icon as={TbPlus} />}
                     onClick={onOpen}
                     variant="ghost"
-                    colorScheme="blue"
-                    isRound
-                  />
+                    colorPalette="blue"
+                    borderRadius="full"
+                  >
+                    {<Icon as={TbPlus} />}
+                  </IconButton>
                 )}
               </HStack>
               <StatusInfoList statusInfo={statusInfo} />

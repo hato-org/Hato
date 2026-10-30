@@ -5,13 +5,12 @@ import {
   Text,
   VStack,
   Icon,
-  StackDivider,
+  StackSeparator,
   Spacer,
   IconButton,
   Link,
   Wrap,
   Skeleton,
-  Fade,
   SkeletonText,
   Center,
 } from '@chakra-ui/react';
@@ -66,14 +65,7 @@ export default function ClassroomCoursework() {
             aria-label="bookmark"
             variant="ghost"
             size="lg"
-            isRound
-            icon={
-              <Icon
-                color={isBookmarked ? 'blue.400' : undefined}
-                as={isBookmarked ? IoBookmark : IoBookmarkOutline}
-                boxSize={5}
-              />
-            }
+            borderRadius="full"
             onClick={() =>
               setBookmarks((currVal) =>
                 isBookmarked
@@ -96,42 +88,50 @@ export default function ClassroomCoursework() {
                     ],
               )
             }
-          />
+          >
+            {
+              <Icon
+                color={isBookmarked ? 'blue.400' : undefined}
+                as={isBookmarked ? IoBookmark : IoBookmarkOutline}
+                boxSize={5}
+              />
+            }
+          </IconButton>
           <IconButton
             aria-label="open in browser"
-            as={Link}
-            href={data?.alternateLink ?? ''}
-            isExternal
             size="lg"
             variant="ghost"
-            isRound
-            icon={<Icon as={TbExternalLink} boxSize={6} />}
-          />
+            borderRadius="full"
+            asChild
+          >
+            <Link
+              href={data?.alternateLink ?? ''}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Icon as={TbExternalLink} boxSize={6} />
+            </Link>
+          </IconButton>
         </HStack>
       </Header>
 
       {error ? (
         <Error error={error} />
       ) : (
-        <VStack p={6} w="full" align="flex-start" spacing={4} userSelect="text">
-          <HStack w="full" spacing={4}>
-            <StackDivider
+        <VStack p={6} w="full" align="flex-start" gap={4} userSelect="text">
+          <HStack w="full" gap={4}>
+            <StackSeparator
               rounded="full"
               borderWidth={2}
               borderColor="blue.400"
             />
-            <VStack w="full" align="flex-start" spacing={1}>
-              <Skeleton minH={8} minW={40} rounded="lg" isLoaded={!isPending}>
+            <VStack w="full" align="flex-start" gap={1}>
+              <Skeleton minH={8} minW={40} rounded="lg" loading={isPending}>
                 <Text textStyle="title" fontSize="2xl">
                   {data?.title}
                 </Text>
               </Skeleton>
-              <Skeleton
-                minH={6}
-                minW={20}
-                rounded="md"
-                isLoaded={!isUserPending}
-              >
+              <Skeleton minH={6} minW={20} rounded="md" loading={isUserPending}>
                 <Text textStyle="description">{userInfo?.name?.fullName}</Text>
               </Skeleton>
             </VStack>
@@ -140,11 +140,10 @@ export default function ClassroomCoursework() {
             w="full"
             mt={2}
             noOfLines={3}
-            skeletonHeight={4}
-            spacing={2}
-            isLoaded={!isPending}
+            gap={2}
+            loading={isPending}
           >
-            <Text whiteSpace="pre-wrap" textStyle="description" color="title">
+            <Text whiteSpace="pre-wrap" fontSize="sm" color="title">
               {data?.description}
             </Text>
           </SkeletonText>
@@ -153,8 +152,8 @@ export default function ClassroomCoursework() {
               <Material key={JSON.stringify(material)} {...material} />
             ))}
           </Wrap>
-          <Fade in={!!data} style={{ width: '100%' }}>
-            <StackDivider borderWidth={1} mb={4} />
+          <Box w="100%" hidden={!data} animation="fade-in 0.4s ease">
+            <StackSeparator borderWidth={1} mb={4} />
             <VStack align="flex-start">
               <HStack>
                 <Text textStyle="title" fontSize="xl">
@@ -188,7 +187,7 @@ export default function ClassroomCoursework() {
                 </Text>
               </Center>
             </VStack>
-          </Fade>
+          </Box>
         </VStack>
       )}
     </Box>

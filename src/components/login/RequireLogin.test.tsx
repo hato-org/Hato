@@ -1,14 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as ChakraUIProvider } from '@/components/ui/provider';
 import { Provider as JotaiProvider, createStore } from 'jotai';
-import { theme } from '@/theme';
 import { jwtAtom } from '@/store/auth';
 import RequireLogin from '@/components/login/RequireLogin';
 
 // Navigate の遷移先を記録するためのモック
-const navigatedTo = vi.fn<[string]>();
+const navigatedTo = vi.fn<(path: string) => void>();
 
 vi.mock('@/hooks/common/ga4', () => ({
   default: vi.fn(),
@@ -51,7 +50,7 @@ function renderWithMemoryRouter(
 ) {
   render(
     <JotaiProvider store={store}>
-      <ChakraProvider theme={theme}>
+      <ChakraUIProvider defaultTheme="light">
         <MemoryRouter initialEntries={initialEntries}>
           <Routes>
             <Route path={protectedPath} element={<RequireLogin />}>
@@ -60,7 +59,7 @@ function renderWithMemoryRouter(
             <Route path="/login" element={<LoginCapture />} />
           </Routes>
         </MemoryRouter>
-      </ChakraProvider>
+      </ChakraUIProvider>
     </JotaiProvider>,
   );
 }

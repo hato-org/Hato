@@ -15,7 +15,7 @@ const SportButton = React.memo(
     season: ClassmatchSeason;
     sport: ClassmatchSportId;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
 
     return (
       <>

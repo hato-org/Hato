@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import {
   Button,
+  Field,
   HStack,
   Icon,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -63,42 +65,46 @@ const UserSubjectPicker = React.memo(
     }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-      <Modal isOpen={isOpen} onClose={onCancel} size="xl">
-        <ModalOverlay zIndex={1400} />
-        <ModalContent
+      <DialogRoot
+        open={isOpen}
+        onOpenChange={(e) => !e.open && onCancel()}
+        size="xl"
+      >
+        <DialogContent
           zIndex={1500}
           bg="panel"
           rounded="xl"
           pb="env(safe-area-inset-bottom)"
         >
-          <ModalHeader>時限の追加・置き換え</ModalHeader>
-          <ModalBody>
-            <VStack w="full" align="flex-start" spacing={4}>
+          <DialogHeader>時限の追加・置き換え</DialogHeader>
+          <DialogBody>
+            <VStack w="full" align="flex-start" gap={4}>
               {createMode ? (
-                <VStack w="full" align="flex-start" spacing={4}>
+                <VStack w="full" align="flex-start" gap={4}>
                   <Button
-                    variant="link"
-                    colorScheme="blue"
-                    leftIcon={<Icon as={TbArrowLeft} />}
+                    variant="plain"
+                    colorPalette="blue"
                     onClick={() => {
                       setCreateMode(false);
                     }}
                   >
+                    {<Icon as={TbArrowLeft} />}
                     検索に戻る
                   </Button>
-                  <Input
-                    variant="flushed"
-                    textStyle="title"
-                    placeholder="教科名"
-                    defaultValue={searchQuery}
-                    isInvalid={!subject.name}
-                    onChange={(e) =>
-                      setSubject((val) => ({
-                        ...val,
-                        name: e.target.value || undefined,
-                      }))
-                    }
-                  />
+                  <Field.Root invalid={!subject.name}>
+                    <Input
+                      variant="flushed"
+                      textStyle="title"
+                      placeholder="教科名"
+                      defaultValue={searchQuery}
+                      onChange={(e) =>
+                        setSubject((val) => ({
+                          ...val,
+                          name: e.target.value || undefined,
+                        }))
+                      }
+                    />
+                  </Field.Root>
                   <Input
                     variant="flushed"
                     textStyle="title"
@@ -178,15 +184,15 @@ const UserSubjectPicker = React.memo(
                 )}
               </VStack>
             </VStack>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             {createMode ? (
               <Button
                 w="full"
                 rounded="lg"
-                colorScheme="blue"
-                isDisabled={!subject.name}
-                isLoading={isPending}
+                colorPalette="blue"
+                disabled={!subject.name}
+                loading={isPending}
                 onClick={() =>
                   mutate(subject as UserSubject, {
                     onSuccess: (res) => {
@@ -201,18 +207,18 @@ const UserSubjectPicker = React.memo(
               <Button
                 w="full"
                 rounded="lg"
-                leftIcon={<Icon as={TbPlus} />}
                 onClick={() => {
                   setCreateMode(true);
                   setSubject((val) => ({ ...val, name: searchQuery }));
                 }}
               >
+                {<Icon as={TbPlus} />}
                 作成する
               </Button>
             )}
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
     );
   },
 );
@@ -232,7 +238,7 @@ const UserSubjectSuggestion = React.memo(
       py={2}
       w="full"
       align="flex-start"
-      spacing={1}
+      gap={1}
       layerStyle="button"
       rounded="xl"
       onClick={onSelect}
@@ -248,26 +254,26 @@ const UserSubjectSuggestion = React.memo(
       )}
       <HStack wrap="wrap" rowGap={0.5}>
         {teacher && (
-          <HStack align="center" spacing={1}>
+          <HStack align="center" gap={1}>
             <Icon as={TbUser} />
             <Text
               color="description"
               fontSize="xs"
               fontWeight="normal"
-              noOfLines={1}
+              lineClamp={1}
             >
               {teacher}
             </Text>
           </HStack>
         )}
         {location && (
-          <HStack align="center" spacing={1}>
+          <HStack align="center" gap={1}>
             <Icon as={TbMapPin} />
             <Text
               color="description"
               fontSize="xs"
               fontWeight="normal"
-              noOfLines={1}
+              lineClamp={1}
             >
               {location}
             </Text>

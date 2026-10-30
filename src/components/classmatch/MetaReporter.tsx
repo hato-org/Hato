@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import {
-  Avatar,
+  Field,
   HStack,
   Icon,
   IconButton,
   Text,
   Textarea,
   VStack,
-  useToast,
 } from '@chakra-ui/react';
+import { Avatar } from '@/components/ui/avatar';
+import { toaster } from '@/components/ui/toaster';
 import { TbCheck, TbX } from 'react-icons/tb';
 import { useAtomValue } from 'jotai';
 import { useUserInfo } from '@/services/user';
@@ -26,10 +27,8 @@ export default function MetaReporter({
   history: ClassmatchTournament['editHistory'];
   onSubmit: () => void;
 }) {
-  const toast = useToast({
-    position: 'top-right',
-    duration: 1500,
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create({ duration: 1500, ...options });
   const classmatchTournament = useAtomValue(classmatchTournamentAtom);
   const [description, setDescription] = useState('');
   const { data, status, error } = useUserInfo(history?.at(-1)?.userId ?? '', {
@@ -40,20 +39,20 @@ export default function MetaReporter({
     onSuccess: () => {
       toast({
         title: '送信しました。',
-        status: 'success',
+        type: 'success',
       });
     },
     onError: (e) => {
       toast({
         title: '送信に失敗しました。',
         description: e.message,
-        status: 'error',
+        type: 'error',
       });
     },
   });
 
   return (
-    <VStack w="full" align="flex-start" spacing={4}>
+    <VStack w="full" align="flex-start" gap={4}>
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         最後に編集したユーザー
       </Text>
@@ -63,13 +62,13 @@ export default function MetaReporter({
         ) : status === 'error' ? (
           <Error error={error} />
         ) : (
-          <HStack spacing={4} align="center">
+          <HStack gap={4} align="center">
             <Avatar src={data.avatar} size="sm" />
-            <VStack align="flex-start" spacing={0}>
-              <Text textStyle="title" noOfLines={1}>
+            <VStack align="flex-start" gap={0}>
+              <Text textStyle="title" lineClamp={1}>
                 {data.name}
               </Text>
-              <Text textStyle="description" fontSize="xs" noOfLines={1}>
+              <Text textStyle="description" fontSize="xs" lineClamp={1}>
                 {data.email}
               </Text>
             </VStack>
@@ -88,28 +87,29 @@ export default function MetaReporter({
       <Text textStyle="description" fontWeight="bold" fontSize="xs">
         報告理由
       </Text>
-      <Textarea
-        rounded="lg"
-        placeholder="例：荒らし"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        isInvalid={!description}
-      />
-      <HStack w="full" spacing={4}>
+      <Field.Root invalid={!description}>
+        <Textarea
+          rounded="lg"
+          placeholder="例：荒らし"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Field.Root>
+      <HStack w="full" gap={4}>
         <IconButton
           aria-label="cancel"
-          icon={<Icon as={TbX} />}
-          colorScheme="red"
+          colorPalette="red"
           variant="outline"
           rounded="lg"
           flex={1}
           onClick={onSubmit}
-        />
+        >
+          {<Icon as={TbX} />}
+        </IconButton>
         <IconButton
           aria-label="confirm changes"
-          icon={<Icon as={TbCheck} />}
           rounded="lg"
-          colorScheme="green"
+          colorPalette="green"
           flex={2}
           onClick={() =>
             mutate(
@@ -133,9 +133,11 @@ export default function MetaReporter({
               },
             )
           }
-          isLoading={reportPending}
-          isDisabled={!description}
-        />
+          loading={reportPending}
+          disabled={!description}
+        >
+          {<Icon as={TbCheck} />}
+        </IconButton>
       </HStack>
     </VStack>
   );

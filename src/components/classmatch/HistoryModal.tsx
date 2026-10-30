@@ -1,18 +1,19 @@
 import {
   HStack,
   Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spacer,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
 } from '@chakra-ui/react';
+import {
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
 import { format } from 'date-fns';
 import { TbChevronRight } from 'react-icons/tb';
 import Error from '../cards/Error';
@@ -37,12 +38,15 @@ export default function HistoryModal({
   const { data, isPending, error } = useClassmatchHistory();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <ModalOverlay />
-      <ModalContent bg="panel" rounded="xl">
-        <ModalCloseButton top={4} right={4} />
-        <ModalHeader>過去のクラスマッチ</ModalHeader>
-        <ModalBody>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+      size="xl"
+    >
+      <DialogContent bg="panel" rounded="xl">
+        <DialogCloseTrigger top={4} right={4} />
+        <DialogHeader>過去のクラスマッチ</DialogHeader>
+        <DialogBody>
           <VStack w="full">
             {isPending ? (
               <Loading />
@@ -62,14 +66,14 @@ export default function HistoryModal({
                     onClose();
                   }}
                 >
-                  <StackDivider
+                  <StackSeparator
                     borderWidth={2}
                     borderColor={
                       season === 'spring' ? 'pink.300' : 'orange.500'
                     }
                     rounded="full"
                   />
-                  <VStack align="flex-start" spacing={0}>
+                  <VStack align="flex-start" gap={0}>
                     <Text fontSize="xl" textStyle="title">
                       {year} {season === 'spring' ? '春' : '秋'}
                     </Text>
@@ -84,9 +88,9 @@ export default function HistoryModal({
               ))
             )}
           </VStack>
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+        <DialogFooter />
+      </DialogContent>
+    </DialogRoot>
   );
 }

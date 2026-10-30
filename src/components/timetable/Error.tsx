@@ -20,7 +20,7 @@ function Error({ type, onOpen }: ErrorProps) {
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
             <Text textStyle="title">まだ日課が設定されていません。</Text>
-            <Button rounded="lg" colorScheme="blue" onClick={onOpen}>
+            <Button rounded="lg" colorPalette="blue" onClick={onOpen}>
               設定する
             </Button>
           </VStack>
@@ -36,8 +36,8 @@ function Error({ type, onOpen }: ErrorProps) {
             <Text textAlign="center" textStyle="title">
               時間割が設定されていません。
               <br />
-              <Text as={RouterLink} to="/timetable/editor" textStyle="link">
-                設定ページ
+              <Text asChild textStyle="link">
+                <RouterLink to="/timetable/editor">設定ページ</RouterLink>
               </Text>
               から、マイ時間割を作成
               <br />
@@ -53,7 +53,7 @@ function Error({ type, onOpen }: ErrorProps) {
         <Center w="100%">
           <VStack>
             <Icon as={TbAlertCircle} w={16} h={16} color="yellow.500" />
-            <Text textStyle="title" align="center">
+            <Text textStyle="title" textAlign="center">
               エラーが発生しました。
               <br />
               原因不明のため、再起動をお試しください。

@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import {
-  Button,
-  Drawer,
   DrawerBody,
-  DrawerCloseButton,
+  DrawerCloseTrigger,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay,
-  Input,
-  Text,
-  VStack,
-  useToast,
-} from '@chakra-ui/react';
+  DrawerRoot,
+} from '@/components/ui/drawer';
+import { Button, Field, Input, Text, VStack } from '@chakra-ui/react';
+import { toaster } from '@/components/ui/toaster';
 import { useUserSubjectMutation } from '@/services/timetable';
 import { useUser } from '@/services/user';
 import { useUserScheduleContext } from './context';
@@ -27,9 +23,8 @@ export default function UserSubjectEditor({
   subject?: UserSubject;
 }) {
   const [, setSchedule] = useUserScheduleContext();
-  const toast = useToast({
-    position: 'top-right',
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create(options);
   const { data: user } = useUser();
   const [name, setName] = useState(subject?.name);
   const [shortName, setShortname] = useState(subject?.short_name);
@@ -40,27 +35,31 @@ export default function UserSubjectEditor({
   const { mutate, isPending } = useUserSubjectMutation();
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
-      <DrawerOverlay zIndex={1400} />
+    <DrawerRoot
+      open={isOpen}
+      onOpenChange={(e) => !e.open && onClose()}
+      placement="bottom"
+    >
       <DrawerContent
         zIndex={1500}
         roundedTop="xl"
         bg="panel"
         pb="env(safe-area-inset-bottom)"
       >
-        <DrawerCloseButton top={4} right={4} />
+        <DrawerCloseTrigger top={4} right={4} />
         <DrawerHeader>教科の編集</DrawerHeader>
         <DrawerBody>
-          <VStack align="flex-start" spacing={4}>
+          <VStack align="flex-start" gap={4}>
             <Text textStyle="title">教科名</Text>
-            <Input
-              textStyle="title"
-              variant="flushed"
-              placeholder={subject?.name}
-              isInvalid={!name}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Field.Root invalid={!name}>
+              <Input
+                textStyle="title"
+                variant="flushed"
+                placeholder={subject?.name}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Field.Root>
             <Text textStyle="title">教科名（略称）</Text>
             <Input
               textStyle="title"
@@ -87,10 +86,10 @@ export default function UserSubjectEditor({
         <DrawerFooter>
           <Button
             w="full"
-            colorScheme="blue"
+            colorPalette="blue"
             rounded="lg"
-            isDisabled={!(name && subject)}
-            isLoading={isPending}
+            disabled={!(name && subject)}
+            loading={isPending}
             onClick={() => {
               if (name && subject)
                 mutate(
@@ -131,7 +130,7 @@ export default function UserSubjectEditor({
                     },
                     onError: (error) => {
                       toast({
-                        status: 'error',
+                        type: 'error',
                         title: 'エラーが発生しました',
                         description: error.message,
                       });
@@ -144,6 +143,6 @@ export default function UserSubjectEditor({
           </Button>
         </DrawerFooter>
       </DrawerContent>
-    </Drawer>
+    </DrawerRoot>
   );
 }

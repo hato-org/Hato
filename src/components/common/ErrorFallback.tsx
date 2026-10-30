@@ -1,12 +1,6 @@
 import { useMemo, useState } from 'react';
-import {
-  Button,
-  Center,
-  Checkbox,
-  Code,
-  Heading,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Center, Code, Heading, VStack } from '@chakra-ui/react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { TbLoader, TbRotate } from 'react-icons/tb';
 import { useRouteError } from 'react-router';
 import { useAuth } from '@/modules/auth';
@@ -36,7 +30,7 @@ function ErrorFallback() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: Chakra UI doesn't support `dvh`
     <Center w="full" h={[['100vh', '100dvh']]} p={8}>
-      <VStack w="full" spacing={4} userSelect="text">
+      <VStack w="full" gap={4} userSelect="text">
         <Heading>エラーが発生しました</Heading>
         <Code rounded="md">{error.message}</Code>
         <Code
@@ -50,18 +44,17 @@ function ErrorFallback() {
           {error.stack}
         </Code>
         <Button
-          leftIcon={<TbRotate />}
-          colorScheme="blue"
+          colorPalette="blue"
           rounded="xl"
           onClick={() => {
             if (!import.meta.env.DEV && sendReport) mutate(report);
             window.location.assign('/');
           }}
         >
+          {<TbRotate />}
           再読み込み
         </Button>
         <Button
-          leftIcon={<TbLoader />}
           rounded="xl"
           onClick={async () => {
             if (!import.meta.env.DEV && sendReport) mutate(report);
@@ -74,11 +67,12 @@ function ErrorFallback() {
             window.location.replace('/');
           }}
         >
+          {<TbLoader />}
           ログアウト・キャッシュ削除
         </Button>
         <Checkbox
-          isChecked={sendReport}
-          onChange={(e) => setSendReport(e.target.checked)}
+          checked={sendReport}
+          onCheckedChange={(e) => setSendReport(!!e.checked)}
           textStyle="title"
         >
           エラーレポートを送信する

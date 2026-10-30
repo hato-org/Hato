@@ -10,11 +10,11 @@ export default function SettingCategory({
   ...rest
 }: CategoryProps) {
   return (
-    <VStack align="flex-start" spacing={2} w="100%" {...rest}>
+    <VStack align="flex-start" gap={2} w="100%" {...rest}>
       <Heading as="h2" size="md" textStyle="title">
         {title}
       </Heading>
-      <VStack w="100%" spacing={1}>
+      <VStack w="100%" gap={1}>
         {children}
       </VStack>
     </VStack>

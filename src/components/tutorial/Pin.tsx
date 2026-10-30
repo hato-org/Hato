@@ -1,14 +1,13 @@
 import { useCallback } from 'react';
 import {
-  Image,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react';
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import { Image } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { tutorialModalAtom } from '@/store/tutorial';
 
@@ -20,21 +19,23 @@ export default function Pin() {
   );
 
   return (
-    <Modal isOpen={tutorialModal.pin} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent rounded="xl" bg="panel">
-        <ModalCloseButton top={4} right={4} />
-        <ModalHeader>投稿のピン留め</ModalHeader>
-        <ModalBody>
+    <DialogRoot
+      open={tutorialModal.pin}
+      onOpenChange={(e) => !e.open && onClose()}
+    >
+      <DialogContent rounded="xl" bg="panel">
+        <DialogCloseTrigger top={4} right={4} />
+        <DialogHeader>投稿のピン留め</DialogHeader>
+        <DialogBody>
           <Image
             src="/pin/pin.gif"
             rounded="lg"
             shadow="md"
             alt="ピン留め操作の説明"
           />
-        </ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+        <DialogFooter />
+      </DialogContent>
+    </DialogRoot>
   );
 }

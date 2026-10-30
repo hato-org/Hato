@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import {
   Box,
   Button,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   Spacer,
@@ -24,7 +24,7 @@ const UpcomingMatch = React.memo(
   ({ year, season }: { year: number; season: ClassmatchSeason }) => {
     const { data: user } = useUser();
 
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
     const [type, setType] = useState(user.type);
     const [grade, setGrade] = useState(user.grade);
     const [classNum, setClass] = useState(user.class);
@@ -51,7 +51,7 @@ const UpcomingMatch = React.memo(
     if (error) return <Error error={error} />;
 
     return (
-      <VStack w="full" spacing={4}>
+      <VStack w="full" gap={4}>
         <GradeClassPicker
           onGradeSelect={({ type: newType, gradeCode }) => {
             setType(newType);
@@ -67,16 +67,21 @@ const UpcomingMatch = React.memo(
           <Loading />
         ) : upcomingMatches?.length ? (
           <Box w="full">
-            <Collapse
-              startingHeight={(data?.length ?? 0) > 3 ? 220 : 0}
-              in={isOpen}
+            <Collapsible.Root
+              open={isOpen}
+              collapsedHeight={(data?.length ?? 0) > 3 ? 220 : 0}
             >
-              <VStack w="full" spacing={0}>
-                {upcomingMatches?.map((upcoming) => (
-                  <Match key={upcoming.matchId + upcoming.name} {...upcoming} />
-                ))}
-              </VStack>
-            </Collapse>
+              <Collapsible.Content>
+                <VStack w="full" gap={0}>
+                  {upcomingMatches?.map((upcoming) => (
+                    <Match
+                      key={upcoming.matchId + upcoming.name}
+                      {...upcoming}
+                    />
+                  ))}
+                </VStack>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </Box>
         ) : (
           <Text pt={2} textStyle="description" fontWeight="bold">
@@ -86,18 +91,14 @@ const UpcomingMatch = React.memo(
           </Text>
         )}
         {(upcomingMatches?.length ?? 0) > 3 && (
-          <Button
-            w="full"
-            rounded="lg"
-            leftIcon={
+          <Button w="full" rounded="lg" onClick={onToggle}>
+            {
               <Icon
                 as={TbChevronDown}
                 transform={`rotate(${isOpen ? '180deg' : '0deg'})`}
                 transition="all .2s ease"
               />
             }
-            onClick={onToggle}
-          >
             {isOpen ? '折りたたむ' : 'もっと見る'}
           </Button>
         )}
@@ -117,7 +118,7 @@ const Match = React.memo(
         w="full"
         p={2}
         py={4}
-        spacing={4}
+        gap={4}
         _first={{
           _after: {
             content: '""',
@@ -199,7 +200,7 @@ const Match = React.memo(
           shadow="sm"
           left={2}
         />
-        <VStack pl={6} spacing={-1} align="flex-start">
+        <VStack pl={6} gap={-1} align="flex-start">
           {startAt && (
             <Text textStyle="title" fontSize="xs">
               {format(new Date(startAt), 'MM/dd')}
@@ -214,8 +215,8 @@ const Match = React.memo(
           </Text>
         </VStack>
         <Spacer />
-        <VStack align="flex-end" spacing={0}>
-          <Text textStyle="title" noOfLines={1}>
+        <VStack align="flex-end" gap={0}>
+          <Text textStyle="title" lineClamp={1}>
             {name}
           </Text>
           <Text textStyle="description" fontWeight="bold">

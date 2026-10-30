@@ -2,21 +2,23 @@ import {
   Box,
   Button,
   Center,
-  Collapse,
+  Collapsible,
   HStack,
   Icon,
   IconButton,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   SimpleGrid,
   Spacer,
   Text,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
+import {
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverRoot,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import React from 'react';
 import {
   TbChevronDown,
@@ -45,7 +47,7 @@ export const EditorTable = React.memo(
     isPrivate: UserSchedule['private'];
     week: Week;
   }) => {
-    const { isOpen, onToggle } = useDisclosure();
+    const { open: isOpen, onToggle } = useDisclosure();
 
     return (
       <VStack
@@ -53,7 +55,7 @@ export const EditorTable = React.memo(
         rounded="xl"
         border="1px solid"
         borderColor="border"
-        spacing={0}
+        gap={0}
         overflow="hidden"
       >
         <HStack p={4} w="full" onClick={onToggle} layerStyle="button">
@@ -68,22 +70,24 @@ export const EditorTable = React.memo(
           />
         </HStack>
         <Box w="full">
-          <Collapse in={isOpen} unmountOnExit>
-            <SimpleGrid w="full" p={4} pt={8} columns={5} gap={1}>
-              {schedules
-                ?.slice(1, 6)
-                .map((weekSchedule, index) => (
-                  <EditorTableCol
-                    key={`schedule-day${index}`}
-                    schedule={weekSchedule}
-                    meta={meta}
-                    isPrivate={isPrivate}
-                    week={week}
-                    dayIndex={index + 1}
-                  />
-                ))}
-            </SimpleGrid>
-          </Collapse>
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              <SimpleGrid w="full" p={4} pt={8} columns={5} gap={1}>
+                {schedules
+                  ?.slice(1, 6)
+                  .map((weekSchedule, index) => (
+                    <EditorTableCol
+                      key={`schedule-day${index}`}
+                      schedule={weekSchedule}
+                      meta={meta}
+                      isPrivate={isPrivate}
+                      week={week}
+                      dayIndex={index + 1}
+                    />
+                  ))}
+              </SimpleGrid>
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     );
@@ -105,11 +109,11 @@ const EditorTableCol = React.memo(
     week: Week;
     dayIndex: number;
   }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { open: isOpen, onOpen, onClose } = useDisclosure();
     const [, setSchedule] = useUserScheduleContext();
 
     return (
-      <VStack key={JSON.stringify(schedule) + dayIndex} spacing={1}>
+      <VStack key={JSON.stringify(schedule) + dayIndex} gap={1}>
         <Text
           w="full"
           textAlign="center"
@@ -159,10 +163,11 @@ const EditorTableCol = React.memo(
           w="full"
           aria-label="Add period"
           rounded="lg"
-          icon={<Icon as={TbPlus} />}
           variant="outline"
           onClick={onOpen}
-        />
+        >
+          {<Icon as={TbPlus} />}
+        </IconButton>
         <UserSubjectPicker
           isOpen={isOpen}
           onSelect={(subjectId) => {
@@ -202,12 +207,12 @@ function EditorSubjectGrid({
   onDelete: () => void;
 }) {
   const {
-    isOpen: isEditorOpen,
+    open: isEditorOpen,
     onOpen: onEditorOpen,
     onClose: onEditorClose,
   } = useDisclosure();
   const {
-    isOpen: isPickerOpen,
+    open: isPickerOpen,
     onOpen: onPickerOpen,
     onClose: onPickerClose,
   } = useDisclosure();
@@ -217,8 +222,8 @@ function EditorSubjectGrid({
 
   return (
     <>
-      <Popover>
-        <PopoverTrigger>
+      <PopoverRoot>
+        <PopoverTrigger asChild>
           <Center
             bg="accent"
             p={1}
@@ -249,39 +254,39 @@ function EditorSubjectGrid({
         <PopoverContent p={0} bg="panel" rounded="xl" width="fit-content">
           <PopoverArrow bg="panel" />
           <PopoverBody p={4}>
-            <VStack spacing={1}>
+            <VStack gap={1}>
               <Button
                 variant="ghost"
                 rounded="lg"
                 w="full"
-                leftIcon={<Icon as={TbPencil} />}
                 onClick={onEditorOpen}
               >
+                {<Icon as={TbPencil} />}
                 教科の編集
               </Button>
               <Button
                 variant="ghost"
                 rounded="lg"
                 w="full"
-                leftIcon={<Icon as={TbRepeat} />}
                 onClick={onPickerOpen}
               >
+                {<Icon as={TbRepeat} />}
                 置き換え
               </Button>
               <Button
                 variant="ghost"
                 rounded="lg"
                 w="full"
-                colorScheme="red"
-                leftIcon={<Icon as={TbTrash} />}
+                colorPalette="red"
                 onClick={onDelete}
               >
+                {<Icon as={TbTrash} />}
                 削除
               </Button>
             </VStack>
           </PopoverBody>
         </PopoverContent>
-      </Popover>
+      </PopoverRoot>
       <UserSubjectPicker
         isOpen={isPickerOpen}
         onSelect={onReplace}

@@ -115,22 +115,24 @@ function Dashboard() {
           {editMode && (
             <IconButton
               aria-label="Add card"
-              icon={<Icon as={TbPlus} boxSize={6} />}
               variant="ghost"
               size="lg"
-              isRound
+              borderRadius="full"
               onClick={() => setCardOrderDrawer(true)}
-            />
+            >
+              {<Icon as={TbPlus} boxSize={6} />}
+            </IconButton>
           )}
           <IconButton
             aria-label="Edit dashboard"
-            icon={<Icon as={editMode ? TbCheck : TbPencil} boxSize={6} />}
             color={editMode ? 'green.400' : undefined}
             variant="ghost"
             size="lg"
-            isRound
+            borderRadius="full"
             onClick={() => setEditMode(!editMode)}
-          />
+          >
+            {<Icon as={editMode ? TbCheck : TbPencil} boxSize={6} />}
+          </IconButton>
         </HStack>
       </Header>
 
@@ -159,7 +161,7 @@ function Dashboard() {
               </SortableContext>
             </DndContext>
           ) : (
-            <Stack flex={1} p={4} pb={16} spacing={8}>
+            <Stack flex={1} p={4} pb={16} gap={8}>
               <CardElement.Info />
               {cardOrder.length ? (
                 cardOrder.map((cardId) => {

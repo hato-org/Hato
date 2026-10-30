@@ -1,21 +1,10 @@
 import React from 'react';
-import {
-  Center,
-  Table,
-  TableContainer,
-  TableProps,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Center, Table, Text } from '@chakra-ui/react';
 import { useRoomTable } from '@/services/scienceroom';
 import Loading from '../common/Loading';
 import Error from '../cards/Error';
 
-interface RoomTableTableProps extends TableProps {
+interface RoomTableTableProps extends Table.RootProps {
   date: Date;
 }
 
@@ -31,52 +20,58 @@ const ScienceRoomTableTable = React.memo(
     if (status === 'error') return <Error error={error} />;
 
     return (
-      <TableContainer w="100%" {...rest}>
-        <Table variant="simple" size="sm" textStyle="title" colorScheme="bg">
-          <Thead>
-            <Tr>
-              <Th>時間</Th>
+      <Table.ScrollArea w="100%">
+        <Table.Root
+          variant="line"
+          size="sm"
+          textStyle="title"
+          colorPalette="bg"
+          {...rest}
+        >
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>時間</Table.ColumnHeader>
               {data.roomTable.map((room) => (
-                <Th key={room.name}>
+                <Table.ColumnHeader key={room.name}>
                   <Text>{room.name}</Text>
-                </Th>
+                </Table.ColumnHeader>
               ))}
-            </Tr>
-          </Thead>
-          <Tbody>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {data.roomTable.some((room) => !!room.table.length) ? (
               Array.from({
                 length: Math.max(
                   ...data.roomTable.map((room) => room.table.length),
                 ),
               }).map((_, index) => (
-                <Tr key={`${index}-${_}`}>
-                  <Td>{index + 1}</Td>
+                <Table.Row key={`${index}-${_}`}>
+                  <Table.Cell>{index + 1}</Table.Cell>
                   {data.roomTable.map((room) => (
-                    <Td key={room.name}>
+                    <Table.Cell key={room.name}>
                       <Text whiteSpace="pre" textAlign="center">
                         {room.table[index] !== '\n'
                           ? room.table[index] || '-'
                           : '-'}
                       </Text>
-                    </Td>
+                    </Table.Cell>
                   ))}
-                </Tr>
+                </Table.Row>
               ))
             ) : (
-              <Tr>
-                <Td>
+              <Table.Row>
+                <Table.Cell>
                   <Center py={4}>
                     <Text textStyle="description" fontWeight="bold">
                       データがありません
                     </Text>
                   </Center>
-                </Td>
-              </Tr>
+                </Table.Cell>
+              </Table.Row>
             )}
-          </Tbody>
-        </Table>
-      </TableContainer>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
     );
   },
 );

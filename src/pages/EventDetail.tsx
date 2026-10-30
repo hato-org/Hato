@@ -3,28 +3,31 @@ import {
   HStack,
   IconButton,
   Text,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  AlertDialog,
   useDisclosure,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
   Button,
-  useToast,
   Center,
   Spacer,
   Box,
   Icon,
 } from '@chakra-ui/react';
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from '@/components/ui/menu';
+import {
+  DialogBackdrop,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+} from '@/components/ui/dialog';
+import { toaster } from '@/components/ui/toaster';
 import { Helmet } from 'react-helmet-async';
 import { TbDots, TbEdit, TbTrash, TbFlag } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router';
-import { useRef } from 'react';
 import Header from '@/components/nav/Header';
 import Error from '@/components/cards/Error';
 import Event from '@/components/calendar/Event';
@@ -36,22 +39,19 @@ import { useEvent, useEventMutation } from '@/services/calendar';
 function EventDetail() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const toast = useToast({
-    position: 'top-right',
-    variant: 'left-accent',
-  });
+  const toast = (options: Parameters<typeof toaster.create>[0]) =>
+    toaster.create(options);
 
   const {
-    isOpen: deleteOpen,
+    open: deleteOpen,
     onClose: deleteOnClose,
     onOpen: deleteOnOpen,
   } = useDisclosure();
   const {
-    isOpen: reportOpen,
+    open: reportOpen,
     onClose: reportOnClose,
     onOpen: reportOnOpen,
   } = useDisclosure();
-  const cancelRef = useRef<HTMLElement>(null);
 
   const { data: user } = useUser();
 
@@ -75,25 +75,28 @@ function EventDetail() {
           </Heading>
           <Spacer />
           <Box>
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                variant="ghost"
-                size="lg"
-                aria-label="event menu"
-                icon={<TbDots />}
-                isRound
-              />
-              <MenuList rounded="xl" shadow="lg">
+            <MenuRoot>
+              <MenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  size="lg"
+                  aria-label="event menu"
+                  borderRadius="full"
+                >
+                  <TbDots />
+                </IconButton>
+              </MenuTrigger>
+              <MenuContent rounded="xl" shadow="lg">
                 {data?.owner === user.email || user.role === 'admin' ? (
                   <>
                     {user.role === 'admin' && (
                       <>
                         <MenuItem
+                          value="report"
                           textStyle="title"
-                          icon={<Icon as={TbFlag} />}
                           onClick={reportOnOpen}
                         >
+                          <Icon as={TbFlag} />
                           報告
                         </MenuItem>
                         <ReportModal
@@ -103,38 +106,36 @@ function EventDetail() {
                         />
                       </>
                     )}
-                    <MenuItem
-                      textStyle="title"
-                      icon={<Icon as={TbEdit} boxSize={4} />}
-                      isDisabled
-                    >
+                    <MenuItem value="edit" textStyle="title" disabled>
+                      <Icon as={TbEdit} boxSize={4} />
                       編集
                     </MenuItem>
                     <MenuItem
+                      value="delete"
                       textStyle="title"
-                      icon={<Icon as={TbTrash} boxSize={4} />}
                       color="red"
                       onClick={deleteOnOpen}
                     >
+                      <Icon as={TbTrash} boxSize={4} />
                       削除
                     </MenuItem>
-                    <AlertDialog
-                      isOpen={deleteOpen}
-                      onClose={deleteOnClose}
-                      leastDestructiveRef={cancelRef}
-                      isCentered
+                    <DialogRoot
+                      role="alertdialog"
+                      open={deleteOpen}
+                      onOpenChange={(e) => !e.open && deleteOnClose()}
+                      placement="center"
                     >
-                      <AlertDialogOverlay />
-                      <AlertDialogContent p={2} bg="panel" rounded="xl">
-                        <AlertDialogHeader>イベントの削除</AlertDialogHeader>
-                        <AlertDialogBody>
+                      <DialogBackdrop />
+                      <DialogContent p={2} bg="panel" rounded="xl">
+                        <DialogHeader>イベントの削除</DialogHeader>
+                        <DialogBody>
                           <Center>
                             <Text textStyle="title">
                               本当にこのイベントを削除しますか？
                             </Text>
                           </Center>
-                        </AlertDialogBody>
-                        <AlertDialogFooter w="full" gap={4}>
+                        </DialogBody>
+                        <DialogFooter w="full" gap={4}>
                           <Button
                             w="full"
                             variant="ghost"
@@ -145,7 +146,7 @@ function EventDetail() {
                           </Button>
                           <Button
                             w="full"
-                            colorScheme="red"
+                            colorPalette="red"
                             rounded="lg"
                             onClick={() =>
                               mutate(
@@ -154,7 +155,7 @@ function EventDetail() {
                                   onSuccess: () => {
                                     toast({
                                       title: 'イベントを削除しました。',
-                                      status: 'success',
+                                      type: 'success',
                                     });
                                     deleteOnClose();
                                     navigate(-1);
@@ -163,28 +164,29 @@ function EventDetail() {
                                     toast({
                                       title: 'イベントの削除に失敗しました。',
                                       description: e.message,
-                                      status: 'error',
+                                      type: 'error',
                                     });
                                     deleteOnClose();
                                   },
                                 },
                               )
                             }
-                            isLoading={isPending}
+                            loading={isPending}
                           >
                             削除
                           </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                        </DialogFooter>
+                      </DialogContent>
+                    </DialogRoot>
                   </>
                 ) : (
                   <>
                     <MenuItem
+                      value="report"
                       textStyle="title"
-                      icon={<Icon as={TbFlag} />}
                       onClick={reportOnOpen}
                     >
+                      <Icon as={TbFlag} />
                       報告
                     </MenuItem>
                     <ReportModal
@@ -194,8 +196,8 @@ function EventDetail() {
                     />
                   </>
                 )}
-              </MenuList>
-            </Menu>
+              </MenuContent>
+            </MenuRoot>
           </Box>
         </HStack>
       </Header>

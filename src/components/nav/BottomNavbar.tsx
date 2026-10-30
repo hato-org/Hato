@@ -1,5 +1,12 @@
 import { useMemo } from 'react';
-import { HStack, Icon, Center, Box, IconButton, Slide } from '@chakra-ui/react';
+import {
+  HStack,
+  Icon,
+  Center,
+  Box,
+  IconButton,
+  Presence,
+} from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 import { useAtomValue } from 'jotai';
 import {
@@ -54,7 +61,18 @@ function BottomNavbar() {
   );
 
   return (
-    <Slide direction="bottom" in={!editMode}>
+    <Presence
+      present={!editMode}
+      position="fixed"
+      bottom={0}
+      insetX={0}
+      zIndex={10}
+      animationName={{
+        _open: 'slide-from-bottom-full',
+        _closed: 'slide-to-bottom-full',
+      }}
+      animationDuration="moderate"
+    >
       <Box
         w="100%"
         pb="env(safe-area-inset-bottom)"
@@ -66,35 +84,31 @@ function BottomNavbar() {
       >
         <HStack w="100%" justify="space-around">
           {menu.map(({ icon, label, href }) => (
-            <Center
-              w="100%"
-              flexGrow={1}
-              as={Link}
-              to={href}
-              key={label}
-              py={1}
-            >
-              <IconButton
-                aria-label={label}
-                icon={icon}
-                size="lg"
-                variant="ghost"
-                color={location.pathname === href ? 'blue.300' : 'title'}
-                isRound
-              />
+            <Center w="100%" flexGrow={1} key={label} py={1} asChild>
+              <Link to={href}>
+                <IconButton
+                  aria-label={label}
+                  size="lg"
+                  variant="ghost"
+                  color={location.pathname === href ? 'blue.300' : 'title'}
+                  borderRadius="full"
+                >
+                  {icon}
+                </IconButton>
+              </Link>
             </Center>
           ))}
         </HStack>
         {/* <Box w="100%">
-        <Collapse in={!onlineManager.isOnline()}>
+        <Collapsible.Root open={!onlineManager.isOnline()}><Collapsible.Content>
           <HStack w="100%" justify="center" py={1}>
             <Icon as={TbCloudOff} w={6} h={6} />
             <Text textStyle="title">オフライン</Text>
           </HStack>
-        </Collapse>
+        </Collapsible.Content></Collapsible.Root>
       </Box> */}
       </Box>
-    </Slide>
+    </Presence>
   );
 }
 

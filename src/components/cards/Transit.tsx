@@ -1,6 +1,6 @@
 import {
   Box,
-  Collapse,
+  Collapsible,
   Heading,
   HStack,
   Icon,
@@ -29,24 +29,26 @@ export default function Transit() {
   const { data: diaInfo, status, error } = useDiainfo();
 
   return (
-    <VStack spacing={4} w="100%" align="flex-start">
-      <LinkBox w="100%" as={RouterLink} to="/transit">
-        <HStack pt={2} pl={2} w="100%">
-          <Heading as="h2" size="md">
-            交通情報
-          </Heading>
-          <Spacer />
-          <Text textStyle="description" color="description" fontWeight="bold">
-            Yahoo! 路線情報提供
-          </Text>
-          <Icon as={TbChevronRight} boxSize={5} />
-        </HStack>
+    <VStack gap={4} w="100%" align="flex-start">
+      <LinkBox w="100%" asChild>
+        <RouterLink to="/transit">
+          <HStack pt={2} pl={2} w="100%">
+            <Heading as="h2" size="md">
+              交通情報
+            </Heading>
+            <Spacer />
+            <Text textStyle="description" color="description" fontWeight="bold">
+              Yahoo! 路線情報提供
+            </Text>
+            <Icon as={TbChevronRight} boxSize={5} />
+          </HStack>
+        </RouterLink>
       </LinkBox>
       <VStack p={2} align="flex-start" w="100%">
         {status === 'error' ? (
           <Error error={error} />
         ) : (
-          <Skeleton w="full" rounded="xl" isLoaded={status !== 'pending'}>
+          <Skeleton w="full" rounded="xl" loading={status === 'pending'}>
             <StatusAlert lines={diaInfo} />
           </Skeleton>
         )}
@@ -64,7 +66,7 @@ export default function Transit() {
 }
 
 function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
-  const { isOpen, onToggle } = useDisclosure();
+  const { open: isOpen, onToggle } = useDisclosure();
   const [date] = useSeconds();
   const day = dayNumberToString(date.getDay());
 
@@ -91,32 +93,34 @@ function UpcomingTrainsStack({ dest }: { dest: 'nagano' | 'ueda' }) {
     .filter(({ departAt }) => departAt > date);
 
   return (
-    <Skeleton w="full" rounded="xl" isLoaded={!isPending}>
-      <VStack spacing={0} layerStyle="button" rounded="xl">
+    <Skeleton w="full" rounded="xl" loading={isPending}>
+      <VStack gap={0} layerStyle="button" rounded="xl">
         <PrimaryUpcomingTrainCountdown
           date={date}
           train={upcoming?.[0]}
           onClick={onToggle}
         />
         <Box w="full">
-          <Collapse in={isOpen}>
-            {(upcoming?.length ?? 0) > 2 && (
-              <Stack
-                flexDirection={{ base: 'column', md: 'row' }}
-                spacing={{ base: 0, md: 2 }}
-                w="full"
-              >
-                <SecondoryUpcomingTrainCountdown
-                  date={date}
-                  train={upcoming?.[1]}
-                />
-                <SecondoryUpcomingTrainCountdown
-                  date={date}
-                  train={upcoming?.[2]}
-                />
-              </Stack>
-            )}
-          </Collapse>
+          <Collapsible.Root open={isOpen}>
+            <Collapsible.Content>
+              {(upcoming?.length ?? 0) > 2 && (
+                <Stack
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  gap={{ base: 0, md: 2 }}
+                  w="full"
+                >
+                  <SecondoryUpcomingTrainCountdown
+                    date={date}
+                    train={upcoming?.[1]}
+                  />
+                  <SecondoryUpcomingTrainCountdown
+                    date={date}
+                    train={upcoming?.[2]}
+                  />
+                </Stack>
+              )}
+            </Collapsible.Content>
+          </Collapsible.Root>
         </Box>
       </VStack>
     </Skeleton>

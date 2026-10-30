@@ -2,7 +2,7 @@ import React from 'react';
 import {
   VStack,
   HStack,
-  StackDivider,
+  StackSeparator,
   Heading,
   Text,
   Center,
@@ -26,15 +26,15 @@ const DiaInfo = React.memo(({ diaInfo }: { diaInfo: DiaInfo }) => {
 
   return (
     <Card w="100%">
-      <VStack p={2} align="flex-start" spacing={4}>
+      <VStack p={2} align="flex-start" gap={4}>
         <HStack>
-          <StackDivider
+          <StackSeparator
             borderWidth="2px"
             rounded="full"
             borderColor={borderColor}
             transition="all .2s ease"
           />
-          <VStack align="flex-start" spacing={1}>
+          <VStack align="flex-start" gap={1}>
             <Heading size="md">{diaInfo.lineInfo.name}</Heading>
             <Text textStyle="description">{diaInfo.status.text}</Text>
           </VStack>

@@ -4,7 +4,7 @@ import {
   Center,
   HStack,
   Icon,
-  StackDivider,
+  StackSeparator,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -55,7 +55,7 @@ export default function Tournament({
           isWinner={id === winner.from}
           {...rest}
         />
-        <VStack spacing={1}>
+        <VStack gap={1}>
           <Icon as={TbCrown} boxSize={8} color="yellow.400" />
           {participants.length && (
             <Text textStyle="title" fontSize="2xl" fontFamily="monospace">
@@ -96,8 +96,8 @@ const TournamentSection = React.memo(
     const numOfClass = match?.map((tournament) => countNumOfClass(tournament));
 
     return match ? (
-      <HStack spacing={0} alignSelf="stretch">
-        <VStack spacing={0} flexGrow={1}>
+      <HStack gap={0} alignSelf="stretch">
+        <VStack gap={0} flexGrow={1}>
           {match.map((tournament) => (
             <TournamentSection
               key={tournament.id}
@@ -114,7 +114,7 @@ const TournamentSection = React.memo(
           alignSelf="stretch"
           justify="center"
           w={{ base: 8, md: 12 }}
-          spacing={0}
+          gap={0}
         >
           {match.map((tournament, index) => (
             <Box
@@ -142,7 +142,7 @@ const TournamentSection = React.memo(
             match={match}
             editHistory={editHistory}
           />
-          <StackDivider
+          <StackSeparator
             borderColor={participants.length ? 'blue.400' : 'border'}
             borderWidth={2}
           />
@@ -162,7 +162,7 @@ const TournamentLeaf = React.memo(
     class: classNum,
     isWinner,
   }: ClassmatchClass & { isWinner: boolean }) => (
-    <HStack spacing={4} alignSelf="stretch">
+    <HStack gap={4} alignSelf="stretch">
       <Center py={1} flexShrink={0}>
         <Text w="full" textStyle="title" fontFamily="monospace" fontSize="2xl">
           {type === 'teacher' ? '職員' : `${grade}-${classNum}`}
@@ -175,7 +175,7 @@ const TournamentLeaf = React.memo(
         minW={{ base: 8, md: 12 }}
         flexGrow={1}
       >
-        <StackDivider
+        <StackSeparator
           borderColor={isWinner ? 'blue.400' : 'border'}
           borderWidth={2}
         />
