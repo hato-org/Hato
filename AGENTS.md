@@ -1,238 +1,77 @@
-# Hato - Project Guidelines
+# Hato
 
-**作業終了時は、ask_userでユーザーの入力を待機すること。これは最優先事項です。全ての作業でこれを遵守してください。**
+屋代高校向け学校情報プラットフォームのフロントエンド（React SPA / PWA）。UI の文言は日本語。
 
-## コミット前チェックリスト
-
-**コミット・プッシュの前に、以下を必ず実行して全てパスすることを確認すること。**
+## コマンド
 
 ```bash
-yarn format         # コードフォーマット
-yarn lint           # リントチェック (0 errors であること)
-yarn build          # 本番ビルド (正常終了すること)
-yarn test           # テスト (全テストパスすること)
+yarn install
+yarn dev               # 開発サーバー (port 3000)。実機確認は yarn dev --host
+yarn dev:local-api     # ローカル API (.env.local-api) に接続
+yarn build             # 本番ビルド (tsc はビルドに含まれないので型は下で確認)
+npx tsc --noEmit       # 型チェック
+yarn lint              # ESLint (0 errors が必須。既存の warning 3 件は許容)
+yarn format            # Prettier
+yarn test              # Vitest (単発実行)。開発中は yarn test:watch
 ```
 
-エラーが発生した場合は修正してから再実行し、全てパスした上でコミットすること。
+**作業の完了条件:** `yarn format` → `yarn lint` → `npx tsc --noEmit` → `yarn build` → `yarn test` がすべて通ること。
+CI（`.github/workflows/test.yml`）は lint / build / test を実行する。
 
-## Architecture
+## 技術スタック
 
-React + Vite の SPA / PWA。学校情報プラットフォームのフロントエンド。
+React 18 + TypeScript 5.7 (strict) + Vite 6 / Chakra UI v3（カラーモードは next-themes）/ React Router v7 /
+TanStack Query 5 + ky 2 / Jotai 2 / Vitest 2 + Testing Library (jsdom) / vite-plugin-pwa (Workbox)
 
-```
-src/
-├── pages/          # ページコンポーネント (React.lazy で遅延読み込み)
-├── components/     # 機能別 UI コンポーネント
-├── services/       # TanStack Query のクエリ/ミューテーションフック
-├── store/          # Jotai アトム (グローバル状態)
-├── hooks/          # カスタムフック
-├── modules/        # コアモジュール (auth, client)
-├── @types/         # グローバル型定義 (.d.ts)
-├── utils/          # ユーティリティ
-└── service-worker/ # PWA サービスワーカー (Workbox)
-```
+## 実装の規約
 
-## Build and Test
+- **パス:** `@/*` → `src/*`。グローバル型は `src/@types/*.d.ts`。
+- **ページ:** `src/pages/` に置き、`src/routes.tsx` で `React.lazy()` 登録する。
+- **データ取得:** `src/services/<feature>/` に TanStack Query フックを置く（例: `src/services/scienceroom/index.ts`）。
+  クエリキーは必ず `src/services/queryKeys.ts` のファクトリを使い、文字列配列を直書きしない。
+- **API クライアント:** `useClient()`（`src/modules/client/index.ts`）。JWT 付与・401 時のリフレッシュはここで行う。
+  ky 2 のフックは `({ request, response })` のオブジェクト引数。旧シグネチャ `(request, options, response)` は動かない。
+- **グローバル状態:** Jotai。永続化する atom は `createVersionedStorage()`（`src/utils/versionedStorage.ts`）と
+  `hato.` プレフィックスのキーを使う。保存する型を変えたら `version` を上げて `migrate` を書く。
+- **アイコン:** `react-icons/tb`（Tabler）のみ。
 
-```bash
-yarn dev            # 開発サーバー (port 3000)
-yarn dev:local-api  # ローカル API モードで開発
-yarn build          # 本番ビルド (→ dist/)
-yarn preview        # ビルドプレビュー
-yarn test           # Vitest
-yarn test:watch     # Vitest (watch モード)
-yarn test:coverage  # Vitest + カバレッジレポート
-yarn lint           # ESLint
-yarn format         # Prettier
-```
+## Chakra UI v3 の注意点
 
-## Tech Stack
+v2 から移行済み。経緯は `docs/chakra-v3-migration-status.md`、見た目の規約は `docs/design-system.md` を参照。
 
-| 役割 | ライブラリ |
-|------|-----------|
-| UI | React 18, Chakra UI 2 |
-| ルーティング | React Router v7 |
-| 状態管理 | Jotai (`atomWithStorage` で永続化) |
-| データ取得 | TanStack React Query 5 + ky |
-| アニメーション | Framer Motion |
-| 認証 | Google OAuth (@react-oauth/google) |
-| PWA | vite-plugin-pwa + Workbox |
-| ビルド | Vite 6, TypeScript strict |
-| テスト | Vitest, @testing-library/react, @testing-library/jest-dom |
+- v2 の API は使わない: `spacing`→`gap`、`colorScheme`→`colorPalette`、`isOpen`→`open`、`isDisabled`→`disabled`、
+  `Modal`→`Dialog`、`useToast`→`toaster.create()`、`useColorModeValue` は `@/components/ui/color-mode` から。
+- Dialog / Drawer / Menu / Tooltip / Switch / Tag / Avatar などは `src/components/ui/` の snippet を使う。
+  snippet と `src/theme.ts` は全画面に効くため、変更したら VRT（`scripts/vrt/README.md`）で v2 との差分を確認する。
+- `src/theme.ts` は v2 の見た目に合わせる上書きが多い。`bg` / `border` セマンティックトークンは
+  グループ直下ではなく `DEFAULT` キーで上書きする（直下に書くとダークモードが壊れる）。
+- `textStyle` を渡すと recipe 側の `textStyle`（文字サイズ）が消える。サイズは `fontSize` で指定する。
+- Menu / Popover などのトリガー要素に `id` を付けない（位置計算が壊れる）。必要なら Root の `ids={{ trigger }}` で指定する。
+- `lineClamp` を Link など `align-items: center` を持つ要素に付けると、Safari で中央寄せになる。`alignItems="flex-start"` を併記する。
 
-## Conventions
+## テスト
 
-- **コンポーネント** — PascalCase `.tsx`。機能別にフォルダ分割
-- **パスエイリアス** — `@/*` → `src/*`
-- **サービスパターン** — `services/<feature>/` に TanStack Query フックを配置:
-  ```typescript
-  export const useSomeData = (options?) => {
-    const { client } = useClient();
-    return useQuery({
-      queryKey: ['feature', 'key'],
-      queryFn: async ({ signal }) => (await client.get('/path', { signal })).data,
-      ...options,
-    });
-  };
-  ```
-- **状態管理** — Jotai アトム。ストレージキーは `hato.` プレフィックス (e.g. `hato.auth`, `hato.settings`)
-- **API クライアント** — `useClient()` フックで ky インスタンスを取得。JWT 自動付与
-- **型定義** — `src/@types/` にグローバル `.d.ts` として配置
-- **遅延読み込み** — ページは `React.lazy()` + Suspense
-- **エラー処理** — `react-error-boundary` でラップ
-- **オフラインファースト** — React Query の `networkMode: 'offlineFirst'`、IndexedDB 永続化 (24h)
-- **pre-commit** — Husky + lint-staged (ESLint + Prettier)
+- `*.test.ts(x)` をソースの隣に置く。`describe` / `it` / `expect` / `vi` はグローバル。
+- コンポーネントは `renderWithProviders()`（`src/test/utils.tsx`）、Jotai atom は `createStore()` で独立させてテストする。
+- 見た目に関わる変更は `scripts/vrt/` で v2 (dev) とのスクリーンショット比較ができる。
 
-## Testing
+## Git
 
-テストフレームワークは Vitest + @testing-library/react。設定は `vite.config.ts` の `test` ブロック。
+- 作業ブランチ → `dev` へ PR → `dev` を `master` にマージしてリリース。`master` / `dev` に直接 push しない。
+- コミットメッセージは Conventional Commits + 日本語（例: `fix(chakra-v3): Tabs の非選択色を v2 に合わせる`）。
+- pre-commit で Husky + lint-staged（`eslint --fix` / `prettier`）が走る。
 
-### テスト構成
+## 境界
 
-```
-src/test/
-├── setup.ts       # @testing-library/jest-dom の設定、グローバルモック
-└── utils.tsx      # AllProviders ラッパー (Chakra + QueryClient + Jotai + Router)
-```
+- ✅ **常に:** 完了条件のコマンドを通す。ロジックを変えたらテストを追加・更新する。
+- ⚠️ **先に確認:** 依存パッケージの追加・メジャー更新。`src/theme.ts` や `src/components/ui/` の広範な変更。
+  永続 atom の保存形式の変更。ルート URL の変更。push と PR の作成。
+- 🚫 **しない:** `.env.*` に秘密情報を書く（`VITE_` 変数はビルドに埋め込まれ公開される。`.env.*` は git 管理下）。
+  失敗するテストを削除・skip して通す。`--no-verify` で pre-commit を飛ばす。
 
-### テストの書き方
+## 参照
 
-- **ユニットテスト** — `*.test.ts` / `*.test.tsx` をソースファイルの隣に配置
-- **純粋関数** — 直接 import してテスト
-- **Jotai アトム** — `createStore()` で独立したストアを作成してテスト:
-  ```typescript
-  import { createStore } from 'jotai';
-  const store = createStore();
-  store.set(myAtom, newValue);
-  expect(store.get(myAtom)).toBe(newValue);
-  ```
-- **React フック** — `renderHook` + Jotai `Provider` ラッパーでテスト
-- **コンポーネント** — `renderWithProviders()` (`src/test/utils.tsx`) を使用:
-  ```typescript
-  import { renderWithProviders } from '@/test/utils';
-  renderWithProviders(<MyComponent />);
-  ```
-- **グローバル API** — `globals: true` により `describe`, `it`, `expect`, `vi` はインポート不要（明示的インポートも可）
-- **環境** — jsdom（`vite.config.ts` で設定済み）
-
-### クエリキーファクトリ
-
-`src/services/queryKeys.ts` にクエリキーを一元管理。サービスフックでは直接文字列配列を使わず、ファクトリ関数を使用:
-```typescript
-import { queryKeys } from '@/services/queryKeys';
-queryKey: queryKeys.user.all,
-queryKey: queryKeys.timetable.division({ year, month, day }),
-```
-
-### ストレージバージョニング
-
-`atomWithStorage` には `createVersionedStorage()` (`src/utils/versionedStorage.ts`) を使用。バージョン番号とマイグレーション関数でスキーマ変更に対応:
-```typescript
-const storage = createVersionedStorage<MyType>({
-  version: 2,
-  migrate: (old, oldVersion) => ({ ...old, newField: 'default' }),
-});
-```
-
-## Design System
-
-テーマ定義は [src/theme.ts](src/theme.ts)。Chakra UI 2 のセマンティックトークンとカスタムスタイルで構成。
-
-### カラートークン
-
-セマンティックカラー (ライト / ダーク):
-
-| トークン | Light | Dark | 用途 |
-|---------|-------|------|------|
-| `title` | gray.700 | gray.100 | 見出し・本文 |
-| `description` | gray.500 | gray.400 | 補足テキスト |
-| `bg` | white | bg.900 (#121212) | ページ背景 |
-| `panel` | white | #202020 | カード・モーダル背景 |
-| `border` | bg.100 | bg.800 | ボーダー |
-| `hover` | blackAlpha.100 | whiteAlpha.100 | ホバー状態 |
-| `active` | blackAlpha.200 | whiteAlpha.200 | アクティブ状態 |
-| `success` | green.400 | green.500 | 成功 |
-| `warning` | yellow.400 | yellow.500 | 警告 |
-| `error` | red.400 | red.500 | エラー |
-
-アクセントカラー: `blue.400` / `blue.500` (スピナー、リンク、ボタン)
-
-### テキストスタイル
-
-```
-textStyle="title"       — fontWeight: bold, color: title
-textStyle="description" — fontSize: sm, color: description
-textStyle="link"        — color: blue.500, underline, cursor: pointer
-```
-
-### レイヤースタイル
-
-```
-layerStyle="button" — border: 1px solid transparent, hover: bg hover, active: bg active, transition: .2s ease
-```
-
-### スペーシング規約
-
-- カード内パディング: `p={4}`
-- カード間スペーシング: `spacing={8}`
-- 小要素間: `spacing={1}` 〜 `spacing={2}`
-- フローティング要素用下マージン: `mb={16}` 〜 `mb={40}`
-
-### コンポーネントパターン
-
-**Card** — `bg="panel"`, `rounded="xl"`, `shadow="xl"`, `border="1px solid"`, `borderColor="border"`, `p={4}`
-
-**Header** — `position="sticky"`, `bg="bgAlpha"`, `backdropBlur="8px"` (グラスモーフィズム), `shadow="xl"`, `zIndex={10}`
-
-**ボタン** — `rounded="lg"`, `colorScheme="blue"` (プライマリ), `variant="ghost"` (セカンダリ)
-
-**モーダル** — `ModalContent`: `rounded="xl"`, `bg="panel"`. フッターボタン: `w="full"`, `rounded="lg"`
-
-**メニュー** — `MenuList`: `shadow="lg"`, `rounded="xl"`. `MenuItem`: `textStyle="title"`
-
-### エラー表示
-
-```
-<Center w="100%">
-  <VStack>
-    <Icon as={TbAlertCircle} w={16} h={16} color="warning" or "error" />
-    <Text textStyle="description">{error.message}</Text>
-    <Text textStyle="title">{userFriendlyMessage}</Text>
-  </VStack>
-</Center>
-```
-
-- 警告系 (4xx): `color="yellow.500"`
-- エラー系 (5xx): `color="red.500"`
-
-### アイコン
-
-- ライブラリ: `react-icons/tb` (Tabler Icons, `Tb` プレフィックス)
-- サイズ: インライン `w={5} h={5}`, 標準 `w={6} h={6}`, 大型表示 `w={16} h={16}`
-
-### アニメーション
-
-- トランジション: `transition="all .2s ease"` (統一)
-- Framer Motion ラッパー: `MotionFlex`, `MotionCenter`, `MotionVStack`, `MotionHStack`
-- ローディング: `Spinner color="blue.400" thickness="3px"`
-
-### レスポンシブ
-
-- ブレークポイント: `base` (モバイル) / `md` (タブレット) / `lg` (デスクトップ)
-- モバイルファースト設計。`useBreakpointValue` でレスポンシブ切替
-
-### フォント
-
-`-apple-system, Inter, "Noto Sans JP Variable", sans-serif` — heading / body 共通
-
-## Key Files
-
-- [src/App.tsx](src/App.tsx) — ルートコンポーネント
-- [src/routes.tsx](src/routes.tsx) — ルート定義
-- [src/theme.ts](src/theme.ts) — Chakra UI テーマ
-- [src/modules/client/index.ts](src/modules/client/index.ts) — API クライアント設定
-- [src/modules/auth/index.ts](src/modules/auth/index.ts) — 認証フック
-- [src/services/queryKeys.ts](src/services/queryKeys.ts) — クエリキーファクトリ
-- [src/utils/versionedStorage.ts](src/utils/versionedStorage.ts) — バージョン管理付き localStorage アダプタ
-- [src/test/utils.tsx](src/test/utils.tsx) — テストユーティリティ (AllProviders ラッパー)
-- [CONTRIBUTING.md](CONTRIBUTING.md) — コントリビューションガイド
+- `docs/design-system.md` — カラートークン、テキストスタイル、部品パターン
+- `docs/chakra-v3-migration-status.md` — v3 移行の内容と経緯
+- `scripts/vrt/README.md` — v2/v3 のビジュアル比較
+- `docs/TODO.md`、`docs/guides/` — 設計レビューで挙がった改善項目と手順書
