@@ -76,7 +76,7 @@ const router = createBrowserRouter([
 
       // 時間割
       { path: 'timetable', element: <Timetable /> },
-      { path: 'timetable/editor', element: <MyTimetable /> },
+      { path: 'timetable/editor/search?', element: <MyTimetable /> },
 
       // イベント
       { path: 'events', element: <Events /> },

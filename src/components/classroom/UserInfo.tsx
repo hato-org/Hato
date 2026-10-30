@@ -55,7 +55,15 @@ const UserInfo = React.memo(
               </Text>
             </HStack>
           ) : (
-            <Link asChild color="description" fontSize="xs" lineClamp={1}>
+            <Link
+              asChild
+              color="description"
+              fontSize="xs"
+              lineClamp={1}
+              // lineClamp は -webkit-box になり、WebKit は align-items: center を
+              // -webkit-box-align として解釈して中央寄せするため明示的に左寄せ
+              alignItems="flex-start"
+            >
               <RouterLink to={`/classroom/course/${course?.id}`}>
                 {course?.name}
               </RouterLink>

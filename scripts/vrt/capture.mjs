@@ -63,6 +63,12 @@ for (const target of TARGETS) {
       // 偽JWTへの 401 で v3 だけログアウトされるのを防ぐ (v2 は 401 処理が壊れている)
       await context.route('**/*', (route) => {
         const url = new URL(route.request().url());
+        // v3 は開発時のみ jotai-devtools の CSS (Mantine) を読み込み、レイアウトが数 px ずれるため空にする
+        if (url.pathname.endsWith('jotai-devtools/dist/index.css'))
+          return route.fulfill({
+            contentType: 'text/javascript',
+            body: 'export default {}',
+          });
         if (
           url.origin.startsWith('http://localhost:300') &&
           !url.pathname.startsWith('/api/')

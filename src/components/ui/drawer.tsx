@@ -60,9 +60,10 @@ export const DrawerTrigger = ChakraDrawer.Trigger;
 export const DrawerRoot = ChakraDrawer.Root;
 export const DrawerFooter = ChakraDrawer.Footer;
 
-// v2 DrawerHeader (fontSize xl / semibold / py=4)・DrawerBody (py=2) の既定値を再現
+// v2 DrawerHeader (fontSize xl / semibold / py=4、block 表示)・DrawerBody (py=2) の既定値を再現
 export const DrawerHeader = (props: ChakraDrawer.HeaderProps) => (
   <ChakraDrawer.Header
+    display="block"
     textStyle="xl"
     fontWeight="semibold"
     pt="4"

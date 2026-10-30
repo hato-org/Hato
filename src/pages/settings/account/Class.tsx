@@ -19,7 +19,7 @@ export default function AccountClass() {
   const { mutate, isPending } = useUserMutation();
 
   return (
-    <MenuRoot>
+    <MenuRoot ids={{ trigger: 'class-select' }}>
       <Skeleton loading={isClassPending} rounded="lg">
         {classError ? (
           <HStack py={2}>
@@ -28,13 +28,7 @@ export default function AccountClass() {
           </HStack>
         ) : (
           <MenuTrigger asChild>
-            <Button
-              disabled={isPending}
-              variant="plain"
-              id="class-select"
-              rounded="lg"
-              w="100%"
-            >
+            <Button disabled={isPending} variant="plain" rounded="lg" w="100%">
               <HStack py={2} pl={4} justify="flex-end">
                 <Text textStyle="title">
                   {classList?.find(({ classCode }) => user.class === classCode)

@@ -19,7 +19,7 @@ export default function AccountGrade() {
   const { mutate, isPending } = useUserMutation();
 
   return (
-    <MenuRoot>
+    <MenuRoot ids={{ trigger: 'grade-select' }}>
       <Skeleton loading={isGradePending} rounded="lg">
         {gradeError ? (
           <HStack py={2}>
@@ -28,13 +28,7 @@ export default function AccountGrade() {
           </HStack>
         ) : (
           <MenuTrigger asChild>
-            <Button
-              disabled={isPending}
-              variant="plain"
-              id="grade-select"
-              rounded="lg"
-              w="100%"
-            >
+            <Button disabled={isPending} variant="plain" rounded="lg" w="100%">
               <HStack py={2} pl={4} justify="flex-end">
                 <Text textStyle="title">
                   {gradeList?.find(

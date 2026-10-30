@@ -19,7 +19,7 @@ export default function AccountCourse() {
   const { mutate, isPending } = useUserMutation();
 
   return (
-    <MenuRoot>
+    <MenuRoot ids={{ trigger: 'course-select' }}>
       <Skeleton loading={isCoursePending} rounded="lg">
         {courseError ? (
           <HStack py={2}>
@@ -31,7 +31,6 @@ export default function AccountCourse() {
             <Button
               disabled={!courseList?.length || isPending}
               variant="plain"
-              id="course-select"
               rounded="lg"
               w="100%"
             >

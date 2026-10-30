@@ -304,6 +304,91 @@ const config = defineConfig({
       },
     },
     slotRecipes: {
+      // v2 Alert subtle: 文字色は継承し、色はアイコンと背景だけに付ける
+      alert: {
+        variants: {
+          variant: {
+            subtle: {
+              root: {
+                bg: { base: 'colorPalette.100', _dark: 'colorPalette.200/16' },
+                color: 'inherit',
+              },
+              indicator: {
+                color: { base: 'colorPalette.600', _dark: 'colorPalette.200' },
+              },
+            },
+          },
+        },
+      },
+      // v2 Tag: lg は 32px 高・px 3、outline は 500 (dark: 200/80) の枠線。
+      // アイコン要素は flex で中央揃え (inline の svg がベースライン分下にずれるため)
+      tag: {
+        base: {
+          startElement: { display: 'inline-flex', alignItems: 'center' },
+          endElement: { display: 'inline-flex', alignItems: 'center' },
+        },
+        variants: {
+          size: {
+            lg: {
+              root: {
+                minH: '8',
+                px: '3',
+                gap: '2',
+                '--tag-element-offset': '0px',
+              },
+            },
+          },
+          variant: {
+            outline: {
+              root: {
+                color: {
+                  base: 'colorPalette.500',
+                  _dark: 'colorPalette.200/80',
+                },
+                shadowColor: {
+                  base: 'colorPalette.500',
+                  _dark: 'colorPalette.200/80',
+                },
+              },
+            },
+          },
+        },
+      },
+      // v2 Table は行に背景色を持たない (v3 line は row に bg が付く)
+      // v2 の sm 寸法と th スタイル。v3 は文字サイズを root に置くため、
+      // 呼び出し側の textStyle="title" で打ち消されないよう th/td に直接指定する
+      table: {
+        variants: {
+          variant: {
+            line: { row: { bg: 'transparent' } },
+          },
+          size: {
+            sm: {
+              columnHeader: {
+                px: '4',
+                py: '1',
+                fontSize: 'xs',
+                lineHeight: '1rem',
+                fontWeight: 'bold',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                color: { base: 'gray.600', _dark: 'gray.400' },
+              },
+              cell: { px: '4', py: '2', fontSize: 'sm', lineHeight: '1rem' },
+            },
+          },
+        },
+      },
+      // v2 Switch のオフ時トラック色 (v3 の bg.emphasized は v2 gray で青みがかる)
+      switch: {
+        variants: {
+          variant: {
+            solid: {
+              control: { bg: { base: 'gray.300', _dark: 'whiteAlpha.400' } },
+            },
+          },
+        },
+      },
       // v2 Modal 幅 (v3 は 1 段ずつ大きく、xl は 36rem → 56rem になる)
       dialog: {
         variants: {

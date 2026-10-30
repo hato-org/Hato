@@ -60,9 +60,10 @@ export const DialogCloseTrigger = React.forwardRef<
 export const DialogRoot = ChakraDialog.Root;
 export const DialogFooter = ChakraDialog.Footer;
 
-// v2 ModalHeader (fontSize xl / semibold / py=4)・ModalBody (py=2) の既定値を再現
+// v2 ModalHeader (fontSize xl / semibold / py=4、block 表示)・ModalBody (py=2) の既定値を再現
 export const DialogHeader = (props: ChakraDialog.HeaderProps) => (
   <ChakraDialog.Header
+    display="block"
     textStyle="xl"
     fontWeight="semibold"
     pt="4"
